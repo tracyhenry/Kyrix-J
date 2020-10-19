@@ -14,7 +14,8 @@ const placements = require("./placements");
 // construct a project
 var p = new Project("mitdwh", "../../../config.txt");
 p.addRenderingParams(renderers.renderingParams);
-var vw = 1000, vh = 1000;
+var vw = 1000,
+    vh = 1000;
 var demo1 = false;
 
 // SSV of buildings
@@ -49,8 +50,22 @@ var ssv = {
         },
         hover: {
             tooltip: {
-                columns: ["building_name_long","fclt_building_key", "building_type", "building_height", "num_of_rooms", "assignable_area"],
-                aliases: ["Building Name", "Building ID", "Building Type", "Building Height", "# of Rooms", "Area"]
+                columns: [
+                    "building_name_long",
+                    "fclt_building_key",
+                    "building_type",
+                    "building_height",
+                    "num_of_rooms",
+                    "assignable_area"
+                ],
+                aliases: [
+                    "Building Name",
+                    "Building ID",
+                    "Building Type",
+                    "Building Height",
+                    "# of Rooms",
+                    "Area"
+                ]
             }
         }
     },
@@ -70,7 +85,7 @@ buildingLegendLayer.addRenderingFunc(renderers.buildingLegendRendering);
 var ret = p.addSSV(new SSV(ssv));
 var building_pyramid = ret.pyramid;
 var kyrixView = ret.view;
-for (var i = 0; i < building_pyramid.length; i ++) {
+for (var i = 0; i < building_pyramid.length; i++) {
     building_pyramid[i].addLayer(buildingLegendLayer);
 }
 
@@ -92,7 +107,10 @@ p.addCanvas(roomBarChartCanvas);
 var roomBarChartLayer = new Layer(transforms.roomBarChartStaticTransform, true);
 roomBarChartCanvas.addLayer(roomBarChartLayer);
 roomBarChartLayer.addRenderingFunc(renderers.roomBarChartRendering);
-roomBarChartLayer.addTooltip(["major_use", "minor_use", "area"], ["Major use", "Minor Use", "Area"]);
+roomBarChartLayer.addTooltip(
+    ["major_use", "minor_use", "area"],
+    ["Major use", "Minor Use", "Area"]
+);
 
 // ================== Canvas circlepack ===================
 var roomCirclePackCanvas = new Canvas("room_circlepack", vw, vh);
@@ -107,35 +125,46 @@ p.addCanvas(roomCirclePackCanvas);
 //             ]}
 //     });
 
-
 // static treemap layer
-var roomCirclePackLayer = new Layer(transforms.roomCirclePackStaticTransform, true);
+var roomCirclePackLayer = new Layer(
+    transforms.roomCirclePackStaticTransform,
+    true
+);
 roomCirclePackCanvas.addLayer(roomCirclePackLayer);
 roomCirclePackLayer.addRenderingFunc(renderers.roomCirclePackRendering);
 roomCirclePackLayer.addTooltip(["building_room", "area"], ["Room", "Area"]);
-
 
 // ================== Canvas course bar chart ===================
 var courseBarChartCanvas = new Canvas("course_bar", vw, vh);
 p.addCanvas(courseBarChartCanvas);
 
 // static treemap layer
-var courseBarChartLayer = new Layer(transforms.courseBarChartStaticTransform, true);
+var courseBarChartLayer = new Layer(
+    transforms.courseBarChartStaticTransform,
+    true
+);
 courseBarChartCanvas.addLayer(courseBarChartLayer);
 courseBarChartLayer.addRenderingFunc(renderers.courseBarChartRendering);
-courseBarChartLayer.addTooltip(["name", "class_count", "totalUnits"], ["Department Name", "Number of Classes", "Total Units Offered"]);
-
+courseBarChartLayer.addTooltip(
+    ["name", "class_count", "totalUnits"],
+    ["Department Name", "Number of Classes", "Total Units Offered"]
+);
 
 // ================== Canvas student pie chart ===================
 var studentPieChartCanvas = new Canvas("student_pie", vw, vh);
 p.addCanvas(studentPieChartCanvas);
 
 // static treemap layer
-var studentPieChartLayer = new Layer(transforms.studentPieChartStaticTransform, true);
+var studentPieChartLayer = new Layer(
+    transforms.studentPieChartStaticTransform,
+    true
+);
 studentPieChartCanvas.addLayer(studentPieChartLayer);
 studentPieChartLayer.addRenderingFunc(renderers.studentPieChartRendering);
-studentPieChartLayer.addTooltip(["year", "count"], ["Student Year", "Number of Students"]);
-
+studentPieChartLayer.addTooltip(
+    ["year", "count"],
+    ["Student Year", "Number of Students"]
+);
 
 // ================== graph canvas ===================
 var graphCanvas = new Canvas("graph", 500, vh);
@@ -145,11 +174,13 @@ p.addCanvas(graphCanvas);
 var graphLayer = new Layer(transforms.defaultEmptyTransform, true);
 graphCanvas.addLayer(graphLayer);
 graphLayer.addRenderingFunc(renderers.graphRendering);
-graphLayer.addTooltip(["table_name", "numCanvas", "numRecords"], ["Table Name", "# of Canvases", "# of Records"]);
-
+graphLayer.addTooltip(
+    ["table_name", "numCanvas", "numRecords"],
+    ["Table Name", "# of Canvases", "# of Records"]
+);
 
 // ================== building -> room treemap ===================
-for (var i = 0; i < building_pyramid.length; i ++) {
+for (var i = 0; i < building_pyramid.length; i++) {
     var selector = function(row, args) {
         return args.layerId == 1;
     };
@@ -170,19 +201,25 @@ for (var i = 0; i < building_pyramid.length; i ++) {
     };
 
     p.addJump(
-        new Jump(building_pyramid[i], roomTreemapCanvas, (demo1 ? "semantic_zoom" : "slide"), {
-            selector: selector,
-            viewport: newViewport,
-            predicates: newPredicate,
-            name: jumpName,
-            noPrefix: true, slideSuperman: true
-        })
+        new Jump(
+            building_pyramid[i],
+            roomTreemapCanvas,
+            demo1 ? "semantic_zoom" : "slide",
+            {
+                selector: selector,
+                viewport: newViewport,
+                predicates: newPredicate,
+                name: jumpName,
+                noPrefix: true,
+                slideSuperman: true
+            }
+        )
     );
 }
 
 // ================== room treemap -> room bar chart ===================
 var selector = function(row) {
-    return row != null && (typeof row == "object") && ("orgName" in row);
+    return row != null && typeof row == "object" && "orgName" in row;
 };
 
 var newViewport = function() {
@@ -191,8 +228,8 @@ var newViewport = function() {
 
 var newPredicate = function(row, args) {
     var pred0 = {
-        "AND" : [
-            {"==" : args.predicates.layer0["=="]},
+        AND: [
+            {"==": args.predicates.layer0["=="]},
             {"==": ["organization_name", row.orgName]}
         ]
     };
@@ -215,7 +252,7 @@ p.addJump(
 
 // ================== room bar chart -> room circle pack ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" &&  "minor_use" in row;
+    return row != null && typeof row == "object" && "minor_use" in row;
 };
 
 var newViewport = function() {
@@ -224,16 +261,19 @@ var newViewport = function() {
 
 var newPredicate = function(row, args) {
     var pred0 = {
-        "AND" : [
-            args.predicates.layer0,
-            {"==": ["use_desc", row.minor_use]}
-        ]
+        AND: [args.predicates.layer0, {"==": ["use_desc", row.minor_use]}]
     };
     return {layer0: pred0};
 };
 
 var jumpName = function(row, args) {
-    return row.minor_use + " rooms used by " + args.predicates.layer0["AND"][1]["=="][1] + " in bldg " + args.predicates.layer0["AND"][0]["=="][1];
+    return (
+        row.minor_use +
+        " rooms used by " +
+        args.predicates.layer0["AND"][1]["=="][1] +
+        " in bldg " +
+        args.predicates.layer0["AND"][0]["=="][1]
+    );
 };
 
 p.addJump(
@@ -248,7 +288,7 @@ p.addJump(
 
 // ================== room circle pack -> course bar chart ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" &&  "area" in row;
+    return row != null && typeof row == "object" && "area" in row;
 };
 
 var newViewport = function() {
@@ -257,10 +297,7 @@ var newViewport = function() {
 
 var newPredicate = function(row, args) {
     var pred0 = {
-        "==" : [
-            "meet_place",
-            row.building_room
-        ]
+        "==": ["meet_place", row.building_room]
     };
     return {layer0: pred0};
 };
@@ -270,18 +307,24 @@ var jumpName = function(row) {
 };
 
 p.addJump(
-    new Jump(roomCirclePackCanvas, courseBarChartCanvas, (demo1 ? "semantic_zoom" : "slide"), {
-        selector: selector,
-        viewport: newViewport,
-        predicates: newPredicate,
-        name: jumpName,
-        noPrefix: true, slideSuperman: true
-    })
+    new Jump(
+        roomCirclePackCanvas,
+        courseBarChartCanvas,
+        demo1 ? "semantic_zoom" : "slide",
+        {
+            selector: selector,
+            viewport: newViewport,
+            predicates: newPredicate,
+            name: jumpName,
+            noPrefix: true,
+            slideSuperman: true
+        }
+    )
 );
 
 // ================== room circle pack -> student pie chart ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" &&  "area" in row;
+    return row != null && typeof row == "object" && "area" in row;
 };
 
 var newViewport = function() {
@@ -290,10 +333,7 @@ var newViewport = function() {
 
 var newPredicate = function(row) {
     var pred0 = {
-        "==" : [
-            "office_location",
-            row.building_room
-        ]
+        "==": ["office_location", row.building_room]
     };
     return {layer0: pred0};
 };
@@ -303,18 +343,24 @@ var jumpName = function(row) {
 };
 
 p.addJump(
-    new Jump(roomCirclePackCanvas, studentPieChartCanvas, (demo1 ? "semantic_zoom" : "slide"), {
-        selector: selector,
-        viewport: newViewport,
-        predicates: newPredicate,
-        name: jumpName,
-        noPrefix: true, slideSuperman: true
-    })
+    new Jump(
+        roomCirclePackCanvas,
+        studentPieChartCanvas,
+        demo1 ? "semantic_zoom" : "slide",
+        {
+            selector: selector,
+            viewport: newViewport,
+            predicates: newPredicate,
+            name: jumpName,
+            noPrefix: true,
+            slideSuperman: true
+        }
+    )
 );
 
 // ================== course bar chart -> student pie chart ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" &&  "name" in row;
+    return row != null && typeof row == "object" && "name" in row;
 };
 
 var newViewport = function() {
@@ -323,10 +369,7 @@ var newViewport = function() {
 
 var newPredicate = function(row) {
     var pred0 = {
-        "==" : [
-            "department",
-            row.dept_code
-        ]
+        "==": ["department", row.dept_code]
     };
     return {layer0: pred0};
 };
@@ -336,13 +379,19 @@ var jumpName = function(row) {
 };
 
 p.addJump(
-    new Jump(courseBarChartCanvas, studentPieChartCanvas, (demo1 ? "semantic_zoom" : "slide"), {
-        selector: selector,
-        viewport: newViewport,
-        predicates: newPredicate,
-        name: jumpName,
-        noPrefix: true, slideSuperman: true
-    })
+    new Jump(
+        courseBarChartCanvas,
+        studentPieChartCanvas,
+        demo1 ? "semantic_zoom" : "slide",
+        {
+            selector: selector,
+            viewport: newViewport,
+            predicates: newPredicate,
+            name: jumpName,
+            noPrefix: true,
+            slideSuperman: true
+        }
+    )
 );
 
 // graph view
