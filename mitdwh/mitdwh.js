@@ -394,10 +394,5 @@ p.addJump(
     )
 );
 
-// graph view
-var graphView = new View("graphview", vw + 200, 0, 500, vh);
-p.addView(graphView);
-p.setInitialStates(graphView, graphCanvas, 0, 0, {});
-
 // save to db
 p.saveProject();
