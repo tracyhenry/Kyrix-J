@@ -2,7 +2,11 @@ import React, {Component} from "react";
 import * as d3 from "d3";
 
 class SchemaGraph extends Component {
-    state = {};
+    constructor(props) {
+        super(props);
+        this.state = {};
+        this.svgRef = React.createRef();
+    }
 
     componentDidMount = () => {
         this.renderSvgGraph();
@@ -13,7 +17,7 @@ class SchemaGraph extends Component {
     };
 
     renderSvgGraph = () => {
-        var graphMainSvg = d3.select(this.refs.erdiagramsvg);
+        var graphMainSvg = d3.select(this.svgRef.current);
 
         // tables
         var tables = ["building", "room", "course", "student"];
@@ -90,7 +94,7 @@ class SchemaGraph extends Component {
                     .attr("y2", d => d.target.y);
                 nodes.attr("cx", d => d.x).attr("cy", d => d.y);
                 var curNode = nodes.filter(d =>
-                    d.table_name == curTable ? true : false
+                    d.table_name === curTable ? true : false
                 );
                 d3.select("#supermanlogo")
                     .attr("x", curNode.attr("cx") - supermanW / 2)
@@ -238,10 +242,8 @@ class SchemaGraph extends Component {
                     className="erdiagramsvgwidth"
                     width={this.props.width}
                     height={this.props.height}
-                    ref="erdiagramsvg"
-                >
-                    {" "}
-                </svg>
+                    ref={this.svgRef}
+                ></svg>
                 <div className="explain">Schema Graph View</div>
             </div>
         );
