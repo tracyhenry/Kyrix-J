@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import * as kyrix from "../lib/kyrix";
 
 class KyrixVis extends Component {
     constructor(props) {
@@ -9,12 +8,11 @@ class KyrixVis extends Component {
 
     componentDidMount = () => {
         var serverAddr = "http://127.0.0.1:8000";
-        kyrix.initializeApp(serverAddr, this.kyrixdivRef.current);
-    };
-
-    componentDidUpdate = () => {
-        var serverAddr = "http://127.0.0.1:8000";
-        kyrix.initializeApp(serverAddr, this.kyrixdivRef.current);
+        window.kyrix
+            .initializeApp(serverAddr, this.kyrixdivRef.current)
+            .then(() => {
+                this.props.handleKyrixLoad();
+            });
     };
 
     render() {

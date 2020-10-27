@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import * as d3 from "d3";
+import resizeSvgs from "../js/ResizeSvgs";
 
 class SchemaGraph extends Component {
     constructor(props) {
@@ -7,6 +8,11 @@ class SchemaGraph extends Component {
         this.state = {};
         this.svgRef = React.createRef();
     }
+
+    curTable = "building";
+    supermanW = 36;
+    supermanH = 28;
+    circleRadius = 30;
 
     componentDidMount = () => {
         this.renderSvgGraph();
@@ -17,28 +23,18 @@ class SchemaGraph extends Component {
     };
 
     renderSvgGraph = () => {
+        if (!this.props.kyrixLoaded) return;
+
         var graphMainSvg = d3.select(this.svgRef.current);
+        var curTable = this.curTable;
+        var supermanW = this.supermanW;
+        var supermanH = this.supermanH;
+        var circleRadius = this.circleRadius;
 
-        // tables
-        var tables = ["building", "room", "course", "student"];
-        var canvasIdToTable = {
-            ssv0_level0: "building",
-            ssv0_level1: "building",
-            ssv0_level2: "building",
-            ssv0_level3: "building",
-            room_treemap: "room",
-            room_barchart: "room",
-            room_circlepack: "room",
-            course_bar: "course",
-            student_pie: "student"
-        };
-
-        // initial superman location
-        var curTable = "building";
-        var supermanW = 36;
-        var supermanH = 28;
-        var circleRadius = 30;
-
+        // TODO: check for different types of updates
+        // e.g. on mount
+        // e.g. highlight edges
+        graphMainSvg.selectAll("*").remove();
         var g = graphMainSvg.append("g");
         var nodeData = [
             {table_name: "building", numCanvas: 1, numRecords: 228},
@@ -113,126 +109,12 @@ class SchemaGraph extends Component {
                 "xlink:href",
                 "https://upload.wikimedia.org/wikipedia/commons/0/05/Superman_S_symbol.svg"
             );
-        /*
-        kyrix.on("jumpstart.switch", "ssv0", function(jump) {
-            // get source and dest coordinates
-            var startTable =
-                canvasIdToTable[jump.backspace ? jump.destId : jump.sourceId];
-            var startNode = nodes.filter(d =>
-                d.table_name == startTable ? true : false
-            );
-            var startCx = startNode.attr("cx");
-            var startCy = startNode.attr("cy");
 
-            var endTable =
-                canvasIdToTable[jump.backspace ? jump.sourceId : jump.destId];
-            var endNode = nodes.filter(d => (d.table_name == endTable ? true : false));
-            var endCx = endNode.attr("cx");
-            var endCy = endNode.attr("cy");
+        // register jump handlers
+        this.registerJumpHandlers();
 
-            // change jump's slide direction
-            var disX = endCx - startCx;
-            var disY = endCy - startCy;
-            var dir =
-                (Math.acos(disX / Math.sqrt(disX * disX + disY * disY)) / Math.PI) *
-                180;
-            if (endCy < startCy) dir = 360 - dir;
-            jump.slideDirection = 360 - dir;
-
-            // animate the logo
-            d3.select("#supermanlogo")
-                .transition()
-                .ease(d3.easeLinear)
-                .duration(2700)
-                .attr("x", endCx - supermanW / 2)
-                .attr("y", endCy - supermanH / 2)
-                .on("end", function() {
-                    curTable = endTable;
-                });
-        });
-
-        kyrix.on("jumpstart.zoom", "ssv0", function(jump) {
-            if (jump.type != "semantic_zoom") return;
-            var currentNode = nodes.filter(d =>
-                d.table_name == curTable ? true : false
-            );
-            var arrowG = g
-                .append("g")
-                .attr("id", "arrowG")
-                .attr(
-                    "transform",
-                    `translate(${+currentNode.attr("cx") +
-                    circleRadius}, ${+currentNode.attr("cy") +
-                    (jump.backspace
-                        ? circleRadius - 10
-                        : -circleRadius + 10)}) scale(0.04, ${
-                        jump.backspace ? -0.04 : 0.04
-                        })`
-                );
-            arrowG
-                .append("path")
-                .attr(
-                    "d",
-                    "M1010.81001246 56.6447675c8.13102537-10.31546098 7.28974996-25.0705531-1.95511535-34.39404215-9.24748529-9.32741999-23.99471553-10.29580432-34.37962739-2.25650648L661.20604861 333.26081902 347.93944847 19.99290792a25.36932426 25.36932426 0 0 0-36.9663555 0 31.35260638 31.35260638 0 0 0-7.82963326 18.48317774 31.33032877 31.33032877 0 0 0 7.82963326 18.16737184l331.75108886 331.12471705a25.36932426 25.36932426 0 0 0 36.96635453 0L1010.81001246 56.6447675z m0 0"
-                )
-                .attr("fill", "#d81e06");
-            arrowG
-                .append("path")
-                .attr(
-                    "d",
-                    "M1060.30902307 306.94800705c10.20669774-11.8027639 9.56853309-29.48528762-1.46371531-40.51622603-11.03093841-11.03093841-28.71215214-11.67041306-40.51622604-1.46240436l-357.12303311 357.12172215-357.12565405-357.12172215a29.12492746 29.12492746 0 0 0-41.9760104 0 32.88839353 32.88839353 0 0 0-8.77050002 20.9886602 31.32639783 31.32639783 0 0 0 8.77050002 20.98997019l378.11300426 378.11169427a29.13803126 29.13803126 0 0 0 41.97863136 0l378.11300329-378.11169427z m0 0"
-                )
-                .attr("fill", "#d81e06");
-            arrowG
-                .append("path")
-                .attr(
-                    "d",
-                    "M1110.50385639 567.09365422c11.488268-13.28613491 10.76885866-33.18716468-1.6484823-45.60450564-12.41602999-12.41602999-32.31574882-13.13412935-45.60188468-1.64455039l-401.95178135 401.95178135-401.95702422-401.95178135a32.7848722 32.7848722 0 0 0-47.24512412 0 37.02794352 37.02794352 0 0 0-9.87254614 23.62387253 35.25759515 35.25759515 0 0 0 9.87254614 23.62387253l425.57827484 425.57696484a32.79404505 32.79404505 0 0 0 47.24774603 0l425.5782758-425.57565387z m0 0"
-                )
-                .attr("fill", "#d81e06");
-
-            // a cover-up rectangle
-            var coverRect = g
-                .append("rect")
-                .attr("id", "coverrect")
-                .attr("x", +currentNode.attr("cx") + circleRadius + 5)
-                .attr("y", +currentNode.attr("cy") - circleRadius)
-                .attr("width", 50)
-                .attr("height", circleRadius * 2)
-                .attr("fill", "white");
-            var duration = 700;
-            function repeat() {
-                if (jump.backspace)
-                    coverRect
-                        .transition()
-                        .duration(duration)
-                        .attr("height", 0)
-                        .on("end", function() {
-                            coverRect.attr("height", circleRadius * 2);
-                            repeat();
-                        });
-                else
-                    coverRect
-                        .transition()
-                        .duration(duration)
-                        .attr("y", +currentNode.attr("cy") + circleRadius)
-                        .on("end", function() {
-                            coverRect.attr("y", +currentNode.attr("cy") - circleRadius);
-                            repeat();
-                        });
-            }
-            repeat();
-        });
-
-        kyrix.on("jumpend.zoom", "ssv0", function(jump) {
-            if (jump.type != "semantic_zoom") return;
-            var coverRect = d3.select("#coverrect");
-            if (coverRect.empty()) return;
-            coverRect.interrupt();
-            coverRect.remove();
-            d3.select("#arrowG").remove();
-        });
-*/
+        // call resize svg
+        resizeSvgs();
     };
 
     makeTooltips = (selection, columns, aliases) => {
@@ -303,6 +185,144 @@ class SchemaGraph extends Component {
             });
     };
 
+    registerJumpHandlers = () => {
+        if (window.kyrix.on("jumpstart.switch", "ssv0") != null) return;
+
+        var graphMainSvg = d3.select(this.svgRef.current);
+        var nodes = graphMainSvg.selectAll("circle");
+        var curTable = this.curTable;
+        var supermanW = this.supermanW;
+        var supermanH = this.supermanH;
+        var circleRadius = this.circleRadius;
+        var canvasIdToTable = this.props.canvasIdToTable;
+
+        window.kyrix.on("jumpstart.switch", "ssv0", function(jump) {
+            // get source and dest coordinates
+            var startTable =
+                canvasIdToTable[jump.backspace ? jump.destId : jump.sourceId];
+            var startNode = nodes.filter(d =>
+                d.table_name == startTable ? true : false
+            );
+            var startCx = startNode.attr("cx");
+            var startCy = startNode.attr("cy");
+
+            var endTable =
+                canvasIdToTable[jump.backspace ? jump.sourceId : jump.destId];
+            var endNode = nodes.filter(d =>
+                d.table_name == endTable ? true : false
+            );
+            var endCx = endNode.attr("cx");
+            var endCy = endNode.attr("cy");
+
+            // change jump's slide direction
+            var disX = endCx - startCx;
+            var disY = endCy - startCy;
+            var dir =
+                (Math.acos(disX / Math.sqrt(disX * disX + disY * disY)) /
+                    Math.PI) *
+                180;
+            if (endCy < startCy) dir = 360 - dir;
+            jump.slideDirection = 360 - dir;
+
+            // animate the logo
+            d3.select("#supermanlogo")
+                .transition()
+                .ease(d3.easeLinear)
+                .duration(2700)
+                .attr("x", endCx - supermanW / 2)
+                .attr("y", endCy - supermanH / 2)
+                .on("end", function() {
+                    curTable = endTable;
+                });
+        });
+
+        window.kyrix.on("jumpstart.zoom", "ssv0", function(jump) {
+            if (jump.type != "semantic_zoom") return;
+            var currentNode = nodes.filter(d =>
+                d.table_name == curTable ? true : false
+            );
+            var arrowG = graphMainSvg
+                .select("g")
+                .append("g")
+                .attr("id", "arrowG")
+                .attr(
+                    "transform",
+                    `translate(${+currentNode.attr("cx") +
+                        circleRadius}, ${+currentNode.attr("cy") +
+                        (jump.backspace
+                            ? circleRadius - 10
+                            : -circleRadius + 10)}) scale(0.04, ${
+                        jump.backspace ? -0.04 : 0.04
+                    })`
+                );
+            arrowG
+                .append("path")
+                .attr(
+                    "d",
+                    "M1010.81001246 56.6447675c8.13102537-10.31546098 7.28974996-25.0705531-1.95511535-34.39404215-9.24748529-9.32741999-23.99471553-10.29580432-34.37962739-2.25650648L661.20604861 333.26081902 347.93944847 19.99290792a25.36932426 25.36932426 0 0 0-36.9663555 0 31.35260638 31.35260638 0 0 0-7.82963326 18.48317774 31.33032877 31.33032877 0 0 0 7.82963326 18.16737184l331.75108886 331.12471705a25.36932426 25.36932426 0 0 0 36.96635453 0L1010.81001246 56.6447675z m0 0"
+                )
+                .attr("fill", "#d81e06");
+            arrowG
+                .append("path")
+                .attr(
+                    "d",
+                    "M1060.30902307 306.94800705c10.20669774-11.8027639 9.56853309-29.48528762-1.46371531-40.51622603-11.03093841-11.03093841-28.71215214-11.67041306-40.51622604-1.46240436l-357.12303311 357.12172215-357.12565405-357.12172215a29.12492746 29.12492746 0 0 0-41.9760104 0 32.88839353 32.88839353 0 0 0-8.77050002 20.9886602 31.32639783 31.32639783 0 0 0 8.77050002 20.98997019l378.11300426 378.11169427a29.13803126 29.13803126 0 0 0 41.97863136 0l378.11300329-378.11169427z m0 0"
+                )
+                .attr("fill", "#d81e06");
+            arrowG
+                .append("path")
+                .attr(
+                    "d",
+                    "M1110.50385639 567.09365422c11.488268-13.28613491 10.76885866-33.18716468-1.6484823-45.60450564-12.41602999-12.41602999-32.31574882-13.13412935-45.60188468-1.64455039l-401.95178135 401.95178135-401.95702422-401.95178135a32.7848722 32.7848722 0 0 0-47.24512412 0 37.02794352 37.02794352 0 0 0-9.87254614 23.62387253 35.25759515 35.25759515 0 0 0 9.87254614 23.62387253l425.57827484 425.57696484a32.79404505 32.79404505 0 0 0 47.24774603 0l425.5782758-425.57565387z m0 0"
+                )
+                .attr("fill", "#d81e06");
+
+            // a cover-up rectangle
+            var coverRect = graphMainSvg
+                .select("g")
+                .append("rect")
+                .attr("id", "coverrect")
+                .attr("x", +currentNode.attr("cx") + circleRadius + 5)
+                .attr("y", +currentNode.attr("cy") - circleRadius)
+                .attr("width", 50)
+                .attr("height", circleRadius * 2)
+                .attr("fill", "white");
+            var duration = 700;
+            function repeat() {
+                if (jump.backspace)
+                    coverRect
+                        .transition()
+                        .duration(duration)
+                        .attr("height", 0)
+                        .on("end", function() {
+                            coverRect.attr("height", circleRadius * 2);
+                            repeat();
+                        });
+                else
+                    coverRect
+                        .transition()
+                        .duration(duration)
+                        .attr("y", +currentNode.attr("cy") + circleRadius)
+                        .on("end", function() {
+                            coverRect.attr(
+                                "y",
+                                +currentNode.attr("cy") - circleRadius
+                            );
+                            repeat();
+                        });
+            }
+            repeat();
+        });
+
+        window.kyrix.on("jumpend.zoom", "ssv0", function(jump) {
+            if (jump.type != "semantic_zoom") return;
+            var coverRect = d3.select("#coverrect");
+            if (coverRect.empty()) return;
+            coverRect.interrupt();
+            coverRect.remove();
+            d3.select("#arrowG").remove();
+        });
+    };
     render() {
         return (
             <div className="erdiagram svgdiv">

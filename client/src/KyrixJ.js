@@ -6,15 +6,33 @@ import resizeSvgs from "./js/ResizeSvgs";
 import KyrixVis from "./js/KyrixVis";
 
 class KyrixJ extends Component {
-    state = {};
+    state = {
+        kyrixLoaded: false
+    };
+
+    // dummy dataset info
+    canvasIdToTable = {
+        ssv0_level0: "building",
+        ssv0_level1: "building",
+        ssv0_level2: "building",
+        ssv0_level3: "building",
+        room_treemap: "room",
+        room_barchart: "room",
+        room_circlepack: "room",
+        course_bar: "course",
+        student_pie: "student"
+    };
 
     componentDidMount = () => {
-        resizeSvgs();
         window.addEventListener("resize", resizeSvgs);
     };
 
     componentWillUnmount = () => {
         window.removeEventListener("resize", resizeSvgs);
+    };
+
+    handleKyrixLoad = () => {
+        this.setState({kyrixLoaded: true});
     };
 
     render() {
@@ -23,10 +41,15 @@ class KyrixJ extends Component {
                 <div className="kyrixjheader">
                     Superman @ MIT Data Warehouse
                 </div>
-                <SchemaGraph width="600" height="600" />
+                <SchemaGraph
+                    width="600"
+                    height="600"
+                    kyrixLoaded={this.state.kyrixLoaded}
+                    canvasIdToTable={this.canvasIdToTable}
+                />
                 <TableDetails />
                 <SlideReel />
-                <KyrixVis />
+                <KyrixVis handleKyrixLoad={this.handleKyrixLoad} />
             </>
         );
     }
