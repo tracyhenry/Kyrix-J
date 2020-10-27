@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import SchemaGraph from "./js/SchemaGraph";
 import TableDetails from "./js/TableDetails";
+import SlideReel from "./js/SlideReel";
 import resizeSvgs from "./js/ResizeSvgs";
+import KyrixVis from "./js/KyrixVis";
 
 class KyrixJ extends Component {
     state = {};
@@ -23,6 +25,8 @@ class KyrixJ extends Component {
                 </div>
                 <SchemaGraph width="600" height="600" />
                 <TableDetails />
+                <SlideReel />
+                <KyrixVis />
             </>
         );
     }
