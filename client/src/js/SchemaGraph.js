@@ -148,9 +148,9 @@ class SchemaGraph extends Component {
                 .html((p, j) => aliases[j] + ":")
                 .style("padding-left", "10px")
                 .style("padding-right", "2px")
-                .style("padding-top", (p, i) => (i == 0 ? "10px" : "1px"))
+                .style("padding-top", (p, i) => (i === 0 ? "10px" : "1px"))
                 .style("padding-bottom", (p, i) =>
-                    i == columns.length - 1 ? "10px" : "1px"
+                    i === columns.length - 1 ? "10px" : "1px"
                 );
 
             // column values
@@ -159,9 +159,9 @@ class SchemaGraph extends Component {
                 .style("font-weight", "900")
                 .style("padding-left", "2px")
                 .style("padding-right", "10px")
-                .style("padding-top", (p, i) => (i == 0 ? "10px" : "1px"))
+                .style("padding-top", (p, i) => (i === 0 ? "10px" : "1px"))
                 .style("padding-bottom", (p, i) =>
-                    i == columns.length - 1 ? "10px" : "1px"
+                    i === columns.length - 1 ? "10px" : "1px"
                 );
 
             // fade in
@@ -201,7 +201,7 @@ class SchemaGraph extends Component {
             var startTable =
                 canvasIdToTable[jump.backspace ? jump.destId : jump.sourceId];
             var startNode = nodes.filter(d =>
-                d.table_name == startTable ? true : false
+                d.table_name === startTable ? true : false
             );
             var startCx = startNode.attr("cx");
             var startCy = startNode.attr("cy");
@@ -209,7 +209,7 @@ class SchemaGraph extends Component {
             var endTable =
                 canvasIdToTable[jump.backspace ? jump.sourceId : jump.destId];
             var endNode = nodes.filter(d =>
-                d.table_name == endTable ? true : false
+                d.table_name === endTable ? true : false
             );
             var endCx = endNode.attr("cx");
             var endCy = endNode.attr("cy");
@@ -237,9 +237,9 @@ class SchemaGraph extends Component {
         });
 
         window.kyrix.on("jumpstart.zoom", "ssv0", function(jump) {
-            if (jump.type != "semantic_zoom") return;
+            if (jump.type !== "semantic_zoom") return;
             var currentNode = nodes.filter(d =>
-                d.table_name == curTable ? true : false
+                d.table_name === curTable ? true : false
             );
             var arrowG = graphMainSvg
                 .select("g")
@@ -315,7 +315,7 @@ class SchemaGraph extends Component {
         });
 
         window.kyrix.on("jumpend.zoom", "ssv0", function(jump) {
-            if (jump.type != "semantic_zoom") return;
+            if (jump.type !== "semantic_zoom") return;
             var coverRect = d3.select("#coverrect");
             if (coverRect.empty()) return;
             coverRect.interrupt();
@@ -323,6 +323,7 @@ class SchemaGraph extends Component {
             d3.select("#arrowG").remove();
         });
     };
+
     render() {
         return (
             <div className="erdiagram svgdiv">
