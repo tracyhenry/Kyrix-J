@@ -79,12 +79,14 @@ body {
 }
 
 .tabledetails > .searchbar > input[type="text"] {
+    width: 80%;
     float: left;
-    size: 60;
+    size: 60px;
     padding: 6px;
     margin-top: 8px;
     margin-bottom: 8px;
     margin-left: 16px;
+    border-radius: 5px;
     border: none;
     font-size: 17px;
 }

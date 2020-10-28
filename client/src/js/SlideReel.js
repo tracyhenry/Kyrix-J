@@ -14,22 +14,22 @@ class SlideReel extends Component {
             <div className="slidereel">
                 <div className="slideshow">
                     <div className="img-container">
-                        <img src={ssvPic} alt="ssv"/>
+                        <img src={ssvPic} alt="ssv" />
                     </div>
                     <div className="img-container">
-                        <img src={barChartPic} alt="barchart"/>
+                        <img src={barChartPic} alt="barchart" />
                     </div>
                     <div className="img-container">
-                        <img src={pieChartPic} alt="piechart"/>
+                        <img src={pieChartPic} alt="piechart" />
                     </div>
                     <div className="img-container">
-                        <img src={stackBarChartPic} alt="stackbarchart"/>
+                        <img src={stackBarChartPic} alt="stackbarchart" />
                     </div>
                     <div className="img-container">
-                        <img src={circlePackPic} alt="circlepack"/>
+                        <img src={circlePackPic} alt="circlepack" />
                     </div>
                     <div className="img-container">
-                        <img src={treemapPic} alt="treemap"/>
+                        <img src={treemapPic} alt="treemap" />
                     </div>
                 </div>
                 <div className="explain">History Slider View</div>
