@@ -111,6 +111,7 @@ body {
     background-size: 15px;
     white-space: nowrap;
     overflow-x: scroll;
+    cursor: pointer;
 }
 
 .tabledetails > .tablelist > ul > li:hover {
@@ -129,6 +130,7 @@ body {
     font-size: 14px;
     table-layout: fixed;
     width: 45%;
+    overflow-y: scroll;
 }
 
 .tabledetails > .schemadetails > .curtable td {

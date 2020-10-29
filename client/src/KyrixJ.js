@@ -56,6 +56,7 @@ class KyrixJ extends Component {
                     width="600"
                     height="600"
                     kyrixLoaded={this.state.kyrixLoaded}
+                    curTable={this.state.curTable}
                     canvasIdToTable={this.canvasIdToTable}
                 />
                 <TableDetails

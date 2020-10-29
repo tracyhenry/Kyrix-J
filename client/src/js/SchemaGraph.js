@@ -22,6 +22,8 @@ class SchemaGraph extends Component {
         this.renderSvgGraph();
     };
 
+    shouldComponentUpdate = nextProps => this.props.curTable.length == 0;
+
     renderSvgGraph = () => {
         if (!this.props.kyrixLoaded) return;
 
