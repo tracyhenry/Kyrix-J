@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import SchemaDetails from "./SchemaDetails";
 
 class TableDetails extends Component {
     constructor(props) {
@@ -40,8 +41,13 @@ class TableDetails extends Component {
 
     render() {
         const visibleTableList = this.state.visibleTables.map(d => (
-            <li key={d}>{d}</li>
+            <li key={d} onClick={this.props.handleClick}>
+                {d}
+            </li>
         ));
+        let curTable = this.props.curTable;
+        let columns =
+            curTable.length > 0 ? this.props.tableColumns[curTable] : [];
         return (
             <div className="tabledetails">
                 <div className="searchbar">
@@ -56,39 +62,7 @@ class TableDetails extends Component {
                 <div className="tablelist">
                     <ul className="tablelistul">{visibleTableList}</ul>
                 </div>
-                <div className="schemadetails">
-                    <style type="text/css"></style>
-                    <table className="curtable">
-                        <thead>
-                            <tr>
-                                <th className="tg-76qt">Buildings</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className="tg-76qt">building_number</td>
-                            </tr>
-                            <tr>
-                                <td className="tg-76qt">campus_sector</td>
-                            </tr>
-                            <tr>
-                                <td className="tg-76qt">assignable_area</td>
-                            </tr>
-                            <tr>
-                                <td className="tg-76qt">building_use</td>
-                            </tr>
-                            <tr>
-                                <td className="tg-76qt">latitude</td>
-                            </tr>
-                            <tr>
-                                <td className="tg-76qt">ownership_type</td>
-                            </tr>
-                            <tr>
-                                <td className="tg-76qt">building_height</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <SchemaDetails curTable={curTable} columns={columns} />
                 <div className="explain">Table Details View</div>
             </div>
         );

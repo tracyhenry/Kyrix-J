@@ -8,6 +8,7 @@ import QueryDetails from "./js/QueryDetails";
 
 class KyrixJ extends Component {
     state = {
+        curTable: "",
         kyrixLoaded: false
     };
 
@@ -19,8 +20,30 @@ class KyrixJ extends Component {
         window.removeEventListener("resize", resizeSvgs);
     };
 
+    kyrixJumpendCallBack = () => {
+        this.setState({
+            curTable: this.canvasIdToTable[
+                window.kyrix.getCurrentCanvasId(this.kyrixViewId)
+            ]
+        });
+    };
+
     handleKyrixLoad = () => {
-        this.setState({kyrixLoaded: true});
+        window.kyrix.on(
+            "jumpend.settable",
+            this.kyrixViewId,
+            this.kyrixJumpendCallBack
+        );
+        this.setState({
+            curTable: this.canvasIdToTable[
+                window.kyrix.getCurrentCanvasId(this.kyrixViewId)
+            ],
+            kyrixLoaded: true
+        });
+    };
+
+    handleTableDetailsClick = event => {
+        this.setState({curTable: event.target.innerHTML});
     };
 
     render() {
@@ -35,7 +58,11 @@ class KyrixJ extends Component {
                     kyrixLoaded={this.state.kyrixLoaded}
                     canvasIdToTable={this.canvasIdToTable}
                 />
-                <TableDetails tableColumns={this.tableColumns} />
+                <TableDetails
+                    tableColumns={this.tableColumns}
+                    curTable={this.state.curTable}
+                    handleClick={this.handleTableDetailsClick}
+                />
                 <SlideReel />
                 <KyrixVis handleKyrixLoad={this.handleKyrixLoad} />
                 <QueryDetails />
@@ -44,6 +71,7 @@ class KyrixJ extends Component {
     }
 
     // static dataset info - shouldn't be in states
+    kyrixViewId = "ssv0";
     canvasIdToTable = {
         ssv0_level0: "building",
         ssv0_level1: "building",

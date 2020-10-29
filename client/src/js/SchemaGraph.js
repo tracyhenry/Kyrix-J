@@ -105,6 +105,7 @@ class SchemaGraph extends Component {
             .attr("y", 0)
             .attr("width", supermanW)
             .attr("height", supermanH)
+            .style("pointer-events", "none")
             .attr(
                 "xlink:href",
                 "https://upload.wikimedia.org/wikipedia/commons/0/05/Superman_S_symbol.svg"
