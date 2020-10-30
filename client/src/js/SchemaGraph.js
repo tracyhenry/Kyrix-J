@@ -9,61 +9,65 @@ class SchemaGraph extends Component {
         this.svgRef = React.createRef();
     }
 
-    curTable = "building";
     supermanW = 48;
     supermanH = 36;
     circleRadius = 48;
 
     componentDidMount = () => {
-        this.renderSvgGraph();
+        if (!this.props.kyrixLoaded) return;
+        this.renderNewTable();
     };
 
     componentDidUpdate = () => {
-        this.renderSvgGraph();
+        // TODO: check for different types of updates
+        if (!this.props.kyrixLoaded) return;
+        this.renderNewTable();
     };
 
-    shouldComponentUpdate = nextProps => this.props.curTable.length === 0;
+    //shouldComponentUpdate = nextProps => this.props.curTable.length === 0;
 
-    renderSvgGraph = () => {
-        if (!this.props.kyrixLoaded) return;
-
+    renderNewTable = () => {
+        // dom element that D3 is in control of
         var graphMainSvg = d3.select(this.svgRef.current);
-        var curTable = this.curTable;
+
+        // constants
         var supermanW = this.supermanW;
         var supermanH = this.supermanH;
         var circleRadius = this.circleRadius;
 
-        // TODO: check for different types of updates
-        // e.g. on mount
-        // e.g. highlight edges
+        // update nodeData and linkData
+        let tables = [this.props.curTable];
+        const edges = this.props.graphEdges;
+        this.linkData = [];
+
+        for (let i = 0; i < edges.length; i++) {
+            let neighbor = "";
+            if (edges[i].source === this.props.curTable)
+                neighbor = edges[i].target;
+            if (edges[i].target === this.props.curTable)
+                neighbor = edges[i].source;
+            if (neighbor.length === 0) continue;
+            tables.push(neighbor);
+            this.linkData.push({source: this.props.curTable, target: neighbor});
+        }
+        this.nodeData = tables.map(table => ({
+            table_name: table,
+            numCanvas: this.props.tableMetadata[table].numCanvas,
+            numRecords: this.props.tableMetadata[table].numRecords
+        }));
+
         graphMainSvg.selectAll("*").remove();
         var g = graphMainSvg.append("g");
-        var nodeData = [
-            {table_name: "building", numCanvas: 1, numRecords: 228},
-            {table_name: "room", numCanvas: 3, numRecords: 40546},
-            {
-                table_name: "course",
-                numCanvas: 1,
-                numRecords: 255976
-            },
-            {table_name: "student", numCanvas: 1, numRecords: 11447}
-        ];
-        var linkData = [
-            {source: "building", target: "room"},
-            {source: "room", target: "course"},
-            {source: "course", target: "student"},
-            {source: "room", target: "student"}
-        ];
 
         var links = g
             .selectAll("line")
-            .data(linkData)
+            .data(this.linkData)
             .join("line")
             .style("stroke", "#eee")
             .style("stroke-width", 2);
         var nodes = g
             .selectAll("circle")
-            .data(nodeData)
+            .data(this.nodeData)
             .join("circle")
             .attr("r", circleRadius)
             .style("fill", "#ADD8E6")
@@ -75,6 +79,20 @@ class SchemaGraph extends Component {
             ["table_name", "numRecords", "numCanvas"],
             ["Table", "# of Records", "# of vis"]
         );
+        var tickFunction = () => {
+            links
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+            nodes.attr("cx", d => d.x).attr("cy", d => d.y);
+            var curNode = nodes.filter(d =>
+                d.table_name === this.props.curTable ? true : false
+            );
+            d3.select("#supermanlogo")
+                .attr("x", curNode.attr("cx") - supermanW / 2)
+                .attr("y", curNode.attr("cy") - supermanH / 2);
+        };
         var simulation = d3
             .forceSimulation()
             .force("link", d3.forceLink().id(d => d.table_name))
@@ -83,23 +101,10 @@ class SchemaGraph extends Component {
                 "center",
                 d3.forceCenter(this.props.width / 2, this.props.height / 2)
             )
-            .nodes(nodeData)
-            .on("tick", function() {
-                links
-                    .attr("x1", d => d.source.x)
-                    .attr("y1", d => d.source.y)
-                    .attr("x2", d => d.target.x)
-                    .attr("y2", d => d.target.y);
-                nodes.attr("cx", d => d.x).attr("cy", d => d.y);
-                var curNode = nodes.filter(d =>
-                    d.table_name === curTable ? true : false
-                );
-                d3.select("#supermanlogo")
-                    .attr("x", curNode.attr("cx") - supermanW / 2)
-                    .attr("y", curNode.attr("cy") - supermanH / 2);
-            });
+            .nodes(this.nodeData)
+            .on("tick", tickFunction.bind(this));
 
-        simulation.force("link").links(linkData);
+        simulation.force("link").links(this.linkData);
 
         g.append("image")
             .attr("id", "supermanlogo")
@@ -205,30 +210,29 @@ class SchemaGraph extends Component {
         if (window.kyrix.on("jumpstart.switch", "ssv0") != null) return;
 
         var graphMainSvg = d3.select(this.svgRef.current);
-        var nodes = graphMainSvg.selectAll("circle");
-        var curTable = this.curTable;
-        var supermanW = this.supermanW;
-        var supermanH = this.supermanH;
-        var circleRadius = this.circleRadius;
-        var canvasIdToTable = this.props.canvasIdToTable;
 
-        window.kyrix.on("jumpstart.switch", "ssv0", function(jump) {
+        const jumpStartSwitch = jump => {
+            var nodes = graphMainSvg.selectAll("circle");
             // get source and dest coordinates
-            var startTable =
-                canvasIdToTable[jump.backspace ? jump.destId : jump.sourceId];
+            var startTable = this.props.canvasIdToTable[
+                jump.backspace ? jump.destId : jump.sourceId
+            ];
             var startNode = nodes.filter(d =>
                 d.table_name === startTable ? true : false
             );
             var startCx = startNode.attr("cx");
             var startCy = startNode.attr("cy");
 
-            var endTable =
-                canvasIdToTable[jump.backspace ? jump.sourceId : jump.destId];
+            var endTable = this.props.canvasIdToTable[
+                jump.backspace ? jump.sourceId : jump.destId
+            ];
             var endNode = nodes.filter(d =>
                 d.table_name === endTable ? true : false
             );
             var endCx = endNode.attr("cx");
             var endCy = endNode.attr("cy");
+
+            if (startTable === endTable) return;
 
             // change jump's slide direction
             var disX = endCx - startCx;
@@ -245,17 +249,16 @@ class SchemaGraph extends Component {
                 .transition()
                 .ease(d3.easeLinear)
                 .duration(2700)
-                .attr("x", endCx - supermanW / 2)
-                .attr("y", endCy - supermanH / 2)
-                .on("end", function() {
-                    curTable = endTable;
-                });
-        });
+                .attr("x", endCx - this.supermanW / 2)
+                .attr("y", endCy - this.supermanH / 2);
+        };
 
-        window.kyrix.on("jumpstart.zoom", "ssv0", function(jump) {
+        const jumpStartZoom = jump => {
             if (jump.type !== "semantic_zoom") return;
+            let circleRadius = this.circleRadius;
+            var nodes = graphMainSvg.selectAll("circle");
             var currentNode = nodes.filter(d =>
-                d.table_name === curTable ? true : false
+                d.table_name === this.props.curTable ? true : false
             );
             var arrowG = graphMainSvg
                 .select("g")
@@ -328,16 +331,20 @@ class SchemaGraph extends Component {
                         });
             }
             repeat();
-        });
+        };
 
-        window.kyrix.on("jumpend.zoom", "ssv0", function(jump) {
+        const jumpEndZoom = jump => {
             if (jump.type !== "semantic_zoom") return;
             var coverRect = d3.select("#coverrect");
             if (coverRect.empty()) return;
             coverRect.interrupt();
             coverRect.remove();
             d3.select("#arrowG").remove();
-        });
+        };
+
+        window.kyrix.on("jumpstart.switch", "ssv0", jumpStartSwitch.bind(this));
+        window.kyrix.on("jumpstart.zoom", "ssv0", jumpStartZoom.bind(this));
+        window.kyrix.on("jumpend.zoom", "ssv0", jumpEndZoom.bind(this));
     };
 
     render() {

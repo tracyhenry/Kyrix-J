@@ -2273,7 +2273,9 @@
         else {
             // start a exit & fade transition
             var slideDirection =
-                (curHistory.curJump.slideDirection + 180) % 360;
+                "slideDirection" in newJump
+                    ? newJump.slideDirection
+                    : (curHistory.curJump.slideDirection + 180) % 360;
             animateSlide(
                 viewId,
                 slideDirection,

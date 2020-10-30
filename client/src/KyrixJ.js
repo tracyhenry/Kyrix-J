@@ -58,6 +58,9 @@ class KyrixJ extends Component {
                     kyrixLoaded={this.state.kyrixLoaded}
                     curTable={this.state.curTable}
                     canvasIdToTable={this.canvasIdToTable}
+                    graphEdges={this.graphEdges}
+                    tableMetadata={this.tableMetadata}
+                    tableColumns={this.tableColumns}
                 />
                 <TableDetails
                     tableColumns={this.tableColumns}
@@ -72,7 +75,9 @@ class KyrixJ extends Component {
     }
 
     // static dataset info - shouldn't be in states
+    // TODO: move it to a JSON and fetch it on page load
     kyrixViewId = "ssv0";
+
     canvasIdToTable = {
         ssv0_level0: "building",
         ssv0_level1: "building",
@@ -84,6 +89,53 @@ class KyrixJ extends Component {
         course_bar: "course",
         student_pie: "student"
     };
+
+    graphEdges = [
+        {
+            source: "building",
+            target: "room",
+            sourceColumn: "Fclt Building Key",
+            targetColumn: "Fclt Building Key"
+        },
+        {
+            source: "room",
+            target: "course",
+            sourceColumn: "Building room",
+            targetColumn: "Meet Place"
+        },
+        {
+            source: "room",
+            target: "student",
+            sourceColumn: "Building room",
+            targetColumn: "Office Location"
+        },
+        {
+            source: "course",
+            target: "student",
+            sourceColumn: "Dept code",
+            targetColumn: "Department"
+        }
+    ];
+
+    tableMetadata = {
+        building: {
+            numCanvas: 1,
+            numRecords: 228
+        },
+        room: {
+            numCanvas: 3,
+            numRecords: 40546
+        },
+        course: {
+            numCanvas: 1,
+            numRecords: 255976
+        },
+        student: {
+            numCanvas: 1,
+            numRecords: 11447
+        }
+    };
+
     tableColumns = {
         building: [
             "Fclt Building Key",
