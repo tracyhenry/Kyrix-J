@@ -21,16 +21,24 @@ function resizeSvgs() {
         var realH = (realW * svgH) / svgW;
 
         // set viewbox accordingly
+        var minx = (-svgW * (bbox.width / 2 - realW / 2)) / realW;
+        var miny = (-svgH * svgH * (bbox.height / 2 - realH / 2)) / realH;
         svg.attr(
             "viewBox",
-            "0 0 " + (svgW * svgW) / realW + " " + (svgH * svgH) / realH
+            minx +
+                " " +
+                miny +
+                " " +
+                +(svgW * svgW) / realW +
+                " " +
+                (svgH * svgH) / realH
         );
 
         // center
-        svg.style("left", bbox.width / 2 - realW / 2).style(
-            "top",
-            bbox.height / 2 - realH / 2
-        );
+        // svg.style("left", bbox.width / 2 - realW / 2).style(
+        //     "top",
+        //     bbox.height / 2 - realH / 2
+        // );
     }
 }
 

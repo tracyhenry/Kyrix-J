@@ -10,9 +10,9 @@ class SchemaGraph extends Component {
     }
 
     curTable = "building";
-    supermanW = 36;
-    supermanH = 28;
-    circleRadius = 30;
+    supermanW = 48;
+    supermanH = 36;
+    circleRadius = 48;
 
     componentDidMount = () => {
         this.renderSvgGraph();
@@ -78,7 +78,7 @@ class SchemaGraph extends Component {
         var simulation = d3
             .forceSimulation()
             .force("link", d3.forceLink().id(d => d.table_name))
-            .force("charge", d3.forceManyBody().strength(-5000))
+            .force("charge", d3.forceManyBody().strength(-8000))
             .force(
                 "center",
                 d3.forceCenter(this.props.width / 2, this.props.height / 2)
