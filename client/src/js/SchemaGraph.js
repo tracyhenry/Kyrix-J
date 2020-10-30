@@ -22,7 +22,7 @@ class SchemaGraph extends Component {
         this.renderSvgGraph();
     };
 
-    shouldComponentUpdate = nextProps => this.props.curTable.length == 0;
+    shouldComponentUpdate = nextProps => this.props.curTable.length === 0;
 
     renderSvgGraph = () => {
         if (!this.props.kyrixLoaded) return;
@@ -78,7 +78,7 @@ class SchemaGraph extends Component {
         var simulation = d3
             .forceSimulation()
             .force("link", d3.forceLink().id(d => d.table_name))
-            .force("charge", d3.forceManyBody().strength(-8000))
+            .force("charge", d3.forceManyBody().strength(-5000))
             .force(
                 "center",
                 d3.forceCenter(this.props.width / 2, this.props.height / 2)
@@ -112,6 +112,19 @@ class SchemaGraph extends Component {
                 "xlink:href",
                 "https://upload.wikimedia.org/wikipedia/commons/0/05/Superman_S_symbol.svg"
             );
+
+        // d3 zoom to enable pan
+        const zoomHandler = d3
+            .zoom()
+            .scaleExtent([1, 1])
+            .on("zoom", () => {
+                d3.select("body")
+                    .selectAll(".kyrixtooltip")
+                    .remove();
+                g.attr("transform", d3.event.transform);
+            });
+
+        graphMainSvg.call(zoomHandler);
 
         // register jump handlers
         this.registerJumpHandlers();
@@ -331,7 +344,7 @@ class SchemaGraph extends Component {
         return (
             <div className="erdiagram svgdiv">
                 <svg
-                    className="erdiagramsvgwidth"
+                    className="erdiagramsvg"
                     width={this.props.width}
                     height={this.props.height}
                     ref={this.svgRef}

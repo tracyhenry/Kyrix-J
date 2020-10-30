@@ -63,6 +63,11 @@ body {
 .erdiagram {
     /*background-color: coral;*/
     grid-area: 2 / 1 / 4 / 3;
+    position: relative;
+}
+
+.erdiagramsvg {
+    position: absolute;
 }
 
 /* ====================================== table details view ====================================== */
@@ -226,8 +231,7 @@ body {
 }
 
 /* ====================================== from kyrix ====================================== */
-#containerSvg,
-.erdiagramsvg {
+#containerSvg {
     display: block;
     position: absolute;
     /*margin: auto;*/
