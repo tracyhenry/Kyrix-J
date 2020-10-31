@@ -128,9 +128,6 @@ class SchemaGraph extends Component {
             enter
                 .append("circle")
                 .attr("r", this.circleRadius)
-                .style("fill", "#ADD8E6")
-                .style("stroke", "#eee")
-                .style("stroke-width", 3)
                 .call(
                     this.makeTooltips,
                     ["table_name", "numRecords", "numCanvas"],
@@ -141,18 +138,14 @@ class SchemaGraph extends Component {
         });
         this.nodes = graphMainSvg.select(".circleg").selectAll("circle");
 
-        this.links = this.links
-            .data(linkData)
-            .join("line")
-            .style("stroke", "#eee")
-            .style("stroke-width", 2);
+        this.links = this.links.data(linkData).join("line");
         this.links = graphMainSvg.select(".lineg").selectAll("line");
 
         // update and restart simulation
         this.simulation.nodes(nodeData);
         this.simulation.force("link").links(linkData);
         let alphaDecay = 0.08;
-        if (this.nodes.data().length == oldNodeCount) alphaDecay = 0.8;
+        if (this.nodes.data().length === oldNodeCount) alphaDecay = 0.8;
         // start simulartion only when there are new nodes
         d3.select("body").style("pointer-events", "none");
         this.simulation
@@ -182,17 +175,11 @@ class SchemaGraph extends Component {
             .data(nodeData)
             .join("circle")
             .attr("r", this.circleRadius)
-            .style("fill", "#ADD8E6")
-            .style("stroke", "#eee")
-            .style("stroke-width", 3)
-            .style("cursor", "pointer")
             .on("click", this.props.handleNodeClick);
         this.links = lineg
             .selectAll("line")
             .data(linkData)
-            .join("line")
-            .style("stroke", "#eee")
-            .style("stroke-width", 2);
+            .join("line");
         this.makeTooltips(
             this.nodes,
             ["table_name", "numRecords", "numCanvas"],
@@ -255,14 +242,6 @@ class SchemaGraph extends Component {
                 .select("body")
                 .append("table")
                 .classed("kyrixtooltip", true)
-                .style("background", "#FFF")
-                .style("border-radius", "3px")
-                .style("position", "absolute")
-                .style("box-shadow", "2px 2px #888888")
-                .style("pointer-events", "none")
-                .style("opacity", 0)
-                .style("font-size", "13px")
-                .style("font-family", "Open Sans")
                 .style("left", d3.event.pageX + "px")
                 .style("top", d3.event.pageY + "px");
             var rows = tooltip

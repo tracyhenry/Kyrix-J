@@ -70,6 +70,18 @@ body {
     position: absolute;
 }
 
+.circleg > circle {
+    fill: #add8e6;
+    stroke: #eee;
+    stroke-width: 3;
+    cursor: pointer;
+}
+
+.lineg {
+    stroke: #eee;
+    stroke-width: 2;
+}
+
 /* ====================================== table details view ====================================== */
 .tabledetails {
     grid-area: 4 / 1 / 8 / 3;
@@ -235,6 +247,17 @@ body {
     display: block;
     position: absolute;
     /*margin: auto;*/
+}
+
+.kyrixtooltip {
+    background: #fff;
+    border-radius: 3px;
+    position: absolute;
+    box-shadow: 2px 2px #888888;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 13px;
+    font-family: Open Sans;
 }
 
 .viewsvg {
