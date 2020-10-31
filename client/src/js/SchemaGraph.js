@@ -6,12 +6,41 @@ class SchemaGraph extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.svgRef = React.createRef();
-    }
 
-    supermanW = 48;
-    supermanH = 36;
-    circleRadius = 48;
+        // svg for D3
+        this.svgRef = React.createRef();
+
+        // initialize D3 force directed layout
+        this.nodeData = [];
+        this.linkData = [];
+        this.supermanW = 48;
+        this.supermanH = 36;
+        this.circleRadius = 48;
+        var tickFunction = () => {
+            this.links
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+            this.nodes.attr("cx", d => d.x).attr("cy", d => d.y);
+            var curNode = this.nodes.filter(d =>
+                d.table_name === this.props.curTable ? true : false
+            );
+            d3.select("#supermanlogo")
+                .attr("x", curNode.attr("cx") - this.supermanW / 2)
+                .attr("y", curNode.attr("cy") - this.supermanH / 2);
+        };
+        this.simulation = d3
+            .forceSimulation()
+            .force("link", d3.forceLink().id(d => d.table_name))
+            .force("charge", d3.forceManyBody().strength(-8000))
+            .force(
+                "center",
+                d3.forceCenter(this.props.width / 2, this.props.height / 2)
+            )
+            .on("tick", tickFunction.bind(this))
+            .stop();
+    }
 
     componentDidMount = () => {
         if (!this.props.kyrixLoaded) return;
@@ -21,25 +50,22 @@ class SchemaGraph extends Component {
     componentDidUpdate = () => {
         // TODO: check for different types of updates
         if (!this.props.kyrixLoaded) return;
-        this.renderNewTable();
+        if (
+            d3
+                .select(this.svgRef.current)
+                .select("g")
+                .size() === 0
+        )
+            this.renderNewTable();
+        else this.renderNewNeighbors();
     };
 
     //shouldComponentUpdate = nextProps => this.props.curTable.length === 0;
 
-    renderNewTable = () => {
-        // dom element that D3 is in control of
-        var graphMainSvg = d3.select(this.svgRef.current);
-
-        // constants
-        var supermanW = this.supermanW;
-        var supermanH = this.supermanH;
-        var circleRadius = this.circleRadius;
-
-        // update nodeData and linkData
-        let tables = [this.props.curTable];
+    getOneHopNeighbors = () => {
+        let nodes = [];
+        let links = [];
         const edges = this.props.graphEdges;
-        this.linkData = [];
-
         for (let i = 0; i < edges.length; i++) {
             let neighbor = "";
             if (edges[i].source === this.props.curTable)
@@ -47,71 +73,133 @@ class SchemaGraph extends Component {
             if (edges[i].target === this.props.curTable)
                 neighbor = edges[i].source;
             if (neighbor.length === 0) continue;
-            tables.push(neighbor);
-            this.linkData.push({source: this.props.curTable, target: neighbor});
+            nodes.push({
+                table_name: neighbor,
+                numCanvas: this.props.tableMetadata[neighbor].numCanvas,
+                numRecords: this.props.tableMetadata[neighbor].numRecords
+            });
+            links.push({source: this.props.curTable, target: neighbor});
         }
-        this.nodeData = tables.map(table => ({
-            table_name: table,
-            numCanvas: this.props.tableMetadata[table].numCanvas,
-            numRecords: this.props.tableMetadata[table].numRecords
-        }));
+        const ret = {
+            nodeData: nodes,
+            linkData: links
+        };
+
+        return ret;
+    };
+
+    renderNewNeighbors = () => {
+        let nodeData = [...this.nodeData];
+        let linkData = [...this.linkData];
+        let neighbors = this.getOneHopNeighbors();
+        let curTableNode = this.nodeData.filter(
+            d => d.table_name === this.props.curTable
+        )[0];
+        for (let i = 0; i < neighbors.nodeData.length; i++) {
+            let neighborTableName = neighbors.nodeData[i].table_name;
+            // node
+            let exist =
+                nodeData.filter(d => d.table_name === neighborTableName)
+                    .length > 0;
+            if (!exist) nodeData.push(neighbors.nodeData[i]);
+            // link
+            exist =
+                linkData.filter(
+                    d =>
+                        (d.source.table_name === this.props.curTable &&
+                            d.target.table_name === neighborTableName) ||
+                        (d.target.table_name === this.props.curTable &&
+                            d.source.table_name === neighborTableName)
+                ).length > 0;
+            if (!exist)
+                linkData.push({
+                    source: this.props.curTable,
+                    target: neighborTableName
+                });
+        }
+
+        // update selections
+        let graphMainSvg = d3.select(this.svgRef.current);
+        this.nodes = this.nodes.data(nodeData).join(enter => {
+            enter
+                .append("circle")
+                .attr("r", this.circleRadius)
+                .style("fill", "#ADD8E6")
+                .style("stroke", "#eee")
+                .style("stroke-width", 3)
+                .call(
+                    this.makeTooltips,
+                    ["table_name", "numRecords", "numCanvas"],
+                    ["Table", "# of Records", "# of vis"]
+                );
+        });
+        this.nodes = graphMainSvg.select(".circleg").selectAll("circle");
+
+        this.links = this.links
+            .data(linkData)
+            .join("line")
+            .style("stroke", "#eee")
+            .style("stroke-width", 2);
+        this.links = graphMainSvg.select(".lineg").selectAll("line");
+
+        // update this.nodeData & this.linkData
+        this.nodeData = nodeData;
+        this.linkData = linkData;
+
+        // update and restart simulation
+        this.simulation.nodes(this.nodeData);
+        this.simulation.force("link").links(this.linkData);
+        this.simulation.alpha(1).restart();
+    };
+
+    renderNewTable = () => {
+        // dom element that D3 is in control of
+        var graphMainSvg = d3.select(this.svgRef.current);
+
+        // update nodeData and linkData
+        let neighbors = this.getOneHopNeighbors();
+        this.nodeData = neighbors.nodeData.concat({
+            table_name: this.props.curTable,
+            numCanvas: this.props.tableMetadata[this.props.curTable].numCanvas,
+            numRecords: this.props.tableMetadata[this.props.curTable].numRecords
+        });
+        this.linkData = neighbors.linkData;
 
         graphMainSvg.selectAll("*").remove();
-        var g = graphMainSvg.append("g");
-
-        var links = g
+        var lineg = graphMainSvg.append("g").classed("lineg", true);
+        var circleg = graphMainSvg.append("g").classed("circleg", true);
+        this.nodes = circleg
+            .selectAll("circle")
+            .data(this.nodeData)
+            .join("circle")
+            .attr("r", this.circleRadius)
+            .style("fill", "#ADD8E6")
+            .style("stroke", "#eee")
+            .style("stroke-width", 3);
+        this.links = lineg
             .selectAll("line")
             .data(this.linkData)
             .join("line")
             .style("stroke", "#eee")
             .style("stroke-width", 2);
-        var nodes = g
-            .selectAll("circle")
-            .data(this.nodeData)
-            .join("circle")
-            .attr("r", circleRadius)
-            .style("fill", "#ADD8E6")
-            .style("stroke", "#eee")
-            .style("stroke-width", 3);
-
         this.makeTooltips(
-            nodes,
+            this.nodes,
             ["table_name", "numRecords", "numCanvas"],
             ["Table", "# of Records", "# of vis"]
         );
-        var tickFunction = () => {
-            links
-                .attr("x1", d => d.source.x)
-                .attr("y1", d => d.source.y)
-                .attr("x2", d => d.target.x)
-                .attr("y2", d => d.target.y);
-            nodes.attr("cx", d => d.x).attr("cy", d => d.y);
-            var curNode = nodes.filter(d =>
-                d.table_name === this.props.curTable ? true : false
-            );
-            d3.select("#supermanlogo")
-                .attr("x", curNode.attr("cx") - supermanW / 2)
-                .attr("y", curNode.attr("cy") - supermanH / 2);
-        };
-        var simulation = d3
-            .forceSimulation()
-            .force("link", d3.forceLink().id(d => d.table_name))
-            .force("charge", d3.forceManyBody().strength(-8000))
-            .force(
-                "center",
-                d3.forceCenter(this.props.width / 2, this.props.height / 2)
-            )
-            .nodes(this.nodeData)
-            .on("tick", tickFunction.bind(this));
 
-        simulation.force("link").links(this.linkData);
+        this.simulation.nodes(this.nodeData);
+        this.simulation.force("link").links(this.linkData);
+        this.simulation.alpha(1).restart();
 
-        g.append("image")
+        var supermang = graphMainSvg.append("g").classed(".supermang", true);
+        supermang
+            .append("image")
             .attr("id", "supermanlogo")
             .attr("x", 0)
             .attr("y", 0)
-            .attr("width", supermanW)
-            .attr("height", supermanH)
+            .attr("width", this.supermanW)
+            .attr("height", this.supermanH)
             .style("pointer-events", "none")
             .attr(
                 "xlink:href",
@@ -126,7 +214,9 @@ class SchemaGraph extends Component {
                 d3.select("body")
                     .selectAll(".kyrixtooltip")
                     .remove();
-                g.attr("transform", d3.event.transform);
+                circleg.attr("transform", d3.event.transform);
+                lineg.attr("transform", d3.event.transform);
+                supermang.attr("transform", d3.event.transform);
             });
 
         graphMainSvg.call(zoomHandler);
