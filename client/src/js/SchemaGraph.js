@@ -11,11 +11,9 @@ class SchemaGraph extends Component {
         this.svgRef = React.createRef();
 
         // initialize D3 force directed layout
-        this.nodeData = [];
-        this.linkData = [];
         this.supermanW = 48;
         this.supermanH = 36;
-        this.circleRadius = 48;
+        this.circleRadius = 40;
         let tickFunction = () => {
             this.links
                 .attr("x1", d => d.source.x)
@@ -37,6 +35,7 @@ class SchemaGraph extends Component {
                     d.fy = d.y;
                 });
             }
+            d3.select("body").style("pointer-events", "auto");
         };
         this.simulation = d3
             .forceSimulation()
@@ -57,13 +56,11 @@ class SchemaGraph extends Component {
     };
 
     componentDidUpdate = () => {
-        // TODO: check for different types of updates
         if (!this.props.kyrixLoaded) return;
+
         if (
-            d3
-                .select(this.svgRef.current)
-                .select("g")
-                .size() === 0
+            this.props.newTableType === "tableDetailsClick" ||
+            this.props.newTableType === "kyrixLoaded"
         )
             this.renderNewTable();
         else this.renderNewNeighbors();
@@ -98,8 +95,9 @@ class SchemaGraph extends Component {
     };
 
     renderNewNeighbors = () => {
-        let nodeData = [...this.nodeData];
-        let linkData = [...this.linkData];
+        let nodeData = [...this.nodes.data()];
+        let linkData = [...this.links.data()];
+        let oldNodeCount = this.nodes.data().length;
         let neighbors = this.getOneHopNeighbors();
         for (let i = 0; i < neighbors.nodeData.length; i++) {
             let neighborTableName = neighbors.nodeData[i].table_name;
@@ -123,6 +121,13 @@ class SchemaGraph extends Component {
                     target: neighborTableName
                 });
         }
+
+        // return early if no new stuff is added
+        if (
+            this.nodes.data().length == nodeData.length &&
+            this.links.data().length == linkData.length
+        )
+            return;
 
         // update selections
         let graphMainSvg = d3.select(this.svgRef.current);
@@ -148,14 +153,17 @@ class SchemaGraph extends Component {
             .style("stroke-width", 2);
         this.links = graphMainSvg.select(".lineg").selectAll("line");
 
-        // update this.nodeData & this.linkData
-        this.nodeData = nodeData;
-        this.linkData = linkData;
-
         // update and restart simulation
-        this.simulation.nodes(this.nodeData);
-        this.simulation.force("link").links(this.linkData);
-        this.simulation.alpha(1).restart();
+        this.simulation.nodes(nodeData);
+        this.simulation.force("link").links(linkData);
+        let alphaDecay = 0.08;
+        if (this.nodes.data().length == oldNodeCount) alphaDecay = 0.8;
+        // start simulartion only when there are new nodes
+        d3.select("body").style("pointer-events", "none");
+        this.simulation
+            .alpha(1)
+            .alphaDecay(alphaDecay)
+            .restart();
     };
 
     renderNewTable = () => {
@@ -164,19 +172,19 @@ class SchemaGraph extends Component {
 
         // update nodeData and linkData
         let neighbors = this.getOneHopNeighbors();
-        this.nodeData = neighbors.nodeData.concat({
+        let nodeData = neighbors.nodeData.concat({
             table_name: this.props.curTable,
             numCanvas: this.props.tableMetadata[this.props.curTable].numCanvas,
             numRecords: this.props.tableMetadata[this.props.curTable].numRecords
         });
-        this.linkData = neighbors.linkData;
+        let linkData = neighbors.linkData;
 
         graphMainSvg.selectAll("*").remove();
         var lineg = graphMainSvg.append("g").classed("lineg", true);
         var circleg = graphMainSvg.append("g").classed("circleg", true);
         this.nodes = circleg
             .selectAll("circle")
-            .data(this.nodeData)
+            .data(nodeData)
             .join("circle")
             .attr("r", this.circleRadius)
             .style("fill", "#ADD8E6")
@@ -184,7 +192,7 @@ class SchemaGraph extends Component {
             .style("stroke-width", 3);
         this.links = lineg
             .selectAll("line")
-            .data(this.linkData)
+            .data(linkData)
             .join("line")
             .style("stroke", "#eee")
             .style("stroke-width", 2);
@@ -194,9 +202,13 @@ class SchemaGraph extends Component {
             ["Table", "# of Records", "# of vis"]
         );
 
-        this.simulation.nodes(this.nodeData);
-        this.simulation.force("link").links(this.linkData);
-        this.simulation.alpha(1).restart();
+        this.simulation.nodes(nodeData);
+        this.simulation.force("link").links(linkData);
+        d3.select("body").style("pointer-events", "none");
+        this.simulation
+            .alpha(1)
+            .alphaDecay(0.08)
+            .restart();
 
         var supermang = graphMainSvg.append("g").classed(".supermang", true);
         supermang
@@ -346,7 +358,13 @@ class SchemaGraph extends Component {
                 .ease(d3.easeLinear)
                 .duration(2700)
                 .attr("x", endCx - this.supermanW / 2)
-                .attr("y", endCy - this.supermanH / 2);
+                .attr("y", endCy - this.supermanH / 2)
+                .on("start", () => {
+                    d3.select("body").style("pointer-events", "none");
+                })
+                .on("end", () => {
+                    d3.select("body").style("pointer-events", "auto");
+                });
         };
 
         const jumpStartZoom = jump => {
@@ -426,6 +444,7 @@ class SchemaGraph extends Component {
                             repeat();
                         });
             }
+            d3.select("body").style("pointer-events", "none");
             repeat();
         };
 
@@ -436,6 +455,7 @@ class SchemaGraph extends Component {
             coverRect.interrupt();
             coverRect.remove();
             d3.select("#arrowG").remove();
+            d3.select("body").style("pointer-events", "auto");
         };
 
         window.kyrix.on("jumpstart.switch", "ssv0", jumpStartSwitch.bind(this));

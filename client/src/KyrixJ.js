@@ -8,7 +8,14 @@ import QueryDetails from "./js/QueryDetails";
 
 class KyrixJ extends Component {
     state = {
+        // name of the current table
         curTable: "",
+
+        // type of interaction that generates the new table
+        // can be one of ["graphClick", "kyrixLoaded", "kyrixVisJump", "tableDetailsClick"]
+        // used by SchemaGraph (or maybe some other components)
+        // to do different things
+        newTableType: "",
         kyrixLoaded: false
     };
 
@@ -24,7 +31,8 @@ class KyrixJ extends Component {
         this.setState({
             curTable: this.canvasIdToTable[
                 window.kyrix.getCurrentCanvasId(this.kyrixViewId)
-            ]
+            ],
+            newTableType: "kyrixVisJump"
         });
     };
 
@@ -38,12 +46,16 @@ class KyrixJ extends Component {
             curTable: this.canvasIdToTable[
                 window.kyrix.getCurrentCanvasId(this.kyrixViewId)
             ],
+            newTableType: "kyrixLoaded",
             kyrixLoaded: true
         });
     };
 
     handleTableDetailsClick = event => {
-        this.setState({curTable: event.target.innerHTML});
+        this.setState({
+            curTable: event.target.innerHTML,
+            newTableType: "tableDetailsClick"
+        });
     };
 
     render() {
@@ -57,6 +69,7 @@ class KyrixJ extends Component {
                     height="600"
                     kyrixLoaded={this.state.kyrixLoaded}
                     curTable={this.state.curTable}
+                    newTableType={this.state.newTableType}
                     canvasIdToTable={this.canvasIdToTable}
                     graphEdges={this.graphEdges}
                     tableMetadata={this.tableMetadata}
