@@ -122,13 +122,6 @@ class SchemaGraph extends Component {
                 });
         }
 
-        // return early if no new stuff is added
-        if (
-            this.nodes.data().length == nodeData.length &&
-            this.links.data().length == linkData.length
-        )
-            return;
-
         // update selections
         let graphMainSvg = d3.select(this.svgRef.current);
         this.nodes = this.nodes.data(nodeData).join(enter => {
@@ -142,7 +135,9 @@ class SchemaGraph extends Component {
                     this.makeTooltips,
                     ["table_name", "numRecords", "numCanvas"],
                     ["Table", "# of Records", "# of vis"]
-                );
+                )
+                .style("cursor", "pointer")
+                .on("click", this.props.handleNodeClick);
         });
         this.nodes = graphMainSvg.select(".circleg").selectAll("circle");
 
@@ -189,7 +184,9 @@ class SchemaGraph extends Component {
             .attr("r", this.circleRadius)
             .style("fill", "#ADD8E6")
             .style("stroke", "#eee")
-            .style("stroke-width", 3);
+            .style("stroke-width", 3)
+            .style("cursor", "pointer")
+            .on("click", this.props.handleNodeClick);
         this.links = lineg
             .selectAll("line")
             .data(linkData)

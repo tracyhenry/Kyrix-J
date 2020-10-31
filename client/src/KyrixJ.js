@@ -27,7 +27,14 @@ class KyrixJ extends Component {
         window.removeEventListener("resize", resizeSvgs);
     };
 
-    kyrixJumpendCallBack = () => {
+    handleSchemaGraphNodeClick = d => {
+        this.setState({
+            curTable: d.table_name,
+            newTableType: "graphClick"
+        });
+    };
+
+    handleKyrixJumpEnd = () => {
         this.setState({
             curTable: this.canvasIdToTable[
                 window.kyrix.getCurrentCanvasId(this.kyrixViewId)
@@ -40,7 +47,7 @@ class KyrixJ extends Component {
         window.kyrix.on(
             "jumpend.settable",
             this.kyrixViewId,
-            this.kyrixJumpendCallBack
+            this.handleKyrixJumpEnd
         );
         this.setState({
             curTable: this.canvasIdToTable[
@@ -70,6 +77,8 @@ class KyrixJ extends Component {
                     kyrixLoaded={this.state.kyrixLoaded}
                     curTable={this.state.curTable}
                     newTableType={this.state.newTableType}
+                    handleNodeClick={this.handleSchemaGraphNodeClick}
+                    // app metadata (TODO: combine them into one field)
                     canvasIdToTable={this.canvasIdToTable}
                     graphEdges={this.graphEdges}
                     tableMetadata={this.tableMetadata}
