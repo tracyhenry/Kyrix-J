@@ -16,7 +16,7 @@ class SchemaGraph extends Component {
         this.supermanW = 48;
         this.supermanH = 36;
         this.circleRadius = 48;
-        var tickFunction = () => {
+        let tickFunction = () => {
             this.links
                 .attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
@@ -30,6 +30,14 @@ class SchemaGraph extends Component {
                 .attr("x", curNode.attr("cx") - this.supermanW / 2)
                 .attr("y", curNode.attr("cy") - this.supermanH / 2);
         };
+        let endFunction = () => {
+            if (this.nodes) {
+                this.nodes.each(d => {
+                    d.fx = d.x;
+                    d.fy = d.y;
+                });
+            }
+        };
         this.simulation = d3
             .forceSimulation()
             .force("link", d3.forceLink().id(d => d.table_name))
@@ -39,6 +47,7 @@ class SchemaGraph extends Component {
                 d3.forceCenter(this.props.width / 2, this.props.height / 2)
             )
             .on("tick", tickFunction.bind(this))
+            .on("end", endFunction.bind(this))
             .stop();
     }
 
@@ -92,9 +101,6 @@ class SchemaGraph extends Component {
         let nodeData = [...this.nodeData];
         let linkData = [...this.linkData];
         let neighbors = this.getOneHopNeighbors();
-        let curTableNode = this.nodeData.filter(
-            d => d.table_name === this.props.curTable
-        )[0];
         for (let i = 0; i < neighbors.nodeData.length; i++) {
             let neighborTableName = neighbors.nodeData[i].table_name;
             // node
