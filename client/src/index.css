@@ -77,7 +77,7 @@ body {
     cursor: pointer;
 }
 
-.lineg {
+.lineg > line {
     stroke: #eee;
     stroke-width: 2;
 }

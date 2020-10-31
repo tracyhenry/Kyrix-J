@@ -15,12 +15,12 @@ class SchemaGraph extends Component {
         this.supermanH = 36;
         this.circleRadius = 40;
         let tickFunction = () => {
+            this.nodes.attr("cx", d => d.x).attr("cy", d => d.y);
             this.links
                 .attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
-            this.nodes.attr("cx", d => d.x).attr("cy", d => d.y);
             var curNode = this.nodes.filter(d =>
                 d.table_name === this.props.curTable ? true : false
             );
@@ -34,8 +34,27 @@ class SchemaGraph extends Component {
                     d.fx = d.x;
                     d.fy = d.y;
                 });
+                let newStuff = d3.selectAll(".graphnew");
+                if (newStuff.size() == 0)
+                    d3.select("body").style("pointer-events", "auto");
+                else
+                    newStuff
+                        .transition()
+                        .duration(500)
+                        .style("stroke", "#111")
+                        .transition()
+                        .duration(500)
+                        .style("stroke", "#eee")
+                        .on("end", (d, i, nodes) => {
+                            if (i == 0) {
+                                d3.selectAll(nodes).classed("graphnew", false);
+                                d3.select("body").style(
+                                    "pointer-events",
+                                    "auto"
+                                );
+                            }
+                        });
             }
-            d3.select("body").style("pointer-events", "auto");
         };
         this.simulation = d3
             .forceSimulation()
@@ -98,6 +117,7 @@ class SchemaGraph extends Component {
         let nodeData = [...this.nodes.data()];
         let linkData = [...this.links.data()];
         let oldNodeCount = this.nodes.data().length;
+        let oldLinkCount = this.links.data().length;
         let neighbors = this.getOneHopNeighbors();
         for (let i = 0; i < neighbors.nodeData.length; i++) {
             let neighborTableName = neighbors.nodeData[i].table_name;
@@ -134,22 +154,30 @@ class SchemaGraph extends Component {
                     ["Table", "# of Records", "# of vis"]
                 )
                 .style("cursor", "pointer")
+                .classed("graphnew", true)
                 .on("click", this.props.handleNodeClick);
         });
         this.nodes = graphMainSvg.select(".circleg").selectAll("circle");
 
-        this.links = this.links.data(linkData).join("line");
+        this.links = this.links.data(linkData).join(enter => {
+            enter.append("line").classed("graphnew", true);
+        });
         this.links = graphMainSvg.select(".lineg").selectAll("line");
 
         // update and restart simulation
         this.simulation.nodes(nodeData);
         this.simulation.force("link").links(linkData);
-        let alphaDecay = 0.08;
-        if (this.nodes.data().length === oldNodeCount) alphaDecay = 0.8;
+        let alphaDecay = 0.1;
+        if (
+            this.nodes.data().length === oldNodeCount &&
+            this.links.data().length === oldLinkCount
+        )
+            alphaDecay = 0.6;
         // start simulartion only when there are new nodes
         d3.select("body").style("pointer-events", "none");
         this.simulation
             .alpha(1)
+            .alphaMin(0.3)
             .alphaDecay(alphaDecay)
             .restart();
     };
@@ -175,11 +203,13 @@ class SchemaGraph extends Component {
             .data(nodeData)
             .join("circle")
             .attr("r", this.circleRadius)
+            .classed("graphnew", true)
             .on("click", this.props.handleNodeClick);
         this.links = lineg
             .selectAll("line")
             .data(linkData)
-            .join("line");
+            .join("line")
+            .classed("graphnew", true);
         this.makeTooltips(
             this.nodes,
             ["table_name", "numRecords", "numCanvas"],
@@ -191,10 +221,11 @@ class SchemaGraph extends Component {
         d3.select("body").style("pointer-events", "none");
         this.simulation
             .alpha(1)
-            .alphaDecay(0.08)
+            .alphaDecay(0.1)
+            .alphaMin(0.3)
             .restart();
 
-        var supermang = graphMainSvg.append("g").classed(".supermang", true);
+        var supermang = graphMainSvg.append("g").classed("supermang", true);
         supermang
             .append("image")
             .attr("id", "supermanlogo")
