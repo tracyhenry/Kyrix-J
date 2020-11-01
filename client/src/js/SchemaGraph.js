@@ -44,10 +44,9 @@ class SchemaGraph extends Component {
                     d.fx = d.x;
                     d.fy = d.y;
                 });
+                d3.select("body").style("pointer-events", "auto");
                 this.newStuff = d3.selectAll(".graphnew");
-                if (this.newStuff.size() === 0)
-                    d3.select("body").style("pointer-events", "auto");
-                else this.showNewStuff();
+                this.reCenterGraph().then(this.showNewStuff);
             }
         };
         this.simulation = d3
@@ -57,7 +56,7 @@ class SchemaGraph extends Component {
                 d3
                     .forceLink()
                     .id(d => d.table_name)
-                    .distance(150)
+                    .distance(120)
             )
             .force(
                 "charge",
@@ -65,7 +64,7 @@ class SchemaGraph extends Component {
                     .forceManyBody()
                     .strength(-8000)
                     .distanceMax(300)
-                    .distanceMin(150)
+                    .distanceMin(120)
             )
             .on("tick", tickFunction.bind(this))
             .on("end", endFunction.bind(this))
@@ -87,67 +86,33 @@ class SchemaGraph extends Component {
         else this.renderNewNeighbors();
     };
 
-    showNewStuff = () => {
-        if (!this.newStuff || this.newStuff.size() === 0) return;
-        d3.select("body").style("pointer-events", "none");
-        this.newStuff
-            .transition()
-            .duration(500)
-            .style("stroke", "#111")
-            .style("stroke-width", 8)
-            .transition()
-            .duration(500)
-            .style("stroke", "#eee")
-            .style("stroke-width", 3)
-            .on("end", (d, i, nodes) => {
-                if (i === 0) {
-                    d3.selectAll(nodes).classed("graphnew", false);
-                    d3.select("body").style("pointer-events", "auto");
-                }
-            });
-    };
-
-    getOneHopNeighbors = () => {
-        let nodes = [];
-        let links = [];
-        const edges = this.props.graphEdges;
-        for (let i = 0; i < edges.length; i++) {
-            let neighbor = "";
-            if (edges[i].source === this.props.curTable)
-                neighbor = edges[i].target;
-            if (edges[i].target === this.props.curTable)
-                neighbor = edges[i].source;
-            if (neighbor.length === 0) continue;
-            nodes.push({
-                table_name: neighbor,
-                numCanvas: this.props.tableMetadata[neighbor].numCanvas,
-                numRecords: this.props.tableMetadata[neighbor].numRecords
-            });
-            links.push({source: this.props.curTable, target: neighbor});
-        }
-        const ret = {
-            nodeData: nodes,
-            linkData: links
-        };
-        return ret;
-    };
-
     reCenterGraph = () => {
+        let oldTransform = d3.zoomTransform(this.svgRef.current);
+        let oldTX = oldTransform.x;
+        let oldTY = oldTransform.y;
+
         let curNode = this.nodes.filter(
             d => d.table_name === this.props.curTable
         );
-        let transX = this.props.width / 2 - curNode.attr("cx");
-        let transY = this.props.height / 2 - curNode.attr("cy");
-        let newTransform = d3.zoomIdentity.translate(transX, transY);
-        let graphMainSvg = d3.select(this.svgRef.current);
+        let newTX = this.props.width / 2 - curNode.attr("cx");
+        let newTY = this.props.height / 2 - curNode.attr("cy");
+        let newTransform = d3.zoomIdentity.translate(newTX, newTY);
+
         d3.select("body").style("pointer-events", "none");
-        graphMainSvg
+        let graphMainSvg = d3.select(this.svgRef.current);
+        return graphMainSvg
             .transition()
-            .duration(750)
+            .duration(
+                Math.sqrt(
+                    (newTX - oldTX) * (newTX - oldTX) +
+                        (newTY - oldTY) * (newTY - oldTY)
+                ) * 2
+            )
             .call(this.zoomHandler.transform, newTransform)
             .on("end", () => {
                 d3.select("body").style("pointer-events", "auto");
-            });
+            })
+            .end();
     };
 
     trimToOneHopNeighbors = () => {
@@ -204,6 +169,51 @@ class SchemaGraph extends Component {
             d3.select("body").style("pointer-events", "none");
             this.simulation.alpha(1).restart();
         });
+    };
+
+    showNewStuff = () => {
+        if (!this.newStuff || this.newStuff.size() === 0) return;
+        d3.select("body").style("pointer-events", "none");
+        this.newStuff
+            .transition()
+            .duration(500)
+            .style("stroke", "#111")
+            .style("stroke-width", 8)
+            .transition()
+            .duration(500)
+            .style("stroke", "#eee")
+            .style("stroke-width", 3)
+            .on("end", (d, i, nodes) => {
+                if (i === 0) {
+                    d3.selectAll(nodes).classed("graphnew", false);
+                    d3.select("body").style("pointer-events", "auto");
+                }
+            });
+    };
+
+    getOneHopNeighbors = () => {
+        let nodes = [];
+        let links = [];
+        const edges = this.props.graphEdges;
+        for (let i = 0; i < edges.length; i++) {
+            let neighbor = "";
+            if (edges[i].source === this.props.curTable)
+                neighbor = edges[i].target;
+            if (edges[i].target === this.props.curTable)
+                neighbor = edges[i].source;
+            if (neighbor.length === 0) continue;
+            nodes.push({
+                table_name: neighbor,
+                numCanvas: this.props.tableMetadata[neighbor].numCanvas,
+                numRecords: this.props.tableMetadata[neighbor].numRecords
+            });
+            links.push({source: this.props.curTable, target: neighbor});
+        }
+        const ret = {
+            nodeData: nodes,
+            linkData: links
+        };
+        return ret;
     };
 
     renderNewNeighbors = () => {
