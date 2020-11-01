@@ -23,8 +23,8 @@ class SchemaGraph extends Component {
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
-            var curNode = this.nodes.filter(d =>
-                d.table_name === this.props.curTable ? true : false
+            var curNode = this.nodes.filter(
+                d => d.table_name === this.props.curTable
             );
             d3.select("#supermanlogo")
                 .attr("x", curNode.attr("cx") - this.supermanW / 2)
@@ -130,6 +130,24 @@ class SchemaGraph extends Component {
             linkData: links
         };
         return ret;
+    };
+
+    reCenterGraph = () => {
+        let curNode = this.nodes.filter(
+            d => d.table_name === this.props.curTable
+        );
+        let transX = this.props.width / 2 - curNode.attr("cx");
+        let transY = this.props.height / 2 - curNode.attr("cy");
+        let newTransform = d3.zoomIdentity.translate(transX, transY);
+        let graphMainSvg = d3.select(this.svgRef.current);
+        d3.select("body").style("pointer-events", "none");
+        graphMainSvg
+            .transition()
+            .duration(750)
+            .call(this.zoomHandler.transform, newTransform)
+            .on("end", () => {
+                d3.select("body").style("pointer-events", "auto");
+            });
     };
 
     trimToOneHopNeighbors = () => {
@@ -301,7 +319,7 @@ class SchemaGraph extends Component {
             );
 
         // d3 zoom to enable pan
-        const zoomHandler = d3
+        this.zoomHandler = d3
             .zoom()
             .scaleExtent([1, 1])
             .on("zoom", () => {
@@ -313,7 +331,8 @@ class SchemaGraph extends Component {
                 supermang.attr("transform", d3.event.transform);
             });
 
-        graphMainSvg.call(zoomHandler);
+        graphMainSvg.call(this.zoomHandler);
+        graphMainSvg.call(this.zoomHandler.transform, d3.zoomIdentity);
 
         // register jump handlers
         this.registerJumpHandlers();
@@ -550,6 +569,7 @@ class SchemaGraph extends Component {
                             fontSize: 12,
                             fontFamily: "Arial"
                         }}
+                        onClick={this.reCenterGraph}
                     >
                         re-center
                     </Button>

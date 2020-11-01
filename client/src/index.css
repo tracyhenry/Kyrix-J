@@ -65,6 +65,7 @@ body {
     /*background-color: coral;*/
     grid-area: 2 / 1 / 4 / 3;
     position: absolute;
+    overflow: hidden;
 }
 
 .erdiagramsvg {
