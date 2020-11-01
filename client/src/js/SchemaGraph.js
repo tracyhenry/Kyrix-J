@@ -99,6 +99,7 @@ class SchemaGraph extends Component {
         let newTransform = d3.zoomIdentity.translate(newTX, newTY);
 
         d3.select("body").style("pointer-events", "none");
+
         let graphMainSvg = d3.select(this.svgRef.current);
         return graphMainSvg
             .transition()
