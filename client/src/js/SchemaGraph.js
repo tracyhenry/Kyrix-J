@@ -31,11 +31,9 @@ class SchemaGraph extends Component {
                 .attr("y", curNode.attr("cy") - this.supermanH / 2);
             // check if we should stop
             let maxVelocity = d3.max(
-                this.nodes
-                    .data()
-                    .map(d => d3.max([Math.abs(d.vx), Math.abs(d.vy)]))
+                this.nodes.data().map(d => d.vx * d.vx + d.vy * d.vy)
             );
-            if (maxVelocity <= 10) {
+            if (maxVelocity <= 5) {
                 this.simulation.stop();
                 endFunction();
             }
@@ -54,11 +52,20 @@ class SchemaGraph extends Component {
         };
         this.simulation = d3
             .forceSimulation()
-            .force("link", d3.forceLink().id(d => d.table_name))
-            .force("charge", d3.forceManyBody().strength(-8000))
             .force(
-                "center",
-                d3.forceCenter(this.props.width / 2, this.props.height / 2)
+                "link",
+                d3
+                    .forceLink()
+                    .id(d => d.table_name)
+                    .distance(150)
+            )
+            .force(
+                "charge",
+                d3
+                    .forceManyBody()
+                    .strength(-8000)
+                    .distanceMax(300)
+                    .distanceMin(150)
             )
             .on("tick", tickFunction.bind(this))
             .on("end", endFunction.bind(this))
@@ -243,7 +250,10 @@ class SchemaGraph extends Component {
         let nodeData = neighbors.nodeData.concat({
             table_name: this.props.curTable,
             numCanvas: this.props.tableMetadata[this.props.curTable].numCanvas,
-            numRecords: this.props.tableMetadata[this.props.curTable].numRecords
+            numRecords: this.props.tableMetadata[this.props.curTable]
+                .numRecords,
+            fx: this.props.width / 2,
+            fy: this.props.height / 2
         });
         let linkData = neighbors.linkData;
 
