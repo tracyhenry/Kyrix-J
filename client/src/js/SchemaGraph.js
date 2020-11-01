@@ -36,26 +36,10 @@ class SchemaGraph extends Component {
                     d.fx = d.x;
                     d.fy = d.y;
                 });
-                let newStuff = d3.selectAll(".graphnew");
-                if (newStuff.size() == 0)
+                this.newStuff = d3.selectAll(".graphnew");
+                if (this.newStuff.size() == 0)
                     d3.select("body").style("pointer-events", "auto");
-                else
-                    newStuff
-                        .transition()
-                        .duration(500)
-                        .style("stroke", "#111")
-                        .transition()
-                        .duration(500)
-                        .style("stroke", "#eee")
-                        .on("end", (d, i, nodes) => {
-                            if (i == 0) {
-                                d3.selectAll(nodes).classed("graphnew", false);
-                                d3.select("body").style(
-                                    "pointer-events",
-                                    "auto"
-                                );
-                            }
-                        });
+                else this.showNewStuff();
             }
         };
         this.simulation = d3
@@ -78,7 +62,6 @@ class SchemaGraph extends Component {
 
     componentDidUpdate = () => {
         if (!this.props.kyrixLoaded) return;
-
         if (
             this.props.newTableType === "tableDetailsClick" ||
             this.props.newTableType === "kyrixLoaded"
@@ -87,7 +70,25 @@ class SchemaGraph extends Component {
         else this.renderNewNeighbors();
     };
 
-    //shouldComponentUpdate = nextProps => this.props.curTable.length === 0;
+    showNewStuff = () => {
+        if (!this.newStuff || this.newStuff.size() === 0) return;
+        d3.select("body").style("pointer-events", "none");
+        this.newStuff
+            .transition()
+            .duration(500)
+            .style("stroke", "#111")
+            .style("stroke-width", 8)
+            .transition()
+            .duration(500)
+            .style("stroke", "#eee")
+            .style("stroke-width", 3)
+            .on("end", (d, i, nodes) => {
+                if (i == 0) {
+                    d3.selectAll(nodes).classed("graphnew", false);
+                    d3.select("body").style("pointer-events", "auto");
+                }
+            });
+    };
 
     getOneHopNeighbors = () => {
         let nodes = [];
@@ -512,6 +513,7 @@ class SchemaGraph extends Component {
                             fontSize: 12,
                             fontFamily: "Arial"
                         }}
+                        onClick={this.showNewStuff}
                     >
                         what's new?
                     </Button>
