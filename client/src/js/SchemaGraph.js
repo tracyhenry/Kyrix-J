@@ -44,10 +44,9 @@ class SchemaGraph extends Component {
                     d.fx = d.x;
                     d.fy = d.y;
                 });
+                d3.select("body").style("pointer-events", "auto");
                 this.newStuff = d3.selectAll(".graphnew");
-                if (this.newStuff.size() === 0)
-                    d3.select("body").style("pointer-events", "auto");
-                else this.showNewStuff();
+                this.reCenterGraph().then(this.showNewStuff);
             }
         };
         this.simulation = d3
@@ -141,13 +140,14 @@ class SchemaGraph extends Component {
         let newTransform = d3.zoomIdentity.translate(transX, transY);
         let graphMainSvg = d3.select(this.svgRef.current);
         d3.select("body").style("pointer-events", "none");
-        graphMainSvg
+        return graphMainSvg
             .transition()
             .duration(750)
             .call(this.zoomHandler.transform, newTransform)
             .on("end", () => {
                 d3.select("body").style("pointer-events", "auto");
-            });
+            })
+            .end();
     };
 
     trimToOneHopNeighbors = () => {
