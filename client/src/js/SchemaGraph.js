@@ -140,49 +140,52 @@ class SchemaGraph extends Component {
 
         // transition out non 1 hop neighbors
         d3.select("body").style("pointer-events", "none");
-        d3.transition()
-            .duration(210)
-            .on("start", () => {
-                d3.selectAll(".circleg > circle")
-                    .filter(d => neighbors.indexOf(d.table_name) === -1)
-                    .transition()
-                    .duration(100)
-                    .style("opacity", 0)
-                    .remove()
-                    .on("start", () => {
-                        d3.selectAll(".lineg > line")
-                            .filter(
-                                d =>
-                                    d.source.table_name !==
-                                        this.props.curTable &&
-                                    d.target.table_name !== this.props.curTable
-                            )
-                            .transition()
-                            .duration(100)
-                            .style("opacity", 0)
-                            .remove();
-                    });
-            })
-            .on("end", () => {
-                let graphMainSvg = d3.select(this.svgRef.current);
-                this.nodes = graphMainSvg
-                    .select(".circleg")
-                    .selectAll("circle")
-                    .classed("graphnew", true);
-                this.links = graphMainSvg
-                    .select(".lineg")
-                    .selectAll("line")
-                    .classed("graphnew", true);
-                this.nodes
-                    .filter(d => d.table_name !== this.props.curTable)
-                    .each(d => (d.fx = d.fy = null));
+        let circleToBeDeleted = d3
+            .selectAll(".circleg > circle")
+            .filter(d => neighbors.indexOf(d.table_name) === -1);
+        let circleDeletionEnd = null;
+        if (!circleToBeDeleted.empty())
+            circleDeletionEnd = circleToBeDeleted
+                .transition()
+                .duration(100)
+                .style("opacity", 0)
+                .remove()
+                .end();
+        let linesToBeDeleted = d3
+            .selectAll(".lineg > line")
+            .filter(
+                d =>
+                    d.source.table_name !== this.props.curTable &&
+                    d.target.table_name !== this.props.curTable
+            );
+        let lineDeletionEnd = null;
+        if (!linesToBeDeleted.empty())
+            lineDeletionEnd = linesToBeDeleted
+                .transition()
+                .duration(100)
+                .style("opacity", 0)
+                .remove()
+                .end();
+        Promise.all([circleDeletionEnd, lineDeletionEnd]).then(() => {
+            let graphMainSvg = d3.select(this.svgRef.current);
+            this.nodes = graphMainSvg
+                .select(".circleg")
+                .selectAll("circle")
+                .classed("graphnew", true);
+            this.links = graphMainSvg
+                .select(".lineg")
+                .selectAll("line")
+                .classed("graphnew", true);
+            this.nodes
+                .filter(d => d.table_name !== this.props.curTable)
+                .each(d => (d.fx = d.fy = null));
 
-                // update and restart simulation
-                this.simulation.nodes(this.nodes.data());
-                this.simulation.force("link").links(this.links.data());
-                d3.select("body").style("pointer-events", "none");
-                this.simulation.alpha(1).restart();
-            });
+            // update and restart simulation
+            this.simulation.nodes(this.nodes.data());
+            this.simulation.force("link").links(this.links.data());
+            d3.select("body").style("pointer-events", "none");
+            this.simulation.alpha(1).restart();
+        });
     };
 
     renderNewNeighbors = () => {
@@ -391,18 +394,14 @@ class SchemaGraph extends Component {
             var startTable = this.props.canvasIdToTable[
                 jump.backspace ? jump.destId : jump.sourceId
             ];
-            var startNode = nodes.filter(d =>
-                d.table_name === startTable ? true : false
-            );
+            var startNode = nodes.filter(d => d.table_name === startTable);
             var startCx = startNode.attr("cx");
             var startCy = startNode.attr("cy");
 
             var endTable = this.props.canvasIdToTable[
                 jump.backspace ? jump.sourceId : jump.destId
             ];
-            var endNode = nodes.filter(d =>
-                d.table_name === endTable ? true : false
-            );
+            var endNode = nodes.filter(d => d.table_name === endTable);
             var endCx = endNode.attr("cx");
             var endCy = endNode.attr("cy");
 
