@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import * as d3 from "d3";
 import resizeSvgs from "../js/ResizeSvgs";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 class SchemaGraph extends Component {
     constructor(props) {
@@ -479,6 +481,41 @@ class SchemaGraph extends Component {
                     height={this.props.height}
                     ref={this.svgRef}
                 ></svg>
+                <ButtonGroup
+                    className="graphbutton"
+                    size="large"
+                    variant="text"
+                    color="primary"
+                    aria-label="text primary button group"
+                >
+                    <Button
+                        style={{
+                            color: "#1976d2",
+                            fontSize: 12,
+                            fontFamily: "Arial"
+                        }}
+                    >
+                        re-center
+                    </Button>
+                    <Button
+                        style={{
+                            color: "#1976d2",
+                            fontSize: 12,
+                            fontFamily: "Arial"
+                        }}
+                    >
+                        trim
+                    </Button>
+                    <Button
+                        style={{
+                            color: "#1976d2",
+                            fontSize: 12,
+                            fontFamily: "Arial"
+                        }}
+                    >
+                        what's new?
+                    </Button>
+                </ButtonGroup>
                 <div className="explain">Schema Graph View</div>
             </div>
         );

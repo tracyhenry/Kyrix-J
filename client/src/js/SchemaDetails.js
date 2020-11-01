@@ -5,7 +5,7 @@ class SchemaDetails extends Component {
         const curTable = this.props.curTable;
         const trList =
             curTable &&
-            this.props.columns.slice(0, 12).map(col => (
+            this.props.columns.slice(0, 8).map(col => (
                 <tr key={col}>
                     <td className="tg-76gt">{col}</td>
                 </tr>

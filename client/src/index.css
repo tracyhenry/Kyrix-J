@@ -19,7 +19,7 @@ body {
     box-sizing: border-box;
     box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.32);
     /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .grid-container > div:not(.kyrixjheader) {
@@ -31,10 +31,11 @@ body {
     /*width: 100%;*/
     /*height: 100%;*/
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .explain {
+    display: none;
     position: absolute;
     right: 20px;
     bottom: 20px;
@@ -63,11 +64,16 @@ body {
 .erdiagram {
     /*background-color: coral;*/
     grid-area: 2 / 1 / 4 / 3;
-    position: relative;
+    position: absolute;
 }
 
 .erdiagramsvg {
     position: absolute;
+}
+
+.erdiagram > .graphbutton {
+    margin: 5px 5px;
+    float: right;
 }
 
 .circleg > circle {
@@ -161,8 +167,9 @@ body {
 
 .tabledetails > .schemadetails > .curtable th {
     font-weight: bold;
+    font-size: 25px;
     overflow: hidden;
-    padding: 10px 5px;
+    padding: 3px 5px;
 }
 
 .tabledetails > .schemadetails > .curtable .tg-76qt {
