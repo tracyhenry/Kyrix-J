@@ -29,6 +29,16 @@ class SchemaGraph extends Component {
             d3.select("#supermanlogo")
                 .attr("x", curNode.attr("cx") - this.supermanW / 2)
                 .attr("y", curNode.attr("cy") - this.supermanH / 2);
+            // check if we should stop
+            let maxVelocity = d3.max(
+                this.nodes
+                    .data()
+                    .map(d => d3.max([Math.abs(d.vx), Math.abs(d.vy)]))
+            );
+            if (maxVelocity <= 10) {
+                this.simulation.stop();
+                endFunction();
+            }
         };
         let endFunction = () => {
             if (this.nodes) {
@@ -120,8 +130,6 @@ class SchemaGraph extends Component {
             d => d.table_name
         );
         neighbors.push(this.props.curTable);
-        let oldNodeCount = this.nodes.size();
-        let oldLinkCount = this.links.size();
 
         // transition out non 1 hop neighbors
         d3.select("body").style("pointer-events", "none");
@@ -159,32 +167,20 @@ class SchemaGraph extends Component {
                     .selectAll("line")
                     .classed("graphnew", true);
                 this.nodes
-                    .filter(d => d.table_name != this.props.curTable)
+                    .filter(d => d.table_name !== this.props.curTable)
                     .each(d => (d.fx = d.fy = null));
 
                 // update and restart simulation
                 this.simulation.nodes(this.nodes.data());
                 this.simulation.force("link").links(this.links.data());
-                let alphaDecay = 0.1;
-                if (
-                    this.nodes.size() === oldNodeCount &&
-                    this.links.size() === oldLinkCount
-                )
-                    alphaDecay = 1;
                 d3.select("body").style("pointer-events", "none");
-                this.simulation
-                    .alpha(1)
-                    .alphaMin(0.1)
-                    .alphaDecay(alphaDecay)
-                    .restart();
+                this.simulation.alpha(1).restart();
             });
     };
 
     renderNewNeighbors = () => {
         let nodeData = [...this.nodes.data()];
         let linkData = [...this.links.data()];
-        let oldNodeCount = this.nodes.size();
-        let oldLinkCount = this.links.size();
         let neighbors = this.getOneHopNeighbors();
         for (let i = 0; i < neighbors.nodeData.length; i++) {
             let neighborTableName = neighbors.nodeData[i].table_name;
@@ -234,18 +230,8 @@ class SchemaGraph extends Component {
         // update and restart simulation
         this.simulation.nodes(nodeData);
         this.simulation.force("link").links(linkData);
-        let alphaDecay = 0.1;
-        if (
-            this.nodes.size() === oldNodeCount &&
-            this.links.size() === oldLinkCount
-        )
-            alphaDecay = 0.6;
         d3.select("body").style("pointer-events", "none");
-        this.simulation
-            .alpha(1)
-            .alphaMin(0.3)
-            .alphaDecay(alphaDecay)
-            .restart();
+        this.simulation.alpha(1).restart();
     };
 
     renderNewTable = () => {
@@ -285,11 +271,7 @@ class SchemaGraph extends Component {
         this.simulation.nodes(nodeData);
         this.simulation.force("link").links(linkData);
         d3.select("body").style("pointer-events", "none");
-        this.simulation
-            .alpha(1)
-            .alphaDecay(0.1)
-            .alphaMin(0.3)
-            .restart();
+        this.simulation.alpha(1).restart();
 
         var supermang = graphMainSvg.append("g").classed("supermang", true);
         supermang
