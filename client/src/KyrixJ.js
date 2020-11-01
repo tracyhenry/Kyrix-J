@@ -34,13 +34,14 @@ class KyrixJ extends Component {
         });
     };
 
-    handleKyrixJumpEnd = () => {
-        this.setState({
-            curTable: this.canvasIdToTable[
-                window.kyrix.getCurrentCanvasId(this.kyrixViewId)
-            ],
-            newTableType: "kyrixVisJump"
-        });
+    handleKyrixJumpEnd = jump => {
+        if (jump.type === "slide")
+            this.setState({
+                curTable: this.canvasIdToTable[
+                    window.kyrix.getCurrentCanvasId(this.kyrixViewId)
+                ],
+                newTableType: "kyrixVisJump"
+            });
     };
 
     handleKyrixLoad = () => {

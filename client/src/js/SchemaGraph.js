@@ -37,7 +37,7 @@ class SchemaGraph extends Component {
                     d.fy = d.y;
                 });
                 this.newStuff = d3.selectAll(".graphnew");
-                if (this.newStuff.size() == 0)
+                if (this.newStuff.size() === 0)
                     d3.select("body").style("pointer-events", "auto");
                 else this.showNewStuff();
             }
@@ -83,7 +83,7 @@ class SchemaGraph extends Component {
             .style("stroke", "#eee")
             .style("stroke-width", 3)
             .on("end", (d, i, nodes) => {
-                if (i == 0) {
+                if (i === 0) {
                     d3.selectAll(nodes).classed("graphnew", false);
                     d3.select("body").style("pointer-events", "auto");
                 }
@@ -112,15 +112,79 @@ class SchemaGraph extends Component {
             nodeData: nodes,
             linkData: links
         };
-
         return ret;
+    };
+
+    trimToOneHopNeighbors = () => {
+        let neighbors = this.getOneHopNeighbors().nodeData.map(
+            d => d.table_name
+        );
+        neighbors.push(this.props.curTable);
+        let oldNodeCount = this.nodes.size();
+        let oldLinkCount = this.links.size();
+
+        // transition out non 1 hop neighbors
+        d3.select("body").style("pointer-events", "none");
+        d3.transition()
+            .duration(210)
+            .on("start", () => {
+                d3.selectAll(".circleg > circle")
+                    .filter(d => neighbors.indexOf(d.table_name) === -1)
+                    .transition()
+                    .duration(100)
+                    .style("opacity", 0)
+                    .remove()
+                    .on("start", () => {
+                        d3.selectAll(".lineg > line")
+                            .filter(
+                                d =>
+                                    d.source.table_name !==
+                                        this.props.curTable &&
+                                    d.target.table_name !== this.props.curTable
+                            )
+                            .transition()
+                            .duration(100)
+                            .style("opacity", 0)
+                            .remove();
+                    });
+            })
+            .on("end", () => {
+                let graphMainSvg = d3.select(this.svgRef.current);
+                this.nodes = graphMainSvg
+                    .select(".circleg")
+                    .selectAll("circle")
+                    .classed("graphnew", true);
+                this.links = graphMainSvg
+                    .select(".lineg")
+                    .selectAll("line")
+                    .classed("graphnew", true);
+                this.nodes
+                    .filter(d => d.table_name != this.props.curTable)
+                    .each(d => (d.fx = d.fy = null));
+
+                // update and restart simulation
+                this.simulation.nodes(this.nodes.data());
+                this.simulation.force("link").links(this.links.data());
+                let alphaDecay = 0.1;
+                if (
+                    this.nodes.size() === oldNodeCount &&
+                    this.links.size() === oldLinkCount
+                )
+                    alphaDecay = 1;
+                d3.select("body").style("pointer-events", "none");
+                this.simulation
+                    .alpha(1)
+                    .alphaMin(0.1)
+                    .alphaDecay(alphaDecay)
+                    .restart();
+            });
     };
 
     renderNewNeighbors = () => {
         let nodeData = [...this.nodes.data()];
         let linkData = [...this.links.data()];
-        let oldNodeCount = this.nodes.data().length;
-        let oldLinkCount = this.links.data().length;
+        let oldNodeCount = this.nodes.size();
+        let oldLinkCount = this.links.size();
         let neighbors = this.getOneHopNeighbors();
         for (let i = 0; i < neighbors.nodeData.length; i++) {
             let neighborTableName = neighbors.nodeData[i].table_name;
@@ -172,11 +236,10 @@ class SchemaGraph extends Component {
         this.simulation.force("link").links(linkData);
         let alphaDecay = 0.1;
         if (
-            this.nodes.data().length === oldNodeCount &&
-            this.links.data().length === oldLinkCount
+            this.nodes.size() === oldNodeCount &&
+            this.links.size() === oldLinkCount
         )
             alphaDecay = 0.6;
-        // start simulartion only when there are new nodes
         d3.select("body").style("pointer-events", "none");
         this.simulation
             .alpha(1)
@@ -330,6 +393,7 @@ class SchemaGraph extends Component {
         var graphMainSvg = d3.select(this.svgRef.current);
 
         const jumpStartSwitch = jump => {
+            if (jump.type !== "slide") return;
             var nodes = graphMainSvg.selectAll("circle");
             // get source and dest coordinates
             var startTable = this.props.canvasIdToTable[
@@ -504,6 +568,7 @@ class SchemaGraph extends Component {
                             fontSize: 12,
                             fontFamily: "Arial"
                         }}
+                        onClick={this.trimToOneHopNeighbors}
                     >
                         trim
                     </Button>
