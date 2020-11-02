@@ -569,7 +569,7 @@ class SchemaGraph extends Component {
                 ></svg>
                 <ButtonGroup
                     className="graphbutton"
-                    size="large"
+                    size="small"
                     variant="text"
                     color="primary"
                     aria-label="text primary button group"
@@ -577,7 +577,7 @@ class SchemaGraph extends Component {
                     <Button
                         style={{
                             color: "#1976d2",
-                            fontSize: 12,
+                            fontSize: 10,
                             fontFamily: "Arial"
                         }}
                         onClick={this.reCenterGraph}
@@ -587,7 +587,7 @@ class SchemaGraph extends Component {
                     <Button
                         style={{
                             color: "#1976d2",
-                            fontSize: 12,
+                            fontSize: 10,
                             fontFamily: "Arial"
                         }}
                         onClick={this.trimToOneHopNeighbors}
@@ -597,7 +597,7 @@ class SchemaGraph extends Component {
                     <Button
                         style={{
                             color: "#1976d2",
-                            fontSize: 12,
+                            fontSize: 10,
                             fontFamily: "Arial"
                         }}
                         onClick={this.showNewStuff}
