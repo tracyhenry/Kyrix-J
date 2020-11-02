@@ -80,6 +80,7 @@ class SchemaGraph extends Component {
         if (!this.props.kyrixLoaded) return;
         if (
             this.props.newTableType === "tableDetailsClick" ||
+            this.props.newTableType === "kyrixRandomJump" ||
             this.props.newTableType === "kyrixLoaded"
         )
             this.renderNewTable();
@@ -449,7 +450,7 @@ class SchemaGraph extends Component {
             d3.select("#supermanlogo")
                 .transition()
                 .ease(d3.easeLinear)
-                .duration(2700)
+                .duration(jump.type == "slide" ? 2700 : 200)
                 .attr("x", endCx - this.supermanW / 2)
                 .attr("y", endCy - this.supermanH / 2)
                 .on("start", () => {

@@ -641,7 +641,11 @@
         var hasDynamic = false;
         for (var i = 0; i < gvd.curCanvas.layers.length; i++)
             if (!gvd.curCanvas.layers[i].isStatic) hasDynamic = true;
-        if (!hasDynamic) d3.selectAll(viewClass + ".oldlayerg").remove();
+        if (!hasDynamic)
+            d3.selectAll(viewClass + ".oldlayerg")
+                .transition(param.literalZoomFadeOutDuration)
+                .style("opacity", 0)
+                .remove();
 
         postOldLayerRemoval();
 
@@ -711,6 +715,7 @@
 
     function load(predArray, newVpX, newVpY, newScale, viewId, canvasId, jump) {
         var destViewId = viewId;
+        logHistory(viewId, jump);
 
         // stop any tweens
         d3.selection().interrupt("zoomInTween_" + destViewId);
@@ -729,7 +734,6 @@
         gvd.initialScale = newScale;
         gvd.renderData = null;
         gvd.pendingBoxRequest = null;
-        gvd.history = [];
 
         // pre animation
         preJump(destViewId, jump);
@@ -2211,7 +2215,7 @@
             d3.select(viewClass + ".gobackbutton")
                 .attr("disabled", null)
                 .on("click", function() {
-                    backspaceSemanticJump(viewId);
+                    backspaceJump(viewId);
                 });
         else d3.select(viewClass + ".gobackbutton").attr("disabled", true);
     }
@@ -2251,7 +2255,7 @@
     }
 
     // handler for go back button
-    function backspaceSemanticJump(viewId) {
+    function backspaceJump(viewId) {
         var gvd = globalVar.views[viewId];
 
         // get and pop last history object
@@ -2284,7 +2288,7 @@
                 curHistory.startView,
                 curHistory.endView
             );
-        else {
+        else if (newJump.type == param.slide) {
             // start a exit & fade transition
             var slideDirection =
                 "slideDirection" in newJump
@@ -2298,6 +2302,14 @@
                 gvd.initialScale || 1,
                 newJump
             );
+        } else if (newJump.type == param.load) {
+            var gotCanvas = getCurCanvas(viewId);
+            gotCanvas.then(function() {
+                // render static layers
+                renderStaticLayers(viewId);
+                // post animation
+                postJump(viewId, newJump);
+            });
         }
     }
 

@@ -12,7 +12,8 @@ class KyrixJ extends Component {
         curTable: "",
 
         // type of interaction that generates the new table
-        // can be one of ["graphClick", "kyrixLoaded", "kyrixVisJump", "tableDetailsClick"]
+        // can be one of ["graphClick", "kyrixLoaded",
+        // "kyrixVisJump", "tableDetailsClick", "kyrixRandomJump"]
         // used by SchemaGraph / KyrixVis (or other components in the future)
         // to do different things
         newTableType: "",
@@ -35,12 +36,18 @@ class KyrixJ extends Component {
     };
 
     handleKyrixJumpEnd = jump => {
+        let nextCurTable = this.canvasIdToTable[
+            window.kyrix.getCurrentCanvasId(this.kyrixViewId)
+        ];
         if (jump.type === "slide")
             this.setState({
-                curTable: this.canvasIdToTable[
-                    window.kyrix.getCurrentCanvasId(this.kyrixViewId)
-                ],
+                curTable: nextCurTable,
                 newTableType: "kyrixVisJump"
+            });
+        else if (jump.type == "load")
+            this.setState({
+                curTable: nextCurTable,
+                newTableType: "kyrixRandomJump"
             });
     };
 
