@@ -15,6 +15,27 @@ class KyrixVis extends Component {
             });
     };
 
+    componentDidUpdate = () => {
+        if (!this.props.kyrixLoaded) return;
+        if (
+            this.props.newTableType === "tableDetailsClick" ||
+            this.props.newTableType === "graphClick"
+        )
+            this.jumpToClickedTable();
+    };
+
+    jumpToClickedTable = () => {
+        let curTable = this.props.curTable;
+        let defaults = this.props.clickJumpDefaults[curTable];
+        window.kyrix.randomJump(
+            this.props.kyrixViewId,
+            defaults.canvasId,
+            defaults.predDict,
+            defaults.newVpX,
+            defaults.newVpY
+        );
+    };
+
     render() {
         return (
             <div className="kyrixdiv" ref={this.kyrixdivRef}>

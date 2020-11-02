@@ -13,7 +13,7 @@ class KyrixJ extends Component {
 
         // type of interaction that generates the new table
         // can be one of ["graphClick", "kyrixLoaded", "kyrixVisJump", "tableDetailsClick"]
-        // used by SchemaGraph (or maybe some other components)
+        // used by SchemaGraph / KyrixVis (or other components in the future)
         // to do different things
         newTableType: "",
         kyrixLoaded: false
@@ -91,7 +91,15 @@ class KyrixJ extends Component {
                     handleClick={this.handleTableDetailsClick}
                 />
                 <SlideReel />
-                <KyrixVis handleKyrixLoad={this.handleKyrixLoad} />
+                <KyrixVis
+                    handleKyrixLoad={this.handleKyrixLoad}
+                    curTable={this.state.curTable}
+                    newTableType={this.state.newTableType}
+                    kyrixLoaded={this.state.kyrixLoaded}
+                    // app metadata (TODO: combine them into one field)
+                    kyrixViewId={this.kyrixViewId}
+                    clickJumpDefaults={this.clickJumpDefaults}
+                />
                 <QueryDetails />
             </>
         );
@@ -307,6 +315,45 @@ class KyrixJ extends Component {
             "Full Name Uppercase",
             "Warehouse Load Date"
         ]
+    };
+
+    clickJumpDefaults = {
+        building: {
+            canvasId: "ssv0_level0",
+            predDict: {},
+            newVpX: 0,
+            newVpY: 0
+        },
+        room: {
+            canvasId: "room_treemap",
+            predDict: {
+                layer0: {
+                    "==": ["fclt_building_key", "32"]
+                }
+            },
+            newVpX: 0,
+            newVpY: 0
+        },
+        student: {
+            canvasId: "student_pie",
+            predDict: {
+                layer0: {
+                    "==": ["department", "6"]
+                }
+            },
+            newVpX: 0,
+            newVpY: 0
+        },
+        course: {
+            canvasId: "course_bar",
+            predDict: {
+                layer0: {
+                    "==": ["meet_place", "32-123"]
+                }
+            },
+            newVpX: 0,
+            newVpY: 0
+        }
     };
 }
 

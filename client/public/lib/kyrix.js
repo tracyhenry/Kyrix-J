@@ -279,6 +279,22 @@
             type: "load"
         });
     }
+
+    function randomJump(viewId, canvasId, predDict, newVpX, newVpY) {
+        var gvd = globalVar.views[viewId];
+
+        // get pred array
+        var predArray = [];
+        var destCanvas = getCanvasById(canvasId);
+        var numLayer = destCanvas.layers.length;
+        for (var i = 0; i < numLayer; i++)
+            if ("layer" + i in predDict) predArray.push(predDict["layer" + i]);
+            else predArray.push({});
+
+        // call load
+        load(predArray, newVpX, newVpY, 1, viewId, canvasId, {type: "load"});
+    }
+
     // setting up global variables
     var globalVar = {};
 
@@ -611,9 +627,6 @@
             .style("opacity", 1);
 
         // remove old layers if appropriate
-        for (var i = 0; i < gvd.curCanvas.layers.length; i++)
-            if (gvd.curCanvas.layers[i].isStatic)
-                d3.selectAll(viewClass + ".oldlayerg" + ".layer" + i).remove();
         if (
             !(
                 jumpType == param.geometricSemanticZoom ||
@@ -623,6 +636,13 @@
             )
         )
             d3.selectAll(viewClass + ".oldlayerg").remove();
+
+        // check if all layers are static
+        var hasDynamic = false;
+        for (var i = 0; i < gvd.curCanvas.layers.length; i++)
+            if (!gvd.curCanvas.layers[i].isStatic) hasDynamic = true;
+        if (!hasDynamic) d3.selectAll(viewClass + ".oldlayerg").remove();
+
         postOldLayerRemoval();
 
         // execute on jump handlers
@@ -3317,6 +3337,7 @@
     exports.triggerJump = triggerJump;
     exports.triggerPan = triggerPan;
     exports.triggerPredicate = triggerPredicate;
+    exports.randomJump = randomJump;
 
     Object.defineProperty(exports, "__esModule", {value: true});
 });
