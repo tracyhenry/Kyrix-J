@@ -179,11 +179,9 @@ class SchemaGraph extends Component {
             .transition()
             .duration(500)
             .style("stroke", "#111")
-            .style("stroke-width", 8)
             .transition()
             .duration(500)
-            .style("stroke", "#eee")
-            .style("stroke-width", 3)
+            .style("stroke", null)
             .on("end", (d, i, nodes) => {
                 if (i === 0) {
                     d3.selectAll(nodes).classed("graphnew", false);
