@@ -18,6 +18,7 @@ class KyrixJ extends Component {
         // to do different things
         newTableType: "",
         curCanvas: "",
+        curPredicates: [],
         kyrixLoaded: false
     };
 
@@ -39,6 +40,9 @@ class KyrixJ extends Component {
     handleKyrixJumpEnd = jump => {
         let nextCurCanvas = window.kyrix.getCurrentCanvasId(this.kyrixViewId);
         let nextCurTable = this.canvasIdToTable[nextCurCanvas];
+        let curPredicates = window.kyrix.getGlobalVarDictionary(
+            this.kyrixViewId
+        ).predicates;
         if (jump.type === "slide")
             this.setState({
                 curTable: nextCurTable,
@@ -50,7 +54,8 @@ class KyrixJ extends Component {
                 newTableType: "kyrixRandomJump"
             });
         this.setState({
-            curCanvas: nextCurCanvas
+            curCanvas: nextCurCanvas,
+            curPredicates: curPredicates
         });
     };
 
@@ -61,9 +66,13 @@ class KyrixJ extends Component {
             this.handleKyrixJumpEnd
         );
         let curCanvas = window.kyrix.getCurrentCanvasId(this.kyrixViewId);
+        let curPredicates = window.kyrix.getGlobalVarDictionary(
+            this.kyrixViewId
+        ).predicates;
         this.setState({
             curTable: this.canvasIdToTable[curCanvas],
             curCanvas: curCanvas,
+            curPredicates: curPredicates,
             newTableType: "kyrixLoaded",
             kyrixLoaded: true
         });
@@ -113,6 +122,7 @@ class KyrixJ extends Component {
                 <QueryDetails
                     curCanvas={this.state.curCanvas}
                     sqlQuery={this.sqlQuery}
+                    kyrixPredicates={this.state.curPredicates}
                 />
             </>
         );

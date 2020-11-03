@@ -269,6 +269,11 @@ body {
     width: 80%;
 }
 
+.filterdiv li {
+    font-size: 18px;
+    padding: 2px;
+}
+
 .filterdiv {
     /*padding-top: 35px;*/
 }
