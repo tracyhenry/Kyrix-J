@@ -92,10 +92,6 @@ class SchemaGraph extends Component {
         let oldTX = oldTransform.x;
         let oldTY = oldTransform.y;
 
-        let curNode = this.nodes.filter(
-            d => d.table_name === this.props.curTable
-        );
-
         let newTX =
             this.props.width / 2 - d3.mean(this.nodes.data().map(d => d.x));
         let newTY =

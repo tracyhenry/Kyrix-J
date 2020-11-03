@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {githubGist} from "react-syntax-highlighter/dist/esm/styles/hljs";
+import Divider from "@material-ui/core/Divider";
 
 class QueryDetails extends Component {
     state = {};
@@ -36,8 +37,17 @@ class QueryDetails extends Component {
             <div className="querydetails">
                 <div className="sqlquerydiv">
                     <h4>Current SQL query</h4>
+                    <Divider />
                     <div className="sqlquery">
-                        <SyntaxHighlighter language="sql" style={githubGist}>
+                        <SyntaxHighlighter
+                            language="sql"
+                            style={githubGist}
+                            customStyle={{
+                                lineHeight: 1.5,
+                                fontSize: 15,
+                                border: "white"
+                            }}
+                        >
                             {this.props.curCanvas.length > 0
                                 ? this.props.sqlQuery[this.props.curCanvas]
                                 : ""}
@@ -46,6 +56,7 @@ class QueryDetails extends Component {
                 </div>
                 <div className="filterdiv">
                     <h4>Drill down filters</h4>
+                    <Divider />
                     <ul>{predLis}</ul>
                 </div>
 
