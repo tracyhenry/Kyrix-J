@@ -62,7 +62,10 @@ class TableDetails extends Component {
                 <div className="tablelist">
                     <ul className="tablelistul">{visibleTableList}</ul>
                 </div>
-                <SchemaDetails curTable={curTable} columns={columns} />
+                <div className="schemadetailsdiv">
+                    <SchemaDetails curTable={curTable} columns={columns} />
+                    {/*<SchemaDetails curTable={curTable} columns={columns} />*/}
+                </div>
                 <div className="explain">Table Details View</div>
             </div>
         );

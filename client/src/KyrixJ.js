@@ -44,7 +44,7 @@ class KyrixJ extends Component {
                 curTable: nextCurTable,
                 newTableType: "kyrixVisJump"
             });
-        else if (jump.type == "load")
+        else if (jump.type === "randomJumpBack")
             this.setState({
                 curTable: nextCurTable,
                 newTableType: "kyrixRandomJump"

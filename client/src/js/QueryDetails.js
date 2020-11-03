@@ -16,7 +16,6 @@ class QueryDetails extends Component {
                         GROUP BY campus_sector;
                     </div>
                 </div>
-
                 <div className="filterdiv">
                     <h4>Drill down filters</h4>
                     <ul>

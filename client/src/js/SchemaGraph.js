@@ -192,6 +192,7 @@ class SchemaGraph extends Component {
     };
 
     getOneHopNeighbors = () => {
+        let curTable = this.props.curTable;
         let nodes = [];
         let links = [];
         const edges = this.props.graphEdges;
@@ -450,7 +451,7 @@ class SchemaGraph extends Component {
             d3.select("#supermanlogo")
                 .transition()
                 .ease(d3.easeLinear)
-                .duration(jump.type == "slide" ? 2700 : 200)
+                .duration(jump.type === "slide" ? 2700 : 200)
                 .attr("x", endCx - this.supermanW / 2)
                 .attr("y", endCy - this.supermanH / 2)
                 .on("start", () => {

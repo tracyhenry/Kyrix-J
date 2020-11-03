@@ -98,7 +98,7 @@ body {
 .tabledetails {
     grid-area: 4 / 1 / 8 / 3;
     display: grid;
-    grid-template: auto 1fr 5% / 30% 70%;
+    grid-template: auto 1fr 5% / 25% 75%;
 }
 
 .tabledetails > .searchbar {
@@ -147,22 +147,30 @@ body {
     background-color: #e9e9e9;
 }
 
-.tabledetails > .schemadetails {
-    /*background-color: burlywood;*/
+.schemadetailsdiv {
     grid-area: 2 / 2 / 3 / 3;
     display: flex;
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
 }
 
-.tabledetails > .schemadetails > .curtable {
+.schemadetails {
+    /*background-color: burlywood;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.schemadetails > .curtable {
     font-size: 14px;
     table-layout: fixed;
-    width: 45%;
+    width: 80%;
     overflow-y: scroll;
 }
 
-.tabledetails > .schemadetails > .curtable td {
+.schemadetails > .curtable td {
     border-color: #ddd;
     border-style: solid;
     border-width: 1px;
@@ -171,24 +179,25 @@ body {
     padding: 5px 3px;
 }
 
-.tabledetails > .schemadetails > .curtable th {
+.schemadetails > .curtable th {
     font-weight: bold;
     font-size: 25px;
-    overflow: hidden;
+    white-space: nowrap;
+    overflow: scroll;
     padding: 3px 5px;
 }
 
-.tabledetails > .schemadetails > .curtable .tg-76qt {
+.schemadetails > .curtable .tg-76qt {
     border-color: inherit;
     text-align: center;
     vertical-align: center;
 }
 
-.tabledetails > .schemadetails > .curtable tr:nth-child(even) {
+.schemadetails > .curtable tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-.tabledetails > .schemadetails > .curtable td:hover {
+.schemadetails > .curtable td:hover {
     background-color: #ddd;
 }
 
@@ -234,34 +243,42 @@ body {
 .querydetails {
     /*background-color: darkseagreen;*/
     grid-area: 1 / 6 / 5 / 8;
+    display: flex;
+    flex-direction: column;
+    /*justify-content: space-around;*/
+    /*align-items: center;*/
 }
 
 .querydetails > div:not(.explain) {
     display: block;
-    width: auto;
-    height: 30%;
-    margin: 10%;
-    border: midnightblue 1px dotted;
-    border-radius: 7px;
+    /*height: 50%;*/
+    /*margin: 10%;*/
+    /*border: midnightblue 1px dotted;*/
+    /*border-radius: 7px;*/
     position: relative;
     padding-left: 20px;
 }
 
 .sqlquerydiv {
-    padding-top: 15px;
+    /*padding-top: 15px;*/
+}
+
+.sqlquery {
+    margin: 10px;
 }
 
 .filterdiv {
-    padding-top: 35px;
+    /*padding-top: 35px;*/
 }
 .querydetails h4 {
-    position: absolute;
-    top: -40px;
+    /*margin: 10px;*/
+    /*position: absolute;*/
+    /*top: -40px;*/
 }
 
 .querydetails ul {
-    list-style: none;
-    margin-left: -40px;
+    /*list-style: none;*/
+    /*margin-left: -40px;*/
 }
 
 /* ====================================== from kyrix ====================================== */

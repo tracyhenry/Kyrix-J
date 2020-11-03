@@ -276,7 +276,7 @@
 
         // step 2: load
         load(predArray, newVpX, newVpY, k, viewId, gvd.curCanvasId, {
-            type: "load"
+            type: param.load
         });
     }
 
@@ -292,7 +292,9 @@
             else predArray.push({});
 
         // call load
-        load(predArray, newVpX, newVpY, 1, viewId, canvasId, {type: "load"});
+        load(predArray, newVpX, newVpY, 1, viewId, canvasId, {
+            type: "randomJump"
+        });
     }
 
     // setting up global variables
@@ -1708,6 +1710,7 @@
     param.semanticZoom = "semantic_zoom";
     param.geometricSemanticZoom = "geometric_semantic_zoom";
     param.load = "load";
+    param.randomJump = "randomJump";
     param.highlight = "highlight";
     param.slide = "slide";
 
@@ -2302,7 +2305,8 @@
                 gvd.initialScale || 1,
                 newJump
             );
-        } else if (newJump.type == param.load) {
+        } else if (newJump.type == param.randomJump) {
+            newJump.type = param.randomJump + "Back";
             var gotCanvas = getCurCanvas(viewId);
             gotCanvas.then(function() {
                 // render static layers
