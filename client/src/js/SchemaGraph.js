@@ -192,7 +192,6 @@ class SchemaGraph extends Component {
     };
 
     getOneHopNeighbors = () => {
-        let curTable = this.props.curTable;
         let nodes = [];
         let links = [];
         const edges = this.props.graphEdges;

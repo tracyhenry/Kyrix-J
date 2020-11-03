@@ -24,6 +24,12 @@ class KyrixVis extends Component {
             this.jumpToClickedTable();
     };
 
+    // this is necessary! Otherwise there'll be cyclic calls
+    // seems like every KyrixJ.setState call will cause an update
+    // to all components
+    shouldComponentUpdate = nextProps =>
+        nextProps.curTable !== this.props.curTable;
+
     jumpToClickedTable = () => {
         let curTable = this.props.curTable;
         let defaults = this.props.clickJumpDefaults[curTable];

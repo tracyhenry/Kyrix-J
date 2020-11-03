@@ -17,6 +17,7 @@ class KyrixJ extends Component {
         // used by SchemaGraph / KyrixVis (or other components in the future)
         // to do different things
         newTableType: "",
+        curCanvas: "",
         kyrixLoaded: false
     };
 
@@ -36,9 +37,8 @@ class KyrixJ extends Component {
     };
 
     handleKyrixJumpEnd = jump => {
-        let nextCurTable = this.canvasIdToTable[
-            window.kyrix.getCurrentCanvasId(this.kyrixViewId)
-        ];
+        let nextCurCanvas = window.kyrix.getCurrentCanvasId(this.kyrixViewId);
+        let nextCurTable = this.canvasIdToTable[nextCurCanvas];
         if (jump.type === "slide")
             this.setState({
                 curTable: nextCurTable,
@@ -49,6 +49,9 @@ class KyrixJ extends Component {
                 curTable: nextCurTable,
                 newTableType: "kyrixRandomJump"
             });
+        this.setState({
+            curCanvas: nextCurCanvas
+        });
     };
 
     handleKyrixLoad = () => {
@@ -57,10 +60,10 @@ class KyrixJ extends Component {
             this.kyrixViewId,
             this.handleKyrixJumpEnd
         );
+        let curCanvas = window.kyrix.getCurrentCanvasId(this.kyrixViewId);
         this.setState({
-            curTable: this.canvasIdToTable[
-                window.kyrix.getCurrentCanvasId(this.kyrixViewId)
-            ],
+            curTable: this.canvasIdToTable[curCanvas],
+            curCanvas: curCanvas,
             newTableType: "kyrixLoaded",
             kyrixLoaded: true
         });
@@ -107,7 +110,10 @@ class KyrixJ extends Component {
                     kyrixViewId={this.kyrixViewId}
                     clickJumpDefaults={this.clickJumpDefaults}
                 />
-                <QueryDetails />
+                <QueryDetails
+                    curCanvas={this.state.curCanvas}
+                    sqlQuery={this.sqlQuery}
+                />
             </>
         );
     }
@@ -115,6 +121,22 @@ class KyrixJ extends Component {
     // static dataset info - shouldn't be in states
     // TODO: move it to a JSON and fetch it on page load
     kyrixViewId = "ssv0";
+
+    sqlQuery = {
+        ssv0_level0: "SELECT *\nFROM building",
+        ssv0_level1: "SELECT *\nFROM building",
+        ssv0_level2: "SELECT *\nFROM building",
+        ssv0_level3: "SELECT *\nFROM building",
+        room_treemap:
+            "SELECT organization_name, SUM(area)\nFROM room\nGROUP BY organization_name;",
+        room_barchart:
+            "SELECT use_desc, major_use_desc, SUM(area)\nFrom room\nGROUP BY use_desc, major_use_desc;",
+        room_circlepack: "SELECT *\nFROM room;",
+        course_bar:
+            "SELECT department_code, SUM(total_units)\nFROM course\nGROUP BY department_code;",
+        student_pie:
+            "SELECT student_year, COUNT(*)\nFROM student\nGROUP BY student_year;"
+    };
 
     canvasIdToTable = {
         ssv0_level0: "building",

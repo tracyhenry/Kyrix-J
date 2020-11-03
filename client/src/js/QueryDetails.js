@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import {githubGist} from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 class QueryDetails extends Component {
     state = {};
@@ -9,11 +11,11 @@ class QueryDetails extends Component {
                 <div className="sqlquerydiv">
                     <h4>Current SQL query</h4>
                     <div className="sqlquery">
-                        SELECT campus_sector, AVG(building_height)
-                        <br />
-                        FROM buildings
-                        <br />
-                        GROUP BY campus_sector;
+                        <SyntaxHighlighter language="sql" style={githubGist}>
+                            {this.props.curCanvas.length > 0
+                                ? this.props.sqlQuery[this.props.curCanvas]
+                                : ""}
+                        </SyntaxHighlighter>
                     </div>
                 </div>
                 <div className="filterdiv">
