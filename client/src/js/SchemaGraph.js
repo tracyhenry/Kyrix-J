@@ -95,8 +95,11 @@ class SchemaGraph extends Component {
         let curNode = this.nodes.filter(
             d => d.table_name === this.props.curTable
         );
-        let newTX = this.props.width / 2 - curNode.attr("cx");
-        let newTY = this.props.height / 2 - curNode.attr("cy");
+
+        let newTX =
+            this.props.width / 2 - d3.mean(this.nodes.data().map(d => d.x));
+        let newTY =
+            this.props.height / 2 - d3.mean(this.nodes.data().map(d => d.y));
         let newTransform = d3.zoomIdentity.translate(newTX, newTY);
 
         d3.select("body").style("pointer-events", "none");
