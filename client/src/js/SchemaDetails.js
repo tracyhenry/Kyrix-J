@@ -23,19 +23,15 @@ class SchemaDetails extends Component {
             <div className="schemadetails">
                 {curTable && (
                     <table className="curtable">
-                        <thead>
-                            <CSSTransition
-                                key={curTable + ".header"}
-                                classNames="tablefade"
-                                in={true}
-                                appear={true}
-                                timeout={300}
-                            >
-                                <tr>
-                                    <th className="tg-76qt">{curTable}</th>
-                                </tr>
-                            </CSSTransition>
-                        </thead>
+                        <CSSTransition
+                            key={curTable + ".caption"}
+                            classNames="tablefade"
+                            in={true}
+                            appear={true}
+                            timeout={300}
+                        >
+                            <caption>{curTable}</caption>
+                        </CSSTransition>
                         <tbody>{trList}</tbody>
                     </table>
                 )}

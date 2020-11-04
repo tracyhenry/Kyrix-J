@@ -64,7 +64,6 @@ class TableDetails extends Component {
                 </div>
                 <div className="schemadetailsdiv">
                     <SchemaDetails curTable={curTable} columns={columns} />
-                    {/*<SchemaDetails curTable={curTable} columns={columns} />*/}
                 </div>
                 <div className="explain">Table Details View</div>
             </div>

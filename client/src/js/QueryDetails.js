@@ -36,7 +36,7 @@ class QueryDetails extends Component {
         return (
             <div className="querydetails">
                 <div className="sqlquerydiv">
-                    <h4>Current SQL query</h4>
+                    <h4>Current SQL Query</h4>
                     <Divider />
                     <div className="sqlquery">
                         <SyntaxHighlighter
@@ -55,7 +55,7 @@ class QueryDetails extends Component {
                     </div>
                 </div>
                 <div className="filterdiv">
-                    <h4>Drill down filters</h4>
+                    <h4>Current SQL Filters</h4>
                     <Divider />
                     <ul>{predLis}</ul>
                 </div>

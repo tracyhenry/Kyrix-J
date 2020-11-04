@@ -168,29 +168,33 @@ body {
     table-layout: fixed;
     width: 80%;
     overflow-y: scroll;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
 }
 
 .schemadetails > .curtable td {
-    border-color: #ddd;
-    border-style: solid;
-    border-width: 1px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    vertical-align: center;
     white-space: nowrap;
     overflow: scroll;
     padding: 5px 3px;
 }
 
-.schemadetails > .curtable th {
+.schemadetails > .curtable tr:last-child > td {
+    border-bottom: none;
+}
+
+.schemadetails > .curtable caption {
     font-weight: bold;
     font-size: 25px;
     white-space: nowrap;
+    text-align: center;
+    color: black;
     overflow: scroll;
     padding: 3px 5px;
-}
-
-.schemadetails > .curtable .tg-76qt {
-    border-color: inherit;
-    text-align: center;
-    vertical-align: center;
 }
 
 .schemadetails > .curtable tr:nth-child(even) {
@@ -277,15 +281,9 @@ body {
 .filterdiv {
     /*padding-top: 35px;*/
 }
-.querydetails h4 {
-    /*margin: 10px;*/
-    /*position: absolute;*/
-    /*top: -40px;*/
-}
 
 .querydetails ul {
-    /*list-style: none;*/
-    /*margin-left: -40px;*/
+    margin-top: 10px;
 }
 
 /* ====================================== from kyrix ====================================== */
