@@ -39,10 +39,35 @@ class KyrixJ extends Component {
         window.removeEventListener("resize", resizeSvgs);
     };
 
+    getPredArrayFromPredDict = pd => {
+        let layers = Object.keys(pd);
+        let predArray = [];
+        for (let i = 0; i < layers.length; i++) predArray.push(pd[layers[i]]);
+        return predArray;
+    };
+
     handleSchemaGraphNodeClick = d => {
+        let tableName = d.table_name;
         this.setState({
-            curTable: d.table_name,
+            curTable: tableName,
             newTableType: "graphClick",
+            curCanvas: this.clickJumpDefaults[tableName].canvasId,
+            curPredicates: this.getPredArrayFromPredDict(
+                this.clickJumpDefaults[tableName].predDict
+            ),
+            searchBarValue: ""
+        });
+    };
+
+    handleTableDetailsClick = event => {
+        let tableName = event.target.innerHTML;
+        this.setState({
+            curTable: tableName,
+            newTableType: "tableDetailsClick",
+            curCanvas: this.clickJumpDefaults[tableName].canvasId,
+            curPredicates: this.getPredArrayFromPredDict(
+                this.clickJumpDefaults[tableName].predDict
+            ),
             searchBarValue: ""
         });
     };
@@ -56,17 +81,27 @@ class KyrixJ extends Component {
         if (jump.type === "slide")
             this.setState({
                 curTable: nextCurTable,
-                newTableType: "kyrixVisJump"
+                newTableType: "kyrixVisJump",
+                curCanvas: nextCurCanvas,
+                curPredicates: curPredicates,
+                searchBarValue: ""
             });
         else if (jump.type === "randomJumpBack")
             this.setState({
                 curTable: nextCurTable,
-                newTableType: "kyrixRandomJump"
+                newTableType: "kyrixRandomJump",
+                curCanvas: nextCurCanvas,
+                curPredicates: curPredicates,
+                searchBarValue: ""
             });
-        this.setState({
-            curCanvas: nextCurCanvas,
-            curPredicates: curPredicates
-        });
+        else if (jump.type !== "randomJump")
+            this.setState({
+                curTable: nextCurTable,
+                newTableType: "kyrixVisJump",
+                curCanvas: nextCurCanvas,
+                curPredicates: curPredicates,
+                searchBarValue: ""
+            });
     };
 
     handleKyrixLoad = () => {
@@ -84,14 +119,7 @@ class KyrixJ extends Component {
             curCanvas: curCanvas,
             curPredicates: curPredicates,
             newTableType: "kyrixLoaded",
-            kyrixLoaded: true
-        });
-    };
-
-    handleTableDetailsClick = event => {
-        this.setState({
-            curTable: event.target.innerHTML,
-            newTableType: "tableDetailsClick",
+            kyrixLoaded: true,
             searchBarValue: ""
         });
     };
