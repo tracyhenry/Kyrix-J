@@ -10,9 +10,9 @@ class TableDetails extends Component {
         };
     }
 
-    handleSearchBarChange = event => {
+    findMatchingTables = () => {
         // find matching tables
-        let value = event.target.value;
+        let value = this.props.searchBarValue;
         let columns = this.props.tableColumns;
         let matchingTables = [];
         for (let table in columns) {
@@ -31,16 +31,12 @@ class TableDetails extends Component {
                 match = true;
             if (match) matchingTables.push(table);
         }
-
-        // set state
-        this.setState({
-            searchBarValue: value,
-            visibleTables: matchingTables
-        });
+        return matchingTables;
     };
 
     render() {
-        const visibleTableList = this.state.visibleTables.map(d => (
+        let matchingTables = this.findMatchingTables();
+        const visibleTableList = matchingTables.map(d => (
             <li key={d} onClick={this.props.handleClick}>
                 {d}
             </li>
@@ -55,8 +51,8 @@ class TableDetails extends Component {
                         type="text"
                         size="30"
                         placeholder="Search for a table..."
-                        value={this.state.searchBarValue}
-                        onChange={this.handleSearchBarChange}
+                        value={this.props.searchBarValue}
+                        onChange={this.props.handleSearchBarChange}
                     />
                 </div>
                 <div className="tablelist">

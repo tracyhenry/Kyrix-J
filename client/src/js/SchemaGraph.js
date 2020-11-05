@@ -87,6 +87,9 @@ class SchemaGraph extends Component {
         else this.renderNewNeighbors();
     };
 
+    shouldComponentUpdate = nextProps =>
+        nextProps.curTable !== this.props.curTable;
+
     reCenterGraph = () => {
         let oldTransform = d3.zoomTransform(this.svgRef.current);
         let oldTX = oldTransform.x;

@@ -17,9 +17,18 @@ class KyrixJ extends Component {
         // used by SchemaGraph / KyrixVis (or other components in the future)
         // to do different things
         newTableType: "",
+
+        // current kyrix canvas
         curCanvas: "",
+
+        // current sql filters
         curPredicates: [],
-        kyrixLoaded: false
+
+        // whether kyrix is loaded
+        kyrixLoaded: false,
+
+        // search bar value in TableDetails
+        searchBarValue: ""
     };
 
     componentDidMount = () => {
@@ -33,7 +42,8 @@ class KyrixJ extends Component {
     handleSchemaGraphNodeClick = d => {
         this.setState({
             curTable: d.table_name,
-            newTableType: "graphClick"
+            newTableType: "graphClick",
+            searchBarValue: ""
         });
     };
 
@@ -81,7 +91,15 @@ class KyrixJ extends Component {
     handleTableDetailsClick = event => {
         this.setState({
             curTable: event.target.innerHTML,
-            newTableType: "tableDetailsClick"
+            newTableType: "tableDetailsClick",
+            searchBarValue: ""
+        });
+    };
+
+    handleTableDetailsSearchBarChange = event => {
+        // set state
+        this.setState({
+            searchBarValue: event.target.value
         });
     };
 
@@ -107,7 +125,11 @@ class KyrixJ extends Component {
                 <TableDetails
                     tableColumns={this.tableColumns}
                     curTable={this.state.curTable}
+                    searchBarValue={this.state.searchBarValue}
                     handleClick={this.handleTableDetailsClick}
+                    handleSearchBarChange={
+                        this.handleTableDetailsSearchBarChange
+                    }
                 />
                 <SlideReel />
                 <KyrixVis
