@@ -138,8 +138,8 @@ class KyrixJ extends Component {
                     Superman @ MIT Data Warehouse
                 </div>
                 <SchemaGraph
-                    width="600"
-                    height="600"
+                    width="1000"
+                    height="1000"
                     kyrixLoaded={this.state.kyrixLoaded}
                     curTable={this.state.curTable}
                     newTableType={this.state.newTableType}
