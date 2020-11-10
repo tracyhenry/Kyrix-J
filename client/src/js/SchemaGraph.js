@@ -425,15 +425,15 @@ class SchemaGraph extends Component {
                 jump.backspace ? jump.destId : jump.sourceId
             ];
             var startNode = nodes.filter(d => d.table_name === startTable);
-            var startCx = startNode.attr("cx");
-            var startCy = startNode.attr("cy");
+            var startCx = +startNode.attr("cx");
+            var startCy = +startNode.attr("cy");
 
             var endTable = this.props.canvasIdToTable[
                 jump.backspace ? jump.sourceId : jump.destId
             ];
             var endNode = nodes.filter(d => d.table_name === endTable);
-            var endCx = endNode.attr("cx");
-            var endCy = endNode.attr("cy");
+            var endCx = +endNode.attr("cx");
+            var endCy = +endNode.attr("cy");
 
             if (startTable === endTable) return;
 
