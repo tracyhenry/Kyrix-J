@@ -109,7 +109,7 @@ class SchemaGraph extends Component {
                 Math.sqrt(
                     (newTX - oldTX) * (newTX - oldTX) +
                         (newTY - oldTY) * (newTY - oldTY)
-                ) * 2
+                )
             )
             .call(this.zoomHandler.transform, newTransform)
             .on("end", () => {
@@ -569,11 +569,18 @@ class SchemaGraph extends Component {
                 ></svg>
                 <div className="graphbutton">
                     <Space>
-                        <Button onClick={this.reCenterGraph}>Re-center</Button>
-                        <Button onClick={this.trimToOneHopNeighbors}>
+                        <Button onClick={this.reCenterGraph} size="small">
+                            Re-center
+                        </Button>
+                        <Button
+                            onClick={this.trimToOneHopNeighbors}
+                            size="small"
+                        >
                             Trim
                         </Button>
-                        <Button onClick={this.showNewStuff}>What's new?</Button>
+                        <Button onClick={this.showNewStuff} size="small">
+                            What's new?
+                        </Button>
                     </Space>
                 </div>
                 <div className="explain">Schema Graph View</div>
