@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import * as d3 from "d3";
 import resizeSvgs from "../js/ResizeSvgs";
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
+import {Button, Space} from "antd";
 
 class SchemaGraph extends Component {
     constructor(props) {
@@ -568,44 +567,15 @@ class SchemaGraph extends Component {
                     height={this.props.height}
                     ref={this.svgRef}
                 ></svg>
-                <ButtonGroup
-                    className="graphbutton"
-                    size="small"
-                    variant="text"
-                    color="primary"
-                    aria-label="text primary button group"
-                >
-                    <Button
-                        style={{
-                            color: "#1976d2",
-                            fontSize: 10,
-                            fontFamily: "Arial"
-                        }}
-                        onClick={this.reCenterGraph}
-                    >
-                        re-center
-                    </Button>
-                    <Button
-                        style={{
-                            color: "#1976d2",
-                            fontSize: 10,
-                            fontFamily: "Arial"
-                        }}
-                        onClick={this.trimToOneHopNeighbors}
-                    >
-                        trim
-                    </Button>
-                    <Button
-                        style={{
-                            color: "#1976d2",
-                            fontSize: 10,
-                            fontFamily: "Arial"
-                        }}
-                        onClick={this.showNewStuff}
-                    >
-                        what's new?
-                    </Button>
-                </ButtonGroup>
+                <div className="graphbutton">
+                    <Space>
+                        <Button onClick={this.reCenterGraph}>Re-center</Button>
+                        <Button onClick={this.trimToOneHopNeighbors}>
+                            Trim
+                        </Button>
+                        <Button onClick={this.showNewStuff}>What's new?</Button>
+                    </Space>
+                </div>
                 <div className="explain">Schema Graph View</div>
             </div>
         );

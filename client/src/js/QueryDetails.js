@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {githubGist} from "react-syntax-highlighter/dist/esm/styles/hljs";
-import Divider from "@material-ui/core/Divider";
+import {Divider} from "antd";
 
 class QueryDetails extends Component {
     state = {};
@@ -36,8 +36,9 @@ class QueryDetails extends Component {
         return (
             <div className="querydetails">
                 <div className="sqlquerydiv">
-                    <h4>Current SQL Query</h4>
-                    <Divider />
+                    <Divider className="header" orientation="left">
+                        Current SQL Query
+                    </Divider>
                     <div className="sqlquery">
                         <SyntaxHighlighter
                             language="sql"
@@ -55,8 +56,9 @@ class QueryDetails extends Component {
                     </div>
                 </div>
                 <div className="filterdiv">
-                    <h4>Current SQL Filters</h4>
-                    <Divider />
+                    <Divider className="header" orientation="left">
+                        Current SQL Filters
+                    </Divider>
                     <ul>{predLis}</ul>
                 </div>
 

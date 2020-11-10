@@ -183,6 +183,10 @@ body {
     padding: 5px 3px;
 }
 
+.schemadetails > .curtable caption {
+    caption-side: top;
+}
+
 .schemadetails > .curtable tr:last-child > td {
     border-bottom: none;
 }
@@ -222,6 +226,10 @@ body {
     flex-direction: column;
     /*justify-content: space-around;*/
     /*align-items: center;*/
+}
+
+.querydetails .header span {
+    font-size: 22px;
 }
 
 .querydetails > div:not(.explain) {
