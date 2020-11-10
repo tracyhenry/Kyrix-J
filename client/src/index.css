@@ -19,7 +19,6 @@ body {
     box-sizing: border-box;
     box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.32);
     /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-    overflow: scroll;
 }
 
 .grid-container > div:not(.kyrixjheader) {
@@ -56,13 +55,11 @@ body {
 
 /* ====================================== Kyrix view ====================================== */
 .kyrixdiv {
-    /*background-color: bisque;*/
     grid-area: 4 / 3 / 8 / 6;
 }
 
 /* ====================================== schema graph view ====================================== */
 .erdiagram {
-    /*background-color: coral;*/
     grid-area: 2 / 3 / 4 / 6;
     position: absolute;
     overflow: hidden;
@@ -80,75 +77,28 @@ body {
 .circleg > circle {
     fill: #add8e6;
     stroke: #eee;
-    stroke-width: 8;
+    stroke-width: 12;
     cursor: pointer;
 }
 
 .lineg > line {
     stroke: #eee;
-    stroke-width: 8;
+    stroke-width: 12;
 }
 
 .lineg > line:hover {
     stroke: #111;
-    stroke-width: 12;
+    stroke-width: 15;
 }
 
 /* ====================================== table details view ====================================== */
 .tabledetails {
-    grid-area: 2 / 1 / 8 / 3;
-    display: grid;
+    grid-area: 2 / 6 / 8 / 8;
     grid-template: auto 1fr 5% / 25% 75%;
 }
 
-.tabledetails > .searchbar {
-    grid-area: 1 / 1 / 2 / 3;
-    width: 100%;
-    background-color: #e9e9e9;
-}
-
-.tabledetails > .searchbar > input[type="text"] {
-    width: 50%;
-    float: left;
-    size: 60px;
-    padding: 6px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    margin-left: 16px;
-    border-radius: 5px;
-    border: none;
-    font-size: 17px;
-}
-
-.tabledetails > .tablelist {
-    border-right: 1px solid #e9e9e9;
-    grid-area: 2 / 1 / 4 / 2;
-}
-
-.tabledetails > .tablelist ul {
-    list-style: none;
-    padding: 0;
-    font-size: 15px;
-}
-
-.tabledetails > .tablelist > ul > li {
-    padding: 8px 28px;
-    border-bottom: 1px solid #ddd;
-    background-image: url("./pics/table-grid.png");
-    background-repeat: no-repeat;
-    background-position: 5px center;
-    background-size: 15px;
-    white-space: nowrap;
-    overflow-x: scroll;
-    cursor: pointer;
-}
-
-.tabledetails > .tablelist > ul > li:hover {
-    background-color: #e9e9e9;
-}
-
 .schemadetailsdiv {
-    grid-area: 2 / 2 / 3 / 3;
+    height: 100%;
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
@@ -156,7 +106,6 @@ body {
 }
 
 .schemadetails {
-    /*background-color: burlywood;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -221,7 +170,7 @@ body {
 /* ====================================== query details view ====================================== */
 .querydetails {
     /*background-color: darkseagreen;*/
-    grid-area: 2 / 6 / 6 / 8;
+    grid-area: 2 / 1 / 6 / 3;
     display: flex;
     flex-direction: column;
     /*justify-content: space-around;*/
@@ -229,7 +178,7 @@ body {
 }
 
 .querydetails .header span {
-    font-size: 22px;
+    /*font-size: 1px;*/
 }
 
 .querydetails > div:not(.explain) {
@@ -268,7 +217,7 @@ body {
 /* ====================================== slide reel view ====================================== */
 .slidereel {
     /*background-color: chocolate;*/
-    grid-area: 6 / 6 / 8 / 8;
+    grid-area: 6 / 1 / 8 / 3;
     display: flex;
     justify-content: center;
     align-items: center;

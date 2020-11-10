@@ -1,7 +1,9 @@
 import * as d3 from "d3";
 
 function resizeSvgs() {
-    var divs = d3.selectAll(".grid-container > div:not(.kyrixdiv)").nodes();
+    var divs = d3
+        .selectAll(".grid-container > div:not(.kyrixdiv):not(.kyrixjheader)")
+        .nodes();
     for (var i = divs.length - 1; i >= 0; i--) {
         var div = divs[i];
 

@@ -5,6 +5,7 @@ import SlideReel from "./js/SlideReel";
 import resizeSvgs from "./js/ResizeSvgs";
 import KyrixVis from "./js/KyrixVis";
 import QueryDetails from "./js/QueryDetails";
+import Header from "./js/Header";
 
 class KyrixJ extends Component {
     state = {
@@ -59,8 +60,7 @@ class KyrixJ extends Component {
         });
     };
 
-    handleTableDetailsClick = event => {
-        let tableName = event.target.innerHTML;
+    handleTableDetailsClick = tableName => {
         this.setState({
             curTable: tableName,
             newTableType: "tableDetailsClick",
@@ -124,19 +124,24 @@ class KyrixJ extends Component {
         });
     };
 
-    handleTableDetailsSearchBarChange = event => {
+    handleTableDetailsSearchBarChange = value => {
         // set state
         this.setState({
-            searchBarValue: event.target.value
+            searchBarValue: value
         });
     };
 
     render() {
         return (
             <>
-                <div className="kyrixjheader">
-                    Superman @ MIT Data Warehouse
-                </div>
+                <Header
+                    searchBarValue={this.state.searchBarValue}
+                    handleClick={this.handleTableDetailsClick}
+                    handleSearchBarChange={
+                        this.handleTableDetailsSearchBarChange
+                    }
+                    tableColumns={this.tableColumns}
+                />
                 <SchemaGraph
                     width="1000"
                     height="1000"
@@ -153,11 +158,6 @@ class KyrixJ extends Component {
                 <TableDetails
                     tableColumns={this.tableColumns}
                     curTable={this.state.curTable}
-                    searchBarValue={this.state.searchBarValue}
-                    handleClick={this.handleTableDetailsClick}
-                    handleSearchBarChange={
-                        this.handleTableDetailsSearchBarChange
-                    }
                 />
                 <SlideReel />
                 <KyrixVis
