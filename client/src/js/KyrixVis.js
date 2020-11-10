@@ -15,13 +15,16 @@ class KyrixVis extends Component {
             });
     };
 
+    shouldComponentUpdate = nextProps => {
+        return (
+            nextProps.kyrixLoaded &&
+            (nextProps.newTableType === "tableDetailsClick" ||
+                nextProps.newTableType === "graphClick")
+        );
+    };
+
     componentDidUpdate = () => {
-        if (!this.props.kyrixLoaded) return;
-        if (
-            this.props.newTableType === "tableDetailsClick" ||
-            this.props.newTableType === "graphClick"
-        )
-            this.jumpToClickedTable();
+        this.jumpToClickedTable();
     };
 
     jumpToClickedTable = () => {

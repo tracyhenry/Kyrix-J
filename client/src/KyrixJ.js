@@ -13,7 +13,7 @@ class KyrixJ extends Component {
         curTable: "",
 
         // type of interaction that generates the new table
-        // can be one of ["graphClick", "kyrixLoaded",
+        // can be one of ["graphClick", "kyrixLoaded", "searchBar",
         // "kyrixVisJump", "tableDetailsClick", "kyrixRandomJump"]
         // used by SchemaGraph / KyrixVis (or other components in the future)
         // to do different things
@@ -127,7 +127,8 @@ class KyrixJ extends Component {
     handleTableDetailsSearchBarChange = value => {
         // set state
         this.setState({
-            searchBarValue: value
+            searchBarValue: value,
+            newTableType: "searchBar"
         });
     };
 
