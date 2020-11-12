@@ -22,7 +22,8 @@ var demo1 = false;
 var ssv = {
     data: {
         db: "mit",
-        query: "select * from Fclt_building;"
+        query:
+            "select building_name_long, fclt_building_key, building_type, building_height, date_built, num_of_rooms, assignable_area from Fclt_building;"
     },
     layout: {
         x: {
