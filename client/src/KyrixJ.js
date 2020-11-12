@@ -40,35 +40,18 @@ class KyrixJ extends Component {
         window.removeEventListener("resize", resizeSvgs);
     };
 
-    getPredArrayFromPredDict = pd => {
-        let layers = Object.keys(pd);
-        let predArray = [];
-        for (let i = 0; i < layers.length; i++) predArray.push(pd[layers[i]]);
-        return predArray;
-    };
-
     handleSchemaGraphNodeClick = d => {
         let tableName = d.table_name;
         this.setState({
             curTable: tableName,
-            newTableType: "graphClick",
-            curCanvas: this.clickJumpDefaults[tableName].canvasId,
-            curPredicates: this.getPredArrayFromPredDict(
-                this.clickJumpDefaults[tableName].predDict
-            ),
-            searchBarValue: ""
+            newTableType: "graphClick"
         });
     };
 
     handleTableDetailsClick = tableName => {
         this.setState({
             curTable: tableName,
-            newTableType: "tableDetailsClick",
-            curCanvas: this.clickJumpDefaults[tableName].canvasId,
-            curPredicates: this.getPredArrayFromPredDict(
-                this.clickJumpDefaults[tableName].predDict
-            ),
-            searchBarValue: ""
+            newTableType: "tableDetailsClick"
         });
     };
 
@@ -81,27 +64,26 @@ class KyrixJ extends Component {
         if (jump.type === "slide")
             this.setState({
                 curTable: nextCurTable,
-                newTableType: "kyrixVisJump",
-                curCanvas: nextCurCanvas,
-                curPredicates: curPredicates,
-                searchBarValue: ""
+                newTableType: "kyrixVisJump"
             });
         else if (jump.type === "randomJumpBack")
             this.setState({
                 curTable: nextCurTable,
-                newTableType: "kyrixRandomJump",
-                curCanvas: nextCurCanvas,
-                curPredicates: curPredicates,
-                searchBarValue: ""
+                newTableType: "kyrixRandomJump"
             });
         else if (jump.type !== "randomJump")
+            // semantic zoom or literal zoom
             this.setState({
                 curTable: nextCurTable,
-                newTableType: "kyrixVisJump",
-                curCanvas: nextCurCanvas,
-                curPredicates: curPredicates,
-                searchBarValue: ""
+                newTableType: "kyrixVisJump"
             });
+
+        // update some other states
+        this.setState({
+            curCanvas: nextCurCanvas,
+            curPredicates: curPredicates,
+            searchBarValue: ""
+        });
     };
 
     handleKyrixLoad = () => {

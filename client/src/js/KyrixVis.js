@@ -19,7 +19,8 @@ class KyrixVis extends Component {
         return (
             nextProps.kyrixLoaded &&
             (nextProps.newTableType === "tableDetailsClick" ||
-                nextProps.newTableType === "graphClick")
+                nextProps.newTableType === "graphClick") &&
+            nextProps.curTable !== this.props.curTable
         );
     };
 
