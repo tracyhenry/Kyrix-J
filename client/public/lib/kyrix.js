@@ -2090,45 +2090,45 @@
                 });
 
         // get data
-        RefreshDynamicLayers(viewId, viewportX, viewportY);
+        RefreshDynamicLayers(viewId, viewportX, viewportY).then(function() {
+            // check if zoom scale reaches zoomInFactor
+            if (
+                (zoomInFactorX > 1 && scaleX >= gvd.maxScale) ||
+                (zoomInFactorY > 1 && scaleY >= gvd.maxScale)
+            )
+                completeZoom(
+                    viewId,
+                    param.literalZoomIn,
+                    zoomInFactorX,
+                    zoomInFactorY
+                );
 
-        // check if zoom scale reaches zoomInFactor
-        if (
-            (zoomInFactorX > 1 && scaleX >= gvd.maxScale) ||
-            (zoomInFactorY > 1 && scaleY >= gvd.maxScale)
-        )
-            completeZoom(
-                viewId,
-                param.literalZoomIn,
-                zoomInFactorX,
-                zoomInFactorY
-            );
+            // check if zoom scale reaches zoomOutFactor
+            if (
+                (zoomOutFactorX < 1 && scaleX <= 1 - param.eps) ||
+                (zoomOutFactorY < 1 && scaleY <= 1 - param.eps)
+            )
+                completeZoom(
+                    viewId,
+                    param.literalZoomOut,
+                    zoomOutFactorX,
+                    zoomOutFactorY
+                );
 
-        // check if zoom scale reaches zoomOutFactor
-        if (
-            (zoomOutFactorX < 1 && scaleX <= 1 - param.eps) ||
-            (zoomOutFactorY < 1 && scaleY <= 1 - param.eps)
-        )
-            completeZoom(
-                viewId,
-                param.literalZoomOut,
-                zoomOutFactorX,
-                zoomOutFactorY
-            );
-
-        // execute onPan & onZoom handlers
-        if (!isZooming && gvd.onPanHandlers != null) {
-            var subEvts = Object.keys(gvd.onPanHandlers);
-            for (var subEvt of subEvts)
-                if (typeof gvd.onPanHandlers[subEvt] == "function")
-                    gvd.onPanHandlers[subEvt]();
-        }
-        if (isZooming && gvd.onZoomHandlers != null) {
-            var subEvts = Object.keys(gvd.onZoomHandlers);
-            for (var subEvt of subEvts)
-                if (typeof gvd.onZoomHandlers[subEvt] == "function")
-                    gvd.onZoomHandlers[subEvt]();
-        }
+            // execute onPan & onZoom handlers
+            if (!isZooming && gvd.onPanHandlers != null) {
+                var subEvts = Object.keys(gvd.onPanHandlers);
+                for (var subEvt of subEvts)
+                    if (typeof gvd.onPanHandlers[subEvt] == "function")
+                        gvd.onPanHandlers[subEvt]();
+            }
+            if (isZooming && gvd.onZoomHandlers != null) {
+                var subEvts = Object.keys(gvd.onZoomHandlers);
+                for (var subEvt of subEvts)
+                    if (typeof gvd.onZoomHandlers[subEvt] == "function")
+                        gvd.onZoomHandlers[subEvt]();
+            }
+        });
     }
     // called on page load, and on page resize
     function drawZoomButtons(viewId) {
@@ -2525,162 +2525,157 @@
             type: "GET",
             url: globalVar.serverAddr + "/first",
             data: {},
-            async: false,
-            success: function(data) {
-                var response = JSON.parse(data);
-                globalVar.project = response.project;
-                globalVar.tileW = +response.tileW;
-                globalVar.tileH = +response.tileH;
-                // merge BGRP and rendering params
-                globalVar.renderingParams = JSON.parse(
-                    globalVar.project.renderingParams
+            async: false
+        }).then(function(data) {
+            var response = JSON.parse(data);
+            globalVar.project = response.project;
+            globalVar.tileW = +response.tileW;
+            globalVar.tileH = +response.tileH;
+            // merge BGRP and rendering params
+            globalVar.renderingParams = JSON.parse(
+                globalVar.project.renderingParams
+            );
+            var BGRPKeys = Object.keys(globalVar.project.BGRP);
+            for (var i = 0; i < BGRPKeys.length; i++) {
+                var curBGRPKey = BGRPKeys[i];
+                if (!(curBGRPKey in globalVar.renderingParams))
+                    globalVar.renderingParams[curBGRPKey] = {};
+                var curRPEntry = globalVar.renderingParams[curBGRPKey];
+                globalVar.renderingParams[curBGRPKey] = {
+                    ...curRPEntry,
+                    ...globalVar.project.BGRP[curBGRPKey]
+                };
+            }
+            processRenderingParams();
+
+            // process user-defined CSS styles
+            processStyles();
+
+            // remove all jump option popovers when the window is resized
+            d3.select(window).on("resize.popover", removePopovers);
+            d3.select(window).on("click", removePopovers);
+
+            // create view layouts
+            var viewSpecs = globalVar.project.views;
+            for (var i = 0; i < viewSpecs.length; i++) {
+                // get a reference for current globalvar dict
+                var viewId = viewSpecs[i].id;
+                globalVar.views[viewId] = {};
+                var gvd = globalVar.views[viewId];
+
+                // create a view div, a button div and a vis div
+                var viewDiv = kyrixDiv
+                    .append("div")
+                    .classed("kyrixviewdiv", true)
+                    .classed("view_" + viewId, true);
+                var buttonDiv = viewDiv
+                    .append("div")
+                    .classed("kyrixbuttondiv", true)
+                    .classed("view_" + viewId, true);
+                var visDiv = viewDiv
+                    .append("div")
+                    .classed("kyrixvisdiv", true)
+                    .classed("view_" + viewId, true);
+
+                // make things responsive
+                new ResizeSensor(
+                    visDiv.node(),
+                    (function(viewId) {
+                        return function() {
+                            resizeKyrixStuff(viewId);
+                        };
+                    })(viewId)
                 );
-                var BGRPKeys = Object.keys(globalVar.project.BGRP);
-                for (var i = 0; i < BGRPKeys.length; i++) {
-                    var curBGRPKey = BGRPKeys[i];
-                    if (!(curBGRPKey in globalVar.renderingParams))
-                        globalVar.renderingParams[curBGRPKey] = {};
-                    var curRPEntry = globalVar.renderingParams[curBGRPKey];
-                    globalVar.renderingParams[curBGRPKey] = {
-                        ...curRPEntry,
-                        ...globalVar.project.BGRP[curBGRPKey]
-                    };
+
+                // initial setup
+                gvd.initialViewportX = viewSpecs[i].initialViewportX;
+                gvd.initialViewportY = viewSpecs[i].initialViewportY;
+                gvd.viewportWidth = viewSpecs[i].width;
+                gvd.viewportHeight = viewSpecs[i].height;
+                gvd.curCanvasId = viewSpecs[i].initialCanvasId;
+                gvd.renderData = null;
+                gvd.tileRenderData = null;
+                gvd.pendingBoxRequest = null;
+                gvd.curCanvas = null;
+                gvd.curJump = null;
+                gvd.curStaticData = null;
+                gvd.history = [];
+                gvd.animation = false;
+                gvd.predicates = [];
+                gvd.highlightPredicates = [];
+                if (gvd.curCanvasId != "") {
+                    var predDict = JSON.parse(viewSpecs[i].initialPredicates);
+                    var numLayer = getCanvasById(gvd.curCanvasId).layers.length;
+                    for (var j = 0; j < numLayer; j++)
+                        if ("layer" + j in predDict)
+                            gvd.predicates.push(predDict["layer" + j]);
+                        else gvd.predicates.push({});
                 }
-                processRenderingParams();
 
-                // process user-defined CSS styles
-                processStyles();
+                var visWidth = gvd.viewportWidth + param.viewPadding * 2;
+                var visHeight = gvd.viewportHeight + param.viewPadding * 2;
+                // Set  max size (don't allow div to get bigger than svg)
+                // visDiv
+                //     .style("max-width", visWidth + "px")
+                //     .style("max-height",visHeight + "px");
 
-                // remove all jump option popovers when the window is resized
-                d3.select(window).on("resize.popover", removePopovers);
-                d3.select(window).on("click", removePopovers);
+                // set up view svg
+                visDiv
+                    .append("svg")
+                    .classed("view_" + viewId + " viewsvg", true)
+                    .attr("width", visWidth)
+                    .attr("height", visHeight)
+                    .attr("x", viewSpecs[i].minx)
+                    .attr("y", viewSpecs[i].miny)
+                    .append("g")
+                    .classed("view_" + viewId + " axesg", true)
+                    .attr(
+                        "transform",
+                        "translate(" +
+                            param.viewPadding +
+                            "," +
+                            param.viewPadding +
+                            ")"
+                    );
 
-                // create view layouts
-                var viewSpecs = globalVar.project.views;
-                for (var i = 0; i < viewSpecs.length; i++) {
-                    // get a reference for current globalvar dict
-                    var viewId = viewSpecs[i].id;
-                    globalVar.views[viewId] = {};
-                    var gvd = globalVar.views[viewId];
+                // set up main group
+                d3.select(".view_" + viewId + ".viewsvg")
+                    .append("g")
+                    .classed("view_" + viewId + " maing", true)
+                    .attr(
+                        "transform",
+                        "translate(" +
+                            param.viewPadding +
+                            "," +
+                            param.viewPadding +
+                            ")"
+                    )
+                    .append("rect") // a transparent rect to receive pointer events
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    .attr("width", gvd.viewportWidth)
+                    .attr("height", gvd.viewportHeight)
+                    .style("opacity", 0);
 
-                    // create a view div, a button div and a vis div
-                    var viewDiv = kyrixDiv
-                        .append("div")
-                        .classed("kyrixviewdiv", true)
-                        .classed("view_" + viewId, true);
-                    var buttonDiv = viewDiv
-                        .append("div")
-                        .classed("kyrixbuttondiv", true)
-                        .classed("view_" + viewId, true);
-                    var visDiv = viewDiv
-                        .append("div")
-                        .classed("kyrixvisdiv", true)
-                        .classed("view_" + viewId, true);
+                // initialize zoom buttons, must before getCurCanvas is called
+                drawZoomButtons(viewId);
 
-                    // make things responsive
-                    new ResizeSensor(
-                        visDiv.node(),
+                // render this view
+                if (gvd.curCanvasId != "") {
+                    return getCurCanvas(viewId).then(
                         (function(viewId) {
                             return function() {
-                                resizeKyrixStuff(viewId);
+                                // render static trims
+                                renderStaticLayers(viewId);
+
+                                // set up zoom
+                                setupZoom(viewId, 1);
+
+                                // set button state
+                                setBackButtonState(viewId);
                             };
                         })(viewId)
                     );
-
-                    // initial setup
-                    gvd.initialViewportX = viewSpecs[i].initialViewportX;
-                    gvd.initialViewportY = viewSpecs[i].initialViewportY;
-                    gvd.viewportWidth = viewSpecs[i].width;
-                    gvd.viewportHeight = viewSpecs[i].height;
-                    gvd.curCanvasId = viewSpecs[i].initialCanvasId;
-                    gvd.renderData = null;
-                    gvd.tileRenderData = null;
-                    gvd.pendingBoxRequest = null;
-                    gvd.curCanvas = null;
-                    gvd.curJump = null;
-                    gvd.curStaticData = null;
-                    gvd.history = [];
-                    gvd.animation = false;
-                    gvd.predicates = [];
-                    gvd.highlightPredicates = [];
-                    if (gvd.curCanvasId != "") {
-                        var predDict = JSON.parse(
-                            viewSpecs[i].initialPredicates
-                        );
-                        var numLayer = getCanvasById(gvd.curCanvasId).layers
-                            .length;
-                        for (var j = 0; j < numLayer; j++)
-                            if ("layer" + j in predDict)
-                                gvd.predicates.push(predDict["layer" + j]);
-                            else gvd.predicates.push({});
-                    }
-
-                    var visWidth = gvd.viewportWidth + param.viewPadding * 2;
-                    var visHeight = gvd.viewportHeight + param.viewPadding * 2;
-                    // Set  max size (don't allow div to get bigger than svg)
-                    // visDiv
-                    //     .style("max-width", visWidth + "px")
-                    //     .style("max-height",visHeight + "px");
-
-                    // set up view svg
-                    visDiv
-                        .append("svg")
-                        .classed("view_" + viewId + " viewsvg", true)
-                        .attr("width", visWidth)
-                        .attr("height", visHeight)
-                        .attr("x", viewSpecs[i].minx)
-                        .attr("y", viewSpecs[i].miny)
-                        .append("g")
-                        .classed("view_" + viewId + " axesg", true)
-                        .attr(
-                            "transform",
-                            "translate(" +
-                                param.viewPadding +
-                                "," +
-                                param.viewPadding +
-                                ")"
-                        );
-
-                    // set up main group
-                    d3.select(".view_" + viewId + ".viewsvg")
-                        .append("g")
-                        .classed("view_" + viewId + " maing", true)
-                        .attr(
-                            "transform",
-                            "translate(" +
-                                param.viewPadding +
-                                "," +
-                                param.viewPadding +
-                                ")"
-                        )
-                        .append("rect") // a transparent rect to receive pointer events
-                        .attr("x", 0)
-                        .attr("y", 0)
-                        .attr("width", gvd.viewportWidth)
-                        .attr("height", gvd.viewportHeight)
-                        .style("opacity", 0);
-
-                    // initialize zoom buttons, must before getCurCanvas is called
-                    drawZoomButtons(viewId);
-
-                    // render this view
-                    if (gvd.curCanvasId != "") {
-                        var gotCanvas = getCurCanvas(viewId);
-                        gotCanvas.then(
-                            (function(viewId) {
-                                return function() {
-                                    // render static trims
-                                    renderStaticLayers(viewId);
-
-                                    // set up zoom
-                                    setupZoom(viewId, 1);
-
-                                    // set button state
-                                    setBackButtonState(viewId);
-                                };
-                            })(viewId)
-                        );
-                    }
                 }
             }
         });
@@ -3259,7 +3254,8 @@
         renderAxes(viewId, viewportX, viewportY, vpW, vpH);
 
         // no dynamic layers? return
-        if (d3.select(viewClass + ".mainsvg:not(.static)").size() == 0) return;
+        if (d3.select(viewClass + ".mainsvg:not(.static)").size() == 0)
+            return Promise.resolve();
 
         // optional rendering args
         var optionalArgs = getOptionalArgs(viewId);
@@ -3284,7 +3280,7 @@
             optionalArgs
         );
         if (tilePromise != null || dboxPromise != null)
-            Promise.all([tilePromise, dboxPromise]).then(function() {
+            return Promise.all([tilePromise, dboxPromise]).then(function() {
                 if (
                     gvd.animation != param.semanticZoom &&
                     gvd.animation != param.slide
@@ -3295,6 +3291,7 @@
                         .style("opacity", 0)
                         .remove();
             });
+        else return Promise.resolve();
     }
 
     exports.addRenderingParameters = addRenderingParameters;

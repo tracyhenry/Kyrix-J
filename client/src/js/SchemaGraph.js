@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import * as d3 from "d3";
-import resizeSvgs from "../js/ResizeSvgs";
+import {resizeSvgs} from "./ResizeStuff";
 import {Button, Space} from "antd";
 
 class SchemaGraph extends Component {

@@ -13,8 +13,8 @@ class SchemaDetails extends Component {
                 render: text => text
             }
         ];
-        const data = this.props.columns.slice(0, 8).map(d => ({
-            key: d,
+        const data = this.props.columns.slice(0, 8).map((d, i) => ({
+            key: i,
             colName: d
         }));
 

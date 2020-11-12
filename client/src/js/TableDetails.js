@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import SchemaDetails from "./SchemaDetails";
+import RawDataTable from "./RawDataTable";
 
 class TableDetails extends Component {
     render() {
@@ -9,6 +10,10 @@ class TableDetails extends Component {
         return (
             <div className="tabledetails">
                 <SchemaDetails curTable={curTable} columns={columns} />
+                <RawDataTable
+                    kyrixRenderData={this.props.kyrixRenderData}
+                    maxHeight={this.props.rawDataTableMaxHeight}
+                />
                 <div className="explain">Table Details View</div>
             </div>
         );

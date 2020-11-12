@@ -29,7 +29,7 @@ class QueryDetails extends Component {
 
     render() {
         let predLis = this.getSqlPredicates().map(p => (
-            <li key={this.props.curCanvas + "-" + p.col + "=" + p.val}>
+            <li key={this.props.kyrixCanvas + "-" + p.col + "=" + p.val}>
                 <b>{p.col}</b> = <i>{p.val}</i>
             </li>
         ));
@@ -49,8 +49,8 @@ class QueryDetails extends Component {
                                 border: "white"
                             }}
                         >
-                            {this.props.curCanvas.length > 0
-                                ? this.props.sqlQuery[this.props.curCanvas]
+                            {this.props.kyrixCanvas.length > 0
+                                ? this.props.sqlQuery[this.props.kyrixCanvas]
                                 : ""}
                         </SyntaxHighlighter>
                     </div>

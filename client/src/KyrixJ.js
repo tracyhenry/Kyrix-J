@@ -2,7 +2,11 @@ import React, {Component} from "react";
 import SchemaGraph from "./js/SchemaGraph";
 import TableDetails from "./js/TableDetails";
 import SlideReel from "./js/SlideReel";
-import resizeSvgs from "./js/ResizeSvgs";
+import {
+    resizeSvgs,
+    getRawDataTableMaxHeight,
+    resizeRawDataTable
+} from "./js/ResizeStuff";
 import KyrixVis from "./js/KyrixVis";
 import QueryDetails from "./js/QueryDetails";
 import Header from "./js/Header";
@@ -20,10 +24,16 @@ class KyrixJ extends Component {
         newTableType: "",
 
         // current kyrix canvas
-        curCanvas: "",
+        kyrixCanvas: "",
 
-        // current sql filters
-        curPredicates: [],
+        // current kyrix sql filters
+        kyrixPredicates: [],
+
+        // current render data
+        kyrixRenderData: [],
+
+        // max height of raw data table
+        rawDataTableMaxHeight: 240,
 
         // whether kyrix is loaded
         kyrixLoaded: false,
@@ -34,10 +44,9 @@ class KyrixJ extends Component {
 
     componentDidMount = () => {
         window.addEventListener("resize", resizeSvgs);
-    };
-
-    componentWillUnmount = () => {
-        window.removeEventListener("resize", resizeSvgs);
+        window.addEventListener("resize", () => {
+            resizeRawDataTable(this);
+        });
     };
 
     handleSchemaGraphNodeClick = d => {
@@ -56,11 +65,10 @@ class KyrixJ extends Component {
     };
 
     handleKyrixJumpEnd = jump => {
-        let nextCurCanvas = window.kyrix.getCurrentCanvasId(this.kyrixViewId);
-        let nextCurTable = this.canvasIdToTable[nextCurCanvas];
-        let curPredicates = window.kyrix.getGlobalVarDictionary(
+        const nextKyrixCanvas = window.kyrix.getCurrentCanvasId(
             this.kyrixViewId
-        ).predicates;
+        );
+        const nextCurTable = this.canvasIdToTable[nextKyrixCanvas];
         if (jump.type === "slide")
             this.setState({
                 curTable: nextCurTable,
@@ -79,10 +87,31 @@ class KyrixJ extends Component {
             });
 
         // update some other states
+        const nextKyrixPredicates = window.kyrix.getGlobalVarDictionary(
+            this.kyrixViewId
+        ).predicates;
         this.setState({
-            curCanvas: nextCurCanvas,
-            curPredicates: curPredicates,
+            kyrixCanvas: nextKyrixCanvas,
+            kyrixPredicates: nextKyrixPredicates,
             searchBarValue: ""
+        });
+        this.loadData();
+    };
+
+    loadData = () => {
+        const curData = window.kyrix.getRenderData(this.kyrixViewId);
+        let dataLayerId = -1;
+        for (let i = 0; i < curData.length; i++)
+            if (
+                dataLayerId < 0 ||
+                curData[i].length > curData[dataLayerId].length
+            )
+                dataLayerId = i;
+        let nextKyrixRenderData = [];
+        if (dataLayerId >= 0) nextKyrixRenderData = curData[dataLayerId];
+        this.setState({
+            kyrixRenderData: nextKyrixRenderData,
+            rawDataTableMaxHeight: getRawDataTableMaxHeight()
         });
     };
 
@@ -92,14 +121,17 @@ class KyrixJ extends Component {
             this.kyrixViewId,
             this.handleKyrixJumpEnd
         );
-        let curCanvas = window.kyrix.getCurrentCanvasId(this.kyrixViewId);
-        let curPredicates = window.kyrix.getGlobalVarDictionary(
+        window.kyrix.on("zoom.loaddata", this.kyrixViewId, this.loadData);
+        window.kyrix.on("pan.loaddata", this.kyrixViewId, this.loadData);
+        this.loadData();
+        let kyrixCanvas = window.kyrix.getCurrentCanvasId(this.kyrixViewId);
+        let kyrixPredicates = window.kyrix.getGlobalVarDictionary(
             this.kyrixViewId
         ).predicates;
         this.setState({
-            curTable: this.canvasIdToTable[curCanvas],
-            curCanvas: curCanvas,
-            curPredicates: curPredicates,
+            curTable: this.canvasIdToTable[kyrixCanvas],
+            kyrixCanvas: kyrixCanvas,
+            kyrixPredicates: kyrixPredicates,
             newTableType: "kyrixLoaded",
             kyrixLoaded: true,
             searchBarValue: ""
@@ -141,6 +173,8 @@ class KyrixJ extends Component {
                 <TableDetails
                     tableColumns={this.tableColumns}
                     curTable={this.state.curTable}
+                    kyrixRenderData={this.state.kyrixRenderData}
+                    rawDataTableMaxHeight={this.state.rawDataTableMaxHeight}
                 />
                 <SlideReel />
                 <KyrixVis
@@ -153,9 +187,9 @@ class KyrixJ extends Component {
                     clickJumpDefaults={this.clickJumpDefaults}
                 />
                 <QueryDetails
-                    curCanvas={this.state.curCanvas}
+                    kyrixCanvas={this.state.kyrixCanvas}
                     sqlQuery={this.sqlQuery}
-                    kyrixPredicates={this.state.curPredicates}
+                    kyrixPredicates={this.state.kyrixPredicates}
                 />
             </>
         );

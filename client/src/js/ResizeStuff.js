@@ -1,8 +1,8 @@
 import * as d3 from "d3";
 
-function resizeSvgs() {
+const resizeSvgs = () => {
     var divs = d3
-        .selectAll(".grid-container > div:not(.kyrixdiv):not(.kyrixjheader)")
+        .selectAll(".grid-container > .erdiagram")
         .nodes();
     for (var i = divs.length - 1; i >= 0; i--) {
         var div = divs[i];
@@ -35,13 +35,19 @@ function resizeSvgs() {
                 " " +
                 (svgH * svgH) / realH
         );
-
-        // center
-        // svg.style("left", bbox.width / 2 - realW / 2).style(
-        //     "top",
-        //     bbox.height / 2 - realH / 2
-        // );
     }
-}
+};
 
-export default resizeSvgs;
+const resizeRawDataTable = (that) => {
+    that.setState({
+        rawDataTableMaxHeight: getRawDataTableMaxHeight()
+    })
+};
+
+const getRawDataTableMaxHeight = () => {
+    if (d3.select(".rawdata .ant-card-body").empty())
+        return 200;
+    return Math.max(d3.select(".rawdata .ant-card-body").node().getBoundingClientRect().height - 120, 50);
+};
+
+export {resizeSvgs, getRawDataTableMaxHeight, resizeRawDataTable};
