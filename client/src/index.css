@@ -97,65 +97,29 @@ body {
     grid-template: auto 1fr 5% / 25% 75%;
 }
 
-.schemadetailsdiv {
-    height: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-}
-
 .schemadetails {
+    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
+    width: 40%;
+    height: 50%;
 }
 
-.schemadetails > .curtable {
-    font-size: 14px;
+.schemadetails table {
     table-layout: fixed;
     width: 80%;
-    overflow-y: scroll;
-    border-collapse: separate;
-    border-spacing: 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
 }
 
-.schemadetails > .curtable td {
-    border-bottom: 1px solid #ddd;
-    text-align: center;
-    vertical-align: center;
+.schemadetails .ant-table.ant-table-small .ant-table-thead > tr > th {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.schemadetails .ant-table.ant-table-small .ant-table-tbody > tr > td {
     white-space: nowrap;
     overflow: scroll;
     padding: 5px 3px;
-}
-
-.schemadetails > .curtable caption {
-    caption-side: top;
-}
-
-.schemadetails > .curtable tr:last-child > td {
-    border-bottom: none;
-}
-
-.schemadetails > .curtable caption {
-    font-weight: bold;
-    font-size: 25px;
-    white-space: nowrap;
-    text-align: center;
-    color: black;
-    overflow: scroll;
-    padding: 3px 5px;
-}
-
-.schemadetails > .curtable tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.schemadetails > .curtable td:hover {
-    background-color: #ddd;
 }
 
 .tablefade-appear {

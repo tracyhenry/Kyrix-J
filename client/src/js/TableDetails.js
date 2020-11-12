@@ -8,9 +8,7 @@ class TableDetails extends Component {
             curTable.length > 0 ? this.props.tableColumns[curTable] : [];
         return (
             <div className="tabledetails">
-                <div className="schemadetailsdiv">
-                    <SchemaDetails curTable={curTable} columns={columns} />
-                </div>
+                <SchemaDetails curTable={curTable} columns={columns} />
                 <div className="explain">Table Details View</div>
             </div>
         );
