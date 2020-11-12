@@ -9,7 +9,11 @@ class TableDetails extends Component {
             curTable.length > 0 ? this.props.tableColumns[curTable] : [];
         return (
             <div className="tabledetails">
-                <SchemaDetails curTable={curTable} columns={columns} />
+                <SchemaDetails
+                    curTable={curTable}
+                    columns={columns}
+                    maxHeight={this.props.schemaTableMaxHeight}
+                />
                 <RawDataTable
                     kyrixRenderData={this.props.kyrixRenderData}
                     maxHeight={this.props.rawDataTableMaxHeight}

@@ -35,7 +35,6 @@ class RawDataTable extends Component {
         const antdData = JSON.parse(
             JSON.stringify(this.props.kyrixRenderData.slice(0, 500))
         );
-        console.log(antdData.length);
         antdData.forEach((d, i) => {
             d.key = JSON.stringify(d) + i;
         });

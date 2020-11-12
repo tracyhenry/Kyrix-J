@@ -4,6 +4,8 @@ import TableDetails from "./js/TableDetails";
 import SlideReel from "./js/SlideReel";
 import {
     resizeSvgs,
+    getSchemaTableMaxHeight,
+    resizeSchemaTable,
     getRawDataTableMaxHeight,
     resizeRawDataTable
 } from "./js/ResizeStuff";
@@ -32,6 +34,9 @@ class KyrixJ extends Component {
         // current render data
         kyrixRenderData: [],
 
+        // max height of the schema table
+        schemaTableMaxHeight: 300,
+
         // max height of raw data table
         rawDataTableMaxHeight: 240,
 
@@ -46,6 +51,9 @@ class KyrixJ extends Component {
         window.addEventListener("resize", resizeSvgs);
         window.addEventListener("resize", () => {
             resizeRawDataTable(this);
+        });
+        window.addEventListener("resize", () => {
+            resizeSchemaTable(this);
         });
     };
 
@@ -110,8 +118,7 @@ class KyrixJ extends Component {
         let nextKyrixRenderData = [];
         if (dataLayerId >= 0) nextKyrixRenderData = curData[dataLayerId];
         this.setState({
-            kyrixRenderData: nextKyrixRenderData,
-            rawDataTableMaxHeight: getRawDataTableMaxHeight()
+            kyrixRenderData: nextKyrixRenderData
         });
     };
 
@@ -134,6 +141,8 @@ class KyrixJ extends Component {
             kyrixPredicates: kyrixPredicates,
             newTableType: "kyrixLoaded",
             kyrixLoaded: true,
+            rawDataTableMaxHeight: getRawDataTableMaxHeight(),
+            schemaTableMaxHeight: getSchemaTableMaxHeight(),
             searchBarValue: ""
         });
     };
@@ -174,6 +183,7 @@ class KyrixJ extends Component {
                     tableColumns={this.tableColumns}
                     curTable={this.state.curTable}
                     kyrixRenderData={this.state.kyrixRenderData}
+                    schemaTableMaxHeight={this.state.schemaTableMaxHeight}
                     rawDataTableMaxHeight={this.state.rawDataTableMaxHeight}
                 />
                 <SlideReel />

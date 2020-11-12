@@ -13,7 +13,11 @@ class SchemaDetails extends Component {
                 render: text => text
             }
         ];
-        const data = this.props.columns.slice(0, 8).map((d, i) => ({
+
+        // calculate number of rows to show based on props.maxHeight
+        // (x + 1) * 32 + 47 <= props.maxHeight
+        let num = Math.floor((this.props.maxHeight - 120) / 32);
+        const data = this.props.columns.slice(0, num).map((d, i) => ({
             key: i,
             colName: d
         }));

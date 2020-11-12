@@ -1,9 +1,7 @@
 import * as d3 from "d3";
 
 const resizeSvgs = () => {
-    var divs = d3
-        .selectAll(".grid-container > .erdiagram")
-        .nodes();
+    var divs = d3.selectAll(".grid-container > .erdiagram").nodes();
     for (var i = divs.length - 1; i >= 0; i--) {
         var div = divs[i];
 
@@ -38,16 +36,44 @@ const resizeSvgs = () => {
     }
 };
 
-const resizeRawDataTable = (that) => {
+const resizeSchemaTable = that => {
+    that.setState({
+        schemaTableMaxHeight: getSchemaTableMaxHeight()
+    });
+};
+
+const getSchemaTableMaxHeight = () => {
+    if (d3.select(".schemadetails").empty()) return 300;
+    return Math.max(
+        d3
+            .select(".schemadetails")
+            .node()
+            .getBoundingClientRect().height,
+        152
+    );
+};
+
+const resizeRawDataTable = that => {
     that.setState({
         rawDataTableMaxHeight: getRawDataTableMaxHeight()
-    })
+    });
 };
 
 const getRawDataTableMaxHeight = () => {
-    if (d3.select(".rawdata .ant-card-body").empty())
-        return 200;
-    return Math.max(d3.select(".rawdata .ant-card-body").node().getBoundingClientRect().height - 120, 50);
+    if (d3.select(".rawdata .ant-card-body").empty()) return 200;
+    return Math.max(
+        d3
+            .select(".rawdata .ant-card-body")
+            .node()
+            .getBoundingClientRect().height - 120,
+        50
+    );
 };
 
-export {resizeSvgs, getRawDataTableMaxHeight, resizeRawDataTable};
+export {
+    resizeSvgs,
+    getRawDataTableMaxHeight,
+    resizeRawDataTable,
+    getSchemaTableMaxHeight,
+    resizeSchemaTable
+};
