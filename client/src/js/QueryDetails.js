@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {githubGist} from "react-syntax-highlighter/dist/esm/styles/hljs";
-import {Divider} from "antd";
+import {Card} from "antd";
 
 class QueryDetails extends Component {
     state = {};
@@ -35,33 +35,32 @@ class QueryDetails extends Component {
         ));
         return (
             <div className="querydetails">
-                <div className="sqlquerydiv">
-                    <Divider className="header" orientation="left">
-                        Current SQL Query
-                    </Divider>
-                    <div className="sqlquery">
-                        <SyntaxHighlighter
-                            language="sql"
-                            style={githubGist}
-                            customStyle={{
-                                lineHeight: 1.5,
-                                fontSize: 15,
-                                border: "white"
-                            }}
-                        >
-                            {this.props.kyrixCanvas.length > 0
-                                ? this.props.sqlQuery[this.props.kyrixCanvas]
-                                : ""}
-                        </SyntaxHighlighter>
-                    </div>
-                </div>
-                <div className="filterdiv">
-                    <Divider className="header" orientation="left">
-                        Current SQL Filters
-                    </Divider>
+                <Card
+                    className="sqlquery"
+                    title="Current SQL Query"
+                    bordered={false}
+                >
+                    <SyntaxHighlighter
+                        language="sql"
+                        style={githubGist}
+                        customStyle={{
+                            lineHeight: 1.5,
+                            fontSize: 15,
+                            border: "white"
+                        }}
+                    >
+                        {this.props.kyrixCanvas.length > 0
+                            ? this.props.sqlQuery[this.props.kyrixCanvas]
+                            : ""}
+                    </SyntaxHighlighter>
+                </Card>
+                <Card
+                    className="filters"
+                    title="Current SQL Filters"
+                    bordered={false}
+                >
                     <ul>{predLis}</ul>
-                </div>
-
+                </Card>
                 <div className="explain">Query View</div>
             </div>
         );

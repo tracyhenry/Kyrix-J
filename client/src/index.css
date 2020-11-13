@@ -12,13 +12,9 @@ body {
     width: calc(100% - 6px);
     height: calc(100% - 6px);
     position: relative;
-    /*border-style: solid;*/
-    /*border-color: lightslategrey;*/
-    /*border-width: 1px;*/
     margin: 3px;
     box-sizing: border-box;
     box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.32);
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
 }
 
 .grid-container > div:not(.kyrixjheader) {
@@ -45,7 +41,7 @@ body {
 /* ====================================== global antd modifiers ====================================== */
 
 .grid-container .ant-card-head {
-    background-color: #eee;
+    background-color: #f7f9fc;
 }
 
 .grid-container .ant-card-head-title {
@@ -156,45 +152,14 @@ body {
 
 /* ====================================== query details view ====================================== */
 .querydetails {
-    /*background-color: darkseagreen;*/
     grid-area: 2 / 1 / 6 / 3;
     display: flex;
     flex-direction: column;
-    /*justify-content: space-around;*/
-    /*align-items: center;*/
 }
 
-.querydetails .header span {
-    /*font-size: 1px;*/
-}
-
-.querydetails > div:not(.explain) {
-    display: block;
-    /*height: 50%;*/
-    /*margin: 10%;*/
-    /*border: midnightblue 1px dotted;*/
-    /*border-radius: 7px;*/
-    position: relative;
-    padding-left: 25px;
-}
-
-.sqlquerydiv {
-    padding-top: 25px;
-    padding-bottom: 15px;
-}
-
-.sqlquery {
-    margin: 10px;
-    width: 80%;
-}
-
-.filterdiv li {
+.filters li {
     font-size: 15px;
     padding: 2px;
-}
-
-.filterdiv {
-    /*padding-top: 35px;*/
 }
 
 .querydetails ul {
