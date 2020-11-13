@@ -78,9 +78,9 @@ class SchemaGraph extends Component {
     componentDidUpdate = () => {
         if (!this.props.kyrixLoaded) return;
         if (
-            this.props.newTableType === "searchBarSearch" ||
-            this.props.newTableType === "kyrixRandomJump" ||
-            this.props.newTableType === "kyrixLoaded"
+            this.props.interactionType === "searchBarSearch" ||
+            this.props.interactionType === "kyrixRandomJump" ||
+            this.props.interactionType === "kyrixLoaded"
         )
             this.renderNewTable();
         else this.renderNewNeighbors();

@@ -23,7 +23,7 @@ class KyrixJ extends Component {
         // "kyrixVisJump", "searchBarSearch", "kyrixRandomJump"]
         // used by SchemaGraph / KyrixVis (or other components in the future)
         // to do different things
-        newTableType: "",
+        interactionType: "",
 
         // current kyrix canvas
         kyrixCanvas: "",
@@ -61,14 +61,14 @@ class KyrixJ extends Component {
         let tableName = d.table_name;
         this.setState({
             curTable: tableName,
-            newTableType: "graphClick"
+            interactionType: "graphClick"
         });
     };
 
     handleSearchBarSearch = tableName => {
         this.setState({
             curTable: tableName,
-            newTableType: "searchBarSearch"
+            interactionType: "searchBarSearch"
         });
     };
 
@@ -80,18 +80,18 @@ class KyrixJ extends Component {
         if (jump.type === "slide")
             this.setState({
                 curTable: nextCurTable,
-                newTableType: "kyrixVisJump"
+                interactionType: "kyrixVisJump"
             });
         else if (jump.type === "randomJumpBack")
             this.setState({
                 curTable: nextCurTable,
-                newTableType: "kyrixRandomJump"
+                interactionType: "kyrixRandomJump"
             });
         else if (jump.type !== "randomJump")
             // semantic zoom or literal zoom
             this.setState({
                 curTable: nextCurTable,
-                newTableType: "kyrixVisJump"
+                interactionType: "kyrixVisJump"
             });
 
         // update some other states
@@ -139,7 +139,7 @@ class KyrixJ extends Component {
             curTable: this.canvasIdToTable[kyrixCanvas],
             kyrixCanvas: kyrixCanvas,
             kyrixPredicates: kyrixPredicates,
-            newTableType: "kyrixLoaded",
+            interactionType: "kyrixLoaded",
             kyrixLoaded: true,
             rawDataTableMaxHeight: getRawDataTableMaxHeight(),
             schemaTableMaxHeight: getSchemaTableMaxHeight(),
@@ -151,7 +151,7 @@ class KyrixJ extends Component {
         // set state
         this.setState({
             searchBarValue: value,
-            newTableType: "searchBarInputChange"
+            interactionType: "searchBarInputChange"
         });
     };
 
@@ -169,7 +169,7 @@ class KyrixJ extends Component {
                     height="1000"
                     kyrixLoaded={this.state.kyrixLoaded}
                     curTable={this.state.curTable}
-                    newTableType={this.state.newTableType}
+                    interactionType={this.state.interactionType}
                     handleNodeClick={this.handleSchemaGraphNodeClick}
                     // app metadata (TODO: combine them into one field)
                     canvasIdToTable={this.canvasIdToTable}
@@ -188,7 +188,7 @@ class KyrixJ extends Component {
                 <KyrixVis
                     handleKyrixLoad={this.handleKyrixLoad}
                     curTable={this.state.curTable}
-                    newTableType={this.state.newTableType}
+                    interactionType={this.state.interactionType}
                     kyrixLoaded={this.state.kyrixLoaded}
                     // app metadata (TODO: combine them into one field)
                     kyrixViewId={this.kyrixViewId}
