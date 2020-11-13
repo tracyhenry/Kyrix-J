@@ -3,6 +3,9 @@ import {Table} from "antd";
 import {CSSTransition} from "react-transition-group";
 
 class SchemaDetails extends Component {
+
+    shouldComponentUpdate = nextProps => (nextProps.maxHeight !== this.props.maxHeight || nextProps.curTable !== this.props.curTable);
+
     render() {
         const curTable = this.props.curTable;
         const columns = [

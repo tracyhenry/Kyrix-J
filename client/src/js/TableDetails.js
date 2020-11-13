@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import SchemaDetails from "./SchemaDetails";
-import RawDataTable from "./RawDataTable";
+import SchemaDetails from "./low-level-components/SchemaDetails";
+import RawDataTable from "./low-level-components/RawDataTable";
 
 class TableDetails extends Component {
     render() {

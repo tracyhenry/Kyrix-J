@@ -2,6 +2,25 @@ import React, {Component} from "react";
 import {Card, Table} from "antd";
 
 class RawDataTable extends Component {
+
+    shouldComponentUpdate = nextProps => {
+        if (nextProps.maxHeight !== this.props.maxHeight)
+            return true;
+        if (nextProps.kyrixRenderData.length !== this.props.kyrixRenderData.length)
+            return true;
+        if (nextProps.kyrixRenderData.length === 0)
+            return false;
+        if (nextProps.kyrixRenderData[0].length !== this.props.kyrixRenderData[0].length)
+            return true;
+        let n = this.props.kyrixRenderData.length;
+        let m = this.props.kyrixRenderData[0].length;
+        for (let i = 0; i < n; i ++)
+            for (let j = 0; j < m; j ++)
+                if (nextProps.kyrixRenderData[i][j] !== this.props.kyrixRenderData[i][j])
+                    return true;
+        return false;
+    };
+
     render() {
         const rawColumns = Object.keys(
             this.props.kyrixRenderData.length > 0
