@@ -97,8 +97,8 @@ body {
     stroke-width: 15;
 }
 
-/* ====================================== table details view ====================================== */
-.tabledetails {
+/* ====================================== vis details view ====================================== */
+.visdetails {
     grid-area: 2 / 6 / 8 / 8;
     grid-template: auto 1fr 5% / 25% 75%;
 }
@@ -122,7 +122,6 @@ body {
 }
 
 .schemadetails .ant-table.ant-table-small .ant-table-tbody > tr > td {
-    white-space: nowrap;
     overflow: scroll;
     padding: 5px 3px;
 }
@@ -139,6 +138,11 @@ body {
 
 .rawdata .ant-card-body {
     height: calc(100% - 60px);
+}
+
+.rawdata .ant-table.ant-table-small .ant-table-thead > tr > th {
+    white-space: nowrap;
+    font-weight: bold;
 }
 
 .tablefade-appear {

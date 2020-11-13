@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import SchemaGraph from "./js/SchemaGraph";
-import TableDetails from "./js/TableDetails";
+import VisDetails from "./js/VisDetails";
 import SlideReel from "./js/SlideReel";
 import {
     resizeSvgs,
@@ -19,8 +19,8 @@ class KyrixJ extends Component {
         curTable: "",
 
         // type of interaction that generates the new table
-        // can be one of ["graphClick", "kyrixLoaded", "searchBar",
-        // "kyrixVisJump", "tableDetailsClick", "kyrixRandomJump"]
+        // can be one of ["graphClick", "kyrixLoaded", "searchBarInputChange",
+        // "kyrixVisJump", "searchBarSearch", "kyrixRandomJump"]
         // used by SchemaGraph / KyrixVis (or other components in the future)
         // to do different things
         newTableType: "",
@@ -43,7 +43,7 @@ class KyrixJ extends Component {
         // whether kyrix is loaded
         kyrixLoaded: false,
 
-        // search bar value in TableDetails
+        // search bar value in Header
         searchBarValue: ""
     };
 
@@ -65,10 +65,10 @@ class KyrixJ extends Component {
         });
     };
 
-    handleTableDetailsClick = tableName => {
+    handleSearchBarSearch = tableName => {
         this.setState({
             curTable: tableName,
-            newTableType: "tableDetailsClick"
+            newTableType: "searchBarSearch"
         });
     };
 
@@ -147,11 +147,11 @@ class KyrixJ extends Component {
         });
     };
 
-    handleTableDetailsSearchBarChange = value => {
+    handleSearchBarInputChange = value => {
         // set state
         this.setState({
             searchBarValue: value,
-            newTableType: "searchBar"
+            newTableType: "searchBarInputChange"
         });
     };
 
@@ -160,10 +160,8 @@ class KyrixJ extends Component {
             <>
                 <Header
                     searchBarValue={this.state.searchBarValue}
-                    handleClick={this.handleTableDetailsClick}
-                    handleSearchBarChange={
-                        this.handleTableDetailsSearchBarChange
-                    }
+                    handleClick={this.handleSearchBarSearch}
+                    handleSearchBarInputChange={this.handleSearchBarInputChange}
                     tableColumns={this.tableColumns}
                 />
                 <SchemaGraph
@@ -179,7 +177,7 @@ class KyrixJ extends Component {
                     tableMetadata={this.tableMetadata}
                     tableColumns={this.tableColumns}
                 />
-                <TableDetails
+                <VisDetails
                     tableColumns={this.tableColumns}
                     curTable={this.state.curTable}
                     kyrixRenderData={this.state.kyrixRenderData}

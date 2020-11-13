@@ -18,7 +18,7 @@ class KyrixVis extends Component {
     shouldComponentUpdate = nextProps => {
         return (
             nextProps.kyrixLoaded &&
-            (nextProps.newTableType === "tableDetailsClick" ||
+            (nextProps.newTableType === "searchBarSearch" ||
                 nextProps.newTableType === "graphClick") &&
             nextProps.curTable !== this.props.curTable
         );

@@ -2,13 +2,13 @@ import React, {Component} from "react";
 import SchemaDetails from "./low-level-components/SchemaDetails";
 import RawDataTable from "./low-level-components/RawDataTable";
 
-class TableDetails extends Component {
+class VisDetails extends Component {
     render() {
         let curTable = this.props.curTable;
         let columns =
             curTable.length > 0 ? this.props.tableColumns[curTable] : [];
         return (
-            <div className="tabledetails">
+            <div className="visdetails">
                 <SchemaDetails
                     curTable={curTable}
                     columns={columns}
@@ -32,4 +32,4 @@ class TableDetails extends Component {
     }
 }
 
-export default TableDetails;
+export default VisDetails;

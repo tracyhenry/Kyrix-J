@@ -44,7 +44,7 @@ class Header extends Component {
                     notFoundContent="No matching tables."
                     value={this.props.searchBarValue}
                     onSelect={this.props.handleClick}
-                    onSearch={this.props.handleSearchBarChange}
+                    onSearch={this.props.handleSearchBarInputChange}
                 >
                     <Input.Search
                         size="large"

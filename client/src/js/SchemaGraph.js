@@ -78,7 +78,7 @@ class SchemaGraph extends Component {
     componentDidUpdate = () => {
         if (!this.props.kyrixLoaded) return;
         if (
-            this.props.newTableType === "tableDetailsClick" ||
+            this.props.newTableType === "searchBarSearch" ||
             this.props.newTableType === "kyrixRandomJump" ||
             this.props.newTableType === "kyrixLoaded"
         )
