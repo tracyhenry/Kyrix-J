@@ -52,7 +52,7 @@ var ssv = {
         hover: {
             tooltip: {
                 columns: [
-                    "building_name_long",
+                    "building_name",
                     "fclt_building_key",
                     "building_type",
                     "building_height",
@@ -198,7 +198,7 @@ for (var i = 0; i < building_pyramid.length; i++) {
     };
 
     var jumpName = function(row) {
-        return "organization occupancy in " + row.building_name_long;
+        return "organization occupancy in " + row.building_name;
     };
 
     p.addJump(
