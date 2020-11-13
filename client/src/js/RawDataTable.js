@@ -14,26 +14,26 @@ class RawDataTable extends Component {
                 d !== "maxx" &&
                 d !== "maxy" &&
                 d !== "cx" &&
-                d !== "cy"
+                d !== "cy" &&
+                d !== "clusterAgg"
         );
 
-        let antdColumns = rawColumns.map(d => ({
+        let toAntdColumn = d => ({
             title: d,
-            dataIndex: d
-                .toLowerCase()
-                .split(" ")
-                .join("_"),
-            key: d
-                .toLowerCase()
-                .split(" ")
-                .join("_"),
-            ellipsis: {
-                showTitle: false
-            }
-        }));
+            dataIndex: d,
+            key: d,
+            ellipsis: true
+        });
+
+        let antdColumns = [toAntdColumn(this.props.primaryKey)];
+        antdColumns = antdColumns.concat(
+            rawColumns
+                .filter(d => d !== this.props.primaryKey)
+                .map(toAntdColumn)
+        );
 
         const antdData = JSON.parse(
-            JSON.stringify(this.props.kyrixRenderData.slice(0, 500))
+            JSON.stringify(this.props.kyrixRenderData.slice(0, 300))
         );
         antdData.forEach((d, i) => {
             d.key = JSON.stringify(d) + i;

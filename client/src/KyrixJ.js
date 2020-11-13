@@ -284,13 +284,17 @@ class KyrixJ extends Component {
     };
 
     tableColumns = {
+        // make sure the first column of each table
+        // is the primary key
+        // and exist in the dataset
         building: [
+            "Building Name",
+            "Building Name Long",
             "Fclt Building Key",
             "Building Number",
             "Parent Building Number",
             "Parent Building Name",
             "Parent Building Name Long",
-            "Building Name Long",
             "Ext Gross Area",
             "Assignable Area",
             "Non Assignable Area",
@@ -311,7 +315,6 @@ class KyrixJ extends Component {
             "Northing Y Spcs",
             "Building Sort",
             "Building Named For",
-            "Building Name",
             "Date Built",
             "Date Acquired",
             "Date Occupied",
@@ -319,8 +322,8 @@ class KyrixJ extends Component {
             "Num Of Rooms"
         ],
         room: [
-            "Fclt Room Key",
             "Building Room",
+            "Fclt Room Key",
             "Fclt Building Key",
             "Floor2",
             "Fclt Floor Key",
@@ -347,6 +350,7 @@ class KyrixJ extends Component {
             "Warehouse Load Date"
         ],
         course: [
+            "Subject Title",
             "Academic Year",
             "Term Code",
             "Subject Id",
@@ -359,7 +363,6 @@ class KyrixJ extends Component {
             "Department Name",
             "Effective Term Code",
             "Subject Short Title",
-            "Subject Title",
             "Is Variable Units",
             "Lecture Units",
             "Lab Units",
@@ -418,17 +421,17 @@ class KyrixJ extends Component {
             "Meet Place"
         ],
         student: [
+            "Full Name",
             "First Name",
             "Middle Name",
             "Last Name",
-            "Full Name",
+            "Full Name Uppercase",
             "Office Location",
             "Office Phone",
             "Email Address",
             "Department",
             "Department Name",
             "Student Year",
-            "Full Name Uppercase",
             "Warehouse Load Date"
         ]
     };

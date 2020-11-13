@@ -1,7 +1,7 @@
 const Transform = require("../../src/Transform").Transform;
 
 var roomTreemapStaticTransform = new Transform(
-    "select fclt_building_key, organization_name, area from fclt_rooms;",
+    "select building_room, fclt_building_key, organization_name, area from fclt_rooms;",
     "mit",
     "",
     [],
@@ -9,7 +9,7 @@ var roomTreemapStaticTransform = new Transform(
 );
 
 var roomBarChartStaticTransform = new Transform(
-    "select fclt_building_key, organization_name, use_desc, major_use_desc, area from fclt_rooms;",
+    "select building_room, fclt_building_key, organization_name, use_desc, major_use_desc, area from fclt_rooms;",
     "mit",
     "",
     [],
@@ -25,7 +25,7 @@ var roomCirclePackStaticTransform = new Transform(
 );
 
 var courseBarChartStaticTransform = new Transform(
-    "select department_name, department_code, meet_place, total_units from course_catalog_subject_offered;",
+    "select subject_title, department_name, department_code, meet_place, total_units from course_catalog_subject_offered;",
     "mit",
     "",
     [],
@@ -33,7 +33,7 @@ var courseBarChartStaticTransform = new Transform(
 );
 
 var studentPieChartStaticTransform = new Transform(
-    "select student_year, office_location, department from mit_student_directory;",
+    "select full_name, student_year, office_location, department from mit_student_directory;",
     "mit",
     "",
     [],

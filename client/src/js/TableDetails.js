@@ -15,6 +15,14 @@ class TableDetails extends Component {
                     maxHeight={this.props.schemaTableMaxHeight}
                 />
                 <RawDataTable
+                    primaryKey={
+                        columns.length > 0
+                            ? columns[0]
+                                  .toLowerCase()
+                                  .split(" ")
+                                  .join("_")
+                            : ""
+                    }
                     kyrixRenderData={this.props.kyrixRenderData}
                     maxHeight={this.props.rawDataTableMaxHeight}
                 />
