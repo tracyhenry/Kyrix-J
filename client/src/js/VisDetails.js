@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import SchemaDetails from "./low-level-components/SchemaDetails";
 import RawDataTable from "./low-level-components/RawDataTable";
 
 class VisDetails extends Component {
@@ -9,11 +8,6 @@ class VisDetails extends Component {
             curTable.length > 0 ? this.props.tableColumns[curTable] : [];
         return (
             <div className="visdetails">
-                <SchemaDetails
-                    curTable={curTable}
-                    columns={columns}
-                    maxHeight={this.props.schemaTableMaxHeight}
-                />
                 <RawDataTable
                     primaryKey={
                         columns.length > 0

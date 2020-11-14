@@ -36,23 +36,6 @@ const resizeSvgs = () => {
     }
 };
 
-const resizeSchemaTable = that => {
-    that.setState({
-        schemaTableMaxHeight: getSchemaTableMaxHeight()
-    });
-};
-
-const getSchemaTableMaxHeight = () => {
-    if (d3.select(".schemadetails").empty()) return 300;
-    return Math.max(
-        d3
-            .select(".schemadetails")
-            .node()
-            .getBoundingClientRect().height,
-        152
-    );
-};
-
 const resizeRawDataTable = that => {
     that.setState({
         rawDataTableMaxHeight: getRawDataTableMaxHeight()
@@ -70,10 +53,4 @@ const getRawDataTableMaxHeight = () => {
     );
 };
 
-export {
-    resizeSvgs,
-    getRawDataTableMaxHeight,
-    resizeRawDataTable,
-    getSchemaTableMaxHeight,
-    resizeSchemaTable
-};
+export {resizeSvgs, getRawDataTableMaxHeight, resizeRawDataTable};
