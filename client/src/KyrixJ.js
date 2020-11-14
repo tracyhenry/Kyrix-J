@@ -8,7 +8,6 @@ import {
     resizeRawDataTable
 } from "./js/ResizeStuff";
 import KyrixVis from "./js/KyrixVis";
-import QueryDetails from "./js/QueryDetails";
 import Header from "./js/Header";
 
 class KyrixJ extends Component {
@@ -173,6 +172,9 @@ class KyrixJ extends Component {
                     curTable={this.state.curTable}
                     kyrixRenderData={this.state.kyrixRenderData}
                     rawDataTableMaxHeight={this.state.rawDataTableMaxHeight}
+                    kyrixCanvas={this.state.kyrixCanvas}
+                    sqlQuery={this.sqlQuery}
+                    kyrixPredicates={this.state.kyrixPredicates}
                 />
                 <SlideReel />
                 <KyrixVis
@@ -183,11 +185,6 @@ class KyrixJ extends Component {
                     // app metadata (TODO: combine them into one field)
                     kyrixViewId={this.kyrixViewId}
                     clickJumpDefaults={this.clickJumpDefaults}
-                />
-                <QueryDetails
-                    kyrixCanvas={this.state.kyrixCanvas}
-                    sqlQuery={this.sqlQuery}
-                    kyrixPredicates={this.state.kyrixPredicates}
                 />
             </>
         );
