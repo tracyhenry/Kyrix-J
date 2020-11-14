@@ -1,0 +1,76 @@
+.kyrixtooltip {
+    background: #fff;
+    border-radius: 3px;
+    position: absolute;
+    box-shadow: 2px 2px #888888;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 13px;
+    font-family: Open Sans;
+}
+.kyrixdiv {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+}
+
+.kyrixviewdiv {
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+}
+
+.kyrixvisdiv {
+    flex: 1 1 0;
+    overflow: hidden;
+}
+
+.kyrixbuttondiv {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+}
+
+.kyrixbuttondiv button {
+    display: block;
+    margin: 6px;
+}
+
+.viewsvg {
+    display: block;
+    position: relative;
+    /*margin-top: 5px;*/
+    /*margin-left: 5px;*/
+}
+
+div.jumppopover {
+    position: absolute;
+    display: block;
+    opacity: 0.9;
+}
+
+div.popoverarrow {
+    top: 50%;
+}
+
+a.popoverclose {
+    position: relative;
+    bottom: 5px;
+    left: 6px;
+}
+
+div.popovercontent {
+    margin: 0px;
+    padding: 0px;
+}
+
+div.popovercontent > .list-group-item {
+    padding: 6px;
+    border: none;
+}
+
+div.jumppopover > div {
+    text-align: center;
+    font-family: "Source Serif Pro", sans-serif !important;
+}

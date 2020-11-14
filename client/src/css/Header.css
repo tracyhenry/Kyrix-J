@@ -1,0 +1,9 @@
+.kyrixjheader {
+    background-color: lemonchiffon;
+    grid-area: 1 / 1 / 2 / 10;
+    font-size: 18px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,46 @@
+html,
+body {
+    height: 100%;
+}
+.grid-container {
+    display: grid;
+    height: 100%;
+    grid-template: auto repeat(7, 1fr) / repeat(9, 1fr);
+}
+
+.grid-container > div {
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    position: relative;
+    margin: 3px;
+    box-sizing: border-box;
+    box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.32);
+}
+
+.grid-container > div:not(.kyrixjheader) {
+    background-color: white;
+}
+
+.svgdiv,
+.kyrixdiv {
+    position: relative;
+    overflow: hidden;
+}
+
+.explain {
+    display: none;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 2;
+    font-size: 24px;
+}
+
+/* global antd modifiers */
+.grid-container .ant-card-head {
+    background-color: #f7f9fc;
+}
+
+.grid-container .ant-card-head-title {
+    padding: 10px 0;
+}

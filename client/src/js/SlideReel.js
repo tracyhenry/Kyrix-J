@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Card} from "antd";
 import ssvPic from "../pics/ssv.png";
 import barChartPic from "../pics/barchart.png";
 import pieChartPic from "../pics/piechart.png";
@@ -12,7 +13,7 @@ class SlideReel extends Component {
     render() {
         return (
             <div className="slidereel">
-                <div className="slideshow">
+                <Card title="Exploration History" className="slideshow">
                     <div className="img-container">
                         <img src={ssvPic} alt="ssv" />
                     </div>
@@ -31,7 +32,7 @@ class SlideReel extends Component {
                     <div className="img-container">
                         <img src={treemapPic} alt="treemap" />
                     </div>
-                </div>
+                </Card>
                 <div className="explain">History Slider View</div>
             </div>
         );

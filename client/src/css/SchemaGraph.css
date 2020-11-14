@@ -1,0 +1,31 @@
+.erdiagram {
+    grid-area: 2 / 2 / 4 / 7;
+    position: absolute;
+    overflow: hidden;
+}
+
+.erdiagramsvg {
+    position: absolute;
+}
+
+.erdiagram > .graphbutton {
+    margin: 5px 5px;
+    float: right;
+}
+
+.circleg > circle {
+    fill: #add8e6;
+    stroke: #eee;
+    stroke-width: 12;
+    cursor: pointer;
+}
+
+.lineg > line {
+    stroke: #eee;
+    stroke-width: 12;
+}
+
+.lineg > line:hover {
+    stroke: #111;
+    stroke-width: 15;
+}
