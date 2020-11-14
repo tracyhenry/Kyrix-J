@@ -13,7 +13,7 @@ class SlideReel extends Component {
     render() {
         return (
             <div className="slidereel">
-                <Card title="Exploration History" className="slideshow">
+                <Card title="History" className="slideshow">
                     <div className="img-container">
                         <img src={ssvPic} alt="ssv" />
                     </div>
