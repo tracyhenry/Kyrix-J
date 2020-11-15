@@ -10,7 +10,7 @@ class NodePopover extends Component {
                 key: "field",
                 align: "right",
                 width: "60%",
-                render: text => <p>{text}</p>
+                render: text => <h5>{text}</h5>
             },
             {
                 title: "",

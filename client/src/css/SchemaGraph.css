@@ -30,12 +30,21 @@
     stroke-width: 15;
 }
 
-div.ant-popover h4 {
+.ant-popover p {
+    margin: 0px;
+}
+
+.ant-popover h4 {
     margin: 5px;
 }
 
-div.ant-popover p {
-    margin: 2px;
+.ant-popover h5 {
+    margin: 5px;
+}
+
+.ant-popover table {
+    margin-top: 5px;
+    border-color: white !important;
 }
 
 .ant-popover .attribute-container {
@@ -53,14 +62,10 @@ div.ant-popover p {
 }
 
 .ant-popover .ant-table-tbody > tr {
-    padding: 5px 5px !important;
+    padding: 10px 5px !important;
 }
 
 .ant-popover .ant-table-tbody > tr > td {
     border-bottom: none !important;
     padding: 0px 5px !important;
-}
-
-div.ant-popover table {
-    border-color: white !important;
 }
