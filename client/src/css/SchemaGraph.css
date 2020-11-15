@@ -44,16 +44,15 @@
 
 .ant-popover table {
     margin-top: 5px;
-    border-color: white !important;
 }
 
 .ant-popover .attribute-container {
-    max-height: 200px;
+    max-height: 150px;
     overflow: scroll;
 }
 
 .ant-popover .attribute-container p {
-    padding: 5px 3px;
+    padding: 1px 3px;
     text-align: center;
 }
 

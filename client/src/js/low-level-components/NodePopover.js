@@ -24,12 +24,12 @@ class NodePopover extends Component {
         const data = [
             {
                 key: 0,
-                field: "# of vis",
+                field: "# Vis",
                 value: this.props.d.numCanvas
             },
             {
                 key: 1,
-                field: "# of records",
+                field: "# Records",
                 value: this.props.d.numRecords
             }
         ];
@@ -44,11 +44,12 @@ class NodePopover extends Component {
                     pagination={false}
                     bordered={false}
                 />
-                <Divider style={{margin: "3px 0px"}}>Attributes</Divider>
+                <Divider style={{margin: "3px 0px"}}>
+                    <h5>Attributes</h5>
+                </Divider>
                 <div className="attribute-container">
                     <List
                         size="small"
-                        bordered={false}
                         dataSource={attributes}
                         renderItem={item => (
                             <p>
