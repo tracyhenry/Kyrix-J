@@ -13,9 +13,9 @@ class SchemaGraph extends Component {
         this.svgRef = React.createRef();
 
         // initialize D3 force directed layout
-        this.supermanW = 80;
-        this.supermanH = 70;
-        this.circleRadius = 70;
+        this.supermanW = (this.props.width / 1000) * 90;
+        this.supermanH = (this.props.width / 1000) * 80;
+        this.circleRadius = (this.props.width / 1000) * 80;
         let tickFunction = () => {
             this.nodes.attr("cx", d => d.x).attr("cy", d => d.y);
             this.links
@@ -56,15 +56,15 @@ class SchemaGraph extends Component {
                 d3
                     .forceLink()
                     .id(d => d.table_name)
-                    .distance(230)
+                    .distance((this.props.width / 1000) * 230)
             )
             .force(
                 "charge",
                 d3
                     .forceManyBody()
                     .strength(-8000)
-                    .distanceMax(400)
-                    .distanceMin(230)
+                    .distanceMax((this.props.width / 1000) * 460)
+                    .distanceMin((this.props.width / 1000) * 230)
             )
             .on("tick", tickFunction.bind(this))
             .on("end", endFunction.bind(this))

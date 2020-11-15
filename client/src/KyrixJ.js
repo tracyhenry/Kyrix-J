@@ -155,8 +155,8 @@ class KyrixJ extends Component {
                     tableColumns={this.tableColumns}
                 />
                 <SchemaGraph
-                    width="1000"
-                    height="1000"
+                    width="1200"
+                    height="1200"
                     kyrixLoaded={this.state.kyrixLoaded}
                     curTable={this.state.curTable}
                     interactionType={this.state.interactionType}
