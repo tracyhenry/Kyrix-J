@@ -85,7 +85,7 @@ class SchemaGraph extends Component {
         )
             this.renderNewTable();
         else this.renderNewNeighbors();
-        this.makeTooltips();
+        this.registerPopoverMouseEvents();
     };
 
     shouldComponentUpdate = nextProps =>
@@ -343,9 +343,7 @@ class SchemaGraph extends Component {
             .zoom()
             .scaleExtent([1, 1])
             .on("zoom", () => {
-                d3.select("body")
-                    .selectAll(".kyrixtooltip")
-                    .remove();
+                d3.selectAll(".ant-popover").style("visibility", "hidden");
                 circleg.attr("transform", d3.event.transform);
                 lineg.attr("transform", d3.event.transform);
                 supermang.attr("transform", d3.event.transform);
@@ -361,35 +359,35 @@ class SchemaGraph extends Component {
         resizeSvgs();
     };
 
-    makeTooltips = () => {
+    registerPopoverMouseEvents = () => {
         this.nodes
-            .on("mouseover.kyrixtooltip", d => {
+            .on("mouseover.schemagraphPopover", d => {
                 if (d == null || typeof d !== "object") return;
                 let clientRect = d3.event.currentTarget.getBoundingClientRect();
                 let popoverWidth = d3
-                    .select(".schemagraphtooltip_" + d.table_name)
+                    .select(".schemagraphPopover_" + d.table_name)
                     .node()
                     .getBoundingClientRect().width;
                 let clientCx =
                     clientRect.x + clientRect.width / 2 - popoverWidth / 2;
                 let clientCy = clientRect.y + clientRect.height;
-                d3.select(".schemagraphtooltip_" + d.table_name)
+                d3.select(".schemagraphPopover_" + d.table_name)
                     .style("left", clientCx + "px")
                     .style("top", clientCy + "px")
                     .style("visibility", "visible");
             })
-            .on("mouseleave.kyrixtooltip", d => {
+            .on("mouseleave.schemagraphPopover", d => {
                 if (d == null || typeof d !== "object") return;
                 if (
                     d3.event.relatedTarget == null ||
                     d3.event.relatedTarget.closest(".ant-popover") == null
                 )
-                    d3.select(".schemagraphtooltip_" + d.table_name).style(
+                    d3.select(".schemagraphPopover_" + d.table_name).style(
                         "visibility",
                         "hidden"
                     );
             });
-        d3.selectAll(".ant-popover").on("mouseleave.kyrixtooltip", () => {
+        d3.selectAll(".ant-popover").on("mouseleave.schemagraphPopover", () => {
             if (!d3.select(d3.event.target).classed("ant-popover")) return;
             // check if event.relatedTarget is a circle
             // and that circle is the same as

@@ -59,7 +59,7 @@ class NodePopover extends Component {
                 trigger="click"
                 visible
                 overlayClassName={
-                    "schemagraphtooltip_" + this.props.d.table_name
+                    "schemagraphPopover_" + this.props.d.table_name
                 }
                 overlayStyle={{visibility: "hidden"}}
             />
