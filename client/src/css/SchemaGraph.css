@@ -38,13 +38,27 @@ div.ant-popover p {
     margin: 2px;
 }
 
+.ant-popover .attribute-container {
+    max-height: 200px;
+    overflow: scroll;
+}
+
+.ant-popover .attribute-container p {
+    padding: 5px 3px;
+    text-align: center;
+}
+
 .ant-popover .ant-popover-inner-content {
     padding: 0px !important;
 }
 
+.ant-popover .ant-table-tbody > tr {
+    padding: 3px 5px !important;
+}
+
 .ant-popover .ant-table-tbody > tr > td {
     border-bottom: none !important;
-    padding: 3px 7px !important;
+    padding: 0px 5px !important;
 }
 
 div.ant-popover table {

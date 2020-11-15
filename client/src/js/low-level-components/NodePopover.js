@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Table, Popover} from "antd";
+import {Table, Popover, List, Divider} from "antd";
 
 class NodePopover extends Component {
     render() {
@@ -9,19 +9,18 @@ class NodePopover extends Component {
                 dataIndex: "field",
                 key: "field",
                 align: "right",
-                render: text => <b>{text}</b>
+                width: "60%",
+                render: text => <p>{text}</p>
             },
             {
                 title: "",
                 dataIndex: "value",
                 key: "value",
                 render: text => {
-                    // if (text !== "attribute_list")
-                    return <p>{text}</p>;
+                    return <i>{text}</i>;
                 }
             }
         ];
-
         const data = [
             {
                 key: 0,
@@ -32,30 +31,36 @@ class NodePopover extends Component {
                 key: 1,
                 field: "# of records",
                 value: this.props.d.numRecords
-            },
-            {
-                key: 2,
-                field: "Attributes",
-                value: "attribute_list"
             }
         ];
-
-        const table = (
-            <Table
-                size="small"
-                columns={columns}
-                dataSource={data}
-                showHeader={false}
-                pagination={false}
-                bordered={false}
-            />
+        const attributes = this.props.tableColumns[this.props.d.table_name];
+        const content = (
+            <>
+                <Table
+                    size="small"
+                    columns={columns}
+                    dataSource={data}
+                    showHeader={false}
+                    pagination={false}
+                    bordered={false}
+                />
+                <Divider style={{margin: "3px 0px"}}>Attributes</Divider>
+                <div className="attribute-container">
+                    <List
+                        size="small"
+                        bordered={false}
+                        dataSource={attributes}
+                        renderItem={item => <p>{item}</p>}
+                    />
+                </div>
+            </>
         );
 
         return (
             <Popover
                 placement="bottom"
                 title={<h4>{this.props.d.table_name}</h4>}
-                content={table}
+                content={content}
                 trigger="click"
                 visible
                 overlayClassName={

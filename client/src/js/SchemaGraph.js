@@ -105,7 +105,13 @@ class SchemaGraph extends Component {
                 d => !nodeData.map(d => d.table_name).includes(d.table_name)
             )
         );
-        return nodeData.map(d => <NodePopover key={d.table_name} d={d} />);
+        return nodeData.map(d => (
+            <NodePopover
+                key={d.table_name}
+                tableColumns={this.props.tableColumns}
+                d={d}
+            />
+        ));
     };
 
     reCenterGraph = () => {
