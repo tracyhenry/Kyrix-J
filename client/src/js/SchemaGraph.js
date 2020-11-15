@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import * as d3 from "d3";
 import {resizeSvgs} from "./ResizeStuff";
-import {Button, Space, Popover} from "antd";
+import NodePopover from "./low-level-components/NodePopover";
+import {Button, Space} from "antd";
 
 class SchemaGraph extends Component {
     constructor(props) {
@@ -104,24 +105,7 @@ class SchemaGraph extends Component {
                 d => !nodeData.map(d => d.table_name).includes(d.table_name)
             )
         );
-        const popovers = nodeData.map(d => (
-            <Popover
-                key={d.table_name}
-                placement="bottom"
-                title={<h4>{d.table_name}</h4>}
-                content={
-                    <div>
-                        <p># of Vis: {d.numCanvas}</p>
-                        <p># of Records: {d.numRecords}</p>
-                    </div>
-                }
-                trigger="click"
-                visible
-                overlayClassName={"schemagraphtooltip_" + d.table_name}
-                overlayStyle={{visibility: "hidden"}}
-            ></Popover>
-        ));
-        return popovers;
+        return nodeData.map(d => <NodePopover key={d.table_name} d={d} />);
     };
 
     reCenterGraph = () => {
@@ -396,7 +380,10 @@ class SchemaGraph extends Component {
             })
             .on("mouseleave.kyrixtooltip", d => {
                 if (d == null || typeof d !== "object") return;
-                if (d3.event.relatedTarget.closest(".ant-popover") == null)
+                if (
+                    d3.event.relatedTarget == null ||
+                    d3.event.relatedTarget.closest(".ant-popover") == null
+                )
                     d3.select(".schemagraphtooltip_" + d.table_name).style(
                         "visibility",
                         "hidden"

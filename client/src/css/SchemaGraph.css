@@ -37,3 +37,16 @@ div.ant-popover h4 {
 div.ant-popover p {
     margin: 2px;
 }
+
+.ant-popover .ant-popover-inner-content {
+    padding: 0px !important;
+}
+
+.ant-popover .ant-table-tbody > tr > td {
+    border-bottom: none !important;
+    padding: 3px 7px !important;
+}
+
+div.ant-popover table {
+    border-color: white !important;
+}
