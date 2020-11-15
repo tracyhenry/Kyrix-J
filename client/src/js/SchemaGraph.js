@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import * as d3 from "d3";
 import {resizeSvgs} from "./ResizeStuff";
-import {Button, Space} from "antd";
+import {Button, Space, Popover} from "antd";
 
 class SchemaGraph extends Component {
     constructor(props) {
@@ -88,6 +88,41 @@ class SchemaGraph extends Component {
 
     shouldComponentUpdate = nextProps =>
         nextProps.curTable !== this.props.curTable;
+
+    getPopovers = () => {
+        if (this.props.curTable === "") return [];
+        let nodeData = this.nodes ? this.nodes.data() : [];
+        let neighbors = this.getOneHopNeighbors();
+        neighbors.nodeData = neighbors.nodeData.concat({
+            table_name: this.props.curTable,
+            numCanvas: this.props.tableMetadata[this.props.curTable].numCanvas,
+            numRecords: this.props.tableMetadata[this.props.curTable].numRecords
+        });
+        nodeData = nodeData.concat(
+            neighbors.nodeData.filter(
+                d => !nodeData.map(d => d.table_name).includes(d.table_name)
+            )
+        );
+        const popovers = nodeData.map(d => (
+            <Popover
+                key={d.table_name}
+                placement="bottom"
+                title={<h4>{d.table_name}</h4>}
+                content={
+                    <div>
+                        <p># of Vis: {d.numCanvas}</p>
+                        <p># of Records: {d.numRecords}</p>
+                    </div>
+                }
+                trigger="click"
+                visible
+                // destroyTooltipOnHide={{keepParent: true}}
+                overlayClassName={"schemagraphtooltip_" + d.table_name}
+                overlayStyle={{visibility: "hidden"}}
+            ></Popover>
+        ));
+        return popovers;
+    };
 
     reCenterGraph = () => {
         let oldTransform = d3.zoomTransform(this.svgRef.current);
@@ -250,11 +285,7 @@ class SchemaGraph extends Component {
             enter
                 .append("circle")
                 .attr("r", this.circleRadius)
-                .call(
-                    this.makeTooltips,
-                    ["table_name", "numRecords", "numCanvas"],
-                    ["Table", "# of Records", "# of vis"]
-                )
+                .call(this.makeTooltips)
                 .style("cursor", "pointer")
                 .classed("graphnew", true)
                 .on("click", this.props.handleNodeClick);
@@ -304,11 +335,7 @@ class SchemaGraph extends Component {
             .data(linkData)
             .join("line")
             .classed("graphnew", true);
-        this.makeTooltips(
-            this.nodes,
-            ["table_name", "numRecords", "numCanvas"],
-            ["Table", "# of Records", "# of vis"]
-        );
+        this.makeTooltips(this.nodes);
 
         this.simulation.nodes(nodeData);
         this.simulation.force("link").links(linkData);
@@ -352,63 +379,29 @@ class SchemaGraph extends Component {
         resizeSvgs();
     };
 
-    makeTooltips = (selection, columns, aliases) => {
-        var createTooltip = d => {
-            if (d == null || typeof d !== "object") return;
-            // remove all tool tips first
-            d3.select("body")
-                .selectAll(".kyrixtooltip")
-                .remove();
-            // create a new tooltip
-            var tooltip = d3
-                .select("body")
-                .append("table")
-                .classed("kyrixtooltip", true)
-                .style("left", d3.event.pageX + "px")
-                .style("top", d3.event.pageY + "px");
-            var rows = tooltip
-                .selectAll(".kyrix-tooltip-rows")
-                .data(columns)
-                .join("tr");
-            // column names
-            rows.append("td")
-                .html((p, j) => aliases[j] + ":")
-                .style("padding-left", "10px")
-                .style("padding-right", "2px")
-                .style("padding-top", (p, i) => (i === 0 ? "10px" : "1px"))
-                .style("padding-bottom", (p, i) =>
-                    i === columns.length - 1 ? "10px" : "1px"
-                );
-
-            // column values
-            rows.append("td")
-                .html(p => (!isNaN(d[p]) ? d3.format("~s")(d[p]) : d[p]))
-                .style("font-weight", "900")
-                .style("padding-left", "2px")
-                .style("padding-right", "10px")
-                .style("padding-top", (p, i) => (i === 0 ? "10px" : "1px"))
-                .style("padding-bottom", (p, i) =>
-                    i === columns.length - 1 ? "10px" : "1px"
-                );
-
-            // fade in
-            tooltip
-                .transition()
-                .duration(200)
-                .style("opacity", 0.9);
-        };
-
+    makeTooltips = selection => {
         selection
-            .on("mouseover.kyrixtooltip", d => createTooltip(d))
-            .on("mousemove.kyrixtooltip", function(d) {
+            .on("mouseover.kyrixtooltip", d => {
                 if (d == null || typeof d !== "object") return;
-                d3.select(".kyrixtooltip")
-                    .style("left", d3.event.pageX + "px")
-                    .style("top", d3.event.pageY + "px");
+                let clientRect = d3.event.currentTarget.getBoundingClientRect();
+                let popoverWidth = d3
+                    .select(".schemagraphtooltip_" + d.table_name)
+                    .node()
+                    .getBoundingClientRect().width;
+                let clientCx =
+                    clientRect.x + clientRect.width / 2 - popoverWidth / 2;
+                let clientCy = clientRect.y + clientRect.height / 2;
+                d3.select(".schemagraphtooltip_" + d.table_name)
+                    .style("left", clientCx + "px")
+                    .style("top", clientCy + "px")
+                    .style("visibility", "visible");
             })
-            .on("mouseout.kyrixtooltip", function(d) {
+            .on("mouseout.kyrixtooltip", d => {
                 if (d == null || typeof d !== "object") return;
-                d3.select(".kyrixtooltip").remove();
+                d3.select(".schemagraphtooltip_" + d.table_name).style(
+                    "visibility",
+                    "hidden"
+                );
             });
     };
 
@@ -583,6 +576,7 @@ class SchemaGraph extends Component {
                         </Button>
                     </Space>
                 </div>
+                <>{this.getPopovers()}</>
                 <div className="explain">Schema Graph View</div>
             </div>
         );

@@ -29,3 +29,15 @@
     stroke: #111;
     stroke-width: 15;
 }
+
+div.ant-popover {
+    pointer-events: none;
+}
+
+div.ant-popover h4 {
+    margin: 5px;
+}
+
+div.ant-popover p {
+    margin: 2px;
+}
