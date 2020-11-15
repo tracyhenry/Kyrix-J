@@ -84,6 +84,7 @@ class SchemaGraph extends Component {
         )
             this.renderNewTable();
         else this.renderNewNeighbors();
+        this.makeTooltips();
     };
 
     shouldComponentUpdate = nextProps =>
@@ -116,7 +117,6 @@ class SchemaGraph extends Component {
                 }
                 trigger="click"
                 visible
-                // destroyTooltipOnHide={{keepParent: true}}
                 overlayClassName={"schemagraphtooltip_" + d.table_name}
                 overlayStyle={{visibility: "hidden"}}
             ></Popover>
@@ -285,7 +285,6 @@ class SchemaGraph extends Component {
             enter
                 .append("circle")
                 .attr("r", this.circleRadius)
-                .call(this.makeTooltips)
                 .style("cursor", "pointer")
                 .classed("graphnew", true)
                 .on("click", this.props.handleNodeClick);
@@ -335,7 +334,6 @@ class SchemaGraph extends Component {
             .data(linkData)
             .join("line")
             .classed("graphnew", true);
-        this.makeTooltips(this.nodes);
 
         this.simulation.nodes(nodeData);
         this.simulation.force("link").links(linkData);
@@ -379,8 +377,8 @@ class SchemaGraph extends Component {
         resizeSvgs();
     };
 
-    makeTooltips = selection => {
-        selection
+    makeTooltips = () => {
+        this.nodes
             .on("mouseover.kyrixtooltip", d => {
                 if (d == null || typeof d !== "object") return;
                 let clientRect = d3.event.currentTarget.getBoundingClientRect();
@@ -396,13 +394,28 @@ class SchemaGraph extends Component {
                     .style("top", clientCy + "px")
                     .style("visibility", "visible");
             })
-            .on("mouseout.kyrixtooltip", d => {
+            .on("mouseleave.kyrixtooltip", d => {
                 if (d == null || typeof d !== "object") return;
-                d3.select(".schemagraphtooltip_" + d.table_name).style(
-                    "visibility",
-                    "hidden"
-                );
+                if (d3.event.relatedTarget.closest(".ant-popover") == null)
+                    d3.select(".schemagraphtooltip_" + d.table_name).style(
+                        "visibility",
+                        "hidden"
+                    );
             });
+        d3.selectAll(".ant-popover").on("mouseleave.kyrixtooltip", () => {
+            if (!d3.select(d3.event.target).classed("ant-popover")) return;
+            // check if event.relatedTarget is a circle
+            // and that circle is the same as
+            let targetRect = d3.event.target.getBoundingClientRect();
+            let relatedRect = d3.event.relatedTarget.getBoundingClientRect();
+            if (
+                d3.event.relatedTarget.tagName !== "circle" ||
+                relatedRect.x + relatedRect.width / 2 !==
+                    targetRect.x + targetRect.width / 2 ||
+                relatedRect.y + relatedRect.height / 2 !== targetRect.y
+            )
+                d3.select(d3.event.target).style("visibility", "hidden");
+        });
     };
 
     registerJumpHandlers = () => {
