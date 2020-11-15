@@ -372,7 +372,7 @@ class SchemaGraph extends Component {
                     .getBoundingClientRect().width;
                 let clientCx =
                     clientRect.x + clientRect.width / 2 - popoverWidth / 2;
-                let clientCy = clientRect.y + clientRect.height / 2;
+                let clientCy = clientRect.y + clientRect.height;
                 d3.select(".schemagraphtooltip_" + d.table_name)
                     .style("left", clientCx + "px")
                     .style("top", clientCy + "px")
@@ -399,7 +399,7 @@ class SchemaGraph extends Component {
                 d3.event.relatedTarget.tagName !== "circle" ||
                 relatedRect.x + relatedRect.width / 2 !==
                     targetRect.x + targetRect.width / 2 ||
-                relatedRect.y + relatedRect.height / 2 !== targetRect.y
+                relatedRect.y + relatedRect.height !== targetRect.y
             )
                 d3.select(d3.event.target).style("visibility", "hidden");
         });
