@@ -50,7 +50,11 @@ class NodePopover extends Component {
                         size="small"
                         bordered={false}
                         dataSource={attributes}
-                        renderItem={item => <p>{item}</p>}
+                        renderItem={item => (
+                            <p>
+                                <i>{item}</i>
+                            </p>
+                        )}
                     />
                 </div>
             </>

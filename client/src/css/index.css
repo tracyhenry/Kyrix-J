@@ -38,7 +38,8 @@ body {
 
 /* global antd modifiers */
 .grid-container .ant-card-head {
-    background-color: #f7f9fc;
+    /*background-color: #f7f9fc;*/
+    background-color: #e6e8e6;
 }
 
 .grid-container .ant-card-head-title {

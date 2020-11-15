@@ -395,8 +395,12 @@ class SchemaGraph extends Component {
             });
         d3.selectAll(".ant-popover").on("mouseleave.schemagraphPopover", () => {
             if (!d3.select(d3.event.target).classed("ant-popover")) return;
+            if (d3.event.relatedTarget == null) {
+                d3.select(d3.event.target).style("visibility", "hidden");
+                return;
+            }
             // check if event.relatedTarget is a circle
-            // and that circle is the same as
+            // and that circle is the popover's trigger
             let targetRect = d3.event.target.getBoundingClientRect();
             let relatedRect = d3.event.relatedTarget.getBoundingClientRect();
             if (

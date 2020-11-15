@@ -226,26 +226,66 @@ class KyrixJ extends Component {
         {
             source: "building",
             target: "room",
-            sourceColumn: "Fclt Building Key",
-            targetColumn: "Fclt Building Key"
+            matches: [
+                {
+                    sourceCol: "Fclt Building Key",
+                    targetCol: "Fclt Building Key"
+                },
+                {
+                    sourceCol: "Latitude Wgs",
+                    targetCol: "Latitude Wgs"
+                },
+                {
+                    sourceCol: "Longitude Wgs",
+                    targetCol: "Longitude Wgs"
+                },
+                {
+                    sourceCol: "Warehouse Load Date",
+                    targetCol: "Warehouse Load Date"
+                }
+            ]
         },
         {
             source: "room",
             target: "course",
-            sourceColumn: "Building room",
-            targetColumn: "Meet Place"
+            matches: [
+                {
+                    sourceCol: "Fclt Building Key",
+                    targetCol: "Fclt Building Key"
+                },
+                {
+                    sourceCol: "Warehouse Load Date",
+                    targetCol: "Warehouse Load Date"
+                }
+            ]
         },
         {
             source: "room",
             target: "student",
-            sourceColumn: "Building room",
-            targetColumn: "Office Location"
+            matches: [
+                {
+                    sourceCol: "Building room",
+                    targetCol: "Office Location"
+                },
+                {
+                    sourceCol: "Warehouse Load Date",
+                    targetCol: "Warehouse Load Date"
+                }
+            ]
         },
         {
             source: "course",
             target: "student",
-            sourceColumn: "Dept code",
-            targetColumn: "Department"
+            matches: [
+                {
+                    sourceCol: "Dept code",
+                    targetCol: "Department"
+                },
+                {
+                    sourceCol: "Warehouse Load Date",
+                    targetCol: "Warehouse Load Date"
+                }
+            ]
         }
     ];
 
