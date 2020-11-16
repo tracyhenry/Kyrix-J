@@ -403,6 +403,31 @@ class SchemaGraph extends Component {
     };
 
     registerPopoverMouseEvents = () => {
+        const checkMouseLeave = () => {
+            // mouseleave fires for children too,
+            // so we should return when it's the case
+            if (!d3.select(d3.event.target).classed("ant-popover")) return true;
+
+            // do not mess with mouseleave when main target is hidden
+            if (d3.select(d3.event.target).style("visibility") === "hidden")
+                return true;
+
+            // if related target is null
+            // like you moved outside your browser window
+            // we just make the target in visible
+            if (d3.event.relatedTarget == null) {
+                d3.select(d3.event.target).style("visibility", "hidden");
+                return true;
+            }
+
+            // do not mess with mouseleave when the related target is hidden
+            if (
+                d3.select(d3.event.relatedTarget).style("visibility") ===
+                "hidden"
+            )
+                return true;
+        };
+
         this.nodes
             .on("mouseover", d => {
                 if (d == null || typeof d !== "object") return;
@@ -433,28 +458,8 @@ class SchemaGraph extends Component {
             });
 
         d3.selectAll(".ant-popover.node-popover").on("mouseleave", () => {
-            // mouseleave fires for children too,
-            // so we should return when it's the case
-            if (!d3.select(d3.event.target).classed("ant-popover")) return;
-
-            // do not mess with mouseleave when main target is hidden
-            if (d3.select(d3.event.target).style("visibility") === "hidden")
-                return;
-
-            // if related target is null
-            // like you moved outside your browser window
-            // we just make the target in visible
-            if (d3.event.relatedTarget == null) {
-                d3.select(d3.event.target).style("visibility", "hidden");
-                return;
-            }
-
-            // do not mess with mouseleave when the related target is hidden
-            if (
-                d3.select(d3.event.relatedTarget).style("visibility") ===
-                "hidden"
-            )
-                return;
+            // return early for non-essential firings of mouseleave
+            if (checkMouseLeave()) return;
 
             // check if event.relatedTarget is a circle
             // and that circle is the popover's trigger
@@ -505,28 +510,8 @@ class SchemaGraph extends Component {
             });
 
         d3.selectAll(".ant-popover.edge-popover").on("mouseleave", () => {
-            // mouseleave fires for children too,
-            // so we should return when it's the case
-            if (!d3.select(d3.event.target).classed("ant-popover")) return;
-
-            // do not mess with mouseleave when main target is hidden
-            if (d3.select(d3.event.target).style("visibility") === "hidden")
-                return;
-
-            // if related target is null
-            // like you moved outside your browser window
-            // we just make the target in visible
-            if (d3.event.relatedTarget == null) {
-                d3.select(d3.event.target).style("visibility", "hidden");
-                return;
-            }
-
-            // do not mess with mouseleave when the related target is hidden
-            if (
-                d3.select(d3.event.relatedTarget).style("visibility") ===
-                "hidden"
-            )
-                return;
+            // return early for non-essential firings of mouseleave
+            if (checkMouseLeave()) return;
 
             // check if event.relatedTarget is a line
             // and that circle is the popover's trigger

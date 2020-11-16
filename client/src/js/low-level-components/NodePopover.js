@@ -64,7 +64,11 @@ class NodePopover extends Component {
         return (
             <Popover
                 placement="bottom"
-                title={<h4>{this.props.d.table_name}</h4>}
+                title={
+                    <h4>
+                        Table <i>{this.props.d.table_name}</i>
+                    </h4>
+                }
                 content={content}
                 trigger="click"
                 visible
