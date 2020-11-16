@@ -84,8 +84,7 @@ class KyrixJ extends Component {
                 tableHistory: nextTableHistory,
                 interactionType: "kyrixRandomJump"
             });
-        } else if (jump.type !== "randomJump")
-            // semantic zoom or literal zoom
+        } else if (jump.type === "semantic_zoom")
             this.setState({
                 tableHistory: nextTableHistory,
                 interactionType: "kyrixVisJump"

@@ -9,7 +9,7 @@
 }
 
 .slideshow .ant-card-head {
-    max-height: 200px;
+    max-height: 60px;
 }
 
 .slideshow .ant-card-body {
@@ -17,7 +17,7 @@
     box-sizing: border-box;
     border-radius: 5px;
     /*width: 70%;*/
-    height: calc(100% - 200px);
+    height: calc(100% - 60px);
     overflow: scroll;
     white-space: nowrap;
     margin: 5px;
