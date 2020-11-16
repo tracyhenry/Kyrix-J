@@ -404,22 +404,23 @@ class SchemaGraph extends Component {
 
     registerPopoverMouseEvents = () => {
         this.nodes
-            .on("mouseover.schemagraphPopover", d => {
+            .on("mouseover", d => {
                 if (d == null || typeof d !== "object") return;
                 let clientRect = d3.event.currentTarget.getBoundingClientRect();
+                let className = ".schemagraphPopover_" + d.table_name;
                 let popoverWidth = d3
-                    .select(".schemagraphPopover_" + d.table_name)
+                    .select(className)
                     .node()
                     .getBoundingClientRect().width;
                 let clientCx =
                     clientRect.x + clientRect.width / 2 - popoverWidth / 2;
                 let clientCy = clientRect.y + clientRect.height;
-                d3.select(".schemagraphPopover_" + d.table_name)
+                d3.select(className)
                     .style("left", clientCx + "px")
                     .style("top", clientCy + "px")
                     .style("visibility", "visible");
             })
-            .on("mouseleave.schemagraphPopover", d => {
+            .on("mouseleave", d => {
                 if (d == null || typeof d !== "object") return;
                 if (
                     d3.event.relatedTarget == null ||
@@ -430,7 +431,8 @@ class SchemaGraph extends Component {
                         "hidden"
                     );
             });
-        d3.selectAll(".ant-popover").on("mouseleave.schemagraphPopover", () => {
+
+        d3.selectAll(".ant-popover.node-popover").on("mouseleave", () => {
             if (!d3.select(d3.event.target).classed("ant-popover")) return;
             if (d3.event.relatedTarget == null) {
                 d3.select(d3.event.target).style("visibility", "hidden");
@@ -445,6 +447,60 @@ class SchemaGraph extends Component {
                 relatedRect.x + relatedRect.width / 2 !==
                     targetRect.x + targetRect.width / 2 ||
                 relatedRect.y + relatedRect.height !== targetRect.y
+            )
+                d3.select(d3.event.target).style("visibility", "hidden");
+        });
+
+        this.links
+            .on("mouseover", d => {
+                if (d == null || typeof d !== "object") return;
+                let clientRect = d3.event.currentTarget.getBoundingClientRect();
+                let className =
+                    ".schemagraphPopover_" +
+                    d.source.table_name +
+                    "_" +
+                    d.target.table_name;
+                let popoverWidth = d3
+                    .select(className)
+                    .node()
+                    .getBoundingClientRect().width;
+                let clientCx =
+                    clientRect.x + clientRect.width / 2 - popoverWidth / 2;
+                let clientCy = clientRect.y + clientRect.height / 2;
+                d3.select(className)
+                    .style("left", clientCx + "px")
+                    .style("top", clientCy + "px")
+                    .style("visibility", "visible");
+            })
+            .on("mouseleave", d => {
+                if (d == null || typeof d !== "object") return;
+                if (
+                    d3.event.relatedTarget == null ||
+                    d3.event.relatedTarget.closest(".ant-popover") == null
+                )
+                    d3.select(
+                        ".schemagraphPopover_" +
+                            d.source.table_name +
+                            "_" +
+                            d.target.table_name
+                    ).style("visibility", "hidden");
+            });
+
+        d3.selectAll(".ant-popover.edge-popover").on("mouseleave", () => {
+            if (!d3.select(d3.event.target).classed("ant-popover")) return;
+            if (d3.event.relatedTarget == null) {
+                d3.select(d3.event.target).style("visibility", "hidden");
+                return;
+            }
+            // check if event.relatedTarget is a line
+            // and that circle is the popover's trigger
+            let targetRect = d3.event.target.getBoundingClientRect();
+            let relatedRect = d3.event.relatedTarget.getBoundingClientRect();
+            if (
+                d3.event.relatedTarget.tagName !== "line" ||
+                relatedRect.x + relatedRect.width / 2 !==
+                    targetRect.x + targetRect.width / 2 ||
+                relatedRect.y + relatedRect.height / 2 !== targetRect.y
             )
                 d3.select(d3.event.target).style("visibility", "hidden");
         });
