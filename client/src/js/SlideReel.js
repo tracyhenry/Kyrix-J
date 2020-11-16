@@ -1,37 +1,28 @@
 import React, {Component} from "react";
-import {Card} from "antd";
-import ssvPic from "../pics/ssv.png";
-import barChartPic from "../pics/barchart.png";
-import pieChartPic from "../pics/piechart.png";
-import circlePackPic from "../pics/circlepack.png";
-import stackBarChartPic from "../pics/stackbarchart.png";
-import treemapPic from "../pics/treemap.png";
+import {Card, List} from "antd";
 
 class SlideReel extends Component {
     state = {};
+
+    shouldComponentUpdate = nextProps =>
+        nextProps.tableHistory.length ===
+        nextProps.screenshotHistory.length + 1;
 
     render() {
         return (
             <div className="slidereel">
                 <Card title="History" className="slideshow">
-                    <div className="img-container">
-                        <img src={ssvPic} alt="ssv" />
-                    </div>
-                    <div className="img-container">
-                        <img src={barChartPic} alt="barchart" />
-                    </div>
-                    <div className="img-container">
-                        <img src={pieChartPic} alt="piechart" />
-                    </div>
-                    <div className="img-container">
-                        <img src={stackBarChartPic} alt="stackbarchart" />
-                    </div>
-                    <div className="img-container">
-                        <img src={circlePackPic} alt="circlepack" />
-                    </div>
-                    <div className="img-container">
-                        <img src={treemapPic} alt="treemap" />
-                    </div>
+                    <List
+                        bordered
+                        dataSource={this.props.screenshotHistory
+                            .slice(0)
+                            .reverse()}
+                        renderItem={(d, i) => (
+                            <div key={i} className="img-container">
+                                <img src={d} alt="ssv" />
+                            </div>
+                        )}
+                    />
                 </Card>
                 <div className="explain">History Slider View</div>
             </div>

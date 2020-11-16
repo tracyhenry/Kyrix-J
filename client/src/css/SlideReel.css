@@ -8,15 +8,20 @@
     height: 100%;
 }
 
+.slideshow .ant-card-head {
+    max-height: 200px;
+}
+
 .slideshow .ant-card-body {
-    border: #dddddd 2px dotted;
+    /*border: #dddddd 2px dotted;*/
     box-sizing: border-box;
     border-radius: 5px;
     /*width: 70%;*/
-    height: 90%;
+    height: calc(100% - 200px);
     overflow: scroll;
     white-space: nowrap;
-    margin: 20px;
+    margin: 5px;
+    padding: 3px;
 }
 
 .slidereel .slideshow .img-container {

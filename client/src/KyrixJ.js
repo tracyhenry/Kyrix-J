@@ -9,11 +9,15 @@ import {
 } from "./js/ResizeStuff";
 import KyrixVis from "./js/KyrixVis";
 import Header from "./js/Header";
+import html2canvas from "html2canvas";
 
 class KyrixJ extends Component {
     state = {
-        // name of the current table
-        curTable: "",
+        // visited tables
+        tableHistory: [],
+
+        // screenshot history
+        screenshotHistory: [],
 
         // type of interaction that generates the new table
         // can be one of ["graphClick", "kyrixLoaded", "searchBarInputChange",
@@ -51,14 +55,14 @@ class KyrixJ extends Component {
     handleSchemaGraphNodeClick = d => {
         let tableName = d.table_name;
         this.setState({
-            curTable: tableName,
+            tableHistory: this.state.tableHistory.concat([tableName]),
             interactionType: "graphClick"
         });
     };
 
     handleSearchBarSearch = tableName => {
         this.setState({
-            curTable: tableName,
+            tableHistory: this.state.tableHistory.concat([tableName]),
             interactionType: "searchBarSearch"
         });
     };
@@ -67,21 +71,23 @@ class KyrixJ extends Component {
         const nextKyrixCanvas = window.kyrix.getCurrentCanvasId(
             this.kyrixViewId
         );
-        const nextCurTable = this.canvasIdToTable[nextKyrixCanvas];
-        if (jump.type === "slide")
+        const nextTableHistory = this.state.tableHistory.concat(
+            this.canvasIdToTable[nextKyrixCanvas]
+        );
+        if (jump.type === "slide") {
             this.setState({
-                curTable: nextCurTable,
+                tableHistory: nextTableHistory,
                 interactionType: "kyrixVisJump"
             });
-        else if (jump.type === "randomJumpBack")
+        } else if (jump.type === "randomJumpBack") {
             this.setState({
-                curTable: nextCurTable,
+                tableHistory: nextTableHistory,
                 interactionType: "kyrixRandomJump"
             });
-        else if (jump.type !== "randomJump")
+        } else if (jump.type !== "randomJump")
             // semantic zoom or literal zoom
             this.setState({
-                curTable: nextCurTable,
+                tableHistory: nextTableHistory,
                 interactionType: "kyrixVisJump"
             });
 
@@ -121,13 +127,18 @@ class KyrixJ extends Component {
         );
         window.kyrix.on("zoom.loaddata", this.kyrixViewId, this.loadData);
         window.kyrix.on("pan.loaddata", this.kyrixViewId, this.loadData);
+        window.kyrix.on(
+            "jumpstart.loghistory",
+            this.kyrixViewId,
+            this.createHistoryEntry
+        );
         this.loadData();
         let kyrixCanvas = window.kyrix.getCurrentCanvasId(this.kyrixViewId);
         let kyrixPredicates = window.kyrix.getGlobalVarDictionary(
             this.kyrixViewId
         ).predicates;
         this.setState({
-            curTable: this.canvasIdToTable[kyrixCanvas],
+            tableHistory: [this.canvasIdToTable[kyrixCanvas]],
             kyrixCanvas: kyrixCanvas,
             kyrixPredicates: kyrixPredicates,
             interactionType: "kyrixLoaded",
@@ -145,6 +156,20 @@ class KyrixJ extends Component {
         });
     };
 
+    createHistoryEntry = jump => {
+        if (jump.type === "literal_zoom_in" || jump.type === "literal_zoom_out")
+            return;
+        html2canvas(document.getElementsByClassName("kyrixvisdiv")[0]).then(
+            canvas => {
+                this.setState({
+                    screenshotHistory: this.state.screenshotHistory.concat([
+                        canvas.toDataURL()
+                    ])
+                });
+            }
+        );
+    };
+
     render() {
         return (
             <>
@@ -158,7 +183,13 @@ class KyrixJ extends Component {
                     width="1200"
                     height="1200"
                     kyrixLoaded={this.state.kyrixLoaded}
-                    curTable={this.state.curTable}
+                    curTable={
+                        this.state.tableHistory.length > 0
+                            ? this.state.tableHistory[
+                                  this.state.tableHistory.length - 1
+                              ]
+                            : ""
+                    }
                     interactionType={this.state.interactionType}
                     handleNodeClick={this.handleSchemaGraphNodeClick}
                     // app metadata (TODO: combine them into one field)
@@ -169,17 +200,32 @@ class KyrixJ extends Component {
                 />
                 <VisDetails
                     tableColumns={this.tableColumns}
-                    curTable={this.state.curTable}
+                    curTable={
+                        this.state.tableHistory.length > 0
+                            ? this.state.tableHistory[
+                                  this.state.tableHistory.length - 1
+                              ]
+                            : ""
+                    }
                     kyrixRenderData={this.state.kyrixRenderData}
                     rawDataTableMaxHeight={this.state.rawDataTableMaxHeight}
                     kyrixCanvas={this.state.kyrixCanvas}
                     sqlQuery={this.sqlQuery}
                     kyrixPredicates={this.state.kyrixPredicates}
                 />
-                <SlideReel />
+                <SlideReel
+                    tableHistory={this.state.tableHistory}
+                    screenshotHistory={this.state.screenshotHistory}
+                />
                 <KyrixVis
                     handleKyrixLoad={this.handleKyrixLoad}
-                    curTable={this.state.curTable}
+                    curTable={
+                        this.state.tableHistory.length > 0
+                            ? this.state.tableHistory[
+                                  this.state.tableHistory.length - 1
+                              ]
+                            : ""
+                    }
                     interactionType={this.state.interactionType}
                     kyrixLoaded={this.state.kyrixLoaded}
                     // app metadata (TODO: combine them into one field)
