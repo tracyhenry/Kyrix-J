@@ -433,11 +433,29 @@ class SchemaGraph extends Component {
             });
 
         d3.selectAll(".ant-popover.node-popover").on("mouseleave", () => {
+            // mouseleave fires for children too,
+            // so we should return when it's the case
             if (!d3.select(d3.event.target).classed("ant-popover")) return;
+
+            // do not mess with mouseleave when main target is hidden
+            if (d3.select(d3.event.target).style("visibility") === "hidden")
+                return;
+
+            // if related target is null
+            // like you moved outside your browser window
+            // we just make the target in visible
             if (d3.event.relatedTarget == null) {
                 d3.select(d3.event.target).style("visibility", "hidden");
                 return;
             }
+
+            // do not mess with mouseleave when the related target is hidden
+            if (
+                d3.select(d3.event.relatedTarget).style("visibility") ===
+                "hidden"
+            )
+                return;
+
             // check if event.relatedTarget is a circle
             // and that circle is the popover's trigger
             let targetRect = d3.event.target.getBoundingClientRect();
@@ -487,11 +505,29 @@ class SchemaGraph extends Component {
             });
 
         d3.selectAll(".ant-popover.edge-popover").on("mouseleave", () => {
+            // mouseleave fires for children too,
+            // so we should return when it's the case
             if (!d3.select(d3.event.target).classed("ant-popover")) return;
+
+            // do not mess with mouseleave when main target is hidden
+            if (d3.select(d3.event.target).style("visibility") === "hidden")
+                return;
+
+            // if related target is null
+            // like you moved outside your browser window
+            // we just make the target in visible
             if (d3.event.relatedTarget == null) {
                 d3.select(d3.event.target).style("visibility", "hidden");
                 return;
             }
+
+            // do not mess with mouseleave when the related target is hidden
+            if (
+                d3.select(d3.event.relatedTarget).style("visibility") ===
+                "hidden"
+            )
+                return;
+
             // check if event.relatedTarget is a line
             // and that circle is the popover's trigger
             let targetRect = d3.event.target.getBoundingClientRect();
