@@ -68,3 +68,31 @@
     border-bottom: none !important;
     padding: 0px 5px !important;
 }
+
+.ant-popover.edge-popover .matching-column-pairs {
+    display: flex;
+    justify-content: center;
+}
+
+.ant-popover.edge-popover .matching-column-pairs > .source-col {
+    display: flex;
+    align-items: center;
+    padding-right: 5px;
+}
+
+.ant-popover.edge-popover .matching-column-pairs > .equivalence-sign {
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+}
+
+.ant-popover.edge-popover .matching-column-pairs > .target-col {
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+}
+
+.ant-popover.edge-popover .ant-popover-inner-content {
+    max-height: 150px;
+    overflow: scroll;
+}

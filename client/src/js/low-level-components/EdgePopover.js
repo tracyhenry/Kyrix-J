@@ -9,8 +9,16 @@ class EdgePopover extends Component {
                 size="small"
                 dataSource={listData}
                 renderItem={item => (
-                    <div>
-                        {item.sourceCol} &#8660; {item.targetCol}{" "}
+                    <div className="matching-column-pairs">
+                        <div className="source-col">
+                            <i>{this.props.edge.source}</i>.
+                            <b>{item.sourceCol}</b>
+                        </div>
+                        <div className="equivalence-sign">&#8660;</div>
+                        <div className="target-col">
+                            <i>{this.props.edge.target}</i>.
+                            <b>{item.targetCol}</b>
+                        </div>
                     </div>
                 )}
             />
@@ -23,9 +31,9 @@ class EdgePopover extends Component {
                 trigger="click"
                 visible
                 overlayClassName={
-                    "schemagraphPopover_" +
+                    "edge-popover-" +
                     this.props.edge.source +
-                    "_" +
+                    " edge-popover-" +
                     this.props.edge.target +
                     " edge-popover"
                 }

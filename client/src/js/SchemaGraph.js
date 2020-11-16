@@ -407,7 +407,7 @@ class SchemaGraph extends Component {
             .on("mouseover", d => {
                 if (d == null || typeof d !== "object") return;
                 let clientRect = d3.event.currentTarget.getBoundingClientRect();
-                let className = ".schemagraphPopover_" + d.table_name;
+                let className = ".node-popover-" + d.table_name;
                 let popoverWidth = d3
                     .select(className)
                     .node()
@@ -426,7 +426,7 @@ class SchemaGraph extends Component {
                     d3.event.relatedTarget == null ||
                     d3.event.relatedTarget.closest(".ant-popover") == null
                 )
-                    d3.select(".schemagraphPopover_" + d.table_name).style(
+                    d3.select(".node-popover-" + d.table_name).style(
                         "visibility",
                         "hidden"
                     );
@@ -456,9 +456,9 @@ class SchemaGraph extends Component {
                 if (d == null || typeof d !== "object") return;
                 let clientRect = d3.event.currentTarget.getBoundingClientRect();
                 let className =
-                    ".schemagraphPopover_" +
+                    ".edge-popover-" +
                     d.source.table_name +
-                    "_" +
+                    ".edge-popover-" +
                     d.target.table_name;
                 let popoverWidth = d3
                     .select(className)
@@ -466,7 +466,7 @@ class SchemaGraph extends Component {
                     .getBoundingClientRect().width;
                 let clientCx =
                     clientRect.x + clientRect.width / 2 - popoverWidth / 2;
-                let clientCy = clientRect.y + clientRect.height / 2;
+                let clientCy = clientRect.y + clientRect.height / 2 + 5;
                 d3.select(className)
                     .style("left", clientCx + "px")
                     .style("top", clientCy + "px")
@@ -479,9 +479,9 @@ class SchemaGraph extends Component {
                     d3.event.relatedTarget.closest(".ant-popover") == null
                 )
                     d3.select(
-                        ".schemagraphPopover_" +
+                        ".edge-popover-" +
                             d.source.table_name +
-                            "_" +
+                            ".edge-popover-" +
                             d.target.table_name
                     ).style("visibility", "hidden");
             });
@@ -500,7 +500,7 @@ class SchemaGraph extends Component {
                 d3.event.relatedTarget.tagName !== "line" ||
                 relatedRect.x + relatedRect.width / 2 !==
                     targetRect.x + targetRect.width / 2 ||
-                relatedRect.y + relatedRect.height / 2 !== targetRect.y
+                relatedRect.y + relatedRect.height / 2 + 5 !== targetRect.y
             )
                 d3.select(d3.event.target).style("visibility", "hidden");
         });
