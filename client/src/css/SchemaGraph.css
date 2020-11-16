@@ -30,7 +30,7 @@
     stroke-width: 23;
 }
 
-.ant-popover p {
+.ant-popover.node-popover p {
     margin: 0px;
 }
 
@@ -42,29 +42,29 @@
     margin: 5px;
 }
 
-.ant-popover table {
+.ant-popover.node-popover table {
     margin-top: 5px;
 }
 
-.ant-popover .attribute-container {
+.ant-popover.node-popover .attribute-container {
     max-height: 150px;
     overflow: scroll;
 }
 
-.ant-popover .attribute-container p {
+.ant-popover.node-popover .attribute-container p {
     padding: 1px 3px;
     text-align: center;
 }
 
-.ant-popover .ant-popover-inner-content {
+.ant-popover.node-popover .ant-popover-inner-content {
     padding: 0px !important;
 }
 
-.ant-popover .ant-table-tbody > tr {
+.ant-popover.node-popover .ant-table-tbody > tr {
     padding: 10px 5px !important;
 }
 
-.ant-popover .ant-table-tbody > tr > td {
+.ant-popover.node-popover .ant-table-tbody > tr > td {
     border-bottom: none !important;
     padding: 0px 5px !important;
 }

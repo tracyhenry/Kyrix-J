@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import * as d3 from "d3";
 import {resizeSvgs} from "./ResizeStuff";
 import NodePopover from "./low-level-components/NodePopover";
+import EdgePopover from "./low-level-components/EdgePopover";
 import {Button, Space} from "antd";
 
 class SchemaGraph extends Component {
@@ -93,6 +94,8 @@ class SchemaGraph extends Component {
 
     getPopovers = () => {
         if (this.props.curTable === "") return [];
+
+        // get new node data using this.nodes
         let nodeData = this.nodes ? this.nodes.data() : [];
         let neighbors = this.getOneHopNeighbors();
         neighbors.nodeData = neighbors.nodeData.concat({
@@ -105,13 +108,47 @@ class SchemaGraph extends Component {
                 d => !nodeData.map(d => d.table_name).includes(d.table_name)
             )
         );
-        return nodeData.map(d => (
+
+        // get new link data
+        neighbors = this.getOneHopNeighbors();
+        let edges = this.props.graphEdges.filter(d => {
+            if (
+                this.links &&
+                this.links
+                    .data()
+                    .filter(
+                        p =>
+                            (p.source.table_name === d.source &&
+                                p.target.table_name === d.target) ||
+                            (p.source.table_name === d.target &&
+                                p.target.table_name === d.source)
+                    ).length > 0
+            )
+                return true;
+            if (
+                neighbors.linkData.filter(
+                    p =>
+                        (p.source === d.source && p.target === d.target) ||
+                        (p.source === d.target && p.target === d.source)
+                ).length > 0
+            )
+                return true;
+            return false;
+        });
+
+        const nodePopovers = nodeData.map(d => (
             <NodePopover
                 key={d.table_name}
                 tableColumns={this.props.tableColumns}
                 d={d}
             />
         ));
+
+        const edgePopovers = edges.map(d => (
+            <EdgePopover key={d.source + "_" + d.target} edge={d} />
+        ));
+
+        return nodePopovers.concat(edgePopovers);
     };
 
     reCenterGraph = () => {
