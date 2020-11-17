@@ -22,21 +22,25 @@
     padding: 3px 7px 3px 3px;
 }
 
-.slideshow .img-container:hover {
-}
-
 .slideshow .img-container {
     width: 100%;
     margin-bottom: 10px;
     cursor: pointer;
+    border-radius: 5px;
     -webkit-box-shadow: 1px 1px 3px 0px rgba(189, 183, 189, 1);
     -moz-box-shadow: 1px 1px 3px 0px rgba(189, 183, 189, 1);
     box-shadow: 1px 1px 3px 0px rgba(189, 183, 189, 1);
 }
 
-.slideshow .img-container .ant-card-body {
+.slideshow .img-container .img-info-area {
     padding: 5px;
+    text-align: center;
     max-height: 30px;
+    position: relative;
+}
+
+.slideshow .img-container .ant-image {
+    pointer-events: none;
 }
 
 .slidereel .slideshow .img-container img {
@@ -44,4 +48,11 @@
     padding: 5px;
     width: 100%;
     height: auto;
+    pointer-events: none;
+}
+
+.img-container .anticon.anticon-zoom-in {
+    position: absolute;
+    right: 7px;
+    bottom: 7px;
 }

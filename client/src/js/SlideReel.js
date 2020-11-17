@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {Card, List, Image} from "antd";
+import {Card, List} from "antd";
+import HistoryItem from "./low-level-components/HistoryItem";
 
 class SlideReel extends Component {
     state = {};
@@ -22,16 +23,7 @@ class SlideReel extends Component {
                     <List
                         dataSource={listData}
                         renderItem={d => (
-                            <Card
-                                bordered={false}
-                                className="img-container"
-                                cover={<Image src={d.url} />}
-                            >
-                                <Card.Meta
-                                    title={d.table}
-                                    style={{textAlign: "center"}}
-                                />
-                            </Card>
+                            <HistoryItem url={d.url} table={d.table} />
                         )}
                     />
                 </Card>
