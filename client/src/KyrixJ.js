@@ -21,7 +21,7 @@ class KyrixJ extends Component {
 
         // type of interaction that generates the new table
         // can be one of ["graphClick", "kyrixLoaded", "searchBarInputChange",
-        // "kyrixVisJump", "searchBarSearch", "kyrixRandomJump"]
+        // "kyrixVisJump", "searchBarSearch", "kyrixRandomJump", "historyItemClick"]
         // used by SchemaGraph / KyrixVis (or other components in the future)
         // to do different things
         interactionType: "",
@@ -31,6 +31,11 @@ class KyrixJ extends Component {
 
         // current kyrix sql filters
         kyrixPredicates: [],
+
+        // other kyrix vis states
+        kyrixVx: null,
+        kyrixVy: null,
+        kyrixScale: null,
 
         // current render data
         kyrixRenderData: [],
@@ -87,6 +92,10 @@ class KyrixJ extends Component {
         } else if (jump.type === "semantic_zoom")
             this.setState({
                 tableHistory: nextTableHistory,
+                interactionType: "kyrixVisJump"
+            });
+        else if (jump.type.startsWith("literal_zoom"))
+            this.setState({
                 interactionType: "kyrixVisJump"
             });
 
@@ -158,15 +167,35 @@ class KyrixJ extends Component {
     createHistoryEntry = jump => {
         if (jump.type === "literal_zoom_in" || jump.type === "literal_zoom_out")
             return;
+        let historyItem = window.kyrix.getHistoryItem(this.kyrixViewId);
         html2canvas(document.getElementsByClassName("kyrixvisdiv")[0]).then(
             canvas => {
                 this.setState({
                     screenshotHistory: this.state.screenshotHistory.concat([
-                        canvas.toDataURL()
+                        Object.assign(
+                            {},
+                            {url: canvas.toDataURL()},
+                            historyItem
+                        )
                     ])
                 });
             }
         );
+    };
+
+    handleHistoryItemClick = historyItem => {
+        const nextTableHistory = this.state.tableHistory.concat(
+            this.canvasIdToTable[historyItem.canvasId]
+        );
+        this.setState({
+            tableHistory: nextTableHistory,
+            interactionType: "historyItemClick",
+            kyrixCanvas: historyItem.canvasId,
+            kyrixPredicates: historyItem.predicates,
+            kyrixVX: historyItem.viewportX,
+            kyrixVY: historyItem.viewportY,
+            kyrixScale: historyItem.initialScale
+        });
     };
 
     render() {
@@ -215,6 +244,7 @@ class KyrixJ extends Component {
                 <SlideReel
                     tableHistory={this.state.tableHistory}
                     screenshotHistory={this.state.screenshotHistory}
+                    handleHistoryItemClick={this.handleHistoryItemClick}
                 />
                 <KyrixVis
                     handleKyrixLoad={this.handleKyrixLoad}
@@ -227,6 +257,13 @@ class KyrixJ extends Component {
                     }
                     interactionType={this.state.interactionType}
                     kyrixLoaded={this.state.kyrixLoaded}
+                    // kyrix states
+                    // only useful in "historyItemClick"
+                    kyrixCanvas={this.state.kyrixCanvas}
+                    kyrixPredicates={this.state.kyrixPredicates}
+                    kyrixVX={this.state.kyrixVX}
+                    kyrixVY={this.state.kyrixVY}
+                    kyrixScale={this.state.kyrixScale}
                     // app metadata (TODO: combine them into one field)
                     kyrixViewId={this.kyrixViewId}
                     clickJumpDefaults={this.clickJumpDefaults}

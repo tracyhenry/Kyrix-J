@@ -11,10 +11,9 @@ class SlideReel extends Component {
 
     render() {
         const listData = this.props.screenshotHistory
-            .map((d, i) => ({
-                url: d,
-                table: this.props.tableHistory[i]
-            }))
+            .map((d, i) =>
+                Object.assign({}, d, {table: this.props.tableHistory[i]})
+            )
             .reverse();
 
         return (
@@ -23,7 +22,10 @@ class SlideReel extends Component {
                     <List
                         dataSource={listData}
                         renderItem={d => (
-                            <HistoryItem url={d.url} table={d.table} />
+                            <HistoryItem
+                                d={d}
+                                clickHandler={this.props.handleHistoryItemClick}
+                            />
                         )}
                     />
                 </Card>

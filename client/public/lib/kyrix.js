@@ -280,17 +280,29 @@
         });
     }
 
-    function randomJump(viewId, canvasId, predDict, newVpX, newVpY) {
+    function randomJump(
+        viewId,
+        canvasId,
+        predDict,
+        newVpX,
+        newVpY,
+        newScale,
+        predicateType
+    ) {
         var gvd = globalVar.views[viewId];
         // get pred array
         var predArray = [];
         var destCanvas = getCanvasById(canvasId);
-        var numLayer = destCanvas.layers.length;
-        for (var i = 0; i < numLayer; i++)
-            if ("layer" + i in predDict) predArray.push(predDict["layer" + i]);
-            else predArray.push({});
+        if (predicateType == "array") predArray = predDict;
+        else {
+            var numLayer = destCanvas.layers.length;
+            for (var i = 0; i < numLayer; i++)
+                if ("layer" + i in predDict)
+                    predArray.push(predDict["layer" + i]);
+                else predArray.push({});
+        }
         // call load
-        load(predArray, newVpX, newVpY, 1, viewId, canvasId, {
+        load(predArray, newVpX, newVpY, newScale, viewId, canvasId, {
             type: "randomJump"
         });
     }
@@ -665,6 +677,9 @@
         // log history
         logHistory(viewId, jump);
 
+        // disable stuff before animation
+        preJump(viewId, jump);
+
         // change global vars
         gvd.curCanvasId = jump.destId;
         gvd.predicates = predArray;
@@ -700,9 +715,6 @@
             });
         }
 
-        // disable stuff before animation
-        preJump(viewId, jump);
-
         // animate semantic zoom
         if (
             jump.type == param.semanticZoom ||
@@ -724,6 +736,9 @@
         d3.selection().interrupt("fadeTween_" + destViewId);
         d3.selection().interrupt("literalTween_" + destViewId);
 
+        // pre animation
+        preJump(destViewId, jump);
+
         // reset global vars
         var gvd = globalVar.views[destViewId];
         gvd.curCanvasId = canvasId;
@@ -734,9 +749,6 @@
         gvd.initialScale = newScale;
         gvd.renderData = null;
         gvd.pendingBoxRequest = null;
-
-        // pre animation
-        preJump(destViewId, jump);
 
         // draw buttons because they were not created if it was an empty view
         drawZoomButtons(destViewId);
@@ -2201,6 +2213,29 @@
         else d3.select(viewClass + ".gobackbutton").attr("disabled", true);
     }
 
+    function getHistoryItem(viewId) {
+        var ret = {};
+        var gvd = globalVar.views[viewId];
+        var viewClass = ".view_" + viewId;
+
+        ret.predicates = gvd.predicates;
+        ret.canvasId = gvd.curCanvasId;
+        ret.initialScale = d3.zoomTransform(
+            d3.select(viewClass + ".maing").node()
+        ).k;
+
+        // save current viewport
+        var curViewport = [0, 0, gvd.viewportWidth, gvd.viewportHeight];
+        if (d3.select(viewClass + ".mainsvg:not(.static)").size())
+            curViewport = d3
+                .select(viewClass + ".mainsvg:not(.static)")
+                .attr("viewBox")
+                .split(" ");
+        ret.viewportX = +curViewport[0];
+        ret.viewportY = +curViewport[1];
+        return ret;
+    }
+
     // called in completeZoom() and RegisterJump()
     // before global variables are changed
     function logHistory(viewId, jump) {
@@ -3315,6 +3350,7 @@
     exports.triggerPan = triggerPan;
     exports.triggerPredicate = triggerPredicate;
     exports.randomJump = randomJump;
+    exports.getHistoryItem = getHistoryItem;
 
     Object.defineProperty(exports, "__esModule", {value: true});
 });

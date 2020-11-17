@@ -7,10 +7,13 @@ class HistoryItem extends Component {
         visible: false
     };
     render() {
+        const clickHandler = () => {
+            this.props.clickHandler(this.props.d);
+        };
         return (
-            <div className="img-container">
+            <div className="img-container" onClick={clickHandler.bind(this)}>
                 <Image
-                    src={this.props.url}
+                    src={this.props.d.url}
                     preview={{
                         visible: this.state.visible,
                         onVisibleChange: (value, prevValue) => {
@@ -23,10 +26,13 @@ class HistoryItem extends Component {
                 />
                 <div className="img-info-area">
                     <i>
-                        <h4>{this.props.table}</h4>
+                        <h4>{this.props.d.table}</h4>
                     </i>
                     <ZoomInOutlined
-                        onClick={() => this.setState({visible: true})}
+                        onClick={event => {
+                            event.stopPropagation();
+                            this.setState({visible: true});
+                        }}
                     />
                 </div>
             </div>

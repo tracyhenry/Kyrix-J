@@ -82,6 +82,7 @@ class SchemaGraph extends Component {
         if (
             this.props.interactionType === "searchBarSearch" ||
             this.props.interactionType === "kyrixRandomJump" ||
+            this.props.interactionType === "historyItemClick" ||
             this.props.interactionType === "kyrixLoaded"
         )
             this.renderNewTable();

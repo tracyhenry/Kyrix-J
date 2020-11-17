@@ -16,16 +16,41 @@ class KyrixVis extends Component {
     };
 
     shouldComponentUpdate = nextProps => {
-        return (
-            nextProps.kyrixLoaded &&
-            (nextProps.interactionType === "searchBarSearch" ||
-                nextProps.interactionType === "graphClick") &&
-            nextProps.curTable !== this.props.curTable
-        );
+        if (!nextProps.kyrixLoaded) return false;
+        if (
+            nextProps.interactionType === "searchBarSearch" ||
+            nextProps.interactionType === "graphClick"
+        )
+            return nextProps.curTable !== this.props.curTable;
+        if (nextProps.interactionType === "historyItemClick") {
+            if (
+                nextProps.kyrixCanvas !== this.props.kyrixCanvas ||
+                nextProps.kyrixVX !== this.props.kyrixVX ||
+                nextProps.kyrixVY !== this.props.kyrixVY ||
+                nextProps.kyrixScale !== this.props.kyrixScale
+            )
+                return true;
+            if (
+                nextProps.kyrixPredicates.length !==
+                this.props.kyrixPredicates.length
+            )
+                return true;
+            return (
+                JSON.stringify(nextProps.kyrixPredicates) !==
+                JSON.stringify(this.props.kyrixPredicates)
+            );
+        }
+        return false;
     };
 
     componentDidUpdate = () => {
-        this.jumpToClickedTable();
+        if (
+            this.props.interactionType === "searchBarSearch" ||
+            this.props.interactionType === "graphClick"
+        )
+            this.jumpToClickedTable();
+        if (this.props.interactionType === "historyItemClick")
+            this.jumpToHistory();
     };
 
     jumpToClickedTable = () => {
@@ -36,7 +61,21 @@ class KyrixVis extends Component {
             defaults.canvasId,
             defaults.predDict,
             defaults.newVpX,
-            defaults.newVpY
+            defaults.newVpY,
+            1,
+            "dict"
+        );
+    };
+
+    jumpToHistory = () => {
+        window.kyrix.randomJump(
+            this.props.kyrixViewId,
+            this.props.kyrixCanvas,
+            this.props.kyrixPredicates,
+            this.props.kyrixVX,
+            this.props.kyrixVY,
+            this.props.kyrixScale,
+            "array"
         );
     };
 
