@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, List} from "antd";
+import {Card, List, Image} from "antd";
 
 class SlideReel extends Component {
     state = {};
@@ -9,18 +9,29 @@ class SlideReel extends Component {
         nextProps.screenshotHistory.length + 1;
 
     render() {
+        const listData = this.props.screenshotHistory
+            .map((d, i) => ({
+                url: d,
+                table: this.props.tableHistory[i]
+            }))
+            .reverse();
+
         return (
             <div className="slidereel">
                 <Card title="History" className="slideshow">
                     <List
-                        bordered
-                        dataSource={this.props.screenshotHistory
-                            .slice(0)
-                            .reverse()}
-                        renderItem={(d, i) => (
-                            <div key={i} className="img-container">
-                                <img src={d} alt="ssv" />
-                            </div>
+                        dataSource={listData}
+                        renderItem={d => (
+                            <Card
+                                bordered={false}
+                                className="img-container"
+                                cover={<Image src={d.url} />}
+                            >
+                                <Card.Meta
+                                    title={d.table}
+                                    style={{textAlign: "center"}}
+                                />
+                            </Card>
                         )}
                     />
                 </Card>
