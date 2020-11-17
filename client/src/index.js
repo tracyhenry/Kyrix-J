@@ -7,6 +7,7 @@ import "./css/SchemaGraph.css";
 import "./css/VisDetails.css";
 import "./css/KyrixVis.css";
 import "./css/SlideReel.css";
+import "./css/RawDataTable.css";
 import "antd/dist/antd.css";
 import KyrixJ from "./KyrixJ";
 

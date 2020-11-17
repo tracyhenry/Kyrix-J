@@ -28,6 +28,15 @@ class RawDataTable extends Component {
     };
 
     render() {
+        const curTable = this.props.curTable;
+        const primaryKey =
+            curTable.length > 0
+                ? this.props.tableColumns[curTable][0]
+                      .toLowerCase()
+                      .split(" ")
+                      .join("_")
+                : "";
+
         const rawColumns = Object.keys(
             this.props.kyrixRenderData.length > 0
                 ? this.props.kyrixRenderData[0]
@@ -50,11 +59,9 @@ class RawDataTable extends Component {
             ellipsis: true
         });
 
-        let antdColumns = [toAntdColumn(this.props.primaryKey)];
+        let antdColumns = [toAntdColumn(primaryKey)];
         antdColumns = antdColumns.concat(
-            rawColumns
-                .filter(d => d !== this.props.primaryKey)
-                .map(toAntdColumn)
+            rawColumns.filter(d => d !== primaryKey).map(toAntdColumn)
         );
 
         const antdData = JSON.parse(

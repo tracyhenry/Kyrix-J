@@ -1,48 +1,8 @@
 .visdetails {
-    grid-area: 2 / 7 / 9 / 10;
+    grid-area: 2 / 7 / 6 / 10;
 }
-
-/*.schemadetails .ant-table.ant-table-small .ant-table-thead > tr > th {*/
-/*font-size: 20px;*/
-/*font-weight: bold;*/
-/*}*/
-
-/*.schemadetails .ant-table.ant-table-small .ant-table-tbody > tr > td {*/
-/*overflow: scroll;*/
-/*padding: 5px 3px;*/
-/*}*/
-
-.rawdata {
-    width: 100%;
-    height: 45%;
-}
-
-.rawdata .ant-card {
-    width: 100%;
-    height: 100%;
-}
-
-.rawdata .ant-card-body {
-    height: calc(100% - 60px);
-}
-
-.rawdata .ant-table.ant-table-small .ant-table-thead > tr > th {
-    white-space: nowrap;
-    font-weight: bold;
-}
-
-/*.tablefade-appear {*/
-/*opacity: 0.01;*/
-/*}*/
-
-/*.tablefade-appear-active {*/
-/*opacity: 1;*/
-/*transition: opacity 300ms ease-in;*/
-/*}*/
 
 .querydetails {
-    grid-area: 2 / 1 / 6 / 3;
-    height: 55%;
     overflow: auto;
 }
 

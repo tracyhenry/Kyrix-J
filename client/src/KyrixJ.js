@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import SchemaGraph from "./js/SchemaGraph";
 import VisDetails from "./js/VisDetails";
 import SlideReel from "./js/SlideReel";
+import RawDataTable from "./js/low-level-components/RawDataTable";
 import {
     resizeSvgs,
     getRawDataTableMaxHeight,
@@ -227,16 +228,6 @@ class KyrixJ extends Component {
                     tableColumns={this.tableColumns}
                 />
                 <VisDetails
-                    tableColumns={this.tableColumns}
-                    curTable={
-                        this.state.tableHistory.length > 0
-                            ? this.state.tableHistory[
-                                  this.state.tableHistory.length - 1
-                              ]
-                            : ""
-                    }
-                    kyrixRenderData={this.state.kyrixRenderData}
-                    rawDataTableMaxHeight={this.state.rawDataTableMaxHeight}
                     kyrixCanvas={this.state.kyrixCanvas}
                     sqlQuery={this.sqlQuery}
                     kyrixPredicates={this.state.kyrixPredicates}
@@ -267,6 +258,18 @@ class KyrixJ extends Component {
                     // app metadata (TODO: combine them into one field)
                     kyrixViewId={this.kyrixViewId}
                     clickJumpDefaults={this.clickJumpDefaults}
+                />
+                <RawDataTable
+                    tableColumns={this.tableColumns}
+                    curTable={
+                        this.state.tableHistory.length > 0
+                            ? this.state.tableHistory[
+                                  this.state.tableHistory.length - 1
+                              ]
+                            : ""
+                    }
+                    kyrixRenderData={this.state.kyrixRenderData}
+                    maxHeight={this.state.rawDataTableMaxHeight}
                 />
             </>
         );
