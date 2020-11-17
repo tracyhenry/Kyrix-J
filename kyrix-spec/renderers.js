@@ -503,7 +503,7 @@ var studentPieChartRendering = function(svg, data, args) {
         .range(
             d3
                 .quantize(
-                    t => d3.interpolateSpectral(t * 0.8 + 0.1),
+                    t => d3.interpolateSpectral(1 - (t * 0.8 + 0.1)),
                     years.length
                 )
                 .reverse()
