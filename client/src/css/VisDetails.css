@@ -6,11 +6,7 @@
     overflow: auto;
 }
 
-.filters li {
-    font-size: 15px;
+.filters .filter-item {
+    font-size: 16px;
     padding: 2px;
-}
-
-.querydetails ul {
-    margin-top: 10px;
 }

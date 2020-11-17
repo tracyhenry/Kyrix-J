@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {githubGist} from "react-syntax-highlighter/dist/esm/styles/hljs";
-import {Card} from "antd";
+import {Card, List} from "antd";
+import {FilterOutlined} from "@ant-design/icons";
 
 class QueryDetails extends Component {
     state = {};
@@ -28,11 +29,6 @@ class QueryDetails extends Component {
     };
 
     render() {
-        let predLis = this.getSqlPredicates().map(p => (
-            <li key={this.props.kyrixCanvas + "-" + p.col + "=" + p.val}>
-                <b>{p.col}</b> = <i>{p.val}</i>
-            </li>
-        ));
         return (
             <div className="querydetails">
                 <Card
@@ -59,7 +55,18 @@ class QueryDetails extends Component {
                     title="Current SQL Filters"
                     bordered={false}
                 >
-                    <ul>{predLis}</ul>
+                    <List
+                        size="small"
+                        dataSource={this.getSqlPredicates()}
+                        renderItem={p => (
+                            <div className="filter-item">
+                                <FilterOutlined
+                                    style={{paddingRight: "10px"}}
+                                />{" "}
+                                <b>{p.col}</b> = <i>{p.val}</i>
+                            </div>
+                        )}
+                    />
                 </Card>
                 <div className="explain">Query View</div>
             </div>
