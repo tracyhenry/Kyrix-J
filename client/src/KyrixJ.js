@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import SchemaGraph from "./js/SchemaGraph";
 import VisDetails from "./js/VisDetails";
 import SlideReel from "./js/SlideReel";
-import RawDataTable from "./js/low-level-components/RawDataTable";
+import RawDataTable from "./js/RawDataTable";
 import {
     resizeSvgs,
     getRawDataTableMaxHeight,

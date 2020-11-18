@@ -48,7 +48,7 @@ const getRawDataTableMaxHeight = () => {
         d3
             .select(".rawdata .ant-card-body")
             .node()
-            .getBoundingClientRect().height - 120,
+            .getBoundingClientRect().height - 100,
         50
     );
 };
