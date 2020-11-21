@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {githubGist} from "react-syntax-highlighter/dist/esm/styles/hljs";
-import {Card, List} from "antd";
-import {FilterOutlined} from "@ant-design/icons";
+import {Card, List, Breadcrumb, Dropdown, Menu} from "antd";
+import {FilterOutlined, DownOutlined} from "@ant-design/icons";
 
 class QueryDetails extends Component {
     state = {};
@@ -31,17 +31,13 @@ class QueryDetails extends Component {
     render() {
         return (
             <div className="querydetails">
-                <Card
-                    className="sqlquery"
-                    title="Current SQL Query"
-                    bordered={false}
-                >
+                <Card className="sqlquery" title="SQL Query" bordered={false}>
                     <SyntaxHighlighter
                         language="sql"
                         style={githubGist}
                         customStyle={{
                             lineHeight: 1.5,
-                            fontSize: 15,
+                            fontSize: 13,
                             border: "white"
                         }}
                     >
@@ -50,11 +46,7 @@ class QueryDetails extends Component {
                             : ""}
                     </SyntaxHighlighter>
                 </Card>
-                <Card
-                    className="filters"
-                    title="Current SQL Filters"
-                    bordered={false}
-                >
+                <Card className="filters" title="SQL Filters" bordered={false}>
                     <List
                         size="small"
                         dataSource={this.getSqlPredicates()}
@@ -68,6 +60,51 @@ class QueryDetails extends Component {
                         )}
                     />
                 </Card>
+                <Card
+                    className="drill-down-path"
+                    title={"Drill Down Path"}
+                    bordered={false}
+                >
+                    <Breadcrumb>
+                        <Breadcrumb.Item>building</Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                            <a href="">room.treemap</a>
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                            <a href="">room.barchart</a>
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item>room.piechart</Breadcrumb.Item>
+                    </Breadcrumb>
+                </Card>
+                <Card
+                    className="rendering-parameter"
+                    title={"Visualization Details"}
+                    bordered={false}
+                >
+                    <div style={{display: "flex"}}>
+                        <p style={{marginRight: "10px"}}>Visualization type:</p>
+                        <p style={{marginRight: "10px"}}>Stacked bar chart</p>
+                    </div>
+                    <div style={{display: "flex"}}>
+                        <p style={{marginRight: "10px"}}>Color Scheme:</p>
+                        <Dropdown
+                            overlay={
+                                <Menu>
+                                    <Menu.Item>blue-green</Menu.Item>
+                                    <Menu.Item>red-purple</Menu.Item>
+                                </Menu>
+                            }
+                        >
+                            <a
+                                className="ant-dropdown-link"
+                                onClick={e => e.preventDefault()}
+                            >
+                                red-yellow <DownOutlined />
+                            </a>
+                        </Dropdown>
+                    </div>
+                </Card>
+
                 <div className="explain">Query View</div>
             </div>
         );

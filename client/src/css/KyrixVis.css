@@ -1,3 +1,4 @@
 .kyrixdiv {
     grid-area: 4 / 2 / 9 / 7;
+    position: relative;
 }

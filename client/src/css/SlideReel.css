@@ -1,6 +1,6 @@
 .slidereel {
     grid-area: 2 / 1 / 9 / 2;
-    min-width: 200px;
+    min-width: 150px;
 }
 
 .slideshow.ant-card {

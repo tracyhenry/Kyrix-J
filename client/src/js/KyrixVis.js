@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Button} from "antd";
 
 class KyrixVis extends Component {
     constructor(props) {
@@ -82,6 +83,13 @@ class KyrixVis extends Component {
     render() {
         return (
             <div className="kyrixdiv" ref={this.kyrixdivRef}>
+                <Button
+                    size="default"
+                    style={{position: "absolute", top: "5px", right: "5px"}}
+                >
+                    See Another Vis
+                </Button>
+
                 <div className="explain">Kyrix View</div>
             </div>
         );
