@@ -32,18 +32,9 @@ var courseBarChartStaticTransform = new Transform(
     true
 );
 
-var studentPieChartStaticTransform = new Transform(
-    "select full_name, student_year, office_location, department from mit_student_directory;",
-    "mit",
-    "",
-    [],
-    true
-);
-
 module.exports = {
     roomTreemapStaticTransform,
     roomBarChartStaticTransform,
     roomCirclePackStaticTransform,
-    courseBarChartStaticTransform,
-    studentPieChartStaticTransform
+    courseBarChartStaticTransform
 };

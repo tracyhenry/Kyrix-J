@@ -3,13 +3,12 @@ const Project = require("../../src/index").Project;
 const Canvas = require("../../src/Canvas").Canvas;
 const Jump = require("../../src/Jump").Jump;
 const Layer = require("../../src/Layer").Layer;
-const View = require("../../src/View").View;
 const SSV = require("../../src/template-api/SSV").SSV;
+const Pie = require("../../src/template-api/Pie").Pie;
 
 // project components
 const renderers = require("./renderers");
 const transforms = require("./transforms");
-const placements = require("./placements");
 
 // construct a project
 var p = new Project("mitdwh", "../../../config.txt");
@@ -116,15 +115,6 @@ roomBarChartLayer.addTooltip(
 // ================== Canvas circlepack ===================
 var roomCirclePackCanvas = new Canvas("room_circlepack", vw, vh);
 p.addCanvas(roomCirclePackCanvas);
-// p.setInitialStates(view, roomCirclePackCanvas, 0, 0,
-//     {layer0 : {
-//             AND: [
-//                 {AND: [{"==" : ["fclt_building_key", 32]},
-//                         {"==" : ["organization_name", "CSAIL"]}]},
-//                 {"==": ["use_desc", "CONF"]}
-//
-//             ]}
-//     });
 
 // static treemap layer
 var roomCirclePackLayer = new Layer(
@@ -152,20 +142,35 @@ courseBarChartLayer.addTooltip(
 );
 
 // ================== Canvas student pie chart ===================
-var studentPieChartCanvas = new Canvas("student_pie", vw, vh);
-p.addCanvas(studentPieChartCanvas);
+var pie = {
+    db: "mit",
+    query: {
+        table: "mit_student_directory",
+        dimensions: ["student_year"],
+        measure: "COUNT(*)",
+        sampleFields: ["full_name", "department", "office_location"]
+    },
+    tooltip: {
+        columns: ["student_year", "value"],
+        aliases: ["Student Year", "Number of Students"]
+    },
+    legend: {
+        title: "Number of students by Year",
+        domain: {
+            "": "N/A",
+            "1": "Freshmen",
+            "2": "Sophomore",
+            "3": "Junior",
+            "4": "Senior",
+            U: "Undesignated Sophomore",
+            G: "Graduate Students"
+        }
+    },
+    colorScheme: "schemePastel1",
+    transition: true
+};
 
-// static treemap layer
-var studentPieChartLayer = new Layer(
-    transforms.studentPieChartStaticTransform,
-    true
-);
-studentPieChartCanvas.addLayer(studentPieChartLayer);
-studentPieChartLayer.addRenderingFunc(renderers.studentPieChartRendering);
-studentPieChartLayer.addTooltip(
-    ["year", "count"],
-    ["Student Year", "Number of Students"]
-);
+var studentPieChartCanvas = p.addPie(new Pie(pie), {view: kyrixView}).canvas;
 
 // ================== graph canvas ===================
 var graphCanvas = new Canvas("graph", 500, vh);
@@ -183,7 +188,7 @@ graphLayer.addTooltip(
 // ================== building -> room treemap ===================
 for (var i = 0; i < building_pyramid.length; i++) {
     var selector = function(row, args) {
-        return args.layerId == 1;
+        return args.layerId == 0;
     };
 
     var newViewport = function() {
@@ -333,10 +338,10 @@ var newViewport = function() {
 };
 
 var newPredicate = function(row) {
-    var pred0 = {
+    var pred = {
         "==": ["office_location", row.building_room]
     };
-    return {layer0: pred0};
+    return {layer0: pred, layer1: pred};
 };
 
 var jumpName = function(row) {
@@ -369,10 +374,10 @@ var newViewport = function() {
 };
 
 var newPredicate = function(row) {
-    var pred0 = {
+    var pred = {
         "==": ["department", row.dept_code]
     };
-    return {layer0: pred0};
+    return {layer0: pred, layer1: pred};
 };
 
 var jumpName = function(row) {

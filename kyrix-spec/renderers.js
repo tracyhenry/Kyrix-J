@@ -471,84 +471,6 @@ var courseBarChartRendering = function(svg, data, args) {
     axesg.selectAll("path").remove();
 };
 
-var studentPieChartRendering = function(svg, data, args) {
-    // aggregate by department_name
-    var aggDataDict = {};
-    var maxCount = 1;
-    for (var i = 0; i < data.length; i++) {
-        var year = data[i].student_year;
-        if (!(year in aggDataDict)) aggDataDict[year] = {count: 0};
-        aggDataDict[year].count++;
-        maxCount = Math.max(maxCount, aggDataDict[year].count);
-    }
-
-    // aggData array, for d3
-    var aggData = [];
-    var years = ["1", "2", "3", "4", "G"];
-    for (var i = 0; i < years.length; i++)
-        aggData.push({
-            year: years[i],
-            count: years[i] in aggDataDict ? aggDataDict[years[i]].count : 0
-        });
-
-    // create pie
-    var g = svg.append("g");
-    var pie = d3
-        .pie()
-        .sort(null)
-        .value(d => d.count);
-    var color = d3
-        .scaleOrdinal()
-        .domain(years)
-        .range(
-            d3
-                .quantize(
-                    t => d3.interpolateSpectral(1 - (t * 0.8 + 0.1)),
-                    years.length
-                )
-                .reverse()
-        );
-    var arc = d3
-        .arc()
-        .innerRadius(0)
-        .outerRadius(300);
-    var arcs = pie(aggData);
-    arcs.forEach(function(d) {
-        d.year = d.data.year;
-        d.count = d.data.count;
-    });
-    g.selectAll("path")
-        .data(arcs)
-        .join("path")
-        .attr("fill", d => color(d.year))
-        .attr("d", arc)
-        .attr(
-            "transform",
-            `translate(${args.viewportW / 2}, ${args.viewportH / 2})`
-        );
-
-    // title
-    var title = g.append("text");
-    if (args.predicates.layer0["=="][0] == "department")
-        title.text(
-            `Student year distribution in course ${
-                args.predicates.layer0["=="][1]
-            }`
-        );
-    else
-        title.text(
-            `Student year distribution in room ${
-                args.predicates.layer0["=="][1]
-            }`
-        );
-
-    title
-        .style("font-family", "Open Sans")
-        .style("font-size", 23)
-        .attr("x", 15)
-        .attr("y", 20);
-};
-
 var graphRendering = function(svg, data, args) {};
 
 module.exports = {
@@ -559,6 +481,5 @@ module.exports = {
     roomBarChartRendering,
     roomCirclePackRendering,
     courseBarChartRendering,
-    studentPieChartRendering,
     graphRendering
 };

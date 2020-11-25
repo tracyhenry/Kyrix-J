@@ -291,7 +291,7 @@ class KyrixJ extends Component {
         room_circlepack: "SELECT *\nFROM room;",
         course_bar:
             "SELECT department_code, SUM(total_units)\nFROM course\nGROUP BY department_code;",
-        student_pie:
+        pie0:
             "SELECT student_year, COUNT(*)\nFROM student\nGROUP BY student_year;"
     };
 
@@ -304,7 +304,7 @@ class KyrixJ extends Component {
         room_barchart: "room",
         room_circlepack: "room",
         course_bar: "course",
-        student_pie: "student"
+        pie0: "student"
     };
 
     graphEdges = [
@@ -564,9 +564,12 @@ class KyrixJ extends Component {
             newVpY: 0
         },
         student: {
-            canvasId: "student_pie",
+            canvasId: "pie0",
             predDict: {
                 layer0: {
+                    "==": ["department", "6"]
+                },
+                layer1: {
                     "==": ["department", "6"]
                 }
             },

@@ -23,8 +23,8 @@ class QueryDetails extends Component {
             }
         };
 
-        for (let i = 0; i < this.props.kyrixPredicates.length; i++)
-            traversePredDict(this.props.kyrixPredicates[i]);
+        if (this.props.kyrixPredicates.length > 0)
+            traversePredDict(this.props.kyrixPredicates[0]);
         return predicates;
     };
 
@@ -68,10 +68,10 @@ class QueryDetails extends Component {
                     <Breadcrumb>
                         <Breadcrumb.Item>building</Breadcrumb.Item>
                         <Breadcrumb.Item>
-                            <a href="">room.treemap</a>
+                            <a>room.treemap</a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                            <a href="">room.barchart</a>
+                            <a>room.barchart</a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>room.piechart</Breadcrumb.Item>
                     </Breadcrumb>

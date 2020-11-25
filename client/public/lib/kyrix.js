@@ -199,6 +199,7 @@
         oldArgs["layerId"] = layerId;
         oldArgs["ssvId"] = gvd.curCanvas.layers[layerId].ssvId;
         oldArgs["usmapId"] = gvd.curCanvas.layers[layerId].usmapId;
+        oldArgs["pieId"] = gvd.curCanvas.layers[layerId].pieId;
         var allArgs = Object.assign({}, oldArgs, additionalArgs);
 
         // re render the svg
@@ -1751,6 +1752,7 @@
             args["layerId"] = i;
             args["ssvId"] = curLayer.ssvId;
             args["usmapId"] = curLayer.usmapId;
+            args["pieId"] = curLayer.pieId;
             renderFunc(curSvg, gvd.curStaticData[i], args);
 
             // tooltips
@@ -2994,6 +2996,7 @@
                         optionalArgsMore["layerId"] = i;
                         optionalArgsMore["ssvId"] = curLayer.ssvId;
                         optionalArgsMore["usmapId"] = curLayer.usmapId;
+                        optionalArgsMore["pieId"] = curLayer.pieId;
                         curLayer.rendering.parseFunction()(
                             tileSvg,
                             renderData[i],
@@ -3211,6 +3214,7 @@
                         optionalArgsMore["layerId"] = i;
                         optionalArgsMore["ssvId"] = curLayer.ssvId;
                         optionalArgsMore["usmapId"] = curLayer.usmapId;
+                        optionalArgsMore["pieId"] = curLayer.pieId;
                         curLayer.rendering.parseFunction()(
                             dboxSvg,
                             renderData[i],
