@@ -558,6 +558,9 @@ class KyrixJ extends Component {
             predDict: {
                 layer0: {
                     "==": ["fclt_building_key", "32"]
+                },
+                layer1: {
+                    "==": ["fclt_building_key", "32"]
                 }
             },
             newVpX: 0,

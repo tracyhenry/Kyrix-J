@@ -107,7 +107,7 @@ var staticTreemap = {
     legend: {
         title: "Total Area by Organization"
     },
-    textField: "organization_name"
+    textFields: ["organization_name"]
 };
 
 var roomTreemapCanvas = p.addStaticTreemap(new StaticTreemap(staticTreemap), {
@@ -211,10 +211,10 @@ for (var i = 0; i < building_pyramid.length; i++) {
     };
 
     var newPredicate = function(row) {
-        var pred0 = {
+        var pred = {
             "==": ["fclt_building_key", row.fclt_building_key]
         };
-        return {layer0: pred0};
+        return {layer0: pred, layer1: pred};
     };
 
     var jumpName = function(row) {
