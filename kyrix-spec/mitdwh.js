@@ -5,6 +5,8 @@ const Jump = require("../../src/Jump").Jump;
 const Layer = require("../../src/Layer").Layer;
 const SSV = require("../../src/template-api/SSV").SSV;
 const Pie = require("../../src/template-api/Pie").Pie;
+const StaticTreemap = require("../../src/template-api/StaticTreemap")
+    .StaticTreemap;
 
 // project components
 const renderers = require("./renderers");
@@ -90,14 +92,27 @@ for (var i = 0; i < building_pyramid.length; i++) {
 }
 
 // ================== Canvas treemap ===================
-var roomTreemapCanvas = new Canvas("room_treemap", vw, vh);
-p.addCanvas(roomTreemapCanvas);
+var staticTreemap = {
+    db: "mit",
+    query: {
+        table: "fclt_rooms",
+        dimensions: ["fclt_building_key", "organization_name"],
+        measure: "SUM(area)",
+        sampleFields: ["building_room"]
+    },
+    tooltip: {
+        columns: ["organization_name", "kyrixAggValue"],
+        aliases: ["Organization", "Area"]
+    },
+    legend: {
+        title: "Total Area by Organization"
+    },
+    textField: "organization_name"
+};
 
-// static treemap layer
-var treemapLayer = new Layer(transforms.roomTreemapStaticTransform, true);
-roomTreemapCanvas.addLayer(treemapLayer);
-treemapLayer.addRenderingFunc(renderers.roomTreeMapRendering);
-treemapLayer.addTooltip(["orgName", "area"], ["Organization", "Area"]);
+var roomTreemapCanvas = p.addStaticTreemap(new StaticTreemap(staticTreemap), {
+    view: kyrixView
+}).canvas;
 
 // ================== Canvas stacked bar chart ===================
 var roomBarChartCanvas = new Canvas("room_barchart", vw, vh);
@@ -151,7 +166,7 @@ var pie = {
         sampleFields: ["full_name", "department", "office_location"]
     },
     tooltip: {
-        columns: ["student_year", "value"],
+        columns: ["student_year", "kyrixAggValue"],
         aliases: ["Student Year", "Number of Students"]
     },
     legend: {
@@ -225,7 +240,7 @@ for (var i = 0; i < building_pyramid.length; i++) {
 
 // ================== room treemap -> room bar chart ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" && "orgName" in row;
+    return row != null && typeof row == "object" && "organization_name" in row;
 };
 
 var newViewport = function() {
@@ -236,14 +251,19 @@ var newPredicate = function(row, args) {
     var pred0 = {
         AND: [
             {"==": args.predicates.layer0["=="]},
-            {"==": ["organization_name", row.orgName]}
+            {"==": ["organization_name", row.organization_name]}
         ]
     };
     return {layer0: pred0};
 };
 
 var jumpName = function(row) {
-    return "room usage of " + row.orgName + " in building " + row.building_key;
+    return (
+        "room usage of " +
+        row.organization_name +
+        " in building " +
+        row.fclt_building_key
+    );
 };
 
 p.addJump(

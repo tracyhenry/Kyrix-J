@@ -83,101 +83,6 @@ var buildingLegendRendering = function(svg, data, args) {
         });
 };
 
-var roomTreeMapRendering = function(svg, data, args) {
-    // perform aggregation
-    var aggData = {};
-    for (var i = 0; i < data.length; i++) {
-        var orgName = data[i].organization_name;
-        if (!(orgName in aggData)) aggData[orgName] = {area: 0, bldg_key: ""};
-        aggData[orgName].area += isNaN(data[i].area.replace(/,/g, ""))
-            ? 0
-            : +data[i].area.replace(/,/g, "");
-        aggData[orgName].bldg_key = data[i].fclt_building_key;
-    }
-
-    // construct data needed to pass in d3.treemap
-    var treemapData = {children: []};
-    var orgNames = Object.keys(aggData);
-    for (var i = 0; i < orgNames.length; i++) {
-        var orgName = orgNames[i];
-        treemapData.children.push({
-            area: aggData[orgName].area,
-            orgName: orgName,
-            building_key: aggData[orgName].bldg_key
-        });
-    }
-
-    // use d3.treemap to calculate coordinates
-    var ysft = 40;
-    var root = d3
-        .treemap()
-        .size([args.viewportW, args.viewportH - ysft])
-        .padding(3)
-        .round(true)(
-        d3
-            .hierarchy(treemapData)
-            .sum(d => d.area)
-            .sort((a, b) => b.data.area - a.data.area)
-    );
-
-    // color scale
-    var areas = root.leaves().map(d => d.data.area);
-    var minArea = d3.min(areas);
-    var maxArea = d3.max(areas);
-    var color = d3.scaleSequential(d3.interpolateGnBu).domain([0, maxArea]);
-
-    // draw rectangles
-    var bindingData = root.leaves().map(function(d) {
-        var ret = {x0: d.x0, y0: d.y0, x1: d.x1, y1: d.y1};
-        var keys = Object.keys(d.data);
-        for (var i = 0; i < keys.length; i++) ret[keys[i]] = d.data[keys[i]];
-        return ret;
-    });
-    var g = svg.append("g");
-    g.selectAll(".treemaprect")
-        .data(bindingData)
-        .join("rect")
-        .attr("x", d => d.x0)
-        .attr("y", d => d.y0 + ysft)
-        .attr("width", d => d.x1 - d.x0)
-        .attr("height", d => d.y1 - d.y0)
-        .attr("fill", d => color(d.area));
-
-    // organization names
-    g.selectAll(".orgnametext")
-        .data(bindingData)
-        .join("text")
-        .text(d => d.orgName)
-        .attr("text-anchor", "left")
-        .attr("x", d => d.x0 + 10)
-        .attr("y", d => d.y0 + 30 + ysft)
-        .attr("font-size", 15)
-        .attr("font-family", "Open Sans")
-        .attr("fill", function(d) {
-            if (minArea == maxArea) return "#000";
-            if (d.area / (maxArea - minArea) > 0.7) return "#FFF";
-            return "#000";
-        })
-        .style("opacity", function(d) {
-            var w = d.x1 - d.x0;
-            var h = d.y1 - d.y0;
-            if (w > d.orgName.length * 11 && h > 40) return 1;
-            else return 0;
-        });
-
-    // title
-    g.append("text")
-        .text(
-            `What organizations in Building ${
-                args.predicates.layer0["=="][1]
-            } occupy the largest area?`
-        )
-        .style("font-family", "Open Sans")
-        .style("font-size", 23)
-        .attr("x", 15)
-        .attr("y", 20);
-};
-
 var roomBarChartRendering = function(svg, data, args) {
     var g = svg.append("g");
     var params = args.renderingParams;
@@ -477,7 +382,6 @@ module.exports = {
     renderingParams,
     buildingCircleRendering,
     buildingLegendRendering,
-    roomTreeMapRendering,
     roomBarChartRendering,
     roomCirclePackRendering,
     courseBarChartRendering,
