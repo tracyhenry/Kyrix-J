@@ -200,8 +200,8 @@
         oldArgs["ssvId"] = gvd.curCanvas.layers[layerId].ssvId;
         oldArgs["usmapId"] = gvd.curCanvas.layers[layerId].usmapId;
         oldArgs["pieId"] = gvd.curCanvas.layers[layerId].pieId;
-        oldArgs["staticTreemapId"] =
-            gvd.curCanvas.layers[layerId].staticTreemapId;
+        oldArgs["staticHierarchyId"] =
+            gvd.curCanvas.layers[layerId].staticHierarchyId;
         var allArgs = Object.assign({}, oldArgs, additionalArgs);
 
         // re render the svg
@@ -1755,7 +1755,7 @@
             args["ssvId"] = curLayer.ssvId;
             args["usmapId"] = curLayer.usmapId;
             args["pieId"] = curLayer.pieId;
-            args["staticTreemapId"] = curLayer.staticTreemapId;
+            args["staticHierarchyId"] = curLayer.staticHierarchyId;
             renderFunc(curSvg, gvd.curStaticData[i], args);
 
             // tooltips
@@ -3000,8 +3000,8 @@
                         optionalArgsMore["ssvId"] = curLayer.ssvId;
                         optionalArgsMore["usmapId"] = curLayer.usmapId;
                         optionalArgsMore["pieId"] = curLayer.pieId;
-                        optionalArgsMore["staticTreemapId"] =
-                            curLayer.staticTreemapId;
+                        optionalArgsMore["staticHierarchyId"] =
+                            curLayer.staticHierarchyId;
                         curLayer.rendering.parseFunction()(
                             tileSvg,
                             renderData[i],
@@ -3220,8 +3220,8 @@
                         optionalArgsMore["ssvId"] = curLayer.ssvId;
                         optionalArgsMore["usmapId"] = curLayer.usmapId;
                         optionalArgsMore["pieId"] = curLayer.pieId;
-                        optionalArgsMore["staticTreemapId"] =
-                            curLayer.staticTreemapId;
+                        optionalArgsMore["staticHierarchyId"] =
+                            curLayer.staticHierarchyId;
                         curLayer.rendering.parseFunction()(
                             dboxSvg,
                             renderData[i],

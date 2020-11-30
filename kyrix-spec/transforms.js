@@ -8,14 +8,6 @@ var roomBarChartStaticTransform = new Transform(
     true
 );
 
-var roomCirclePackStaticTransform = new Transform(
-    "select fclt_building_key, organization_name, building_room, use_desc, area from fclt_rooms;",
-    "mit",
-    "",
-    [],
-    true
-);
-
 var courseBarChartStaticTransform = new Transform(
     "select subject_title, department_name, department_code, meet_place, total_units from course_catalog_subject_offered;",
     "mit",
@@ -26,6 +18,5 @@ var courseBarChartStaticTransform = new Transform(
 
 module.exports = {
     roomBarChartStaticTransform,
-    roomCirclePackStaticTransform,
     courseBarChartStaticTransform
 };

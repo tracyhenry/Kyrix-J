@@ -131,19 +131,6 @@ roomBarChartLayer.addTooltip(
     ["Major use", "Minor Use", "Area"]
 );
 
-// ================== Canvas circlepack ===================
-var roomCirclePackCanvas = new Canvas("room_circlepack", vw, vh);
-p.addCanvas(roomCirclePackCanvas);
-
-// static circle pack layer
-var roomCirclePackLayer = new Layer(
-    transforms.roomCirclePackStaticTransform,
-    true
-);
-roomCirclePackCanvas.addLayer(roomCirclePackLayer);
-roomCirclePackLayer.addRenderingFunc(renderers.roomCirclePackRendering);
-roomCirclePackLayer.addTooltip(["building_room", "area"], ["Room", "Area"]);
-
 // ================== Canvas course bar chart ===================
 var courseBarChartCanvas = new Canvas("course_bar", vw, vh);
 p.addCanvas(courseBarChartCanvas);
@@ -159,6 +146,33 @@ courseBarChartLayer.addTooltip(
     ["name", "class_count", "totalUnits"],
     ["Department Name", "Number of Classes", "Total Units Offered"]
 );
+
+// ================== Canvas circlepack ===================
+var staticHierarchy = {
+    db: "mit",
+    query: {
+        table: "fclt_rooms",
+        dimensions: ["building_room"],
+        measure: "SUM(area)",
+        sampleFields: ["fclt_building_key", "organization_name", "use_desc"]
+    },
+    type: "circlePack",
+    tooltip: {
+        columns: ["building_room", "kyrixAggValue"],
+        aliases: ["Room", "Area"]
+    },
+    legend: {
+        title: "Rooms and Their Occupied Area"
+    },
+    textFields: ["building_room"]
+};
+
+var roomCirclePackCanvas = p.addStaticHierarchy(
+    new StaticHierarchy(staticHierarchy),
+    {
+        view: kyrixView
+    }
+).canvas;
 
 // ================== Canvas student pie chart ===================
 var pie = {
@@ -190,19 +204,6 @@ var pie = {
 };
 
 var studentPieChartCanvas = p.addPie(new Pie(pie), {view: kyrixView}).canvas;
-
-// ================== graph canvas ===================
-var graphCanvas = new Canvas("graph", 500, vh);
-p.addCanvas(graphCanvas);
-
-// static canvas layer
-var graphLayer = new Layer(transforms.defaultEmptyTransform, true);
-graphCanvas.addLayer(graphLayer);
-graphLayer.addRenderingFunc(renderers.graphRendering);
-graphLayer.addTooltip(
-    ["table_name", "numCanvas", "numRecords"],
-    ["Table Name", "# of Canvases", "# of Records"]
-);
 
 // ================== building -> room treemap ===================
 for (var i = 0; i < building_pyramid.length; i++) {
@@ -244,7 +245,7 @@ for (var i = 0; i < building_pyramid.length; i++) {
 
 // ================== room treemap -> room bar chart ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" && "organization_name" in row;
+    return row != null && typeof row == "object" && "kyrixAggValue" in row;
 };
 
 var newViewport = function() {
@@ -290,10 +291,10 @@ var newViewport = function() {
 };
 
 var newPredicate = function(row, args) {
-    var pred0 = {
+    var pred = {
         AND: [args.predicates.layer0, {"==": ["use_desc", row.minor_use]}]
     };
-    return {layer0: pred0};
+    return {layer0: pred, layer1: pred};
 };
 
 var jumpName = function(row, args) {
@@ -318,14 +319,14 @@ p.addJump(
 
 // ================== room circle pack -> course bar chart ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" && "area" in row;
+    return row != null && typeof row == "object" && "kyrixAggValue" in row;
 };
 
 var newViewport = function() {
     return {constant: [0, 0]};
 };
 
-var newPredicate = function(row, args) {
+var newPredicate = function(row) {
     var pred0 = {
         "==": ["meet_place", row.building_room]
     };
@@ -354,7 +355,7 @@ p.addJump(
 
 // ================== room circle pack -> student pie chart ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" && "area" in row;
+    return row != null && typeof row == "object" && "kyrixAggValue" in row;
 };
 
 var newViewport = function() {

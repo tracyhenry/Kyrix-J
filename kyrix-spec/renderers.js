@@ -204,59 +204,6 @@ var roomBarChartRendering = function(svg, data, args) {
         .call(legendOrdinal);
 };
 
-var roomCirclePackRendering = function(svg, data, args) {
-    // construct data needed to pass in d3.pack
-    data.forEach(function(d) {
-        if (d == null) return;
-        if (typeof d.area == "number") return;
-        if (d.area == null || isNaN(d.area.replace(/,/g, ""))) d.area = 0;
-        else d.area = +d.area.replace(/,/g, "");
-    });
-    var packData = {children: data};
-
-    // use d3.treemap to calculate coordinates
-    var ysft = 40;
-    var root = d3
-        .pack()
-        .size([args.viewportW, args.viewportH - ysft])
-        .padding(3)(d3.hierarchy(packData).sum(d => d.area));
-
-    // color scale
-    var areas = root.leaves().map(d => d.data.area);
-    var maxArea = d3.max(areas);
-    var color = d3.scaleSequential(d3.interpolateGnBu).domain([0, maxArea]);
-
-    // draw circles
-    var bindingData = root.leaves().map(function(d) {
-        var ret = {x: d.x, y: d.y, r: d.r};
-        var keys = Object.keys(d.data);
-        for (var i = 0; i < keys.length; i++) ret[keys[i]] = d.data[keys[i]];
-        return ret;
-    });
-    var g = svg.append("g");
-    g.selectAll(".packcircle")
-        .data(bindingData)
-        .join("circle")
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y + ysft)
-        .attr("r", d => d.r)
-        .attr("fill", d => color(d.area));
-
-    // title
-    g.append("text")
-        .text(
-            `${args.predicates.layer0["AND"][1]["=="][1]} rooms in Building ${
-                args.predicates.layer0["AND"][0]["AND"][0]["=="][1]
-            } used by ${
-                args.predicates.layer0["AND"][0]["AND"][1]["=="][1]
-            } folks`
-        )
-        .style("font-family", "Open Sans")
-        .style("font-size", 23)
-        .attr("x", 15)
-        .attr("y", 20);
-};
-
 var courseBarChartRendering = function(svg, data, args) {
     // aggregate by department_name
     var aggDataDict = {};
@@ -376,14 +323,10 @@ var courseBarChartRendering = function(svg, data, args) {
     axesg.selectAll("path").remove();
 };
 
-var graphRendering = function(svg, data, args) {};
-
 module.exports = {
     renderingParams,
     buildingCircleRendering,
     buildingLegendRendering,
     roomBarChartRendering,
-    roomCirclePackRendering,
-    courseBarChartRendering,
-    graphRendering
+    courseBarChartRendering
 };

@@ -284,11 +284,11 @@ class KyrixJ extends Component {
         ssv0_level1: "SELECT *\nFROM building",
         ssv0_level2: "SELECT *\nFROM building",
         ssv0_level3: "SELECT *\nFROM building",
-        staticTreemap0:
+        staticHierarchy0:
             "SELECT organization_name, SUM(area)\nFROM room\nGROUP BY organization_name;",
         room_barchart:
             "SELECT use_desc, major_use_desc, SUM(area)\nFrom room\nGROUP BY use_desc, major_use_desc;",
-        room_circlepack: "SELECT *\nFROM room;",
+        staticHierarchy1: "SELECT *\nFROM room;",
         course_bar:
             "SELECT department_code, SUM(total_units)\nFROM course\nGROUP BY department_code;",
         pie0:
@@ -300,9 +300,9 @@ class KyrixJ extends Component {
         ssv0_level1: "building",
         ssv0_level2: "building",
         ssv0_level3: "building",
-        staticTreemap0: "room",
+        staticHierarchy0: "room",
         room_barchart: "room",
-        room_circlepack: "room",
+        staticHierarchy1: "room",
         course_bar: "course",
         pie0: "student"
     };
@@ -554,7 +554,7 @@ class KyrixJ extends Component {
             newVpY: 0
         },
         room: {
-            canvasId: "staticTreemap0",
+            canvasId: "staticHierarchy0",
             predDict: {
                 layer0: {
                     "==": ["fclt_building_key", "32"]
