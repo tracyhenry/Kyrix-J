@@ -5,8 +5,8 @@ const Jump = require("../../src/Jump").Jump;
 const Layer = require("../../src/Layer").Layer;
 const SSV = require("../../src/template-api/SSV").SSV;
 const Pie = require("../../src/template-api/Pie").Pie;
-const StaticTreemap = require("../../src/template-api/StaticTreemap")
-    .StaticTreemap;
+const StaticHierarchy = require("../../src/template-api/StaticHierarchy")
+    .StaticHierarchy;
 
 // project components
 const renderers = require("./renderers");
@@ -92,7 +92,7 @@ for (var i = 0; i < building_pyramid.length; i++) {
 }
 
 // ================== Canvas treemap ===================
-var staticTreemap = {
+var staticHierarchy = {
     db: "mit",
     query: {
         table: "fclt_rooms",
@@ -100,6 +100,7 @@ var staticTreemap = {
         measure: "SUM(area)",
         sampleFields: ["building_room"]
     },
+    type: "treemap",
     tooltip: {
         columns: ["organization_name", "kyrixAggValue"],
         aliases: ["Organization", "Area"]
@@ -110,9 +111,12 @@ var staticTreemap = {
     textFields: ["organization_name"]
 };
 
-var roomTreemapCanvas = p.addStaticTreemap(new StaticTreemap(staticTreemap), {
-    view: kyrixView
-}).canvas;
+var roomTreemapCanvas = p.addStaticHierarchy(
+    new StaticHierarchy(staticHierarchy),
+    {
+        view: kyrixView
+    }
+).canvas;
 
 // ================== Canvas stacked bar chart ===================
 var roomBarChartCanvas = new Canvas("room_barchart", vw, vh);
@@ -131,7 +135,7 @@ roomBarChartLayer.addTooltip(
 var roomCirclePackCanvas = new Canvas("room_circlepack", vw, vh);
 p.addCanvas(roomCirclePackCanvas);
 
-// static treemap layer
+// static circle pack layer
 var roomCirclePackLayer = new Layer(
     transforms.roomCirclePackStaticTransform,
     true
@@ -144,7 +148,7 @@ roomCirclePackLayer.addTooltip(["building_room", "area"], ["Room", "Area"]);
 var courseBarChartCanvas = new Canvas("course_bar", vw, vh);
 p.addCanvas(courseBarChartCanvas);
 
-// static treemap layer
+// static circle pack layer
 var courseBarChartLayer = new Layer(
     transforms.courseBarChartStaticTransform,
     true
