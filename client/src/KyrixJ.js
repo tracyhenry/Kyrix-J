@@ -284,14 +284,14 @@ class KyrixJ extends Component {
         ssv0_level1: "SELECT *\nFROM building",
         ssv0_level2: "SELECT *\nFROM building",
         ssv0_level3: "SELECT *\nFROM building",
-        staticHierarchy0:
+        staticTemplate0:
             "SELECT organization_name, SUM(area)\nFROM room\nGROUP BY organization_name;",
         room_barchart:
             "SELECT use_desc, major_use_desc, SUM(area)\nFrom room\nGROUP BY use_desc, major_use_desc;",
-        staticHierarchy1: "SELECT *\nFROM room;",
+        staticTemplate1: "SELECT *\nFROM room;",
         course_bar:
             "SELECT department_code, SUM(total_units)\nFROM course\nGROUP BY department_code;",
-        pie0:
+        staticTemplate2:
             "SELECT student_year, COUNT(*)\nFROM student\nGROUP BY student_year;"
     };
 
@@ -300,11 +300,11 @@ class KyrixJ extends Component {
         ssv0_level1: "building",
         ssv0_level2: "building",
         ssv0_level3: "building",
-        staticHierarchy0: "room",
+        staticTemplate0: "room",
         room_barchart: "room",
-        staticHierarchy1: "room",
+        staticTemplate1: "room",
         course_bar: "course",
-        pie0: "student"
+        staticTemplate2: "student"
     };
 
     graphEdges = [
@@ -554,7 +554,7 @@ class KyrixJ extends Component {
             newVpY: 0
         },
         room: {
-            canvasId: "staticHierarchy0",
+            canvasId: "staticTemplate0",
             predDict: {
                 layer0: {
                     "==": ["fclt_building_key", "32"]
@@ -567,7 +567,7 @@ class KyrixJ extends Component {
             newVpY: 0
         },
         student: {
-            canvasId: "pie0",
+            canvasId: "staticTemplate2",
             predDict: {
                 layer0: {
                     "==": ["department", "6"]

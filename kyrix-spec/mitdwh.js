@@ -4,9 +4,8 @@ const Canvas = require("../../src/Canvas").Canvas;
 const Jump = require("../../src/Jump").Jump;
 const Layer = require("../../src/Layer").Layer;
 const SSV = require("../../src/template-api/SSV").SSV;
-const Pie = require("../../src/template-api/Pie").Pie;
-const StaticHierarchy = require("../../src/template-api/StaticHierarchy")
-    .StaticHierarchy;
+const StaticTemplate = require("../../src/template-api/StaticTemplate")
+    .StaticTemplate;
 
 // project components
 const renderers = require("./renderers");
@@ -17,7 +16,6 @@ var p = new Project("mitdwh", "../../../config.txt");
 p.addRenderingParams(renderers.renderingParams);
 var vw = 1000,
     vh = 1000;
-var demo1 = false;
 
 // SSV of buildings
 var ssv = {
@@ -92,7 +90,7 @@ for (var i = 0; i < building_pyramid.length; i++) {
 }
 
 // ================== Canvas treemap ===================
-var staticHierarchy = {
+var staticTemplate = {
     db: "mit",
     query: {
         table: "fclt_rooms",
@@ -111,8 +109,8 @@ var staticHierarchy = {
     textFields: ["organization_name"]
 };
 
-var roomTreemapCanvas = p.addStaticHierarchy(
-    new StaticHierarchy(staticHierarchy),
+var roomTreemapCanvas = p.addStaticTemplate(
+    new StaticTemplate(staticTemplate),
     {
         view: kyrixView
     }
@@ -148,7 +146,7 @@ courseBarChartLayer.addTooltip(
 );
 
 // ================== Canvas circlepack ===================
-var staticHierarchy = {
+var staticTemplate = {
     db: "mit",
     query: {
         table: "fclt_rooms",
@@ -167,15 +165,15 @@ var staticHierarchy = {
     textFields: ["building_room"]
 };
 
-var roomCirclePackCanvas = p.addStaticHierarchy(
-    new StaticHierarchy(staticHierarchy),
+var roomCirclePackCanvas = p.addStaticTemplate(
+    new StaticTemplate(staticTemplate),
     {
         view: kyrixView
     }
 ).canvas;
 
 // ================== Canvas student pie chart ===================
-var pie = {
+var staticTemplate = {
     db: "mit",
     query: {
         table: "mit_student_directory",
@@ -183,6 +181,7 @@ var pie = {
         measure: "COUNT(*)",
         sampleFields: ["full_name", "department", "office_location"]
     },
+    type: "pie",
     tooltip: {
         columns: ["student_year", "kyrixAggValue"],
         aliases: ["Student Year", "Number of Students"]
@@ -203,7 +202,10 @@ var pie = {
     transition: true
 };
 
-var studentPieChartCanvas = p.addPie(new Pie(pie), {view: kyrixView}).canvas;
+var studentPieChartCanvas = p.addStaticTemplate(
+    new StaticTemplate(staticTemplate),
+    {view: kyrixView}
+).canvas;
 
 // ================== building -> room treemap ===================
 for (var i = 0; i < building_pyramid.length; i++) {
@@ -227,19 +229,14 @@ for (var i = 0; i < building_pyramid.length; i++) {
     };
 
     p.addJump(
-        new Jump(
-            building_pyramid[i],
-            roomTreemapCanvas,
-            demo1 ? "semantic_zoom" : "slide",
-            {
-                selector: selector,
-                viewport: newViewport,
-                predicates: newPredicate,
-                name: jumpName,
-                noPrefix: true,
-                slideSuperman: true
-            }
-        )
+        new Jump(building_pyramid[i], roomTreemapCanvas, "slide", {
+            selector: selector,
+            viewport: newViewport,
+            predicates: newPredicate,
+            name: jumpName,
+            noPrefix: true,
+            slideSuperman: true
+        })
     );
 }
 
@@ -338,19 +335,14 @@ var jumpName = function(row) {
 };
 
 p.addJump(
-    new Jump(
-        roomCirclePackCanvas,
-        courseBarChartCanvas,
-        demo1 ? "semantic_zoom" : "slide",
-        {
-            selector: selector,
-            viewport: newViewport,
-            predicates: newPredicate,
-            name: jumpName,
-            noPrefix: true,
-            slideSuperman: true
-        }
-    )
+    new Jump(roomCirclePackCanvas, courseBarChartCanvas, "slide", {
+        selector: selector,
+        viewport: newViewport,
+        predicates: newPredicate,
+        name: jumpName,
+        noPrefix: true,
+        slideSuperman: true
+    })
 );
 
 // ================== room circle pack -> student pie chart ===================
@@ -374,19 +366,14 @@ var jumpName = function(row) {
 };
 
 p.addJump(
-    new Jump(
-        roomCirclePackCanvas,
-        studentPieChartCanvas,
-        demo1 ? "semantic_zoom" : "slide",
-        {
-            selector: selector,
-            viewport: newViewport,
-            predicates: newPredicate,
-            name: jumpName,
-            noPrefix: true,
-            slideSuperman: true
-        }
-    )
+    new Jump(roomCirclePackCanvas, studentPieChartCanvas, "slide", {
+        selector: selector,
+        viewport: newViewport,
+        predicates: newPredicate,
+        name: jumpName,
+        noPrefix: true,
+        slideSuperman: true
+    })
 );
 
 // ================== course bar chart -> student pie chart ===================
@@ -410,19 +397,14 @@ var jumpName = function(row) {
 };
 
 p.addJump(
-    new Jump(
-        courseBarChartCanvas,
-        studentPieChartCanvas,
-        demo1 ? "semantic_zoom" : "slide",
-        {
-            selector: selector,
-            viewport: newViewport,
-            predicates: newPredicate,
-            name: jumpName,
-            noPrefix: true,
-            slideSuperman: true
-        }
-    )
+    new Jump(courseBarChartCanvas, studentPieChartCanvas, "slide", {
+        selector: selector,
+        viewport: newViewport,
+        predicates: newPredicate,
+        name: jumpName,
+        noPrefix: true,
+        slideSuperman: true
+    })
 );
 
 // save to db
