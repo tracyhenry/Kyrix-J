@@ -192,6 +192,7 @@ var staticAggregation = {
         ]
     },
     type: "bar",
+    colorScheme: "schemeSet3",
     tooltip: {
         columns: ["major_use_desc", "use_desc", "kyrixAggValue"],
         aliases: ["Major Use", "Minor Use", "Area"]
