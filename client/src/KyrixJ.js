@@ -284,14 +284,14 @@ class KyrixJ extends Component {
         ssv0_level1: "SELECT *\nFROM building",
         ssv0_level2: "SELECT *\nFROM building",
         ssv0_level3: "SELECT *\nFROM building",
-        staticTemplate0:
+        staticAggregation0:
             "SELECT organization_name, SUM(area)\nFROM room\nGROUP BY organization_name;",
-        room_barchart:
+        staticAggregation3:
             "SELECT use_desc, major_use_desc, SUM(area)\nFrom room\nGROUP BY use_desc, major_use_desc;",
-        staticTemplate1: "SELECT *\nFROM room;",
-        course_bar:
+        staticAggregation1: "SELECT *\nFROM room;",
+        staticAggregation4:
             "SELECT department_code, SUM(total_units)\nFROM course\nGROUP BY department_code;",
-        staticTemplate2:
+        staticAggregation2:
             "SELECT student_year, COUNT(*)\nFROM student\nGROUP BY student_year;"
     };
 
@@ -300,11 +300,11 @@ class KyrixJ extends Component {
         ssv0_level1: "building",
         ssv0_level2: "building",
         ssv0_level3: "building",
-        staticTemplate0: "room",
-        room_barchart: "room",
-        staticTemplate1: "room",
-        course_bar: "course",
-        staticTemplate2: "student"
+        staticAggregation0: "room",
+        staticAggregation3: "room",
+        staticAggregation1: "room",
+        staticAggregation4: "course",
+        staticAggregation2: "student"
     };
 
     graphEdges = [
@@ -554,7 +554,7 @@ class KyrixJ extends Component {
             newVpY: 0
         },
         room: {
-            canvasId: "staticTemplate0",
+            canvasId: "staticAggregation0",
             predDict: {
                 layer0: {
                     "==": ["fclt_building_key", "32"]
@@ -567,22 +567,25 @@ class KyrixJ extends Component {
             newVpY: 0
         },
         student: {
-            canvasId: "staticTemplate2",
+            canvasId: "staticAggregation2",
             predDict: {
                 layer0: {
-                    "==": ["department", "6"]
+                    "==": ["department_name", "Electrical Eng & Computer Sci"]
                 },
                 layer1: {
-                    "==": ["department", "6"]
+                    "==": ["department_name", "Electrical Eng & Computer Sci"]
                 }
             },
             newVpX: 0,
             newVpY: 0
         },
         course: {
-            canvasId: "course_bar",
+            canvasId: "staticAggregation4",
             predDict: {
                 layer0: {
+                    "==": ["meet_place", "32-123"]
+                },
+                layer1: {
                     "==": ["meet_place", "32-123"]
                 }
             },

@@ -4,12 +4,11 @@ const Canvas = require("../../src/Canvas").Canvas;
 const Jump = require("../../src/Jump").Jump;
 const Layer = require("../../src/Layer").Layer;
 const SSV = require("../../src/template-api/SSV").SSV;
-const StaticTemplate = require("../../src/template-api/StaticTemplate")
-    .StaticTemplate;
+const StaticAggregation = require("../../src/template-api/StaticAggregation")
+    .StaticAggregation;
 
 // project components
 const renderers = require("./renderers");
-const transforms = require("./transforms");
 
 // construct a project
 var p = new Project("mitdwh", "../../../config.txt");
@@ -90,7 +89,7 @@ for (var i = 0; i < building_pyramid.length; i++) {
 }
 
 // ================== Canvas treemap ===================
-var staticTemplate = {
+var staticAggregation = {
     db: "mit",
     query: {
         table: "fclt_rooms",
@@ -109,44 +108,15 @@ var staticTemplate = {
     textFields: ["organization_name"]
 };
 
-var roomTreemapCanvas = p.addStaticTemplate(
-    new StaticTemplate(staticTemplate),
+var roomTreemapCanvas = p.addStaticAggregation(
+    new StaticAggregation(staticAggregation),
     {
         view: kyrixView
     }
 ).canvas;
 
-// ================== Canvas stacked bar chart ===================
-var roomBarChartCanvas = new Canvas("room_barchart", vw, vh);
-p.addCanvas(roomBarChartCanvas);
-
-// static bar chart layer
-var roomBarChartLayer = new Layer(transforms.roomBarChartStaticTransform, true);
-roomBarChartCanvas.addLayer(roomBarChartLayer);
-roomBarChartLayer.addRenderingFunc(renderers.roomBarChartRendering);
-roomBarChartLayer.addTooltip(
-    ["major_use", "minor_use", "area"],
-    ["Major use", "Minor Use", "Area"]
-);
-
-// ================== Canvas course bar chart ===================
-var courseBarChartCanvas = new Canvas("course_bar", vw, vh);
-p.addCanvas(courseBarChartCanvas);
-
-// static circle pack layer
-var courseBarChartLayer = new Layer(
-    transforms.courseBarChartStaticTransform,
-    true
-);
-courseBarChartCanvas.addLayer(courseBarChartLayer);
-courseBarChartLayer.addRenderingFunc(renderers.courseBarChartRendering);
-courseBarChartLayer.addTooltip(
-    ["name", "class_count", "totalUnits"],
-    ["Department Name", "Number of Classes", "Total Units Offered"]
-);
-
 // ================== Canvas circlepack ===================
-var staticTemplate = {
+var staticAggregation = {
     db: "mit",
     query: {
         table: "fclt_rooms",
@@ -165,21 +135,21 @@ var staticTemplate = {
     textFields: ["building_room"]
 };
 
-var roomCirclePackCanvas = p.addStaticTemplate(
-    new StaticTemplate(staticTemplate),
+var roomCirclePackCanvas = p.addStaticAggregation(
+    new StaticAggregation(staticAggregation),
     {
         view: kyrixView
     }
 ).canvas;
 
 // ================== Canvas student pie chart ===================
-var staticTemplate = {
+var staticAggregation = {
     db: "mit",
     query: {
         table: "mit_student_directory",
         dimensions: ["student_year"],
         measure: "COUNT(*)",
-        sampleFields: ["full_name", "department", "office_location"]
+        sampleFields: ["full_name", "department_name", "office_location"]
     },
     type: "pie",
     tooltip: {
@@ -202,8 +172,69 @@ var staticTemplate = {
     transition: true
 };
 
-var studentPieChartCanvas = p.addStaticTemplate(
-    new StaticTemplate(staticTemplate),
+var studentPieChartCanvas = p.addStaticAggregation(
+    new StaticAggregation(staticAggregation),
+    {view: kyrixView}
+).canvas;
+
+// ================== room stacked bar chart ===================
+var staticAggregation = {
+    db: "mit",
+    query: {
+        table: "fclt_rooms",
+        dimensions: ["major_use_desc"],
+        stackDimensions: ["use_desc"],
+        measure: "SUM(area)",
+        sampleFields: [
+            "building_room",
+            "fclt_building_key",
+            "organization_name"
+        ]
+    },
+    type: "bar",
+    tooltip: {
+        columns: ["major_use_desc", "use_desc", "kyrixAggValue"],
+        aliases: ["Major Use", "Minor Use", "Area"]
+    },
+    legend: {
+        title: "Major/Minor Usages of Rooms"
+    },
+    axis: {
+        xTitle: "Major Use",
+        yTitle: "Total Area (sq ft)"
+    }
+};
+
+var roomBarChartCanvas = p.addStaticAggregation(
+    new StaticAggregation(staticAggregation),
+    {view: kyrixView}
+).canvas;
+
+// ================== Canvas course bar chart ===================
+var staticAggregation = {
+    db: "mit",
+    query: {
+        table: "course_catalog_subject_offered",
+        dimensions: ["department_name"],
+        measure: "SUM(total_units)",
+        sampleFields: ["subject_title", "department_code", "meet_place"]
+    },
+    type: "bar",
+    tooltip: {
+        columns: ["department_name", "kyrixAggValue"],
+        aliases: ["Department Name", "Total Units Offered"]
+    },
+    legend: {
+        title: "Departments and Their Total Units of Classes Offered"
+    },
+    axis: {
+        xTitle: "Department",
+        yTitle: "Total Units"
+    }
+};
+
+var courseBarChartCanvas = p.addStaticAggregation(
+    new StaticAggregation(staticAggregation),
     {view: kyrixView}
 ).canvas;
 
@@ -280,7 +311,7 @@ p.addJump(
 
 // ================== room bar chart -> room circle pack ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" && "minor_use" in row;
+    return row != null && typeof row == "object" && "kyrixAggValue" in row;
 };
 
 var newViewport = function() {
@@ -289,19 +320,13 @@ var newViewport = function() {
 
 var newPredicate = function(row, args) {
     var pred = {
-        AND: [args.predicates.layer0, {"==": ["use_desc", row.minor_use]}]
+        AND: [args.predicates.layer0, {"==": ["use_desc", row.use_desc]}]
     };
     return {layer0: pred, layer1: pred};
 };
 
-var jumpName = function(row, args) {
-    return (
-        row.minor_use +
-        " rooms used by " +
-        args.predicates.layer0["AND"][1]["=="][1] +
-        " in bldg " +
-        args.predicates.layer0["AND"][0]["=="][1]
-    );
+var jumpName = function(row) {
+    return `rooms with major use "${row.major_use_desc}" and minor use "${row.use_desc}"`;
 };
 
 p.addJump(
@@ -378,7 +403,7 @@ p.addJump(
 
 // ================== course bar chart -> student pie chart ===================
 var selector = function(row) {
-    return row != null && typeof row == "object" && "name" in row;
+    return row != null && typeof row == "object" && "kyrixAggValue" in row;
 };
 
 var newViewport = function() {
@@ -387,13 +412,13 @@ var newViewport = function() {
 
 var newPredicate = function(row) {
     var pred = {
-        "==": ["department", row.dept_code]
+        "==": ["department_name", row.department_name]
     };
     return {layer0: pred, layer1: pred};
 };
 
 var jumpName = function(row) {
-    return `Students in course ${row.dept_code}`;
+    return `Students in ${row.department_name}`;
 };
 
 p.addJump(

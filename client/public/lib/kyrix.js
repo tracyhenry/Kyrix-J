@@ -199,8 +199,8 @@
         oldArgs["layerId"] = layerId;
         oldArgs["ssvId"] = gvd.curCanvas.layers[layerId].ssvId;
         oldArgs["usmapId"] = gvd.curCanvas.layers[layerId].usmapId;
-        oldArgs["staticTemplateId"] =
-            gvd.curCanvas.layers[layerId].staticTemplateId;
+        oldArgs["staticAggregationId"] =
+            gvd.curCanvas.layers[layerId].staticAggregationId;
         var allArgs = Object.assign({}, oldArgs, additionalArgs);
 
         // re render the svg
@@ -1753,7 +1753,7 @@
             args["layerId"] = i;
             args["ssvId"] = curLayer.ssvId;
             args["usmapId"] = curLayer.usmapId;
-            args["staticTemplateId"] = curLayer.staticTemplateId;
+            args["staticAggregationId"] = curLayer.staticAggregationId;
             renderFunc(curSvg, gvd.curStaticData[i], args);
 
             // tooltips
@@ -2997,8 +2997,8 @@
                         optionalArgsMore["layerId"] = i;
                         optionalArgsMore["ssvId"] = curLayer.ssvId;
                         optionalArgsMore["usmapId"] = curLayer.usmapId;
-                        optionalArgsMore["staticTemplateId"] =
-                            curLayer.staticTemplateId;
+                        optionalArgsMore["staticAggregationId"] =
+                            curLayer.staticAggregationId;
                         curLayer.rendering.parseFunction()(
                             tileSvg,
                             renderData[i],
@@ -3216,8 +3216,8 @@
                         optionalArgsMore["layerId"] = i;
                         optionalArgsMore["ssvId"] = curLayer.ssvId;
                         optionalArgsMore["usmapId"] = curLayer.usmapId;
-                        optionalArgsMore["staticTemplateId"] =
-                            curLayer.staticTemplateId;
+                        optionalArgsMore["staticAggregationId"] =
+                            curLayer.staticAggregationId;
                         curLayer.rendering.parseFunction()(
                             dboxSvg,
                             renderData[i],
