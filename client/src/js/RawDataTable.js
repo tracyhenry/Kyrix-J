@@ -10,18 +10,16 @@ class RawDataTable extends Component {
         )
             return true;
         if (nextProps.kyrixRenderData.length === 0) return false;
-        if (
-            nextProps.kyrixRenderData[0].length !==
-            this.props.kyrixRenderData[0].length
-        )
+        let oldFields = Object.keys(this.props.kyrixRenderData[0]);
+        let newFields = Object.keys(nextProps.kyrixRenderData[0]);
+        if (oldFields.sort().join("_") !== newFields.sort().join("_"))
             return true;
         let n = this.props.kyrixRenderData.length;
-        let m = this.props.kyrixRenderData[0].length;
         for (let i = 0; i < n; i++)
-            for (let j = 0; j < m; j++)
+            for (let j = 0; j < oldFields.length; j++)
                 if (
-                    nextProps.kyrixRenderData[i][j] !==
-                    this.props.kyrixRenderData[i][j]
+                    nextProps.kyrixRenderData[i][oldFields[j]] !==
+                    this.props.kyrixRenderData[i][oldFields[j]]
                 )
                     return true;
         return false;
