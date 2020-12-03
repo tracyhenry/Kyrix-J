@@ -281,13 +281,13 @@ var newViewport = function() {
 };
 
 var newPredicate = function(row, args) {
-    var pred0 = {
+    var pred = {
         AND: [
             {"==": args.predicates.layer0["=="]},
             {"==": ["organization_name", row.organization_name]}
         ]
     };
-    return {layer0: pred0};
+    return {layer0: pred, layer1: pred};
 };
 
 var jumpName = function(row) {
@@ -349,10 +349,10 @@ var newViewport = function() {
 };
 
 var newPredicate = function(row) {
-    var pred0 = {
+    var pred = {
         "==": ["meet_place", row.building_room]
     };
-    return {layer0: pred0};
+    return {layer0: pred, layer1: pred};
 };
 
 var jumpName = function(row) {
