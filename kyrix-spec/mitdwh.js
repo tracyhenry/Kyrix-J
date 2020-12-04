@@ -168,8 +168,7 @@ var staticAggregation = {
             G: "Graduate Students"
         }
     },
-    colorScheme: "schemePastel1",
-    transition: true
+    colorScheme: "schemePastel1"
 };
 
 var studentPieChartCanvas = p.addStaticAggregation(
