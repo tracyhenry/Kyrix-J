@@ -54,14 +54,17 @@ class RawDataTable extends Component {
             title: d,
             dataIndex: d,
             key: d,
-            ellipsis: true
+            width: d.length * 10,
+            align: "center"
         });
 
+        // columns
         let antdColumns = [toAntdColumn(primaryKey)];
         antdColumns = antdColumns.concat(
             rawColumns.filter(d => d !== primaryKey).map(toAntdColumn)
         );
 
+        // data
         const antdData = JSON.parse(
             JSON.stringify(this.props.kyrixRenderData.slice(0, 300))
         );
@@ -69,6 +72,21 @@ class RawDataTable extends Component {
             d.key = JSON.stringify(d) + i;
         });
 
+        // set width for columns
+        for (let i = 0; i < antdColumns.length; i++)
+            for (let j = 0; j < antdData.length; j++) {
+                let cell = antdData[j][antdColumns[i].title];
+                if (cell == null) continue;
+                antdColumns[i].width = Math.max(
+                    antdColumns[i].width,
+                    cell.toString().length * 10
+                );
+            }
+
+        // total width
+        let sumWidth = 0;
+        for (let i = 0; i < antdColumns.length; i++)
+            sumWidth += antdColumns.width;
         return (
             <div className="rawdata">
                 <Card title="Sample Raw Data">
@@ -77,7 +95,7 @@ class RawDataTable extends Component {
                         columns={antdColumns}
                         dataSource={antdData}
                         pagination={{defaultPageSize: 50}}
-                        scroll={{x: true, y: this.props.maxHeight}}
+                        scroll={{x: sumWidth, y: this.props.maxHeight}}
                     />
                 </Card>
             </div>
