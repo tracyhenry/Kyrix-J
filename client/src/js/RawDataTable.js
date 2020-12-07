@@ -54,7 +54,7 @@ class RawDataTable extends Component {
             title: d,
             dataIndex: d,
             key: d,
-            width: d.length * 10,
+            width: d ? d.length * 10 : 0,
             align: "center"
         });
 
@@ -77,16 +77,20 @@ class RawDataTable extends Component {
             for (let j = 0; j < antdData.length; j++) {
                 let cell = antdData[j][antdColumns[i].title];
                 if (cell == null) continue;
+
+                // update column width
                 antdColumns[i].width = Math.max(
                     antdColumns[i].width,
                     cell.toString().length * 10
                 );
+
+                // set number format
+                if (cell.length > 0 && !isNaN(cell))
+                    antdData[j][antdColumns[i].title] = (+cell)
+                        .toFixed(2)
+                        .replace(/\.?0*$/, "");
             }
 
-        // total width
-        let sumWidth = 0;
-        for (let i = 0; i < antdColumns.length; i++)
-            sumWidth += antdColumns.width;
         return (
             <div className="rawdata">
                 <Card title="Sample Raw Data">
@@ -95,7 +99,7 @@ class RawDataTable extends Component {
                         columns={antdColumns}
                         dataSource={antdData}
                         pagination={{defaultPageSize: 50}}
-                        scroll={{x: sumWidth, y: this.props.maxHeight}}
+                        scroll={{y: this.props.maxHeight}}
                     />
                 </Card>
             </div>
