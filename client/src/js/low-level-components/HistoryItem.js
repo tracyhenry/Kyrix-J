@@ -7,11 +7,15 @@ class HistoryItem extends Component {
         visible: false
     };
     render() {
-        const clickHandler = () => {
+        const clickHandler = e => {
+            if (!e.target.classList.contains("history-clickable")) return;
             this.props.clickHandler(this.props.d);
         };
         return (
-            <div className="img-container" onClick={clickHandler.bind(this)}>
+            <div
+                className="img-container history-clickable"
+                onClick={clickHandler.bind(this)}
+            >
                 <Image
                     src={this.props.d.url}
                     preview={{
@@ -24,11 +28,14 @@ class HistoryItem extends Component {
                         }
                     }}
                 />
-                <div className="img-info-area">
+                <div className="img-info-area history-clickable">
                     <i>
-                        <h4>{this.props.d.table}</h4>
+                        <h4 className={"history-clickable"}>
+                            {this.props.d.table}
+                        </h4>
                     </i>
                     <ZoomInOutlined
+                        className="history-clickable"
                         onClick={event => {
                             event.stopPropagation();
                             this.setState({visible: true});

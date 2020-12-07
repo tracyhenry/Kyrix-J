@@ -169,19 +169,15 @@ class KyrixJ extends Component {
         if (jump.type === "literal_zoom_in" || jump.type === "literal_zoom_out")
             return;
         let historyItem = window.kyrix.getHistoryItem(this.kyrixViewId);
-        html2canvas(document.getElementsByClassName("kyrixvisdiv")[0]).then(
-            canvas => {
-                this.setState({
-                    screenshotHistory: this.state.screenshotHistory.concat([
-                        Object.assign(
-                            {},
-                            {url: canvas.toDataURL()},
-                            historyItem
-                        )
-                    ])
-                });
-            }
-        );
+        html2canvas(document.getElementsByClassName("kyrixvisdiv")[0], {
+            logging: false
+        }).then(canvas => {
+            this.setState({
+                screenshotHistory: this.state.screenshotHistory.concat([
+                    Object.assign({}, {url: canvas.toDataURL()}, historyItem)
+                ])
+            });
+        });
     };
 
     handleHistoryItemClick = historyItem => {
