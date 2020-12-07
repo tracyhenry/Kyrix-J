@@ -22,7 +22,7 @@ const resizeSvgs = () => {
 
         // set viewbox accordingly
         var minx = (-svgW * (bbox.width / 2 - realW / 2)) / realW;
-        var miny = (-svgH * svgH * (bbox.height / 2 - realH / 2)) / realH;
+        var miny = (-svgH * (bbox.height / 2 - realH / 2)) / realH;
         svg.attr(
             "viewBox",
             minx +

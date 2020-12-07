@@ -25,7 +25,7 @@ class EdgePopover extends Component {
         );
         return (
             <Popover
-                placement="bottom"
+                placement="right"
                 title={<h4>Matching Columns</h4>}
                 content={content}
                 trigger="click"

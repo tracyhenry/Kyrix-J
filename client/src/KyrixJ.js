@@ -228,11 +228,11 @@ class KyrixJ extends Component {
                     sqlQuery={this.sqlQuery}
                     kyrixPredicates={this.state.kyrixPredicates}
                 />
-                <SlideReel
-                    tableHistory={this.state.tableHistory}
-                    screenshotHistory={this.state.screenshotHistory}
-                    handleHistoryItemClick={this.handleHistoryItemClick}
-                />
+                {/*<SlideReel*/}
+                {/*tableHistory={this.state.tableHistory}*/}
+                {/*screenshotHistory={this.state.screenshotHistory}*/}
+                {/*handleHistoryItemClick={this.handleHistoryItemClick}*/}
+                {/*/>*/}
                 <KyrixVis
                     handleKyrixLoad={this.handleKyrixLoad}
                     curTable={

@@ -6,7 +6,7 @@ body {
 .grid-container {
     display: grid;
     height: 100%;
-    grid-template: auto repeat(7, 1fr) / repeat(9, 1fr);
+    grid-template: auto repeat(7, 1fr) / repeat(10, 1fr);
 }
 
 .grid-container > div {

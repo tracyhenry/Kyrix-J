@@ -14,9 +14,9 @@ class SchemaGraph extends Component {
         this.svgRef = React.createRef();
 
         // initialize D3 force directed layout
-        this.supermanW = (this.props.width / 1000) * 90;
-        this.supermanH = (this.props.width / 1000) * 80;
-        this.circleRadius = (this.props.width / 1000) * 80;
+        this.supermanW = (this.props.width / 1000) * 85;
+        this.supermanH = (this.props.width / 1000) * 75;
+        this.circleRadius = (this.props.width / 1000) * 75;
         let tickFunction = () => {
             this.nodes.attr("cx", d => d.x).attr("cy", d => d.y);
             this.links
@@ -484,13 +484,13 @@ class SchemaGraph extends Component {
                     d.source.table_name +
                     ".edge-popover-" +
                     d.target.table_name;
-                let popoverWidth = d3
+                let popoverHeight = d3
                     .select(className)
                     .node()
-                    .getBoundingClientRect().width;
-                let clientCx =
-                    clientRect.x + clientRect.width / 2 - popoverWidth / 2;
-                let clientCy = clientRect.y + clientRect.height / 2 + 5;
+                    .getBoundingClientRect().height;
+                let clientCx = clientRect.x + clientRect.width / 2;
+                let clientCy =
+                    clientRect.y + clientRect.height / 2 - popoverHeight / 2;
                 d3.select(className)
                     .style("left", clientCx + "px")
                     .style("top", clientCy + "px")
@@ -520,9 +520,9 @@ class SchemaGraph extends Component {
             let relatedRect = d3.event.relatedTarget.getBoundingClientRect();
             if (
                 d3.event.relatedTarget.tagName !== "line" ||
-                relatedRect.x + relatedRect.width / 2 !==
-                    targetRect.x + targetRect.width / 2 ||
-                relatedRect.y + relatedRect.height / 2 + 5 !== targetRect.y
+                relatedRect.x + relatedRect.width / 2 !== targetRect.x ||
+                relatedRect.y + relatedRect.height / 2 !==
+                    targetRect.y + targetRect.height / 2
             )
                 d3.select(d3.event.target).style("visibility", "hidden");
         });
