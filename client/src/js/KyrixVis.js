@@ -9,11 +9,13 @@ class KyrixVis extends Component {
 
     componentDidMount = () => {
         var serverAddr = "http://127.0.0.1:8000";
-        window.kyrix
-            .initializeApp(serverAddr, this.kyrixdivRef.current)
-            .then(() => {
-                this.props.handleKyrixLoad();
-            });
+        setTimeout(() => {
+            window.kyrix
+                .initializeApp(serverAddr, this.kyrixdivRef.current)
+                .then(() => {
+                    this.props.handleKyrixLoad();
+                });
+        }, 30);
     };
 
     shouldComponentUpdate = nextProps => {

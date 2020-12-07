@@ -2541,8 +2541,8 @@
 
         // center
         viewSvg
-            .style("left", bbox.width / 2 - realW / 2)
-            .style("top", bbox.height / 2 - realH / 2);
+            .style("left", bbox.width / 2 - realW / 2 + "px")
+            .style("top", bbox.height / 2 - realH / 2 + "px");
     }
 
     // set up page
