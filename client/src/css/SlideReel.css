@@ -1,30 +1,11 @@
-.slidereel {
-    grid-area: 2 / 1 / 9 / 2;
-    min-width: 150px;
-}
-
-.slideshow.ant-card {
-    width: 100%;
-    height: 100%;
-}
-
-.slideshow > .ant-card-head {
-    max-height: 60px;
-}
-
-.slideshow > .ant-card-body {
-    box-sizing: border-box;
-    border-radius: 5px;
-    height: calc(100% - 60px);
-    overflow: scroll;
-    white-space: nowrap;
+.slideshow .ant-drawer-body {
     margin: 5px;
     padding: 3px 7px 3px 3px;
 }
 
 .slideshow .img-container {
-    width: 100%;
-    margin-bottom: 10px;
+    width: calc(100% - 30px);
+    margin: 15px;
     cursor: pointer;
     border-radius: 5px;
     -webkit-box-shadow: 1px 1px 3px 0px rgba(189, 183, 189, 1);
@@ -43,7 +24,7 @@
     pointer-events: none;
 }
 
-.slidereel .slideshow .img-container img {
+.slideshow .img-container img {
     box-sizing: border-box;
     padding: 5px;
     width: 100%;

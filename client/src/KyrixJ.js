@@ -48,7 +48,10 @@ class KyrixJ extends Component {
         kyrixLoaded: false,
 
         // search bar value in Header
-        searchBarValue: ""
+        searchBarValue: "",
+
+        // history visible
+        historyVisible: false
     };
 
     componentDidMount = () => {
@@ -195,6 +198,12 @@ class KyrixJ extends Component {
         });
     };
 
+    handleHistoryVisibleChange = () => {
+        this.setState({
+            historyVisible: !this.state.historyVisible
+        });
+    };
+
     render() {
         return (
             <>
@@ -203,6 +212,7 @@ class KyrixJ extends Component {
                     handleClick={this.handleSearchBarSearch}
                     handleSearchBarInputChange={this.handleSearchBarInputChange}
                     tableColumns={this.tableColumns}
+                    handleHistoryVisibleChange={this.handleHistoryVisibleChange}
                 />
                 <SchemaGraph
                     width="1200"
@@ -228,11 +238,13 @@ class KyrixJ extends Component {
                     sqlQuery={this.sqlQuery}
                     kyrixPredicates={this.state.kyrixPredicates}
                 />
-                {/*<SlideReel*/}
-                {/*tableHistory={this.state.tableHistory}*/}
-                {/*screenshotHistory={this.state.screenshotHistory}*/}
-                {/*handleHistoryItemClick={this.handleHistoryItemClick}*/}
-                {/*/>*/}
+                <SlideReel
+                    tableHistory={this.state.tableHistory}
+                    screenshotHistory={this.state.screenshotHistory}
+                    handleHistoryItemClick={this.handleHistoryItemClick}
+                    handleHistoryVisibleChange={this.handleHistoryVisibleChange}
+                    visible={this.state.historyVisible}
+                />
                 <KyrixVis
                     handleKyrixLoad={this.handleKyrixLoad}
                     curTable={

@@ -31,7 +31,10 @@ class Header extends Component {
         let options = this.findMatchingTables();
         return (
             <div className="kyrixjheader">
-                <div className="header-button-div">
+                <div
+                    className="header-button-div"
+                    onClick={this.props.handleHistoryVisibleChange}
+                >
                     <HistoryOutlined className="header-button" />
                     History
                 </div>

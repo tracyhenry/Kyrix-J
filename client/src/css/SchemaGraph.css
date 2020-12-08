@@ -17,7 +17,8 @@
 }
 
 .circleg > circle {
-    fill: #add8e6;
+    /*fill: #add8e6;*/
+    fill: #ccdbfd;
     stroke: #eee;
     stroke-width: 18;
     cursor: pointer;
