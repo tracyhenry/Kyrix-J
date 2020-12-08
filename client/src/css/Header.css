@@ -1,9 +1,46 @@
 .kyrixjheader {
-    background-color: lemonchiffon;
+    /*edf2fb,e2eafc,d7e3fc,ccdbfd,c1d3fe,b6ccfe,abc4ff*/
+    background-color: #e2eafc;
     grid-area: 1 / 1 / 2 / 11;
     font-size: 18px;
-    padding: 8px;
+    padding: 0px 8px;
+    text-align: center;
+    position: relative;
+}
+
+.header-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.header-button-div {
+    font-size: 15px;
+    position: relative;
+    height: 100%;
+    padding: 0px 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    float: left;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.header-button-div:hover {
+    background-color: #abc4ff;
+    color: white;
+    cursor: pointer;
+}
+
+.header-button {
+    margin-right: 8px;
+    float: left;
+}
+
+.header-input {
+    margin: 3px 0px !important;
+    width: 300px;
+    float: right;
 }

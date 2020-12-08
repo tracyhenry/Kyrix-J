@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Input, AutoComplete} from "antd";
+import {HistoryOutlined} from "@ant-design/icons";
 
 class Header extends Component {
     findMatchingTables = () => {
@@ -30,16 +31,13 @@ class Header extends Component {
         let options = this.findMatchingTables();
         return (
             <div className="kyrixjheader">
-                Superman @ MIT Data Warehouse
+                <div className="header-button-div">
+                    <HistoryOutlined className="header-button" />
+                    History
+                </div>
+                <p className="header-title">Superman @ MIT Data Warehouse</p>
                 <AutoComplete
-                    // dropdownClassName="certain-category-search-dropdown"
-                    // dropdownMatchSelectWidth={500}
-                    style={{
-                        width: 300,
-                        position: "absolute",
-                        top: "2px",
-                        right: "5px"
-                    }}
+                    className="header-input"
                     options={options}
                     notFoundContent="No matching tables."
                     value={this.props.searchBarValue}
