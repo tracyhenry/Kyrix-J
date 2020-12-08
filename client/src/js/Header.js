@@ -1,8 +1,16 @@
 import React, {Component} from "react";
 import {Input, AutoComplete} from "antd";
 import {HistoryOutlined} from "@ant-design/icons";
+import {createFromIconfontCN} from "@ant-design/icons";
 
 class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.IconFont = createFromIconfontCN({
+            scriptUrl: "//at.alicdn.com/t/font_2257494_xqvvxo50lt.js"
+        });
+    }
+
     findMatchingTables = () => {
         // find matching tables
         let value = this.props.searchBarValue;
@@ -37,6 +45,16 @@ class Header extends Component {
                 >
                     <HistoryOutlined className="header-button" />
                     History
+                </div>
+                <div
+                    className="header-button-div"
+                    onClick={this.props.handleBookmarksVisibleChange}
+                >
+                    <this.IconFont
+                        type="icon-weibiaoti15"
+                        className="header-button"
+                    />
+                    Bookmarks
                 </div>
                 <p className="header-title">Superman @ MIT Data Warehouse</p>
                 <AutoComplete

@@ -1673,7 +1673,7 @@
     param.slideEnteringDuration = 700;
     param.slideSwitchDelay = 230;
     param.supermanFlyingDuration = 2500;
-    param.supermanEnteringTime = 200;
+    param.supermanEnteringTime = 350;
     param.supermanDisplayDelay = 200;
     param.supermanDisplayDuration = 300;
     param.literalZoomDuration = 500;

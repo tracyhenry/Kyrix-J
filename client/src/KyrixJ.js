@@ -3,6 +3,7 @@ import SchemaGraph from "./js/SchemaGraph";
 import VisDetails from "./js/VisDetails";
 import SlideReel from "./js/SlideReel";
 import RawDataTable from "./js/RawDataTable";
+import Bookmarks from "./js/Bookmarks";
 import {
     resizeSvgs,
     getRawDataTableMaxHeight,
@@ -11,6 +12,7 @@ import {
 import KyrixVis from "./js/KyrixVis";
 import Header from "./js/Header";
 import html2canvas from "html2canvas";
+import {message} from "antd";
 
 class KyrixJ extends Component {
     state = {
@@ -19,6 +21,9 @@ class KyrixJ extends Component {
 
         // screenshot history
         screenshotHistory: [],
+
+        // bookmarks
+        bookmarks: [],
 
         // type of interaction that generates the new table
         // can be one of ["graphClick", "kyrixLoaded", "searchBarInputChange",
@@ -51,7 +56,10 @@ class KyrixJ extends Component {
         searchBarValue: "",
 
         // history visible
-        historyVisible: false
+        historyVisible: false,
+
+        // bookmarks visible
+        bookmarksVisible: false
     };
 
     componentDidMount = () => {
@@ -204,6 +212,46 @@ class KyrixJ extends Component {
         });
     };
 
+    handleBookmarksVisibleChange = () => {
+        this.setState({
+            bookmarksVisible: !this.state.bookmarksVisible
+        });
+    };
+
+    createBookmarkEntry = () => {
+        let historyItem = window.kyrix.getHistoryItem(this.kyrixViewId);
+        let exist = false;
+        for (let i = 0; i < this.state.bookmarks.length; i++) {
+            let curBookmark = this.state.bookmarks[i];
+            if (historyItem.canvasId !== curBookmark.canvasId) continue;
+            if (historyItem.initialScale !== curBookmark.initialScale) continue;
+            if (historyItem.viewportX !== curBookmark.viewportX) continue;
+            if (historyItem.viewportY !== curBookmark.viewportY) continue;
+            if (
+                JSON.stringify(historyItem.predicates) !==
+                JSON.stringify(curBookmark.predicates)
+            )
+                continue;
+            exist = true;
+            break;
+        }
+        if (exist) {
+            message.warning("This visualization is already bookmarked.", 1.5);
+            return;
+        }
+        [historyItem.table] = this.state.tableHistory.slice(-1);
+        html2canvas(document.getElementsByClassName("kyrixvisdiv")[0], {
+            logging: false
+        }).then(canvas => {
+            message.success("Bookmark saved!", 1.5);
+            this.setState({
+                bookmarks: this.state.bookmarks.concat([
+                    Object.assign({}, {url: canvas.toDataURL()}, historyItem)
+                ])
+            });
+        });
+    };
+
     render() {
         return (
             <>
@@ -213,6 +261,9 @@ class KyrixJ extends Component {
                     handleSearchBarInputChange={this.handleSearchBarInputChange}
                     tableColumns={this.tableColumns}
                     handleHistoryVisibleChange={this.handleHistoryVisibleChange}
+                    handleBookmarksVisibleChange={
+                        this.handleBookmarksVisibleChange
+                    }
                 />
                 <SchemaGraph
                     width="1200"
@@ -245,6 +296,14 @@ class KyrixJ extends Component {
                     handleHistoryVisibleChange={this.handleHistoryVisibleChange}
                     visible={this.state.historyVisible}
                 />
+                <Bookmarks
+                    bookmarks={this.state.bookmarks}
+                    handleHistoryItemClick={this.handleHistoryItemClick}
+                    handleBookmarksVisibleChange={
+                        this.handleBookmarksVisibleChange
+                    }
+                    visible={this.state.bookmarksVisible}
+                />
                 <KyrixVis
                     handleKyrixLoad={this.handleKyrixLoad}
                     curTable={
@@ -256,6 +315,7 @@ class KyrixJ extends Component {
                     }
                     interactionType={this.state.interactionType}
                     kyrixLoaded={this.state.kyrixLoaded}
+                    handleBookmarkButtonClick={this.createBookmarkEntry}
                     // kyrix states
                     // only useful in "historyItemClick"
                     kyrixCanvas={this.state.kyrixCanvas}

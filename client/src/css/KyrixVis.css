@@ -2,3 +2,10 @@
     grid-area: 2 / 3 / 9 / 8;
     position: relative;
 }
+
+.kyrixvis-button-div {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 100;
+}

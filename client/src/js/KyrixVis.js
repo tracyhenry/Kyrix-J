@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button} from "antd";
+import {Button, Space} from "antd";
 
 class KyrixVis extends Component {
     constructor(props) {
@@ -85,12 +85,15 @@ class KyrixVis extends Component {
     render() {
         return (
             <div className="kyrixdiv" ref={this.kyrixdivRef}>
-                <Button
-                    size="default"
-                    style={{position: "absolute", top: "5px", right: "5px"}}
-                >
-                    See Another Vis
-                </Button>
+                <Space className="kyrixvis-button-div">
+                    <Button
+                        size="small"
+                        onClick={this.props.handleBookmarkButtonClick}
+                    >
+                        Save to Bookmarks
+                    </Button>
+                    <Button size="small">See Another Vis</Button>
+                </Space>
 
                 <div className="explain">Kyrix View</div>
             </div>
