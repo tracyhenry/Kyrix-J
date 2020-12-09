@@ -180,15 +180,39 @@ class KyrixJ extends Component {
         if (jump.type === "literal_zoom_in" || jump.type === "literal_zoom_out")
             return;
         let historyItem = window.kyrix.getHistoryItem(this.kyrixViewId);
-        html2canvas(document.getElementsByClassName("kyrixvisdiv")[0], {
-            logging: false
-        }).then(canvas => {
+
+        // check if this has been booked marked before
+        // if so, reuse canvas url
+        let url = "";
+        for (let i = 0; i < this.state.bookmarks.length; i++) {
+            let curBookmark = this.state.bookmarks[i];
+            if (this.historyItemsAreTheSame(curBookmark, historyItem)) {
+                url = curBookmark.url;
+                break;
+            }
+        }
+
+        if (url.length > 0) {
             this.setState({
                 screenshotHistory: this.state.screenshotHistory.concat([
-                    Object.assign({}, {url: canvas.toDataURL()}, historyItem)
+                    Object.assign({}, {url: url}, historyItem)
                 ])
             });
-        });
+        } else {
+            html2canvas(document.getElementsByClassName("kyrixvisdiv")[0], {
+                logging: false
+            }).then(canvas => {
+                this.setState({
+                    screenshotHistory: this.state.screenshotHistory.concat([
+                        Object.assign(
+                            {},
+                            {url: canvas.toDataURL()},
+                            historyItem
+                        )
+                    ])
+                });
+            });
+        }
     };
 
     handleHistoryItemClick = historyItem => {
@@ -223,17 +247,10 @@ class KyrixJ extends Component {
         let exist = false;
         for (let i = 0; i < this.state.bookmarks.length; i++) {
             let curBookmark = this.state.bookmarks[i];
-            if (historyItem.canvasId !== curBookmark.canvasId) continue;
-            if (historyItem.initialScale !== curBookmark.initialScale) continue;
-            if (historyItem.viewportX !== curBookmark.viewportX) continue;
-            if (historyItem.viewportY !== curBookmark.viewportY) continue;
-            if (
-                JSON.stringify(historyItem.predicates) !==
-                JSON.stringify(curBookmark.predicates)
-            )
-                continue;
-            exist = true;
-            break;
+            if (this.historyItemsAreTheSame(historyItem, curBookmark)) {
+                exist = true;
+                break;
+            }
         }
         if (exist) {
             message.warning("This visualization is already bookmarked.", 1.5);
@@ -250,6 +267,16 @@ class KyrixJ extends Component {
                 ])
             });
         });
+    };
+
+    historyItemsAreTheSame = (a, b) => {
+        return (
+            a.canvasId === b.canvasId &&
+            a.initialScale === b.initialScale &&
+            a.viewportX === b.viewportX &&
+            a.viewportY === b.viewportY &&
+            JSON.stringify(a.predicates) === JSON.stringify(b.predicates)
+        );
     };
 
     render() {
