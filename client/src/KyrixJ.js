@@ -59,7 +59,10 @@ class KyrixJ extends Component {
         historyVisible: false,
 
         // bookmarks visible
-        bookmarksVisible: false
+        bookmarksVisible: false,
+
+        // whether the bookmark save button is enabled
+        bookmarksButtonDisabled: false
     };
 
     componentDidMount = () => {
@@ -243,6 +246,8 @@ class KyrixJ extends Component {
     };
 
     createBookmarkEntry = () => {
+        if (this.state.bookmarksButtonDisabled) return;
+        this.setState({bookmarksButtonDisabled: true});
         let historyItem = window.kyrix.getHistoryItem(this.kyrixViewId);
         let exist = false;
         for (let i = 0; i < this.state.bookmarks.length; i++) {
@@ -254,6 +259,7 @@ class KyrixJ extends Component {
         }
         if (exist) {
             message.warning("This visualization is already bookmarked.", 1.5);
+            this.setState({bookmarksButtonDisabled: false});
             return;
         }
         [historyItem.table] = this.state.tableHistory.slice(-1);
@@ -264,7 +270,8 @@ class KyrixJ extends Component {
             this.setState({
                 bookmarks: this.state.bookmarks.concat([
                     Object.assign({}, {url: canvas.toDataURL()}, historyItem)
-                ])
+                ]),
+                bookmarksButtonDisabled: false
             });
         });
     };
