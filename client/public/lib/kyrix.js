@@ -464,7 +464,11 @@
 
             // column values
             rows.append("td")
-                .html(p => (!isNaN(d[p]) ? d3.format(",.2f")(d[p]) : d[p]))
+                .html(p =>
+                    !isNaN(d[p])
+                        ? (+d[p]).toFixed(2).replace(/\.?0*$/, "")
+                        : d[p]
+                )
                 .style("font-weight", "900")
                 .style("padding-left", "2px")
                 .style("padding-right", "10px")
