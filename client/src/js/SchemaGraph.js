@@ -387,7 +387,9 @@ class SchemaGraph extends Component {
             .zoom()
             .scaleExtent([1, 1])
             .on("zoom", () => {
-                d3.selectAll(".ant-popover").style("visibility", "hidden");
+                d3.selectAll(
+                    ".ant-popover.node-popover, .ant-popover.edge-popover"
+                ).style("visibility", "hidden");
                 circleg.attr("transform", d3.event.transform);
                 lineg.attr("transform", d3.event.transform);
                 supermang.attr("transform", d3.event.transform);

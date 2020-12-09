@@ -350,6 +350,7 @@ class KyrixJ extends Component {
                     interactionType={this.state.interactionType}
                     kyrixLoaded={this.state.kyrixLoaded}
                     handleBookmarkButtonClick={this.createBookmarkEntry}
+                    bookmarksButtonDisabled={this.state.bookmarksButtonDisabled}
                     // kyrix states
                     // only useful in "historyItemClick"
                     kyrixCanvas={this.state.kyrixCanvas}

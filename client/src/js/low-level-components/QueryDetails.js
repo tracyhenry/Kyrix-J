@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {githubGist} from "react-syntax-highlighter/dist/esm/styles/hljs";
-import {Card, List, Breadcrumb, Dropdown, Menu} from "antd";
-import {FilterOutlined, DownOutlined} from "@ant-design/icons";
+import {Card, List, Breadcrumb} from "antd";
+import {FilterOutlined} from "@ant-design/icons";
 
 class QueryDetails extends Component {
     state = {};
@@ -76,35 +76,6 @@ class QueryDetails extends Component {
                         <Breadcrumb.Item>room.piechart</Breadcrumb.Item>
                     </Breadcrumb>
                 </Card>
-                <Card
-                    className="rendering-parameter"
-                    title={"Visualization Details"}
-                    bordered={false}
-                >
-                    <div style={{display: "flex"}}>
-                        <p style={{marginRight: "10px"}}>Visualization type:</p>
-                        <p style={{marginRight: "10px"}}>Stacked bar chart</p>
-                    </div>
-                    <div style={{display: "flex"}}>
-                        <p style={{marginRight: "10px"}}>Color Scheme:</p>
-                        <Dropdown
-                            overlay={
-                                <Menu>
-                                    <Menu.Item>blue-green</Menu.Item>
-                                    <Menu.Item>red-purple</Menu.Item>
-                                </Menu>
-                            }
-                        >
-                            <a
-                                className="ant-dropdown-link"
-                                onClick={e => e.preventDefault()}
-                            >
-                                red-yellow <DownOutlined />
-                            </a>
-                        </Dropdown>
-                    </div>
-                </Card>
-
                 <div className="explain">Query View</div>
             </div>
         );
