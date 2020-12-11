@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {githubGist} from "react-syntax-highlighter/dist/esm/styles/hljs";
-import {Card, List, Breadcrumb} from "antd";
+import {Card, List} from "antd";
 import {FilterOutlined} from "@ant-design/icons";
 
 class QueryDetails extends Component {
@@ -60,23 +60,6 @@ class QueryDetails extends Component {
                         )}
                     />
                 </Card>
-                <Card
-                    className="drill-down-path"
-                    title={"Drill Down Path"}
-                    bordered={false}
-                >
-                    <Breadcrumb>
-                        <Breadcrumb.Item>building</Breadcrumb.Item>
-                        <Breadcrumb.Item>
-                            <a>room.treemap</a>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>
-                            <a>room.barchart</a>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>room.piechart</Breadcrumb.Item>
-                    </Breadcrumb>
-                </Card>
-                <div className="explain">Query View</div>
             </div>
         );
     }

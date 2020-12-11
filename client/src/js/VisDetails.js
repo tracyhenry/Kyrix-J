@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import QueryDetails from "./low-level-components/QueryDetails";
+import {Dropdown, Menu, Card} from "antd";
+import {DownOutlined} from "@ant-design/icons";
 
 class VisDetails extends Component {
     render() {
@@ -10,7 +12,34 @@ class VisDetails extends Component {
                     sqlQuery={this.props.sqlQuery}
                     kyrixPredicates={this.props.kyrixPredicates}
                 />
-                <div className="explain">Table Details View</div>
+                <Card
+                    className="visual-encodings"
+                    title={"Visualization Details"}
+                    bordered={false}
+                >
+                    <div style={{display: "flex"}}>
+                        <p style={{marginRight: "10px"}}>Visualization type:</p>
+                        <p style={{marginRight: "10px"}}>Stacked bar chart</p>
+                    </div>
+                    <div style={{display: "flex"}}>
+                        <p style={{marginRight: "10px"}}>Color Scheme:</p>
+                        <Dropdown
+                            overlay={
+                                <Menu>
+                                    <Menu.Item>blue-green</Menu.Item>
+                                    <Menu.Item>red-purple</Menu.Item>
+                                </Menu>
+                            }
+                        >
+                            <a
+                                className="ant-dropdown-link"
+                                onClick={e => e.preventDefault()}
+                            >
+                                red-yellow <DownOutlined />
+                            </a>
+                        </Dropdown>
+                    </div>
+                </Card>
             </div>
         );
     }

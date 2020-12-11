@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import {Button, Space, Dropdown, Menu, Popover} from "antd";
-import {DownOutlined} from "@ant-design/icons";
+import {Button, Space} from "antd";
 
 class KyrixVis extends Component {
     constructor(props) {
@@ -68,33 +67,6 @@ class KyrixVis extends Component {
     };
 
     render() {
-        let visDetailsContent = (
-            <>
-                <div style={{display: "flex"}}>
-                    <p style={{marginRight: "10px"}}>Visualization type:</p>
-                    <p style={{marginRight: "10px"}}>Stacked bar chart</p>
-                </div>
-                <div style={{display: "flex"}}>
-                    <p style={{marginRight: "10px"}}>Color Scheme:</p>
-                    <Dropdown
-                        overlay={
-                            <Menu>
-                                <Menu.Item>blue-green</Menu.Item>
-                                <Menu.Item>red-purple</Menu.Item>
-                            </Menu>
-                        }
-                    >
-                        <a
-                            className="ant-dropdown-link"
-                            onClick={e => e.preventDefault()}
-                        >
-                            red-yellow <DownOutlined />
-                        </a>
-                    </Dropdown>
-                </div>
-            </>
-        );
-
         return (
             <div className="kyrixdiv" ref={this.kyrixdivRef}>
                 <Space className="kyrixvis-button-div">
@@ -106,10 +78,6 @@ class KyrixVis extends Component {
                         Save to Bookmarks
                     </Button>
                     <Button size="small">See Another Vis</Button>
-
-                    <Popover content={visDetailsContent} trigger="click">
-                        <Button size="small">Vis Details</Button>
-                    </Popover>
                 </Space>
 
                 <div className="explain">Kyrix View</div>
