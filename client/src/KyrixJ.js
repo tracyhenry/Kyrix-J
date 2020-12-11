@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import SchemaGraph from "./js/SchemaGraph";
-import VisDetails from "./js/VisDetails";
+import InfoPanel from "./js/InfoPanel";
 import SlideReel from "./js/SlideReel";
 import RawDataTable from "./js/RawDataTable";
 import Bookmarks from "./js/Bookmarks";
@@ -318,7 +318,7 @@ class KyrixJ extends Component {
                     tableMetadata={this.tableMetadata}
                     tableColumns={this.tableColumns}
                 />
-                <VisDetails
+                <InfoPanel
                     kyrixCanvas={this.state.kyrixCanvas}
                     sqlQuery={this.sqlQuery}
                     kyrixPredicates={this.state.kyrixPredicates}

@@ -1,16 +1,16 @@
-.visdetails {
+.info-panel {
     grid-area: 2 / 8 / 6 / 11;
 }
 
-.visdetails .ant-card-body {
+.info-panel .ant-card-body {
     padding: 20px;
 }
 
-.visdetails {
+.info-panel {
     overflow: auto;
 }
 
-.sqlquery pre {
+.sql-query pre {
     margin-bottom: 0px;
 }
 
