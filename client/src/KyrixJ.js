@@ -390,7 +390,7 @@ class KyrixJ extends Component {
         staticAggregation0:
             "SELECT organization_name, SUM(area)\nFROM room\nGROUP BY organization_name;",
         staticAggregation3:
-            "SELECT use_desc, major_use_desc, SUM(area)\nFrom room\nGROUP BY use_desc, major_use_desc;",
+            "SELECT use_desc, major_use_desc, SUM(area)\nFROM room\nGROUP BY use_desc, major_use_desc;",
         staticAggregation1: "SELECT *\nFROM room;",
         staticAggregation4:
             "SELECT department_code, SUM(total_units)\nFROM course\nGROUP BY department_code;",

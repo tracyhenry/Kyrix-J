@@ -10,8 +10,11 @@
     overflow: auto;
 }
 
-.sql-query pre {
+.sql-query .ant-card-body pre {
     margin-bottom: 0px;
+    line-height: 1.5;
+    font-size: 13px;
+    border: white;
 }
 
 .filters .filter-item {
@@ -25,4 +28,8 @@
 
 .filters .ant-list-empty-text {
     padding: 0px;
+}
+
+.filters .anticon-filter {
+    padding-right: 10px;
 }

@@ -34,8 +34,7 @@ class Filters extends Component {
                     dataSource={this.getSqlPredicates()}
                     renderItem={p => (
                         <div className="filter-item">
-                            <FilterOutlined style={{paddingRight: "10px"}} />{" "}
-                            <b>{p.col}</b> = <i>{p.val}</i>
+                            <FilterOutlined /> <b>{p.col}</b> = <i>{p.val}</i>
                         </div>
                     )}
                 />
