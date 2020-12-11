@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Drawer, List} from "antd";
 import HistoryItem from "./low-level-components/HistoryItem";
 
-class SlideReel extends Component {
+class History extends Component {
     state = {};
 
     shouldComponentUpdate = nextProps =>
@@ -39,4 +39,4 @@ class SlideReel extends Component {
     }
 }
 
-export default SlideReel;
+export default History;

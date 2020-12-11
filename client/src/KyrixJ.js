@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SchemaGraph from "./js/SchemaGraph";
 import InfoPanel from "./js/InfoPanel";
-import SlideReel from "./js/SlideReel";
+import History from "./js/History";
 import RawDataTable from "./js/RawDataTable";
 import Bookmarks from "./js/Bookmarks";
 import {
@@ -323,7 +323,7 @@ class KyrixJ extends Component {
                     sqlQuery={this.sqlQuery}
                     kyrixPredicates={this.state.kyrixPredicates}
                 />
-                <SlideReel
+                <History
                     tableHistory={this.state.tableHistory}
                     screenshotHistory={this.state.screenshotHistory}
                     handleHistoryItemClick={this.handleHistoryItemClick}
