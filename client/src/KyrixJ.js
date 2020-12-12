@@ -294,10 +294,17 @@ class KyrixJ extends Component {
 
     handleSeeAnotherVisButtonClick = () => {
         let [curTable] = this.state.tableHistory.slice(-1);
-        this.setState({
-            tableHistory: this.state.tableHistory.concat([curTable]),
-            interactionType: "seeAnotherVisButtonClick"
-        });
+        if (this.clickJumpDefaults[curTable].length === 1) {
+            message.warning(
+                "There is only one visualization of this table.",
+                1.5
+            );
+            return;
+        } else
+            this.setState({
+                tableHistory: this.state.tableHistory.concat([curTable]),
+                interactionType: "seeAnotherVisButtonClick"
+            });
     };
 
     render() {

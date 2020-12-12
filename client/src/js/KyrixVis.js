@@ -75,16 +75,7 @@ class KyrixVis extends Component {
         let curTable = this.props.curTable;
         let defaults = this.props.clickJumpDefaults[curTable];
 
-        // warning and return if there is no more than 1 vis associated
-        if (defaults.length === 1) {
-            message.warning(
-                "There is only one visualization of this table.",
-                1.5
-            );
-            return;
-        }
-
-        // else jump to the next one
+        // jump to the next one
         let idx = -1;
         for (let i = 0; i < defaults.length; i++)
             if (defaults[i].canvasId === curCanvasId) {
