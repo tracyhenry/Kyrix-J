@@ -88,7 +88,7 @@ for (var i = 0; i < building_pyramid.length; i++) {
     building_pyramid[i].addLayer(buildingLegendLayer);
 }
 
-// ================== Canvas treemap ===================
+// ================== room treemap ===================
 var staticAggregation = {
     db: "mit",
     query: {
@@ -115,7 +115,7 @@ var roomTreemapCanvas = p.addStaticAggregation(
     }
 ).canvas;
 
-// ================== Canvas circlepack ===================
+// ================== room circlepack ===================
 var staticAggregation = {
     db: "mit",
     query: {

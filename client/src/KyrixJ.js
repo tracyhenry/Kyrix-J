@@ -27,7 +27,8 @@ class KyrixJ extends Component {
 
         // type of interaction that generates the new table
         // can be one of ["graphClick", "kyrixLoaded", "searchBarInputChange",
-        // "kyrixVisJump", "searchBarSearch", "kyrixRandomJump", "historyItemClick"]
+        // "kyrixVisJump", "searchBarSearch", "kyrixRandomJump",
+        // "historyItemClick", "seeAnotherVisButtonClick"]
         // used by SchemaGraph / KyrixVis (or other components in the future)
         // to do different things
         interactionType: "",
@@ -96,8 +97,7 @@ class KyrixJ extends Component {
         );
         if (jump.type === "slide") {
             this.setState({
-                tableHistory: nextTableHistory,
-                interactionType: "kyrixVisJump"
+                tableHistory: nextTableHistory
             });
         } else if (jump.type === "randomJumpBack") {
             this.setState({
@@ -106,12 +106,7 @@ class KyrixJ extends Component {
             });
         } else if (jump.type === "semantic_zoom")
             this.setState({
-                tableHistory: nextTableHistory,
-                interactionType: "kyrixVisJump"
-            });
-        else if (jump.type.startsWith("literal_zoom"))
-            this.setState({
-                interactionType: "kyrixVisJump"
+                tableHistory: nextTableHistory
             });
 
         // update some other states
@@ -151,6 +146,11 @@ class KyrixJ extends Component {
         window.kyrix.on("zoom.loaddata", this.kyrixViewId, this.loadData);
         window.kyrix.on("pan.loaddata", this.kyrixViewId, this.loadData);
         window.kyrix.on(
+            "jumpstart.setinteractiontype",
+            this.kyrixViewId,
+            this.setInteractionTypeToKyrixVisJump
+        );
+        window.kyrix.on(
             "jumpstart.loghistory",
             this.kyrixViewId,
             this.createHistoryEntry
@@ -168,6 +168,12 @@ class KyrixJ extends Component {
             kyrixLoaded: true,
             rawDataTableMaxHeight: getRawDataTableMaxHeight(),
             searchBarValue: ""
+        });
+    };
+
+    setInteractionTypeToKyrixVisJump = () => {
+        this.setState({
+            interactionType: "kyrixVisJump"
         });
     };
 
@@ -286,6 +292,14 @@ class KyrixJ extends Component {
         );
     };
 
+    handleSeeAnotherVisButtonClick = () => {
+        let [curTable] = this.state.tableHistory.slice(-1);
+        this.setState({
+            tableHistory: this.state.tableHistory.concat([curTable]),
+            interactionType: "seeAnotherVisButtonClick"
+        });
+    };
+
     render() {
         return (
             <>
@@ -351,6 +365,9 @@ class KyrixJ extends Component {
                     kyrixLoaded={this.state.kyrixLoaded}
                     handleBookmarkButtonClick={this.createBookmarkEntry}
                     bookmarksButtonDisabled={this.state.bookmarksButtonDisabled}
+                    handleSeeAnotherVisButtonClick={
+                        this.handleSeeAnotherVisButtonClick
+                    }
                     // kyrix states
                     // only useful in "historyItemClick"
                     kyrixCanvas={this.state.kyrixCanvas}
@@ -404,10 +421,10 @@ class KyrixJ extends Component {
         ssv0_level2: "building",
         ssv0_level3: "building",
         staticAggregation0: "room",
-        staticAggregation3: "room",
         staticAggregation1: "room",
-        staticAggregation4: "course",
-        staticAggregation2: "student"
+        staticAggregation3: "room",
+        staticAggregation2: "student",
+        staticAggregation4: "course"
     };
 
     graphEdges = [
@@ -650,51 +667,113 @@ class KyrixJ extends Component {
     };
 
     clickJumpDefaults = {
-        building: {
-            canvasId: "ssv0_level0",
-            predDict: {},
-            newVpX: 0,
-            newVpY: 0
-        },
-        room: {
-            canvasId: "staticAggregation0",
-            predDict: {
-                layer0: {
-                    "==": ["fclt_building_key", "32"]
+        building: [
+            {
+                canvasId: "ssv0_level0",
+                predDict: {},
+                newVpX: 0,
+                newVpY: 0
+            }
+        ],
+        room: [
+            {
+                canvasId: "staticAggregation0",
+                predDict: {
+                    layer0: {
+                        "==": ["fclt_building_key", "32"]
+                    },
+                    layer1: {
+                        "==": ["fclt_building_key", "32"]
+                    }
                 },
-                layer1: {
-                    "==": ["fclt_building_key", "32"]
-                }
+                newVpX: 0,
+                newVpY: 0
             },
-            newVpX: 0,
-            newVpY: 0
-        },
-        student: {
-            canvasId: "staticAggregation2",
-            predDict: {
-                layer0: {
-                    "==": ["department_name", "Electrical Eng & Computer Sci"]
+            {
+                canvasId: "staticAggregation1",
+                predDict: {
+                    layer0: {
+                        AND: [
+                            {"==": ["fclt_building_key", "32"]},
+                            {
+                                AND: [
+                                    {"==": ["organization_name", "CSAIL"]},
+                                    {"==": ["use_desc", "RES LO"]}
+                                ]
+                            }
+                        ]
+                    },
+                    layer1: {
+                        AND: [
+                            {"==": ["fclt_building_key", "32"]},
+                            {
+                                AND: [
+                                    {"==": ["organization_name", "CSAIL"]},
+                                    {"==": ["use_desc", "RES LO"]}
+                                ]
+                            }
+                        ]
+                    }
                 },
-                layer1: {
-                    "==": ["department_name", "Electrical Eng & Computer Sci"]
-                }
+                newVpX: 0,
+                newVpY: 0
             },
-            newVpX: 0,
-            newVpY: 0
-        },
-        course: {
-            canvasId: "staticAggregation4",
-            predDict: {
-                layer0: {
-                    "==": ["meet_place", "32-123"]
+            {
+                canvasId: "staticAggregation3",
+                predDict: {
+                    layer0: {
+                        AND: [
+                            {"==": ["fclt_building_key", "32"]},
+                            {"==": ["organization_name", "CSAIL"]}
+                        ]
+                    },
+                    layer1: {
+                        AND: [
+                            {"==": ["fclt_building_key", "32"]},
+                            {"==": ["organization_name", "CSAIL"]}
+                        ]
+                    }
                 },
-                layer1: {
-                    "==": ["meet_place", "32-123"]
-                }
-            },
-            newVpX: 0,
-            newVpY: 0
-        }
+                newVpX: 0,
+                newVpY: 0
+            }
+        ],
+        student: [
+            {
+                canvasId: "staticAggregation2",
+                predDict: {
+                    layer0: {
+                        "==": [
+                            "department_name",
+                            "Electrical Eng & Computer Sci"
+                        ]
+                    },
+                    layer1: {
+                        "==": [
+                            "department_name",
+                            "Electrical Eng & Computer Sci"
+                        ]
+                    }
+                },
+                newVpX: 0,
+                newVpY: 0
+            }
+        ],
+        course: [
+            {
+                canvasId: "staticAggregation4",
+                predDict: {
+                    layer0: {
+                        "==": ["meet_place", "32-123"]
+                    },
+                    layer1: {
+                        "==": ["meet_place", "32-123"]
+                    }
+                },
+                newVpX: 0,
+                newVpY: 0
+            }
+        ]
     };
 }
 

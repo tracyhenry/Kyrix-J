@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Space} from "antd";
+import {Button, Space, message} from "antd";
 
 class KyrixVis extends Component {
     constructor(props) {
@@ -38,11 +38,13 @@ class KyrixVis extends Component {
                     JSON.stringify(prevProps.kyrixPredicates))
         )
             this.jumpToHistory();
+        if (this.props.interactionType === "seeAnotherVisButtonClick")
+            this.jumpToAnotherVis();
     };
 
     jumpToClickedTable = () => {
         let curTable = this.props.curTable;
-        let defaults = this.props.clickJumpDefaults[curTable];
+        let defaults = this.props.clickJumpDefaults[curTable][0];
         window.kyrix.randomJump(
             this.props.kyrixViewId,
             defaults.canvasId,
@@ -66,6 +68,41 @@ class KyrixVis extends Component {
         );
     };
 
+    jumpToAnotherVis = () => {
+        let curCanvasId = window.kyrix.getCurrentCanvasId(
+            this.props.kyrixViewId
+        );
+        let curTable = this.props.curTable;
+        let defaults = this.props.clickJumpDefaults[curTable];
+
+        // warning and return if there is no more than 1 vis associated
+        if (defaults.length === 1) {
+            message.warning(
+                "There is only one visualization of this table.",
+                1.5
+            );
+            return;
+        }
+
+        // else jump to the next one
+        let idx = -1;
+        for (let i = 0; i < defaults.length; i++)
+            if (defaults[i].canvasId === curCanvasId) {
+                idx = i;
+                break;
+            }
+        idx = (idx + 1) % defaults.length;
+        window.kyrix.randomJump(
+            this.props.kyrixViewId,
+            defaults[idx].canvasId,
+            defaults[idx].predDict,
+            defaults[idx].newVpX,
+            defaults[idx].newVpY,
+            1,
+            "dict"
+        );
+    };
+
     render() {
         return (
             <div className="kyrixdiv" ref={this.kyrixdivRef}>
@@ -77,7 +114,12 @@ class KyrixVis extends Component {
                     >
                         Save to Bookmarks
                     </Button>
-                    <Button size="small">See Another Vis</Button>
+                    <Button
+                        size="small"
+                        onClick={this.props.handleSeeAnotherVisButtonClick}
+                    >
+                        See Another Vis
+                    </Button>
                 </Space>
 
                 <div className="explain">Kyrix View</div>
