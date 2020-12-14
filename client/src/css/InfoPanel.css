@@ -33,3 +33,20 @@
 .filters .anticon-filter {
     padding-right: 10px;
 }
+
+.vis-data-mapping .ant-descriptions-small {
+    overflow: scroll;
+}
+
+.vis-data-mapping .ant-descriptions-view {
+    overflow: auto;
+}
+
+.vis-data-mapping td,
+.vis-data-mapping th {
+    white-space: nowrap;
+}
+
+.vis-data-mapping td {
+    font-weight: bold;
+}

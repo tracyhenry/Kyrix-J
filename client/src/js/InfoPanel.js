@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SQLQuery from "./low-level-components/SQLQuery";
 import Filters from "./low-level-components/Filters";
-import VisDetails from "./low-level-components/VisDetails";
+import VisualDataMappings from "./low-level-components/VisualDataMappings";
 
 class InfoPanel extends Component {
     render() {
@@ -12,7 +12,7 @@ class InfoPanel extends Component {
                     sqlQuery={this.props.sqlQuery}
                 />
                 <Filters kyrixPredicates={this.props.kyrixPredicates} />
-                <VisDetails />
+                <VisualDataMappings m={this.props.visualDataMappings} />
             </div>
         );
     }

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Space, message} from "antd";
+import {Button, Space} from "antd";
 
 class KyrixVis extends Component {
     constructor(props) {

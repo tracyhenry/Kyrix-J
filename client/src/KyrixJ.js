@@ -342,6 +342,9 @@ class KyrixJ extends Component {
                 <InfoPanel
                     kyrixCanvas={this.state.kyrixCanvas}
                     sqlQuery={this.sqlQuery}
+                    visualDataMappings={
+                        this.visualDataMappings[this.state.kyrixCanvas]
+                    }
                     kyrixPredicates={this.state.kyrixPredicates}
                 />
                 <History
@@ -432,6 +435,62 @@ class KyrixJ extends Component {
         staticAggregation3: "room",
         staticAggregation2: "student",
         staticAggregation4: "course"
+    };
+
+    visualDataMappings = {
+        ssv0_level0: {
+            type: "scatterplot",
+            x: "num_of_rooms",
+            y: "assignable_area",
+            dot_size: "building_height",
+            dot_color: "building_type"
+        },
+        ssv0_level1: {
+            type: "scatterplot",
+            x: "num_of_rooms",
+            y: "assignable_area",
+            dot_size: "building_height",
+            dot_color: "building_type"
+        },
+        ssv0_level2: {
+            type: "scatterplot",
+            x: "num_of_rooms",
+            y: "assignable_area",
+            dot_size: "building_height",
+            dot_color: "building_type"
+        },
+        ssv0_level3: {
+            type: "scatterplot",
+            x: "num_of_rooms",
+            y: "assignable_area",
+            dot_size: "building_height",
+            dot_color: "building_type"
+        },
+        staticAggregation0: {
+            type: "treemap",
+            rect_size: "SUM(area)",
+            rect_color: "SUM(area)"
+        },
+        staticAggregation3: {
+            type: "barchart",
+            x: "major_use_desc",
+            y: "SUM(area)",
+            bar_color: "use_desc"
+        },
+        staticAggregation1: {
+            type: "circlepack",
+            circle_radius: "SUM(area)",
+            circle_color: "SUM(area)"
+        },
+        staticAggregation2: {
+            type: "piechart",
+            pie_color: "student_year"
+        },
+        staticAggregation4: {
+            type: "barchart",
+            x: "department_code",
+            y: "SUM(total_units)"
+        }
     };
 
     graphEdges = [
