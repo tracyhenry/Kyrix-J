@@ -35,11 +35,12 @@
 }
 
 .vis-data-mapping .ant-descriptions-small {
-    overflow: scroll;
+    overflow: auto;
 }
 
 .vis-data-mapping .ant-descriptions-view {
-    overflow: auto;
+    width: fit-content;
+    overflow: visible;
 }
 
 .vis-data-mapping td,

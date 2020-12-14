@@ -71,7 +71,11 @@ class VisualDataMappings extends Component {
                 title={"Visual-Data Mappings"}
                 bordered={false}
             >
-                <Descriptions bordered size="small" column={2}>
+                <Descriptions
+                    bordered
+                    size="small"
+                    column={Object.keys(m).length > 3 ? 2 : 1}
+                >
                     {content}
                 </Descriptions>
             </Card>
