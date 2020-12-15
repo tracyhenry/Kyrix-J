@@ -87,9 +87,9 @@ class SchemaGraph extends Component {
         )
             this.renderNewTable();
         else if (this.props.interactionType === "kyrixJumpMouseover")
-            this.highlightEdgeOnJumpMouseover();
+            this.highlightLinkOnJumpMouseover();
         else if (this.props.interactionType === "kyrixJumpMouseleave")
-            this.cancelEdgeHighlightOnJumpMouseleave();
+            this.cancelLinkHighlightOnJumpMouseleave();
         else this.renderNewNeighbors();
         this.registerPopoverMouseEvents();
     };
@@ -682,16 +682,8 @@ class SchemaGraph extends Component {
         window.kyrix.on("jumpend.zoom", "ssv0", jumpEndZoom.bind(this));
     };
 
-    highlightEdgeOnJumpMouseover = () => {
-        console.log(
-            this.links.filter(
-                d =>
-                    d.source.table_name ===
-                        this.props.kyrixJumpHoverEdge.source &&
-                    d.target.table_name === this.props.kyrixJumpHoverEdge.target
-            )
-        );
-        this.links
+    highlightLinkOnJumpMouseover = () => {
+        let curLink = this.links
             .filter(
                 d =>
                     d.source.table_name ===
@@ -700,9 +692,36 @@ class SchemaGraph extends Component {
             )
             .style("stroke", "#111")
             .style("stroke-width", 23);
+        if (curLink.empty()) return;
+
+        // append a new but lighter superman logo
+        d3.select(".supermang")
+            .append("image")
+            .attr("id", "supermanlogo_light")
+            .attr("width", this.supermanW)
+            .attr("height", this.supermanH)
+            .style("pointer-events", "none")
+            .style("opacity", 0.7)
+            .attr(
+                "xlink:href",
+                "https://upload.wikimedia.org/wikipedia/commons/0/05/Superman_S_symbol.svg"
+            );
+
+        let repeat = () => {
+            d3.select("#supermanlogo_light")
+                .attr("x", curLink.datum().source.fx - this.supermanW / 2)
+                .attr("y", curLink.datum().source.fy - this.supermanH / 2)
+                .transition()
+                .ease(d3.easeLinear)
+                .duration(1300)
+                .attr("x", curLink.datum().target.fx - this.supermanW / 2)
+                .attr("y", curLink.datum().target.fy - this.supermanH / 2)
+                .on("end", repeat);
+        };
+        repeat();
     };
 
-    cancelEdgeHighlightOnJumpMouseleave = () => {
+    cancelLinkHighlightOnJumpMouseleave = () => {
         this.links
             .filter(
                 d =>
@@ -712,6 +731,9 @@ class SchemaGraph extends Component {
             )
             .style("stroke", "#eee")
             .style("stroke-width", 18);
+        d3.select("#supermanlogo_light")
+            .interrupt()
+            .remove();
     };
 
     render() {
