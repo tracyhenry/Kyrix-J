@@ -4,6 +4,7 @@ import InfoPanel from "./js/InfoPanel";
 import History from "./js/History";
 import RawDataTable from "./js/RawDataTable";
 import Bookmarks from "./js/Bookmarks";
+import JumpPreview from "./js/JumpPreview";
 import {
     resizeSvgs,
     getRawDataTableMaxHeight,
@@ -70,7 +71,15 @@ class KyrixJ extends Component {
             bookmarksButtonDisabled: false,
 
             // the edge corresponding to the hovered jump option
-            kyrixJumpHoverEdge: null
+            kyrixJumpHoverEdge: null,
+
+            // jump preview states
+            kyrixJumpPreviewVisible: false,
+            kyrixJumpPreviewPlacement: "right",
+            kyrixJumpPreviewCanvas: "",
+            kyrixJumpPreviewPredicates: [],
+            kyrixJumpPreviewX: 0,
+            kyrixJumpPreviewY: 0
         };
     }
 
@@ -330,12 +339,40 @@ class KyrixJ extends Component {
             });
     };
 
-    handleKyrixJumpMouseover = jump => {
+    handleKyrixJumpMouseover = (jump, node, predicates) => {
         let sourceTable = metadata.canvasIdToTable[jump.sourceId];
         let targetTable = metadata.canvasIdToTable[jump.destId];
+
+        let windowWidth =
+            window.innerWidth ||
+            document.documentElement.clientWidth ||
+            document.body.clientWidth;
+
+        // jump preview location
+        let jumpOptionClientBox = node.getBoundingClientRect();
+        let placement,
+            x,
+            y = jumpOptionClientBox.y + jumpOptionClientBox.height / 2;
+        if (
+            jumpOptionClientBox.x + jumpOptionClientBox.width / 2 >
+            windowWidth / 2
+        ) {
+            placement = "left";
+            x = jumpOptionClientBox.x - 300;
+        } else {
+            placement = "right";
+            x = jumpOptionClientBox.x + jumpOptionClientBox.width;
+        }
+
         this.setState({
             interactionType: "kyrixJumpMouseover",
-            kyrixJumpHoverEdge: {source: sourceTable, target: targetTable}
+            kyrixJumpHoverEdge: {source: sourceTable, target: targetTable},
+            kyrixJumpPreviewVisible: true,
+            kyrixJumpPreviewCanvas: jump.destId,
+            kyrixJumpPreviewPredicates: predicates,
+            kyrixJumpPreviewPlacement: placement,
+            kyrixJumpPreviewX: x,
+            kyrixJumpPreviewY: y
         });
     };
 
@@ -344,7 +381,8 @@ class KyrixJ extends Component {
         let targetTable = metadata.canvasIdToTable[jump.destId];
         this.setState({
             interactionType: "kyrixJumpMouseleave",
-            kyrixJumpHoverEdge: {source: sourceTable, target: targetTable}
+            kyrixJumpHoverEdge: {source: sourceTable, target: targetTable},
+            kyrixJumpPreviewVisible: false
         });
     };
 
@@ -442,6 +480,15 @@ class KyrixJ extends Component {
                     }
                     kyrixRenderData={this.state.kyrixRenderData}
                     maxHeight={this.state.rawDataTableMaxHeight}
+                />
+                <JumpPreview
+                    sqlQuery={metadata.sqlQuery}
+                    visible={this.state.kyrixJumpPreviewVisible}
+                    kyrixCanvas={this.state.kyrixJumpPreviewCanvas}
+                    kyrixPredicates={this.state.kyrixJumpPreviewPredicates}
+                    placement={this.state.kyrixJumpPreviewPlacement}
+                    x={this.state.kyrixJumpPreviewX}
+                    y={this.state.kyrixJumpPreviewY}
                 />
             </>
         );

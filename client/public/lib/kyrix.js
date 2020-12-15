@@ -982,6 +982,20 @@
                     jumpOption
                         .on("mouseover", function() {
                             if (gvd.onJumpmouseoverHandlers != null) {
+                                var curJump =
+                                    jumps[d3.select(this).attr("data-jump-id")];
+                                var predDict = curJump.predicates.parseFunction()(
+                                    d,
+                                    optionalArgs
+                                );
+                                var predArray = [];
+                                var numLayer = getCanvasById(curJump.destId)
+                                    .layers.length;
+                                for (var i = 0; i < numLayer; i++)
+                                    if ("layer" + i in predDict)
+                                        predArray.push(predDict["layer" + i]);
+                                    else predArray.push({});
+
                                 var subEvts = Object.keys(
                                     gvd.onJumpmouseoverHandlers
                                 );
@@ -992,11 +1006,9 @@
                                         ] == "function"
                                     )
                                         gvd.onJumpmouseoverHandlers[subEvt](
-                                            jumps[
-                                                d3
-                                                    .select(this)
-                                                    .attr("data-jump-id")
-                                            ]
+                                            curJump,
+                                            this,
+                                            predArray
                                         );
                             }
                         })
@@ -1041,7 +1053,7 @@
                                     );
                         }
 
-                        // strat jump
+                        // start jump
                         d3.event.preventDefault();
                         var jump = jumps[d3.select(this).attr("data-jump-id")];
                         startJump(viewId, d, jump, optionalArgs);

@@ -8,6 +8,7 @@ import "./css/InfoPanel.css";
 import "./css/KyrixVis.css";
 import "./css/History.css";
 import "./css/RawDataTable.css";
+import "./css/JumpPreview.css";
 import "antd/dist/antd.css";
 import KyrixJ from "./KyrixJ";
 

@@ -1,0 +1,7 @@
+.jump-preview .ant-popover-inner-content {
+    padding: 0px;
+}
+
+.jump-preview .ant-popover-arrow {
+    visibility: hidden;
+}
