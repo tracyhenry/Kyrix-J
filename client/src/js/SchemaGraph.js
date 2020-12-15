@@ -86,12 +86,18 @@ class SchemaGraph extends Component {
             this.props.interactionType === "kyrixLoaded"
         )
             this.renderNewTable();
+        else if (this.props.interactionType === "kyrixJumpMouseover")
+            this.highlightEdgeOnJumpMouseover();
+        else if (this.props.interactionType === "kyrixJumpMouseleave")
+            this.cancelEdgeHighlightOnJumpMouseleave();
         else this.renderNewNeighbors();
         this.registerPopoverMouseEvents();
     };
 
     shouldComponentUpdate = nextProps =>
-        nextProps.curTable !== this.props.curTable;
+        nextProps.curTable !== this.props.curTable ||
+        nextProps.interactionType === "kyrixJumpMouseover" ||
+        nextProps.interactionType === "kyrixJumpMouseleave";
 
     getPopovers = () => {
         if (this.props.curTable === "") return [];
@@ -674,6 +680,38 @@ class SchemaGraph extends Component {
         window.kyrix.on("jumpstart.switch", "ssv0", jumpStartSwitch.bind(this));
         window.kyrix.on("jumpstart.zoom", "ssv0", jumpStartZoom.bind(this));
         window.kyrix.on("jumpend.zoom", "ssv0", jumpEndZoom.bind(this));
+    };
+
+    highlightEdgeOnJumpMouseover = () => {
+        console.log(
+            this.links.filter(
+                d =>
+                    d.source.table_name ===
+                        this.props.kyrixJumpHoverEdge.source &&
+                    d.target.table_name === this.props.kyrixJumpHoverEdge.target
+            )
+        );
+        this.links
+            .filter(
+                d =>
+                    d.source.table_name ===
+                        this.props.kyrixJumpHoverEdge.source &&
+                    d.target.table_name === this.props.kyrixJumpHoverEdge.target
+            )
+            .style("stroke", "#111")
+            .style("stroke-width", 23);
+    };
+
+    cancelEdgeHighlightOnJumpMouseleave = () => {
+        this.links
+            .filter(
+                d =>
+                    d.source.table_name ===
+                        this.props.kyrixJumpHoverEdge.source &&
+                    d.target.table_name === this.props.kyrixJumpHoverEdge.target
+            )
+            .style("stroke", "#eee")
+            .style("stroke-width", 18);
     };
 
     render() {

@@ -31,7 +31,8 @@ class KyrixJ extends Component {
             // type of interaction that generates the new table
             // can be one of ["graphClick", "kyrixLoaded", "searchBarInputChange",
             // "kyrixVisJump", "searchBarSearch", "kyrixRandomJump",
-            // "historyItemClick", "seeAnotherVisButtonClick"]
+            // "historyItemClick", "seeAnotherVisButtonClick",
+            // "kyrixJumpMouseover", "kyrixJumpMouseleave"]
             // used by SchemaGraph / KyrixVis (or other components in the future)
             // to do different things
             interactionType: "",
@@ -66,7 +67,10 @@ class KyrixJ extends Component {
             bookmarksVisible: false,
 
             // whether the bookmark save button is enabled
-            bookmarksButtonDisabled: false
+            bookmarksButtonDisabled: false,
+
+            // the edge corresponding to the hovered jump option
+            kyrixJumpHoverEdge: null
         };
     }
 
@@ -142,6 +146,7 @@ class KyrixJ extends Component {
     };
 
     handleKyrixLoad = () => {
+        // set kyrix event listeners
         window.kyrix.on(
             "jumpend.settable",
             metadata.kyrixViewId,
@@ -159,7 +164,21 @@ class KyrixJ extends Component {
             metadata.kyrixViewId,
             this.createHistoryEntry
         );
+        window.kyrix.on(
+            "jumpmouseover",
+            metadata.kyrixViewId,
+            this.handleKyrixJumpMouseover
+        );
+        window.kyrix.on(
+            "jumpmouseleave",
+            metadata.kyrixViewId,
+            this.handleKyrixJumpMouseleave
+        );
+
+        // load data
         this.loadData();
+
+        // set initial states
         let kyrixCanvas = window.kyrix.getCurrentCanvasId(metadata.kyrixViewId);
         let kyrixPredicates = window.kyrix.getGlobalVarDictionary(
             metadata.kyrixViewId
@@ -311,6 +330,24 @@ class KyrixJ extends Component {
             });
     };
 
+    handleKyrixJumpMouseover = jump => {
+        let sourceTable = metadata.canvasIdToTable[jump.sourceId];
+        let targetTable = metadata.canvasIdToTable[jump.destId];
+        this.setState({
+            interactionType: "kyrixJumpMouseover",
+            kyrixJumpHoverEdge: {source: sourceTable, target: targetTable}
+        });
+    };
+
+    handleKyrixJumpMouseleave = jump => {
+        let sourceTable = metadata.canvasIdToTable[jump.sourceId];
+        let targetTable = metadata.canvasIdToTable[jump.destId];
+        this.setState({
+            interactionType: "kyrixJumpMouseleave",
+            kyrixJumpHoverEdge: {source: sourceTable, target: targetTable}
+        });
+    };
+
     render() {
         return (
             <>
@@ -337,7 +374,8 @@ class KyrixJ extends Component {
                     }
                     interactionType={this.state.interactionType}
                     handleNodeClick={this.handleSchemaGraphNodeClick}
-                    // app metadata (TODO: combine them into one field)
+                    kyrixJumpHoverEdge={this.state.kyrixJumpHoverEdge}
+                    // app metadata
                     canvasIdToTable={metadata.canvasIdToTable}
                     graphEdges={metadata.graphEdges}
                     tableMetadata={metadata.tableMetadata}

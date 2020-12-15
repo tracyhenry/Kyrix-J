@@ -162,7 +162,14 @@
             throw new Error("kyrix.on: unrecognized Kyrix event type.");
         }
         var gvd = globalVar.views[viewId];
-        var evtTypes = ["pan", "zoom", "jumpstart", "jumpend"];
+        var evtTypes = [
+            "pan",
+            "zoom",
+            "jumpstart",
+            "jumpend",
+            "jumpmouseover",
+            "jumpmouseleave"
+        ];
         for (var evtType of evtTypes)
             if (evt.startsWith(evtType)) {
                 if (evt.length > evtType.length && evt[evtType.length] != ".")
@@ -971,8 +978,70 @@
                         .attr("data-jump-id", k)
                         .html(optionText);
 
+                    // hover events
+                    jumpOption
+                        .on("mouseover", function() {
+                            if (gvd.onJumpmouseoverHandlers != null) {
+                                var subEvts = Object.keys(
+                                    gvd.onJumpmouseoverHandlers
+                                );
+                                for (var subEvt of subEvts)
+                                    if (
+                                        typeof gvd.onJumpmouseoverHandlers[
+                                            subEvt
+                                        ] == "function"
+                                    )
+                                        gvd.onJumpmouseoverHandlers[subEvt](
+                                            jumps[
+                                                d3
+                                                    .select(this)
+                                                    .attr("data-jump-id")
+                                            ]
+                                        );
+                            }
+                        })
+                        .on("mouseleave", function() {
+                            if (gvd.onJumpmouseleaveHandlers != null) {
+                                var subEvts = Object.keys(
+                                    gvd.onJumpmouseleaveHandlers
+                                );
+                                for (var subEvt of subEvts)
+                                    if (
+                                        typeof gvd.onJumpmouseleaveHandlers[
+                                            subEvt
+                                        ] == "function"
+                                    )
+                                        gvd.onJumpmouseleaveHandlers[subEvt](
+                                            jumps[
+                                                d3
+                                                    .select(this)
+                                                    .attr("data-jump-id")
+                                            ]
+                                        );
+                            }
+                        });
+
                     // on click
                     jumpOption.on("click", function(d) {
+                        // need to run mouseleave events here since the popover will be deleted
+                        if (gvd.onJumpmouseleaveHandlers != null) {
+                            var subEvts = Object.keys(
+                                gvd.onJumpmouseleaveHandlers
+                            );
+                            for (var subEvt of subEvts)
+                                if (
+                                    typeof gvd.onJumpmouseleaveHandlers[
+                                        subEvt
+                                    ] == "function"
+                                )
+                                    gvd.onJumpmouseleaveHandlers[subEvt](
+                                        jumps[
+                                            d3.select(this).attr("data-jump-id")
+                                        ]
+                                    );
+                        }
+
+                        // strat jump
                         d3.event.preventDefault();
                         var jump = jumps[d3.select(this).attr("data-jump-id")];
                         startJump(viewId, d, jump, optionalArgs);
