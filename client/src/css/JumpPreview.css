@@ -5,3 +5,7 @@
 .jump-preview .ant-popover-arrow {
     visibility: hidden;
 }
+
+.jump-preview .preview-filter-old {
+    color: #ddd;
+}

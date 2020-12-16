@@ -358,7 +358,7 @@ class KyrixJ extends Component {
             windowWidth / 2
         ) {
             placement = "left";
-            x = jumpOptionClientBox.x - 300;
+            x = jumpOptionClientBox.x - 400;
         } else {
             placement = "right";
             x = jumpOptionClientBox.x + jumpOptionClientBox.width;
@@ -384,6 +384,26 @@ class KyrixJ extends Component {
             kyrixJumpHoverEdge: {source: sourceTable, target: targetTable},
             kyrixJumpPreviewVisible: false
         });
+    };
+
+    getSqlPredicates = predArray => {
+        let predicates = [];
+        let traversePredDict = pd => {
+            if ("==" in pd) {
+                predicates.push({
+                    col: pd["=="][0].toString().replace(/&/g, "%26"),
+                    val: pd["=="][1].toString().replace(/&/g, "%26")
+                });
+                return;
+            }
+            if ("AND" in pd) {
+                traversePredDict(pd["AND"][0]);
+                traversePredDict(pd["AND"][1]);
+            }
+        };
+
+        if (predArray.length > 0) traversePredDict(predArray[0]);
+        return predicates;
     };
 
     render() {
@@ -426,6 +446,7 @@ class KyrixJ extends Component {
                         metadata.visualDataMappings[this.state.kyrixCanvas]
                     }
                     kyrixPredicates={this.state.kyrixPredicates}
+                    getSqlPredicates={this.getSqlPredicates}
                 />
                 <History
                     tableHistory={this.state.tableHistory}
@@ -482,6 +503,7 @@ class KyrixJ extends Component {
                     maxHeight={this.state.rawDataTableMaxHeight}
                 />
                 <JumpPreview
+                    kyrixLoaded={this.state.kyrixLoaded}
                     sqlQuery={metadata.sqlQuery}
                     visible={this.state.kyrixJumpPreviewVisible}
                     kyrixCanvas={this.state.kyrixJumpPreviewCanvas}
@@ -489,6 +511,8 @@ class KyrixJ extends Component {
                     placement={this.state.kyrixJumpPreviewPlacement}
                     x={this.state.kyrixJumpPreviewX}
                     y={this.state.kyrixJumpPreviewY}
+                    kyrixViewId={metadata.kyrixViewId}
+                    getSqlPredicates={this.getSqlPredicates}
                 />
             </>
         );

@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import SQLQuery from "./low-level-components/SQLQuery";
-import Filters from "./low-level-components/Filters";
+import PreviewFilters from "./low-level-components/PreviewFilters";
 import {Popover} from "antd";
 import * as d3 from "d3";
 
 class JumpPreview extends Component {
     componentDidUpdate = () => {
+        if (!this.props.kyrixLoaded) return;
         let windowHeight =
             window.innerHeight ||
             document.documentElement.clientHeight ||
@@ -25,17 +26,21 @@ class JumpPreview extends Component {
     };
 
     render() {
+        if (!this.props.kyrixLoaded) return null;
         let content = (
             <>
                 <SQLQuery
                     kyrixCanvas={this.props.kyrixCanvas}
                     sqlQuery={this.props.sqlQuery}
                 />
-                <Filters kyrixPredicates={this.props.kyrixPredicates} />
+                <PreviewFilters
+                    kyrixPredicates={this.props.kyrixPredicates}
+                    getSqlPredicates={this.props.getSqlPredicates}
+                    kyrixViewId={this.props.kyrixViewId}
+                />
             </>
         );
 
-        if (this.props.visible) console.log(this.props);
         return (
             <Popover
                 placement={this.props.placement}
@@ -48,7 +53,7 @@ class JumpPreview extends Component {
                 trigger="click"
                 visible
                 overlayClassName="jump-preview"
-                overlayStyle={{visibility: "hidden", width: "300px"}}
+                overlayStyle={{visibility: "hidden", width: "400px"}}
             >
                 <div
                     style={{
