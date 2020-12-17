@@ -14,9 +14,6 @@ class PreviewFilters extends Component {
                 .predicates
         );
 
-        console.log(newPredicates);
-        console.log(oldPredicates);
-
         // construct list data
         let listData = [];
         oldPredicates.forEach(d => {
@@ -45,7 +42,7 @@ class PreviewFilters extends Component {
         return (
             <Card
                 className="filters preview-filters"
-                title="SQL Filters"
+                title="Filters"
                 bordered={false}
             >
                 <List

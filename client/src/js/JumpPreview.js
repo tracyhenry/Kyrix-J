@@ -46,7 +46,7 @@ class JumpPreview extends Component {
                 placement={this.props.placement}
                 title={
                     <h4>
-                        <i>SQL Preview</i>
+                        <i>Jump Preview</i>
                     </h4>
                 }
                 content={content}

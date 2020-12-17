@@ -7,7 +7,7 @@ class Filters extends Component {
 
     render() {
         return (
-            <Card className="filters" title="SQL Filters" bordered={false}>
+            <Card className="filters" title="Filters" bordered={false}>
                 <List
                     size="small"
                     dataSource={this.props.getSqlPredicates(

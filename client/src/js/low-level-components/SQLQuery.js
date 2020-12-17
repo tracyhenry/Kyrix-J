@@ -8,7 +8,7 @@ class SQLQuery extends Component {
 
     render() {
         return (
-            <Card className="sql-query" title="SQL Query" bordered={false}>
+            <Card className="sql-query" title="Query" bordered={false}>
                 <SyntaxHighlighter language="sql" style={githubGist}>
                     {this.props.kyrixCanvas.length > 0
                         ? this.props.sqlQuery[this.props.kyrixCanvas]
