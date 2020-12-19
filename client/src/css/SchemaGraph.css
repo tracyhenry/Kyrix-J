@@ -102,3 +102,8 @@
     max-height: 150px;
     overflow: scroll;
 }
+
+span.graph-arrow {
+    font-size: 40px;
+    position: fixed;
+}
