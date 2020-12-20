@@ -107,3 +107,7 @@ span.graph-arrow {
     font-size: 40px;
     position: fixed;
 }
+
+.jump-preview-text {
+    font-style: italic;
+}

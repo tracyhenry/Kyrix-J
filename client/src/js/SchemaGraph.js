@@ -5,6 +5,7 @@ import NodePopover from "./low-level-components/NodePopover";
 import EdgePopover from "./low-level-components/EdgePopover";
 import {Button, Space} from "antd";
 import {createFromIconfontCN} from "@ant-design/icons/lib/index";
+import {point, circle, segment, Polygon} from "@flatten-js/core";
 
 class SchemaGraph extends Component {
     constructor(props) {
@@ -601,7 +602,7 @@ class SchemaGraph extends Component {
                 )
                 .node()
                 .getBoundingClientRect();
-            console.log(curRect);
+
             let selector = jump.backspace ? ".arrow-up" : ".arrow-down";
             let arrowIcon = d3
                 .selectAll(selector)
@@ -640,16 +641,227 @@ class SchemaGraph extends Component {
     };
 
     highlightLinkOnJumpMouseover = () => {
+        // highlight the edge
         let curLink = this.links
             .filter(
                 d =>
-                    d.source.table_name ===
+                    (d.source.table_name ===
                         this.props.kyrixJumpHoverEdge.source &&
-                    d.target.table_name === this.props.kyrixJumpHoverEdge.target
+                        d.target.table_name ===
+                            this.props.kyrixJumpHoverEdge.target) ||
+                    (d.source.table_name ===
+                        this.props.kyrixJumpHoverEdge.target &&
+                        d.target.table_name ===
+                            this.props.kyrixJumpHoverEdge.source)
             )
             .style("stroke", "#111")
             .style("stroke-width", 23);
         if (curLink.empty()) return;
+
+        // add labels to the two nodes
+        let sourceNode = this.nodes.filter(
+            d => d.table_name === this.props.kyrixJumpHoverEdge.source
+        );
+        let sourceNodeDatum = sourceNode.datum();
+        let sourceNodeRect = sourceNode.node().getBoundingClientRect();
+        let sourceNodePoint = point(
+            sourceNodeRect.x + sourceNodeRect.width / 2,
+            sourceNodeRect.y + sourceNodeRect.height / 2
+        );
+
+        let targetNode = this.nodes.filter(
+            d => d.table_name === this.props.kyrixJumpHoverEdge.target
+        );
+        let targetNodeDatum = targetNode.datum();
+        let targetNodeRect = targetNode.node().getBoundingClientRect();
+        let targetNodePoint = point(
+            targetNodeRect.x + targetNodeRect.width / 2,
+            targetNodeRect.y + targetNodeRect.height / 2
+        );
+
+        let lineg = d3.select(".lineg");
+        let textProperties = [
+            {
+                xDelta: 0,
+                yDelta: this.circleRadius * 1.5,
+                anchor: "middle"
+            },
+            {
+                xDelta: 0,
+                yDelta: -this.circleRadius * 1.5,
+                anchor: "middle"
+            },
+            {
+                xDelta: -this.circleRadius * 1.5,
+                yDelta: 0,
+                anchor: "end"
+            },
+            {
+                xDelta: this.circleRadius * 1.5,
+                yDelta: 0,
+                anchor: "start"
+            }
+        ];
+        let sourceLoc = -1,
+            targetLoc = -1,
+            maxRating = -100;
+        for (let i = 0; i < 4; i++)
+            for (let j = 0; j < 4; j++) {
+                // append two fake svg texts in order to get the screen coordinates
+                let sourceLabel = lineg
+                    .append("text")
+                    .classed("jump-preview-text", true)
+                    .style("opacity", 0)
+                    .attr("x", sourceNodeDatum.fx + textProperties[i].xDelta)
+                    .attr("y", sourceNodeDatum.fy + textProperties[i].yDelta)
+                    .text(sourceNodeDatum.table_name)
+                    .attr("text-anchor", textProperties[i].anchor)
+                    .style("font-size", this.supermanW * 0.6)
+                    .attr("dy", ".35em");
+                let targetLabel = lineg
+                    .append("text")
+                    .classed("jump-preview-text", true)
+                    .style("opacity", 0)
+                    .attr("x", targetNodeDatum.fx + textProperties[j].xDelta)
+                    .attr("y", targetNodeDatum.fy + textProperties[j].yDelta)
+                    .text(targetNodeDatum.table_name)
+                    .attr("text-anchor", textProperties[j].anchor)
+                    .style("font-size", this.supermanW * 0.6)
+                    .attr("dy", ".35em");
+
+                // calculate rating based a few heuristic rules
+                let curRating = 0;
+
+                // if same placement, +2
+                if (i === j) curRating += 2;
+
+                // if distance is greater than the center distance, +2
+                // otherwise -2
+                let sourceLabelRect = sourceLabel
+                    .node()
+                    .getBoundingClientRect();
+                let targetLabelRect = targetLabel
+                    .node()
+                    .getBoundingClientRect();
+                let sourceLabelPolygon = new Polygon([
+                    point(sourceLabelRect.x, sourceLabelRect.y),
+                    point(
+                        sourceLabelRect.x,
+                        sourceLabelRect.y + sourceLabelRect.height
+                    ),
+                    point(
+                        sourceLabelRect.x + sourceLabelRect.width,
+                        sourceLabelRect.y
+                    ),
+                    point(
+                        sourceLabelRect.x + sourceLabelRect.width,
+                        sourceLabelRect.y + sourceLabelRect.height
+                    )
+                ]);
+                let targetLabelPolygon = new Polygon([
+                    point(targetLabelRect.x, targetLabelRect.y),
+                    point(
+                        targetLabelRect.x,
+                        targetLabelRect.y + targetLabelRect.height
+                    ),
+                    point(
+                        targetLabelRect.x + targetLabelRect.width,
+                        targetLabelRect.y
+                    ),
+                    point(
+                        targetLabelRect.x + targetLabelRect.width,
+                        targetLabelRect.y + targetLabelRect.height
+                    )
+                ]);
+                let polygonDis = sourceLabelPolygon.distanceTo(
+                    targetLabelPolygon
+                )[0];
+                let centerDis = sourceNodePoint.distanceTo(targetNodePoint)[0];
+                if (polygonDis >= centerDis) curRating += 2;
+
+                // if two texts intersect, -8
+                if (sourceLabelPolygon.intersect(targetLabelPolygon).length > 0)
+                    curRating -= 8;
+
+                // if intersecting the hovered edge, -5
+                let mainEdge = segment(sourceNodePoint, targetNodePoint);
+                if (sourceLabelPolygon.intersect(mainEdge).length > 0)
+                    curRating -= 5;
+                if (targetLabelPolygon.intersect(mainEdge).length > 0)
+                    curRating -= 5;
+
+                // if intersecting other edges, -2
+                this.links.each(d => {
+                    let sRect = this.nodes
+                        .filter(p => p.table_name === d.source.table_name)
+                        .node()
+                        .getBoundingClientRect();
+                    let tRect = this.nodes
+                        .filter(p => p.table_name === d.target.table_name)
+                        .node()
+                        .getBoundingClientRect();
+                    let sPoint = point(
+                        sRect.x + sRect.width / 2,
+                        sRect.y + sRect.height / 2
+                    );
+                    let tPoint = point(
+                        tRect.x + tRect.width / 2,
+                        tRect.y + tRect.height / 2
+                    );
+                    let curEdge = segment(sPoint, tPoint);
+                    if (sourceLabelPolygon.intersect(curEdge).length > 0)
+                        curRating -= 2;
+                    if (targetLabelPolygon.intersect(curEdge).length > 0)
+                        curRating -= 2;
+                });
+
+                // intersecting any nodes, -3
+                this.nodes.each(d => {
+                    let rect = this.nodes
+                        .filter(p => p.table_name === d.table_name)
+                        .node()
+                        .getBoundingClientRect();
+                    let curCenter = point(
+                        rect.x + rect.width / 2,
+                        rect.y + rect.height / 2
+                    );
+                    let curCircle = circle(curCenter, rect.width / 2);
+                    if (sourceLabelPolygon.intersect(curCircle).length > 0)
+                        curRating -= 3;
+                    if (targetLabelPolygon.intersect(curCircle).length > 0)
+                        curRating -= 3;
+                });
+
+                // update best result
+                if (curRating > maxRating) {
+                    maxRating = curRating;
+                    sourceLoc = i;
+                    targetLoc = j;
+                }
+
+                // remove text
+                lineg.selectAll(".jump-preview-text").remove();
+            }
+
+        // append text
+        lineg
+            .append("text")
+            .classed("jump-preview-text", true)
+            .attr("x", sourceNodeDatum.fx + textProperties[sourceLoc].xDelta)
+            .attr("y", sourceNodeDatum.fy + textProperties[sourceLoc].yDelta)
+            .text(sourceNodeDatum.table_name)
+            .attr("text-anchor", textProperties[sourceLoc].anchor)
+            .style("font-size", this.supermanW * 0.6)
+            .attr("dy", ".35em");
+        lineg
+            .append("text")
+            .classed("jump-preview-text", true)
+            .attr("x", targetNodeDatum.fx + textProperties[targetLoc].xDelta)
+            .attr("y", targetNodeDatum.fy + textProperties[targetLoc].yDelta)
+            .text(targetNodeDatum.table_name)
+            .attr("text-anchor", textProperties[targetLoc].anchor)
+            .style("font-size", this.supermanW * 0.6)
+            .attr("dy", ".35em");
 
         // append a new but lighter superman logo
         d3.select(".supermang")
@@ -664,15 +876,16 @@ class SchemaGraph extends Component {
                 "https://upload.wikimedia.org/wikipedia/commons/0/05/Superman_S_symbol.svg"
             );
 
+        // start repeating transitions
         let repeat = () => {
             d3.select("#supermanlogo_light")
-                .attr("x", curLink.datum().source.fx - this.supermanW / 2)
-                .attr("y", curLink.datum().source.fy - this.supermanH / 2)
+                .attr("x", sourceNodeDatum.fx - this.supermanW / 2)
+                .attr("y", sourceNodeDatum.fy - this.supermanH / 2)
                 .transition()
                 .ease(d3.easeLinear)
                 .duration(1300)
-                .attr("x", curLink.datum().target.fx - this.supermanW / 2)
-                .attr("y", curLink.datum().target.fy - this.supermanH / 2)
+                .attr("x", targetNodeDatum.fx - this.supermanW / 2)
+                .attr("y", targetNodeDatum.fy - this.supermanH / 2)
                 .on("end", repeat);
         };
         repeat();
@@ -691,6 +904,7 @@ class SchemaGraph extends Component {
         d3.select("#supermanlogo_light")
             .interrupt()
             .remove();
+        d3.selectAll(".jump-preview-text").remove();
     };
 
     render() {
