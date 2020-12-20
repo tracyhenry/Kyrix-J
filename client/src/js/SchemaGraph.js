@@ -895,9 +895,14 @@ class SchemaGraph extends Component {
         this.links
             .filter(
                 d =>
-                    d.source.table_name ===
+                    (d.source.table_name ===
                         this.props.kyrixJumpHoverEdge.source &&
-                    d.target.table_name === this.props.kyrixJumpHoverEdge.target
+                        d.target.table_name ===
+                            this.props.kyrixJumpHoverEdge.target) ||
+                    (d.source.table_name ===
+                        this.props.kyrixJumpHoverEdge.target &&
+                        d.target.table_name ===
+                            this.props.kyrixJumpHoverEdge.source)
             )
             .style("stroke", "#eee")
             .style("stroke-width", 18);
