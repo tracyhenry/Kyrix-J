@@ -2,20 +2,69 @@ const express = require("express");
 const app = express();
 const port = 3001;
 const psql = require("pg");
+const data = require("../src/metadata/mitdwh");
+const client = new psql.Client({
+    host: "localhost",
+    user: "kyrix",
+    password: "kyrix_password",
+    database: "mit",
+    port: "5433"
+});
+client.connect();
 
 app.get("/test", (req, res) => {
-    let client = new psql.Client({
-        host: "localhost",
-        user: "wenbo",
-        password: "",
-        database: "nba"
-    });
+    let s = req.query.q;
+    let results = {};
 
-    client.connect();
-    client.query("SELECT count(*) from plays;", (err, result) => {
-        res.status(200).send(
-            "Total rows in the plays table: " + result.rows[0].count
+    // loop through all tables
+    let tables = Object.keys(data.tableColumns);
+    let promises = [];
+    for (let i = 0; i < tables.length; i++) {
+        let t = tables[i];
+        results[t] = [];
+
+        // table name
+        if (t.toLowerCase().startsWith(s))
+            results[t].push({
+                type: "table_name",
+                value: t
+            });
+
+        // column names
+        for (let j = 0; j < data.tableColumns[t].length; j++) {
+            let c = data.tableColumns[t][j];
+            if (c.toLowerCase().startsWith(s))
+                results[t].push({
+                    type: "column_name",
+                    value: c
+                });
+        }
+
+        // primary key values - talk to postgres
+        let primaryKey = data.tableColumns[t][0]
+            .toLowerCase()
+            .split(" ")
+            .join("_");
+        let query =
+            `SELECT ${primaryKey} as value FROM ${t.toLowerCase()}` +
+            ` WHERE to_tsquery('${s}:*') @@ search_tsvector LIMIT 5;`;
+        let p = client.query(query);
+        promises.push(
+            p
+                .then(result => {
+                    let len = result.rows.length;
+                    for (let j = 0; j < len; j++)
+                        results[t].push({
+                            type: "pk_value",
+                            value: result.rows[j].value
+                        });
+                })
+                .catch(e => console.log(e))
         );
+    }
+
+    Promise.all(promises).then(() => {
+        res.status(200).send(results);
     });
 });
 

@@ -1,26 +1,26 @@
 {
     "kyrixViewId": "ssv0",
     "sqlQuery": {
-        "ssv0_level0": "SELECT *\nFROM building",
-        "ssv0_level1": "SELECT *\nFROM building",
-        "ssv0_level2": "SELECT *\nFROM building",
-        "ssv0_level3": "SELECT *\nFROM building",
-        "staticAggregation0": "SELECT organization_name, SUM(area)\nFROM room\nGROUP BY organization_name;",
-        "staticAggregation3": "SELECT use_desc, major_use_desc, SUM(area)\nFROM room\nGROUP BY use_desc, major_use_desc;",
-        "staticAggregation1": "SELECT *\nFROM room;",
-        "staticAggregation4": "SELECT department_code, SUM(total_units)\nFROM course\nGROUP BY department_code;",
-        "staticAggregation2": "SELECT student_year, COUNT(*)\nFROM student\nGROUP BY student_year;"
+        "ssv0_level0": "SELECT *\nFROM fclt_building",
+        "ssv0_level1": "SELECT *\nFROM fclt_building",
+        "ssv0_level2": "SELECT *\nFROM fclt_building",
+        "ssv0_level3": "SELECT *\nFROM fclt_building",
+        "staticAggregation0": "SELECT organization_name, SUM(area)\nFROM fclt_rooms\nGROUP BY organization_name;",
+        "staticAggregation3": "SELECT use_desc, major_use_desc, SUM(area)\nFROM fclt_rooms\nGROUP BY use_desc, major_use_desc;",
+        "staticAggregation1": "SELECT *\nFROM fclt_rooms;",
+        "staticAggregation4": "SELECT department_code, SUM(total_units)\nFROM course_catalog_subject_offered\nGROUP BY department_code;",
+        "staticAggregation2": "SELECT student_year, COUNT(*)\nFROM mit_student_directory\nGROUP BY student_year;"
     },
     "canvasIdToTable": {
-        "ssv0_level0": "building",
-        "ssv0_level1": "building",
-        "ssv0_level2": "building",
-        "ssv0_level3": "building",
-        "staticAggregation0": "room",
-        "staticAggregation1": "room",
-        "staticAggregation3": "room",
-        "staticAggregation2": "student",
-        "staticAggregation4": "course"
+        "ssv0_level0": "fclt_building",
+        "ssv0_level1": "fclt_building",
+        "ssv0_level2": "fclt_building",
+        "ssv0_level3": "fclt_building",
+        "staticAggregation0": "fclt_rooms",
+        "staticAggregation1": "fclt_rooms",
+        "staticAggregation3": "fclt_rooms",
+        "staticAggregation2": "mit_student_directory",
+        "staticAggregation4": "course_catalog_subject_offered"
     },
     "visualDataMappings": {
         "ssv0_level0": {
@@ -79,8 +79,8 @@
     },
     "graphEdges": [
         {
-            "source": "building",
-            "target": "room",
+            "source": "fclt_building",
+            "target": "fclt_rooms",
             "matches": [
                 {
                     "sourceCol": "Fclt Building Key",
@@ -101,8 +101,8 @@
             ]
         },
         {
-            "source": "room",
-            "target": "course",
+            "source": "fclt_rooms",
+            "target": "course_catalog_subject_offered",
             "matches": [
                 {
                     "sourceCol": "Fclt Building Key",
@@ -115,8 +115,8 @@
             ]
         },
         {
-            "source": "room",
-            "target": "student",
+            "source": "fclt_rooms",
+            "target": "mit_student_directory",
             "matches": [
                 {
                     "sourceCol": "Building room",
@@ -129,8 +129,8 @@
             ]
         },
         {
-            "source": "course",
-            "target": "student",
+            "source": "course_catalog_subject_offered",
+            "target": "mit_student_directory",
             "matches": [
                 {
                     "sourceCol": "Dept code",
@@ -144,26 +144,26 @@
         }
     ],
     "tableMetadata": {
-        "building": {
+        "fclt_building": {
             "numCanvas": 1,
             "numRecords": 228
         },
-        "room": {
+        "fclt_rooms": {
             "numCanvas": 3,
             "numRecords": 40546
         },
-        "course": {
+        "course_catalog_subject_offered": {
             "numCanvas": 1,
             "numRecords": 255976
         },
-        "student": {
+        "mit_student_directory": {
             "numCanvas": 1,
             "numRecords": 11447
         }
     },
 
     "tableColumns": {
-        "building": [
+        "fclt_building": [
             "Building Name",
             "Building Name Long",
             "Fclt Building Key",
@@ -197,7 +197,7 @@
             "Warehouse Load Date",
             "Num Of Rooms"
         ],
-        "room": [
+        "fclt_rooms": [
             "Building Room",
             "Fclt Room Key",
             "Fclt Building Key",
@@ -225,7 +225,7 @@
             "Easting Spcs",
             "Warehouse Load Date"
         ],
-        "course": [
+        "course_catalog_subject_offered": [
             "Subject Title",
             "Academic Year",
             "Term Code",
@@ -296,7 +296,7 @@
             "Meet Time",
             "Meet Place"
         ],
-        "student": [
+        "mit_student_directory": [
             "Full Name",
             "First Name",
             "Middle Name",
@@ -313,7 +313,7 @@
     },
 
     "clickJumpDefaults": {
-        "building": [
+        "fclt_building": [
             {
                 "canvasId": "ssv0_level0",
                 "predDict": {},
@@ -321,7 +321,7 @@
                 "newVpY": 0
             }
         ],
-        "room": [
+        "fclt_rooms": [
             {
                 "canvasId": "staticAggregation0",
                 "predDict": {
@@ -392,7 +392,7 @@
                 "newVpY": 0
             }
         ],
-        "student": [
+        "mit_student_directory": [
             {
                 "canvasId": "staticAggregation2",
                 "predDict": {
@@ -413,7 +413,7 @@
                 "newVpY": 0
             }
         ],
-        "course": [
+        "course_catalog_subject_offered": [
             {
                 "canvasId": "staticAggregation4",
                 "predDict": {
