@@ -17,10 +17,7 @@ class Header extends Component {
 
     render() {
         let options = [];
-        if (
-            this.props.options.length === 1 &&
-            this.props.options[0].type === "wait"
-        )
+        if (Object.keys(this.props.searchResults).length === 0)
             options.push(
                 <Option key="kyrixj-header-wait">
                     <div className="result-spin">
@@ -28,20 +25,48 @@ class Header extends Component {
                     </div>
                 </Option>
             );
-        else
-            options = this.props.options.map(res => ({
-                value: res.value,
-                label: (
-                    <div key={res.value} className="search-result">
-                        <p style={{float: "left", marginBottom: "0px"}}>
-                            {res.value}
-                        </p>
-                        <Tag color="geekblue" style={{float: "right"}}>
-                            {res.type}
-                        </Tag>
-                    </div>
-                )
-            }));
+        else {
+            let tables = Object.keys(this.props.searchResults);
+            for (let i = 0; i < tables.length; i++) {
+                let t = tables[i];
+                if (this.props.searchResults[t].length === 0) continue;
+                options.push({
+                    value: t,
+                    label: (
+                        <div key={t}>
+                            <div>
+                                <p>Table {t}</p>
+                            </div>
+                            {this.props.searchResults[t]
+                                .filter(res => res.type !== "table_name")
+                                .map(res => (
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between"
+                                        }}
+                                    >
+                                        <p
+                                            style={{
+                                                marginLeft: "10px",
+                                                marginBottom: "0px"
+                                            }}
+                                        >
+                                            {res.value}
+                                        </p>
+                                        <Tag
+                                            color="geekblue"
+                                            style={{float: "right"}}
+                                        >
+                                            {res.type}
+                                        </Tag>
+                                    </div>
+                                ))}
+                        </div>
+                    )
+                });
+            }
+        }
         return (
             <div className="kyrixjheader">
                 <div

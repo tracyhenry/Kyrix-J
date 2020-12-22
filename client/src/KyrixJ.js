@@ -62,10 +62,7 @@ class KyrixJ extends Component {
             searchBarValue: "",
 
             // search results
-            searchResults: Object.keys(metadata.tableColumns).map(d => ({
-                type: "table_name",
-                value: d
-            })),
+            searchResults: {},
 
             // history visible
             historyVisible: false,
@@ -117,21 +114,23 @@ class KyrixJ extends Component {
             .then(data => {
                 if (data.query !== this.state.searchBarValue) return;
                 let tables = Object.keys(data.results);
-                let res = [];
+                // dedup
+                let res = {};
                 for (let i = 0; i < tables.length; i++) {
                     let t = tables[i];
+                    res[t] = [];
                     for (let j = 0; j < data.results[t].length; j++) {
                         let curRes = data.results[t][j];
                         let exist = false;
-                        for (let k = 0; k < res.length; k++)
+                        for (let k = 0; k < res[t].length; k++)
                             if (
-                                res[k].type === curRes.type &&
-                                res[k].value === curRes.value
+                                res[t][k].type === curRes.type &&
+                                res[t][k].value === curRes.value
                             ) {
                                 exist = true;
                                 break;
                             }
-                        if (!exist) res.push(data.results[t][j]);
+                        if (!exist) res[t].push(data.results[t][j]);
                     }
                 }
                 // console.log(data);
@@ -146,7 +145,7 @@ class KyrixJ extends Component {
         // set state
         this.setState({
             searchBarValue: value,
-            searchResults: [{type: "wait"}],
+            searchResults: {},
             interactionType: "searchBarInputChange"
         });
     };
@@ -244,9 +243,9 @@ class KyrixJ extends Component {
             kyrixPredicates: kyrixPredicates,
             interactionType: "kyrixLoaded",
             kyrixLoaded: true,
-            rawDataTableMaxHeight: getRawDataTableMaxHeight(),
-            searchBarValue: ""
+            rawDataTableMaxHeight: getRawDataTableMaxHeight()
         });
+        this.handleSearchBarInputChange("");
     };
 
     setInteractionTypeToKyrixVisJump = () => {
@@ -449,7 +448,7 @@ class KyrixJ extends Component {
             <>
                 <Header
                     searchBarValue={this.state.searchBarValue}
-                    options={this.state.searchResults}
+                    searchResults={this.state.searchResults}
                     handleSearchBarInputChange={this.handleSearchBarInputChange}
                     tableColumns={metadata.tableColumns}
                     handleHistoryVisibleChange={this.handleHistoryVisibleChange}
