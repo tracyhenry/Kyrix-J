@@ -61,6 +61,12 @@ class KyrixJ extends Component {
             // search bar value in Header
             searchBarValue: "",
 
+            // search results
+            searchResults: Object.keys(metadata.tableColumns).map(d => ({
+                type: "table_name",
+                value: d
+            })),
+
             // history visible
             historyVisible: false,
 
@@ -105,6 +111,46 @@ class KyrixJ extends Component {
         });
     };
 
+    handleSearchBarInputChange = value => {
+        fetch(`/search?q=${value}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.query !== this.state.searchBarValue) return;
+                let tables = Object.keys(data.results);
+                let res = [];
+                for (let i = 0; i < tables.length; i++) {
+                    let t = tables[i];
+                    for (let j = 0; j < data.results[t].length; j++) {
+                        let curRes = data.results[t][j];
+                        let exist = false;
+                        for (let k = 0; k < res.length; k++)
+                            if (
+                                res[k].type === curRes.type &&
+                                res[k].value === curRes.value
+                            ) {
+                                exist = true;
+                                break;
+                            }
+                        if (!exist) res.push(data.results[t][j]);
+                    }
+                }
+                // console.log(data);
+                // console.log(res);
+                // console.log("\n");
+                this.setState({
+                    searchResults: res,
+                    interactionType: "searchBarInputChange"
+                });
+            });
+
+        // set state
+        this.setState({
+            searchBarValue: value,
+            searchResults: [{type: "wait"}],
+            interactionType: "searchBarInputChange"
+        });
+    };
+
     handleKyrixJumpEnd = jump => {
         const nextKyrixCanvas = window.kyrix.getCurrentCanvasId(
             metadata.kyrixViewId
@@ -132,9 +178,9 @@ class KyrixJ extends Component {
         ).predicates;
         this.setState({
             kyrixCanvas: nextKyrixCanvas,
-            kyrixPredicates: nextKyrixPredicates,
-            searchBarValue: ""
+            kyrixPredicates: nextKyrixPredicates
         });
+        this.handleSearchBarInputChange("");
         this.loadData();
     };
 
@@ -206,14 +252,6 @@ class KyrixJ extends Component {
     setInteractionTypeToKyrixVisJump = () => {
         this.setState({
             interactionType: "kyrixVisJump"
-        });
-    };
-
-    handleSearchBarInputChange = value => {
-        // set state
-        this.setState({
-            searchBarValue: value,
-            interactionType: "searchBarInputChange"
         });
     };
 
@@ -411,7 +449,7 @@ class KyrixJ extends Component {
             <>
                 <Header
                     searchBarValue={this.state.searchBarValue}
-                    handleClick={this.handleSearchBarSearch}
+                    options={this.state.searchResults}
                     handleSearchBarInputChange={this.handleSearchBarInputChange}
                     tableColumns={metadata.tableColumns}
                     handleHistoryVisibleChange={this.handleHistoryVisibleChange}

@@ -12,7 +12,7 @@ const client = new psql.Client({
 });
 client.connect();
 
-app.get("/test", (req, res) => {
+app.get("/search", (req, res) => {
     let s = req.query.q;
     let results = {};
 
@@ -24,16 +24,17 @@ app.get("/test", (req, res) => {
         results[t] = [];
 
         // table name
-        if (t.toLowerCase().startsWith(s))
+        if (t.toLowerCase().includes(s))
             results[t].push({
                 type: "table_name",
                 value: t
             });
+        if (s.length === 0) continue;
 
         // column names
         for (let j = 0; j < data.tableColumns[t].length; j++) {
             let c = data.tableColumns[t][j];
-            if (c.toLowerCase().startsWith(s))
+            if (c.toLowerCase().includes(s))
                 results[t].push({
                     type: "column_name",
                     value: c
@@ -64,7 +65,7 @@ app.get("/test", (req, res) => {
     }
 
     Promise.all(promises).then(() => {
-        res.status(200).send(results);
+        res.status(200).send({query: s, results: results});
     });
 });
 

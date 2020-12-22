@@ -1,7 +1,11 @@
 import React, {Component} from "react";
-import {Input, AutoComplete} from "antd";
-import {HistoryOutlined} from "@ant-design/icons";
-import {createFromIconfontCN} from "@ant-design/icons";
+import {Input, AutoComplete, Tag} from "antd";
+import {
+    createFromIconfontCN,
+    HistoryOutlined,
+    SyncOutlined
+} from "@ant-design/icons";
+const {Option} = AutoComplete;
 
 class Header extends Component {
     constructor(props) {
@@ -11,32 +15,33 @@ class Header extends Component {
         });
     }
 
-    findMatchingTables = () => {
-        // find matching tables
-        let value = this.props.searchBarValue;
-        let columns = this.props.tableColumns;
-        let matchingTables = [];
-        for (let table in columns) {
-            let match = false;
-            for (let i = 0; i < columns[table].length; i++) {
-                if (
-                    columns[table][i]
-                        .toLowerCase()
-                        .startsWith(value.toLowerCase())
-                ) {
-                    match = true;
-                    break;
-                }
-            }
-            if (table.toLowerCase().startsWith(value.toLowerCase()))
-                match = true;
-            if (match) matchingTables.push({value: table, label: table});
-        }
-        return matchingTables;
-    };
-
     render() {
-        let options = this.findMatchingTables();
+        let options = [];
+        if (
+            this.props.options.length === 1 &&
+            this.props.options[0].type === "wait"
+        )
+            options.push(
+                <Option key="kyrixj-header-wait">
+                    <div className="result-spin">
+                        <SyncOutlined spin />
+                    </div>
+                </Option>
+            );
+        else
+            options = this.props.options.map(res => ({
+                value: res.value,
+                label: (
+                    <div key={res.value} className="search-result">
+                        <p style={{float: "left", marginBottom: "0px"}}>
+                            {res.value}
+                        </p>
+                        <Tag color="geekblue" style={{float: "right"}}>
+                            {res.type}
+                        </Tag>
+                    </div>
+                )
+            }));
         return (
             <div className="kyrixjheader">
                 <div
@@ -59,10 +64,13 @@ class Header extends Component {
                 <p className="header-title">Superman @ MIT Data Warehouse</p>
                 <AutoComplete
                     className="header-input"
+                    notFoundContent="No matches found."
+                    // children={(<Input.Search size="large" placeholder="Search for a starting table..."/>)}
                     options={options}
-                    notFoundContent="No matching tables."
                     value={this.props.searchBarValue}
-                    onSelect={this.props.handleClick}
+                    dropdownMatchSelectWidth={500}
+                    defaultActiveFirstOption={false}
+                    // onSelect={this.props.handleClick}
                     onSearch={this.props.handleSearchBarInputChange}
                 >
                     <Input.Search
