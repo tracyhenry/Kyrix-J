@@ -15,6 +15,23 @@ class Header extends Component {
         });
     }
 
+    getHighlightedText = text => {
+        let st = text
+            .toLowerCase()
+            .indexOf(this.props.searchBarValue.toLowerCase());
+        let ed = st + this.props.searchBarValue.length;
+        if (st < 0) return <>{text}</>;
+        return (
+            <>
+                <span>{text.substring(0, st)}</span>
+                <span className="search-result-highlight">
+                    {text.substring(st, ed)}
+                </span>
+                <span>{text.substring(ed)}</span>
+            </>
+        );
+    };
+
     render() {
         let options = [];
         if (Object.keys(this.props.searchResults).length === 0)
@@ -41,13 +58,15 @@ class Header extends Component {
                             }}
                         >
                             <div className="search-result-title">
-                                Table <i>{t}</i>
+                                Table <i>{this.getHighlightedText(t)}</i>
                             </div>
                             {this.props.searchResults[t]
                                 .filter(res => res.type !== "table_name")
                                 .map(res => (
                                     <div className={"search-result-item"}>
-                                        <p>{res.value}</p>
+                                        <p>
+                                            {this.getHighlightedText(res.value)}
+                                        </p>
                                         <Tag color="geekblue">{res.type}</Tag>
                                     </div>
                                 ))}
@@ -79,12 +98,10 @@ class Header extends Component {
                 <AutoComplete
                     className="header-input"
                     notFoundContent="No matches found."
-                    // children={(<Input.Search size="large" placeholder="Search for a starting table..."/>)}
                     options={options}
                     value={this.props.searchBarValue}
                     dropdownMatchSelectWidth={500}
                     defaultActiveFirstOption={false}
-                    // onSelect={this.props.handleClick}
                     onSearch={this.props.handleSearchBarInputChange}
                 >
                     <Input.Search
