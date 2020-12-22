@@ -47,7 +47,7 @@ app.get("/search", (req, res) => {
             .split(" ")
             .join("_");
         let query =
-            `SELECT ${primaryKey} as value FROM ${t.toLowerCase()}` +
+            `SELECT distinct(${primaryKey}) as value FROM ${t.toLowerCase()}` +
             ` WHERE to_tsquery('${s}:*') @@ search_tsvector LIMIT 5;`;
         let p = client.query(query);
         promises.push(

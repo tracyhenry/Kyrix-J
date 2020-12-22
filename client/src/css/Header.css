@@ -48,3 +48,30 @@
 .result-spin {
     text-align: center;
 }
+
+.search-result .search-result-title {
+    font-size: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.search-result .search-result-item {
+    font-size: 13px;
+    padding: 2px;
+    overflow: hidden;
+}
+
+.search-result-item p {
+    float: left;
+    margin-left: 10px;
+    margin-bottom: 0px;
+}
+
+.search-result-item span {
+    float: right;
+}
+
+.search-result-item:nth-child(2) {
+    padding-top: 8px;
+}

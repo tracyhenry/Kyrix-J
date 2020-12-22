@@ -33,33 +33,16 @@ class Header extends Component {
                 options.push({
                     value: t,
                     label: (
-                        <div key={t}>
-                            <div>
-                                <p>Table {t}</p>
+                        <div className="search-result" key={t}>
+                            <div className="search-result-title">
+                                Table <i>{t}</i>
                             </div>
                             {this.props.searchResults[t]
                                 .filter(res => res.type !== "table_name")
                                 .map(res => (
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between"
-                                        }}
-                                    >
-                                        <p
-                                            style={{
-                                                marginLeft: "10px",
-                                                marginBottom: "0px"
-                                            }}
-                                        >
-                                            {res.value}
-                                        </p>
-                                        <Tag
-                                            color="geekblue"
-                                            style={{float: "right"}}
-                                        >
-                                            {res.type}
-                                        </Tag>
+                                    <div className={"search-result-item"}>
+                                        <p>{res.value}</p>
+                                        <Tag color="geekblue">{res.type}</Tag>
                                     </div>
                                 ))}
                         </div>

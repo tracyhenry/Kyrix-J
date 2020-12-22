@@ -113,31 +113,8 @@ class KyrixJ extends Component {
             .then(res => res.json())
             .then(data => {
                 if (data.query !== this.state.searchBarValue) return;
-                let tables = Object.keys(data.results);
-                // dedup
-                let res = {};
-                for (let i = 0; i < tables.length; i++) {
-                    let t = tables[i];
-                    res[t] = [];
-                    for (let j = 0; j < data.results[t].length; j++) {
-                        let curRes = data.results[t][j];
-                        let exist = false;
-                        for (let k = 0; k < res[t].length; k++)
-                            if (
-                                res[t][k].type === curRes.type &&
-                                res[t][k].value === curRes.value
-                            ) {
-                                exist = true;
-                                break;
-                            }
-                        if (!exist) res[t].push(data.results[t][j]);
-                    }
-                }
-                // console.log(data);
-                // console.log(res);
-                // console.log("\n");
                 this.setState({
-                    searchResults: res,
+                    searchResults: data.results,
                     interactionType: "searchBarInputChange"
                 });
             });
