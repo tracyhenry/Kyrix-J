@@ -33,7 +33,13 @@ class Header extends Component {
                 options.push({
                     value: t,
                     label: (
-                        <div className="search-result" key={t}>
+                        <div
+                            className="search-result"
+                            key={t}
+                            onClick={() => {
+                                this.props.handleSearch(t);
+                            }}
+                        >
                             <div className="search-result-title">
                                 Table <i>{t}</i>
                             </div>

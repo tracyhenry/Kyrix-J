@@ -426,6 +426,7 @@ class KyrixJ extends Component {
                 <Header
                     searchBarValue={this.state.searchBarValue}
                     searchResults={this.state.searchResults}
+                    handleSearch={this.handleSearchBarSearch}
                     handleSearchBarInputChange={this.handleSearchBarInputChange}
                     tableColumns={metadata.tableColumns}
                     handleHistoryVisibleChange={this.handleHistoryVisibleChange}
