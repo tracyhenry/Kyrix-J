@@ -47,6 +47,9 @@ class Header extends Component {
             for (let i = 0; i < tables.length; i++) {
                 let t = tables[i];
                 if (this.props.searchResults[t].length === 0) continue;
+                let nonTableNameMatches = this.props.searchResults[t].filter(
+                    res => res.type !== "table_name"
+                );
                 options.push({
                     value: t,
                     label: (
@@ -57,19 +60,25 @@ class Header extends Component {
                                 this.props.handleSearch(t);
                             }}
                         >
-                            <div className="search-result-title">
+                            <div
+                                className={
+                                    "search-result-title" +
+                                    (nonTableNameMatches.length > 0
+                                        ? " search-result-title-section"
+                                        : "")
+                                }
+                            >
                                 Table <i>{this.getHighlightedText(t)}</i>
                             </div>
-                            {this.props.searchResults[t]
-                                .filter(res => res.type !== "table_name")
-                                .map(res => (
-                                    <div className={"search-result-item"}>
-                                        <p>
-                                            {this.getHighlightedText(res.value)}
-                                        </p>
-                                        <Tag color="geekblue">{res.type}</Tag>
-                                    </div>
-                                ))}
+                            {nonTableNameMatches.map(res => (
+                                <div
+                                    key={res.value}
+                                    className="search-result-item"
+                                >
+                                    <p>{this.getHighlightedText(res.value)}</p>
+                                    <Tag color="geekblue">{res.type}</Tag>
+                                </div>
+                            ))}
                         </div>
                     )
                 });

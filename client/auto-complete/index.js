@@ -69,6 +69,12 @@ app.get("/search", (req, res) => {
     });
 });
 
+// app.get("/test", (req, res) => {
+//     client.query("SELECT * FROM fclt_building LIMIT 10;").then(result => {
+//         res.status(200).send(result);
+//     });
+// });
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`);
 });

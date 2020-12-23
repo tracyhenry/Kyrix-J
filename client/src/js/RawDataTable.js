@@ -28,12 +28,7 @@ class RawDataTable extends Component {
     render() {
         const curTable = this.props.curTable;
         const primaryKey =
-            curTable.length > 0
-                ? this.props.tableColumns[curTable][0]
-                      .toLowerCase()
-                      .split(" ")
-                      .join("_")
-                : "";
+            curTable.length > 0 ? this.props.tableColumns[curTable][0] : "";
 
         const rawColumns = Object.keys(
             this.props.kyrixRenderData.length > 0
