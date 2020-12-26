@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import SQLQuery from "./low-level-components/SQLQuery";
 import PreviewFilters from "./low-level-components/PreviewFilters";
-import {Popover} from "antd";
 import * as d3 from "d3";
 
 class JumpPreview extends Component {
@@ -16,19 +15,27 @@ class JumpPreview extends Component {
             .node()
             .getBoundingClientRect().height;
         d3.select(".jump-preview")
-            .style("visibility", this.props.visible ? "visible" : "hidden")
-            .style("opacity", this.props.visible ? 1 : 0)
             .style(
                 "top",
                 Math.min(this.props.y, windowHeight - popoverHeight) + "px"
             )
-            .style("left", this.props.x + "px");
+            .style("left", this.props.x + "px")
+            .style("visibility", this.props.visible ? "visible" : "hidden")
+            .style("opacity", this.props.visible ? 1 : 0);
     };
 
     render() {
         if (!this.props.kyrixLoaded) return null;
-        let content = (
-            <>
+        return (
+            <div
+                className="jump-preview"
+                style={{position: "fixed", width: "400px", height: "auto"}}
+            >
+                <div className="ant-popover-title">
+                    <h4 style={{margin: "5px"}}>
+                        <i>Jump Preview</i>
+                    </h4>
+                </div>
                 <SQLQuery
                     kyrixCanvas={this.props.kyrixCanvas}
                     sqlQuery={this.props.sqlQuery}
@@ -38,33 +45,7 @@ class JumpPreview extends Component {
                     getSqlPredicates={this.props.getSqlPredicates}
                     kyrixViewId={this.props.kyrixViewId}
                 />
-            </>
-        );
-
-        return (
-            <Popover
-                placement={this.props.placement}
-                title={
-                    <h4>
-                        <i>Jump Preview</i>
-                    </h4>
-                }
-                content={content}
-                trigger="click"
-                visible
-                overlayClassName="jump-preview"
-                overlayStyle={{visibility: "hidden", width: "400px"}}
-            >
-                <div
-                    style={{
-                        position: "fixed",
-                        top: "0px",
-                        left: "0px",
-                        width: "0px",
-                        height: "0px"
-                    }}
-                ></div>
-            </Popover>
+            </div>
         );
     }
 }

@@ -716,7 +716,7 @@ class SchemaGraph extends Component {
                     .attr("y", sourceNodeDatum.fy + textProperties[i].yDelta)
                     .text(sourceNodeDatum.table_name)
                     .attr("text-anchor", textProperties[i].anchor)
-                    .style("font-size", this.supermanW * 0.6)
+                    .attr("font-size", this.supermanW * 0.6)
                     .attr("dy", ".35em");
                 let targetLabel = lineg
                     .append("text")
@@ -726,7 +726,7 @@ class SchemaGraph extends Component {
                     .attr("y", targetNodeDatum.fy + textProperties[j].yDelta)
                     .text(targetNodeDatum.table_name)
                     .attr("text-anchor", textProperties[j].anchor)
-                    .style("font-size", this.supermanW * 0.6)
+                    .attr("font-size", this.supermanW * 0.6)
                     .attr("dy", ".35em");
 
                 // calculate rating based a few heuristic rules
@@ -851,7 +851,7 @@ class SchemaGraph extends Component {
             .attr("y", sourceNodeDatum.fy + textProperties[sourceLoc].yDelta)
             .text(sourceNodeDatum.table_name)
             .attr("text-anchor", textProperties[sourceLoc].anchor)
-            .style("font-size", this.supermanW * 0.6)
+            .attr("font-size", this.supermanW * 0.6)
             .attr("dy", ".35em");
         lineg
             .append("text")
@@ -860,7 +860,7 @@ class SchemaGraph extends Component {
             .attr("y", targetNodeDatum.fy + textProperties[targetLoc].yDelta)
             .text(targetNodeDatum.table_name)
             .attr("text-anchor", textProperties[targetLoc].anchor)
-            .style("font-size", this.supermanW * 0.6)
+            .attr("font-size", this.supermanW * 0.6)
             .attr("dy", ".35em");
 
         // append a new but lighter superman logo
