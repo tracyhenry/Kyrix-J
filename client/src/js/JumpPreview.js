@@ -27,12 +27,9 @@ class JumpPreview extends Component {
     render() {
         if (!this.props.kyrixLoaded) return null;
         return (
-            <div
-                className="jump-preview"
-                style={{position: "fixed", width: "400px", height: "auto"}}
-            >
+            <div className="jump-preview">
                 <div className="ant-popover-title">
-                    <h4 style={{margin: "5px"}}>
+                    <h4>
                         <i>Jump Preview</i>
                     </h4>
                 </div>

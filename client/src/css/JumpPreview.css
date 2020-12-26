@@ -1,3 +1,9 @@
+div.jump-preview {
+    position: fixed;
+    width: 400px;
+    height: auto;
+}
+
 .jump-preview .ant-popover-inner-content {
     padding: 0px;
 }
@@ -8,4 +14,8 @@
 
 .jump-preview .preview-filter-old {
     color: #ddd;
+}
+
+.jump-preview h4 {
+    margin: 5px;
 }
