@@ -7,12 +7,8 @@ const SSV = require("../../src/template-api/SSV").SSV;
 const StaticAggregation = require("../../src/template-api/StaticAggregation")
     .StaticAggregation;
 
-// project components
-const renderers = require("./renderers");
-
 // construct a project
 var p = new Project("mitdwh", "../../../config.txt");
-p.addRenderingParams(renderers.renderingParams);
 var vw = 1000,
     vh = 1000;
 
@@ -39,12 +35,17 @@ var ssv = {
     },
     marks: {
         cluster: {
-            mode: "custom",
-            custom: renderers.buildingCircleRendering,
+            mode: "dot",
             config: {
                 clusterCount: false,
                 bboxW: 30,
-                bboxH: 30
+                bboxH: 30,
+                dotSizeColumn: "building_height",
+                dotSizeDomain: [0, 275],
+                dotSizeLegendTitle: "Building Height (ft)",
+                dotColorColumn: "building_type",
+                dotColorDomain: ["RESIDENT", "ACADEMIC", "SERVICE"],
+                dotColorLegendTitle: "Building Type"
             }
         },
         hover: {
@@ -78,15 +79,9 @@ var ssv = {
     }
 };
 
-var buildingLegendLayer = new Layer(null, true);
-buildingLegendLayer.addRenderingFunc(renderers.buildingLegendRendering);
-
 var ret = p.addSSV(new SSV(ssv));
 var building_pyramid = ret.pyramid;
 var kyrixView = ret.view;
-for (var i = 0; i < building_pyramid.length; i++) {
-    building_pyramid[i].addLayer(buildingLegendLayer);
-}
 
 // ================== room treemap ===================
 var staticAggregation = {
