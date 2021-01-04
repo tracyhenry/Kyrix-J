@@ -12,7 +12,7 @@ class VisualDataMappings extends Component {
         if (visType === "scatterplot")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type" span={2}>
+                    <Descriptions.Item label="Visualization Type">
                         Scatterplot
                     </Descriptions.Item>
                     <Descriptions.Item label="X Axis">{m.x}</Descriptions.Item>
@@ -28,7 +28,7 @@ class VisualDataMappings extends Component {
         else if (visType === "treemap")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type" span={2}>
+                    <Descriptions.Item label="Visualization Type">
                         Tree Map
                     </Descriptions.Item>
                     <Descriptions.Item label="Rectangle Size">
@@ -42,7 +42,7 @@ class VisualDataMappings extends Component {
         else if (visType === "barchart")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type" span={2}>
+                    <Descriptions.Item label="Visualization Type">
                         Bar Chart
                     </Descriptions.Item>
                     <Descriptions.Item label="X Axis">{m.x}</Descriptions.Item>
@@ -57,7 +57,7 @@ class VisualDataMappings extends Component {
         else if (visType === "circlepack")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type" span={2}>
+                    <Descriptions.Item label="Visualization Type">
                         Circle Pack
                     </Descriptions.Item>
                     <Descriptions.Item label="Circle Size">
@@ -71,7 +71,7 @@ class VisualDataMappings extends Component {
         else if (visType === "piechart")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type" span={2}>
+                    <Descriptions.Item label="Visualization Type">
                         Pie Chart
                     </Descriptions.Item>
                     <Descriptions.Item label="Pie Color">
@@ -86,7 +86,7 @@ class VisualDataMappings extends Component {
                 title={"Visual-Data Mappings"}
                 bordered={false}
             >
-                <Descriptions bordered size="small" column={2}>
+                <Descriptions bordered size="small" column={1}>
                     {content}
                 </Descriptions>
             </Card>
