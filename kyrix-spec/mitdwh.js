@@ -38,8 +38,6 @@ var ssv = {
             mode: "dot",
             config: {
                 clusterCount: false,
-                bboxW: 30,
-                bboxH: 30,
                 dotSizeColumn: "building_height",
                 dotSizeDomain: [0, 275],
                 dotSizeLegendTitle: "Building Height (ft)",

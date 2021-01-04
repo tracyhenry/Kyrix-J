@@ -5,7 +5,6 @@ import {
     HistoryOutlined,
     SyncOutlined
 } from "@ant-design/icons";
-const {Option} = AutoComplete;
 
 class Header extends Component {
     constructor(props) {
@@ -35,13 +34,14 @@ class Header extends Component {
     render() {
         let options = [];
         if (Object.keys(this.props.searchResults).length === 0)
-            options.push(
-                <Option key="kyrixj-header-wait">
+            options.push({
+                value: "wait",
+                label: (
                     <div className="result-spin">
                         <SyncOutlined spin />
                     </div>
-                </Option>
-            );
+                )
+            });
         else {
             let tables = Object.keys(this.props.searchResults);
             for (let i = 0; i < tables.length; i++) {
