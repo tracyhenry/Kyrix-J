@@ -162,15 +162,12 @@ class KyrixJ extends Component {
 
     loadData = () => {
         const curData = window.kyrix.getRenderData(metadata.kyrixViewId);
-        let dataLayerId = -1;
-        for (let i = 0; i < curData.length; i++)
-            if (
-                dataLayerId < 0 ||
-                curData[i].length >= curData[dataLayerId].length
-            )
-                dataLayerId = i;
-        let nextKyrixRenderData = [];
-        if (dataLayerId >= 0) nextKyrixRenderData = curData[dataLayerId];
+        const visType =
+            metadata.visualDataMappings[
+                window.kyrix.getCurrentCanvasId(metadata.kyrixViewId)
+            ].type;
+        let dataLayerId = visType === "scatterplot" ? 0 : 1;
+        let nextKyrixRenderData = curData[dataLayerId];
         this.setState({
             kyrixRenderData: nextKyrixRenderData
         });

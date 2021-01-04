@@ -93,7 +93,7 @@ class RawDataTable extends Component {
                         size="small"
                         columns={antdColumns}
                         dataSource={antdData}
-                        pagination={{defaultPageSize: 50}}
+                        pagination={{defaultPageSize: 25}}
                         scroll={{y: this.props.maxHeight}}
                     />
                 </Card>

@@ -1,15 +1,16 @@
 {
     "kyrixViewId": "ssv0",
     "sqlQuery": {
-        "ssv0_level0": "SELECT *\nFROM fclt_building",
-        "ssv0_level1": "SELECT *\nFROM fclt_building",
-        "ssv0_level2": "SELECT *\nFROM fclt_building",
-        "ssv0_level3": "SELECT *\nFROM fclt_building",
+        "ssv0_level0": "SELECT *\nFROM fclt_building;",
+        "ssv0_level1": "SELECT *\nFROM fclt_building;",
+        "ssv0_level2": "SELECT *\nFROM fclt_building;",
+        "ssv0_level3": "SELECT *\nFROM fclt_building;",
         "staticAggregation0": "SELECT organization_name, SUM(area)\nFROM fclt_rooms\nGROUP BY organization_name;",
         "staticAggregation3": "SELECT use_desc, major_use_desc, SUM(area)\nFROM fclt_rooms\nGROUP BY use_desc, major_use_desc;",
         "staticAggregation1": "SELECT *\nFROM fclt_rooms;",
         "staticAggregation4": "SELECT department_code, SUM(total_units)\nFROM course_catalog_subject_offered\nGROUP BY department_code;",
-        "staticAggregation2": "SELECT student_year, COUNT(*)\nFROM mit_student_directory\nGROUP BY student_year;"
+        "staticAggregation2": "SELECT student_year, COUNT(*)\nFROM mit_student_directory\nGROUP BY student_year;",
+        "staticAggregation5": "SELECT building_name\nFROM fclt_building;"
     },
     "canvasIdToTable": {
         "ssv0_level0": "fclt_building",
@@ -20,7 +21,8 @@
         "staticAggregation1": "fclt_rooms",
         "staticAggregation3": "fclt_rooms",
         "staticAggregation2": "mit_student_directory",
-        "staticAggregation4": "course_catalog_subject_offered"
+        "staticAggregation4": "course_catalog_subject_offered",
+        "staticAggregation5": "fclt_building"
     },
     "visualDataMappings": {
         "ssv0_level0": {
@@ -75,6 +77,11 @@
             "type": "barchart",
             "x": "department_code",
             "y": "SUM(total_units)"
+        },
+        "staticAggregation5": {
+            "type": "wordcloud",
+            "word_column": "building_name",
+            "word_size": "random"
         }
     },
     "graphEdges": [
@@ -145,7 +152,7 @@
     ],
     "tableMetadata": {
         "fclt_building": {
-            "numCanvas": 1,
+            "numCanvas": 2,
             "numRecords": 228
         },
         "fclt_rooms": {
@@ -319,6 +326,12 @@
         "fclt_building": [
             {
                 "canvasId": "ssv0_level0",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation5",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0

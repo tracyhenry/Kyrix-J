@@ -12,6 +12,7 @@ var p = new Project("mitdwh", "../../../config.txt");
 var vw = 1000,
     vh = 1000;
 
+/******************************** canvases ********************************/
 // SSV of buildings
 var ssv = {
     data: {
@@ -203,7 +204,7 @@ var roomBarChartCanvas = p.addStaticAggregation(
     {view: kyrixView}
 ).canvas;
 
-// ================== Canvas course bar chart ===================
+// ================== course bar chart ===================
 var staticAggregation = {
     db: "mit",
     query: {
@@ -231,6 +232,54 @@ var courseBarChartCanvas = p.addStaticAggregation(
     {view: kyrixView}
 ).canvas;
 
+// ================== building word cloud ===================
+var staticAggregation = {
+    db: "mit",
+    query: {
+        table: "fclt_building",
+        dimensions: ["building_name"],
+        measure: "SUM(random() * 100)",
+        sampleFields: [
+            "fclt_building_key",
+            "building_number",
+            "parent_building_number",
+            "parent_building_name",
+            "parent_building_name_long",
+            "building_name_long",
+            "ext_gross_area",
+            "assignable_area",
+            "non_assignable_area",
+            "site",
+            "campus_sector",
+            "access_level_code",
+            "access_level_name",
+            "building_type"
+        ]
+    },
+    type: "wordCloud",
+    tooltip: {
+        columns: ["building_name"],
+        aliases: ["building_name"]
+    },
+    padding: 10,
+    legend: {
+        title: "Primary keys of table fclt_building (random text size)"
+    },
+    textFields: ["building_name"],
+    cloud: {
+        maxTextSize: 80,
+        fontFamily: "Arial"
+    }
+};
+
+var buildingWordCloudCanvas = p.addStaticAggregation(
+    new StaticAggregation(staticAggregation),
+    {view: kyrixView}
+).canvas;
+
+p.setInitialStates(kyrixView, buildingWordCloudCanvas, 0, 0);
+
+/******************************** jumps ********************************/
 // ================== building -> room treemap ===================
 for (var i = 0; i < building_pyramid.length; i++) {
     var selector = function(row, args) {

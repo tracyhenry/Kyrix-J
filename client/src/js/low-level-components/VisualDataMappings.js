@@ -79,6 +79,20 @@ class VisualDataMappings extends Component {
                     </Descriptions.Item>
                 </>
             );
+        else if (visType === "wordcloud")
+            content = (
+                <>
+                    <Descriptions.Item label="Visualization Type">
+                        Word Cloud
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Word Column">
+                        {m.word_column}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Word Size">
+                        {m.word_size}
+                    </Descriptions.Item>
+                </>
+            );
 
         return (
             <Card
