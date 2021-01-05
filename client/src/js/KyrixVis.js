@@ -26,17 +26,7 @@ class KyrixVis extends Component {
             this.props.curTable !== prevProps.curTable
         )
             this.jumpToClickedTable();
-        if (
-            this.props.interactionType === "historyItemClick" &&
-            (this.props.kyrixCanvas !== prevProps.kyrixCanvas ||
-                this.props.kyrixVX !== prevProps.kyrixVX ||
-                this.props.kyrixVY !== prevProps.kyrixVY ||
-                this.props.kyrixScale !== prevProps.kyrixScale ||
-                this.props.kyrixPredicates.length !==
-                    prevProps.kyrixPredicates.length ||
-                JSON.stringify(this.props.kyrixPredicates) !==
-                    JSON.stringify(prevProps.kyrixPredicates))
-        )
+        if (this.props.interactionType === "historyItemClick")
             this.jumpToHistory();
         if (this.props.interactionType === "seeAnotherVisButtonClick")
             this.jumpToAnotherVis();

@@ -268,6 +268,17 @@ class KyrixJ extends Component {
     };
 
     handleHistoryItemClick = historyItem => {
+        if (
+            this.state.kyrixCanvas === historyItem.canvasId &&
+            this.state.kyrixVX === historyItem.viewportX &&
+            this.state.kyrixVY === historyItem.viewportY &&
+            this.state.kyrixScale === historyItem.initialScale &&
+            this.state.kyrixPredicates.length ===
+                historyItem.predicates.length &&
+            JSON.stringify(this.state.kyrixPredicates) ===
+                JSON.stringify(historyItem.predicates)
+        )
+            return;
         const nextTableHistory = this.state.tableHistory.concat(
             metadata.canvasIdToTable[historyItem.canvasId]
         );
