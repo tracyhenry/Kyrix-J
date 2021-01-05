@@ -261,13 +261,13 @@ var staticAggregation = {
         columns: ["building_name"],
         aliases: ["building_name"]
     },
-    padding: 10,
+    padding: 15,
     legend: {
-        title: "Primary keys of table fclt_building (random text size)"
+        title: "Primary keys of table FCLT_BUILDING (random text size)"
     },
     textFields: ["building_name"],
     cloud: {
-        maxTextSize: 80,
+        maxTextSize: 65,
         fontFamily: "Arial"
     }
 };
@@ -277,7 +277,132 @@ var buildingWordCloudCanvas = p.addStaticAggregation(
     {view: kyrixView}
 ).canvas;
 
-p.setInitialStates(kyrixView, buildingWordCloudCanvas, 0, 0);
+// ================== room word cloud ===================
+var staticAggregation = {
+    db: "mit",
+    query: {
+        table: "fclt_rooms",
+        dimensions: ["building_room"],
+        measure: "SUM(random() * 100)",
+        sampleFields: [
+            "fclt_room_key",
+            "fclt_building_key",
+            "floor2",
+            "room",
+            "space_id",
+            "major_use_desc",
+            "use_desc",
+            "minor_use_desc"
+        ]
+    },
+    type: "wordCloud",
+    tooltip: {
+        columns: ["building_room"],
+        aliases: ["building_room"]
+    },
+    padding: 15,
+    legend: {
+        title: "Primary keys of table FCLT_ROOMS (random text size)"
+    },
+    textFields: ["building_room"],
+    cloud: {
+        maxTextSize: 65,
+        fontFamily: "Arial"
+    }
+};
+
+var roomWordCloudCanvas = p.addStaticAggregation(
+    new StaticAggregation(staticAggregation),
+    {view: kyrixView}
+).canvas;
+
+// ================== course word cloud ===================
+var staticAggregation = {
+    db: "mit",
+    query: {
+        table: "course_catalog_subject_offered",
+        dimensions: ["subject_title"],
+        measure: "MIN(random() * 100)",
+        sampleFields: [
+            "academic_year",
+            "term_code",
+            "subject_code",
+            "subject_number",
+            "is_printed_in_bulletin",
+            "department_code",
+            "department_name",
+            "effective_term_code",
+            "subject_short_title",
+            "is_variable_units",
+            "lecture_units",
+            "lab_units",
+            "preparation_units",
+            "design_units"
+        ]
+    },
+    type: "wordCloud",
+    tooltip: {
+        columns: ["subject_title"],
+        aliases: ["subject_title"]
+    },
+    padding: 15,
+    legend: {
+        title:
+            "Primary keys of table COURSE_CATALOG_SUBJECT_OFFERED (random text size)"
+    },
+    textFields: ["subject_title"],
+    cloud: {
+        maxTextSize: 65,
+        fontFamily: "Arial"
+    }
+};
+
+var courseWordCloudCanvas = p.addStaticAggregation(
+    new StaticAggregation(staticAggregation),
+    {view: kyrixView}
+).canvas;
+
+// ================== student word cloud ===================
+var staticAggregation = {
+    db: "mit",
+    query: {
+        table: "mit_student_directory",
+        dimensions: ["full_name"],
+        measure: "SUM(random() * 100)",
+        sampleFields: [
+            "first_name",
+            "middle_name",
+            "last_name",
+            "office_location",
+            "office_phone",
+            "email_address",
+            "department",
+            "department_name",
+            "student_year",
+            "full_name_uppercase",
+            "warehouse_load_date"
+        ]
+    },
+    type: "wordCloud",
+    tooltip: {
+        columns: ["full_name"],
+        aliases: ["full_name"]
+    },
+    padding: 15,
+    legend: {
+        title: "Primary keys of table MIT_STUDENT_DIRECTORY (random text size)"
+    },
+    textFields: ["full_name"],
+    cloud: {
+        maxTextSize: 65,
+        fontFamily: "Arial"
+    }
+};
+
+var studentWordCloudCanvas = p.addStaticAggregation(
+    new StaticAggregation(staticAggregation),
+    {view: kyrixView}
+).canvas;
 
 /******************************** jumps ********************************/
 // ================== building -> room treemap ===================

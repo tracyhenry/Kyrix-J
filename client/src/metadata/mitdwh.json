@@ -10,7 +10,10 @@
         "staticAggregation1": "SELECT *\nFROM fclt_rooms;",
         "staticAggregation4": "SELECT department_code, SUM(total_units)\nFROM course_catalog_subject_offered\nGROUP BY department_code;",
         "staticAggregation2": "SELECT student_year, COUNT(*)\nFROM mit_student_directory\nGROUP BY student_year;",
-        "staticAggregation5": "SELECT building_name\nFROM fclt_building;"
+        "staticAggregation5": "SELECT building_name\nFROM fclt_building;",
+        "staticAggregation6": "SELECT building_name\nFROM fclt_rooms;",
+        "staticAggregation7": "SELECT building_name\nFROM course_catalog_subject_offered;",
+        "staticAggregation8": "SELECT building_name\nFROM mit_student_directory;"
     },
     "canvasIdToTable": {
         "ssv0_level0": "fclt_building",
@@ -22,7 +25,10 @@
         "staticAggregation3": "fclt_rooms",
         "staticAggregation2": "mit_student_directory",
         "staticAggregation4": "course_catalog_subject_offered",
-        "staticAggregation5": "fclt_building"
+        "staticAggregation5": "fclt_building",
+        "staticAggregation6": "fclt_rooms",
+        "staticAggregation7": "course_catalog_subject_offered",
+        "staticAggregation8": "mit_student_directory"
     },
     "visualDataMappings": {
         "ssv0_level0": {
@@ -81,6 +87,21 @@
         "staticAggregation5": {
             "type": "wordcloud",
             "word_column": "building_name",
+            "word_size": "random"
+        },
+        "staticAggregation6": {
+            "type": "wordcloud",
+            "word_column": "building_room",
+            "word_size": "random"
+        },
+        "staticAggregation7": {
+            "type": "wordcloud",
+            "word_column": "subject_title",
+            "word_size": "random"
+        },
+        "staticAggregation8": {
+            "type": "wordcloud",
+            "word_column": "full_name",
             "word_size": "random"
         }
     },
@@ -156,19 +177,18 @@
             "numRecords": 228
         },
         "fclt_rooms": {
-            "numCanvas": 3,
+            "numCanvas": 4,
             "numRecords": 40546
         },
         "course_catalog_subject_offered": {
-            "numCanvas": 1,
+            "numCanvas": 2,
             "numRecords": 255976
         },
         "mit_student_directory": {
-            "numCanvas": 1,
+            "numCanvas": 2,
             "numRecords": 11447
         }
     },
-
     "tableColumns": {
         "fclt_building": [
             "building_name",
@@ -406,6 +426,12 @@
                 },
                 "newVpX": 0,
                 "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation6",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
             }
         ],
         "mit_student_directory": [
@@ -427,6 +453,12 @@
                 },
                 "newVpX": 0,
                 "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation8",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
             }
         ],
         "course_catalog_subject_offered": [
@@ -440,6 +472,12 @@
                         "==": ["meet_place", "32-123"]
                     }
                 },
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation7",
+                "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             }
