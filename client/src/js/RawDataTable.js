@@ -42,7 +42,8 @@ class RawDataTable extends Component {
                 d !== "maxy" &&
                 d !== "cx" &&
                 d !== "cy" &&
-                d !== "clusterAgg"
+                d !== "clusterAgg" &&
+                d !== "?column?"
         );
 
         let toAntdColumn = d => ({

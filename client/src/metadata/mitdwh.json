@@ -11,9 +11,9 @@
         "staticAggregation4": "SELECT department_code, SUM(total_units)\nFROM course_catalog_subject_offered\nGROUP BY department_code;",
         "staticAggregation2": "SELECT student_year, COUNT(*)\nFROM mit_student_directory\nGROUP BY student_year;",
         "staticAggregation5": "SELECT building_name\nFROM fclt_building;",
-        "staticAggregation6": "SELECT building_name\nFROM fclt_rooms;",
-        "staticAggregation7": "SELECT building_name\nFROM course_catalog_subject_offered;",
-        "staticAggregation8": "SELECT building_name\nFROM mit_student_directory;"
+        "staticAggregation6": "SELECT building_room\nFROM fclt_rooms;",
+        "staticAggregation7": "SELECT subject_title\nFROM course_catalog_subject_offered;",
+        "staticAggregation8": "SELECT full_name\nFROM mit_student_directory;"
     },
     "canvasIdToTable": {
         "ssv0_level0": "fclt_building",

@@ -4,6 +4,9 @@ import Filters from "./low-level-components/Filters";
 import VisualDataMappings from "./low-level-components/VisualDataMappings";
 
 class InfoPanel extends Component {
+    shouldComponentUpdate = nextProps =>
+        JSON.stringify(this.props) !== JSON.stringify(nextProps);
+
     render() {
         return (
             <div className="info-panel">

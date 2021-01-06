@@ -6,8 +6,12 @@ class History extends Component {
     state = {};
 
     shouldComponentUpdate = nextProps =>
-        nextProps.tableHistory.length ===
-        nextProps.screenshotHistory.length + 1;
+        this.props.visible !== nextProps.visible ||
+        (nextProps.tableHistory.length ===
+            nextProps.screenshotHistory.length + 1 &&
+            (nextProps.tableHistory.length > this.props.tableHistory.length ||
+                nextProps.screenshotHistory.length >
+                    this.props.screenshotHistory.length));
 
     render() {
         const listData = this.props.screenshotHistory

@@ -1,8 +1,6 @@
 // libraries
 const Project = require("../../src/index").Project;
-const Canvas = require("../../src/Canvas").Canvas;
 const Jump = require("../../src/Jump").Jump;
-const Layer = require("../../src/Layer").Layer;
 const SSV = require("../../src/template-api/SSV").SSV;
 const StaticAggregation = require("../../src/template-api/StaticAggregation")
     .StaticAggregation;
@@ -237,10 +235,9 @@ var staticAggregation = {
     db: "mit",
     query: {
         table: "fclt_building",
-        dimensions: ["building_name"],
+        dimensions: ["building_name", "fclt_building_key"],
         measure: "SUM(random() * 100)",
         sampleFields: [
-            "fclt_building_key",
             "building_number",
             "parent_building_number",
             "parent_building_name",
@@ -405,7 +402,7 @@ var studentWordCloudCanvas = p.addStaticAggregation(
 ).canvas;
 
 /******************************** jumps ********************************/
-// ================== building -> room treemap ===================
+// ================== building ssv -> room treemap ===================
 for (var i = 0; i < building_pyramid.length; i++) {
     var selector = function(row, args) {
         return args.layerId == 0;
@@ -438,7 +435,7 @@ for (var i = 0; i < building_pyramid.length; i++) {
     );
 }
 
-// ================== room treemap -> room bar chart ===================
+// ================== building word cloud -> room treemap ===================
 var selector = function(row) {
     return row != null && typeof row == "object" && "kyrixAggValue" in row;
 };
@@ -447,6 +444,61 @@ var newViewport = function() {
     return {constant: [0, 0]};
 };
 
+var newPredicate = function(row) {
+    var pred = {
+        "==": ["fclt_building_key", row.fclt_building_key]
+    };
+    return {layer0: pred, layer1: pred};
+};
+
+var jumpName = function() {
+    return "Table FCLT_ROOMS [Treemap]";
+};
+
+p.addJump(
+    new Jump(buildingWordCloudCanvas, roomTreemapCanvas, "slide", {
+        selector: selector,
+        viewport: newViewport,
+        predicates: newPredicate,
+        name: jumpName,
+        noPrefix: true,
+        slideSuperman: true
+    })
+);
+
+// ================== building word cloud -> room circlepack ===================
+var jumpName = function() {
+    return "Table FCLT_ROOMS [Circle Pack]";
+};
+
+p.addJump(
+    new Jump(buildingWordCloudCanvas, roomCirclePackCanvas, "slide", {
+        selector: selector,
+        viewport: newViewport,
+        predicates: newPredicate,
+        name: jumpName,
+        noPrefix: true,
+        slideSuperman: true
+    })
+);
+
+// ================== building word cloud -> room stacked barchart ===================
+var jumpName = function() {
+    return "Table FCLT_ROOMS [Bar Chart]";
+};
+
+p.addJump(
+    new Jump(buildingWordCloudCanvas, roomBarChartCanvas, "slide", {
+        selector: selector,
+        viewport: newViewport,
+        predicates: newPredicate,
+        name: jumpName,
+        noPrefix: true,
+        slideSuperman: true
+    })
+);
+
+// ================== room treemap -> room bar chart ===================
 var newPredicate = function(row, args) {
     var pred = {
         AND: [
@@ -477,14 +529,6 @@ p.addJump(
 );
 
 // ================== room bar chart -> room circle pack ===================
-var selector = function(row) {
-    return row != null && typeof row == "object" && "kyrixAggValue" in row;
-};
-
-var newViewport = function() {
-    return {constant: [0, 0]};
-};
-
 var newPredicate = function(row, args) {
     var pred = {
         AND: [args.predicates.layer0, {"==": ["use_desc", row.use_desc]}]
@@ -507,14 +551,6 @@ p.addJump(
 );
 
 // ================== room circle pack -> course bar chart ===================
-var selector = function(row) {
-    return row != null && typeof row == "object" && "kyrixAggValue" in row;
-};
-
-var newViewport = function() {
-    return {constant: [0, 0]};
-};
-
 var newPredicate = function(row) {
     var pred = {
         "==": ["meet_place", row.building_room]
@@ -538,14 +574,6 @@ p.addJump(
 );
 
 // ================== room circle pack -> student pie chart ===================
-var selector = function(row) {
-    return row != null && typeof row == "object" && "kyrixAggValue" in row;
-};
-
-var newViewport = function() {
-    return {constant: [0, 0]};
-};
-
 var newPredicate = function(row) {
     var pred = {
         "==": ["office_location", row.building_room]
@@ -569,14 +597,6 @@ p.addJump(
 );
 
 // ================== course bar chart -> student pie chart ===================
-var selector = function(row) {
-    return row != null && typeof row == "object" && "kyrixAggValue" in row;
-};
-
-var newViewport = function() {
-    return {constant: [0, 0]};
-};
-
 var newPredicate = function(row) {
     var pred = {
         "==": ["department_name", row.department_name]

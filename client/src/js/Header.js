@@ -14,6 +14,14 @@ class Header extends Component {
         });
     }
 
+    shouldComponentUpdate = nextProps => {
+        return (
+            this.props.searchBarValue !== nextProps.searchBarValue ||
+            JSON.stringify(this.props.searchResults) !==
+                JSON.stringify(nextProps.searchResults)
+        );
+    };
+
     getHighlightedText = text => {
         let st = text
             .toLowerCase()

@@ -4,6 +4,9 @@ import PreviewFilters from "./low-level-components/PreviewFilters";
 import * as d3 from "d3";
 
 class JumpPreview extends Component {
+    shouldComponentUpdate = nextProps =>
+        JSON.stringify(this.props) !== JSON.stringify(nextProps);
+
     componentDidUpdate = () => {
         if (!this.props.kyrixLoaded) return;
         let windowHeight =

@@ -6,6 +6,11 @@ class HistoryItem extends Component {
     state = {
         visible: false
     };
+
+    shouldComponentUpdate = (nextProps, nextState) =>
+        JSON.stringify(this.props.d) !== JSON.stringify(nextProps.d) ||
+        this.state.visible !== nextState.visible;
+
     render() {
         const clickHandler = e => {
             if (!e.target.classList.contains("history-clickable")) return;
