@@ -109,7 +109,7 @@ class KyrixJ extends Component {
     };
 
     handleSearchBarInputChange = value => {
-        fetch(`/search?q=${value}`)
+        fetch(`/search?q=${encodeURIComponent(value)}`)
             .then(res => res.json())
             .then(data => {
                 if (data.query !== this.state.searchBarValue) return;

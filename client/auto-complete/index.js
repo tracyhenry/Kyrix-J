@@ -29,7 +29,7 @@ app.get("/search", (req, res) => {
                 type: "table_name",
                 value: t
             });
-        if (s.length === 0) continue;
+        if (s.length === 0 || s.indexOf(" ") >= 0) continue;
 
         // column names
         for (let j = 0; j < data.tableColumns[t].length; j++) {

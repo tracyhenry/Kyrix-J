@@ -114,7 +114,11 @@ class Header extends Component {
                 <p className="header-title">Superman @ MIT Data Warehouse</p>
                 <AutoComplete
                     className="header-input"
-                    notFoundContent="No matches found."
+                    notFoundContent={
+                        this.props.searchBarValue.indexOf(" ") >= 0
+                            ? "Multiple words are not supported."
+                            : "No matches found."
+                    }
                     options={options}
                     value={this.props.searchBarValue}
                     dropdownMatchSelectWidth={500}
