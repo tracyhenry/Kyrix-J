@@ -1,8 +1,9 @@
-const express = require("express");
+import express from "express";
+import psql from "pg";
+import data from "../src/metadata/mitdwh.json";
+
 const app = express();
 const port = 3001;
-const psql = require("pg");
-const data = require("../src/metadata/mitdwh");
 const client = new psql.Client({
     host: "localhost",
     user: "kyrix",

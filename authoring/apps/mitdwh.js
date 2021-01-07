@@ -73,7 +73,6 @@ var ssv = {
         topLevelHeight: 1000
     }
 };
-console.log(ssv);
 
 var ret = p.addSSV(new SSV(ssv));
 var building_pyramid = ret.pyramid;
