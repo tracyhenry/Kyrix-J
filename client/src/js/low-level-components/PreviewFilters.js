@@ -42,7 +42,7 @@ class PreviewFilters extends Component {
         return (
             <Card
                 className="filters preview-filters"
-                title="Filters"
+                title="New Filters"
                 bordered={false}
             >
                 <List

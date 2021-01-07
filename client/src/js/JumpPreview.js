@@ -39,11 +39,13 @@ class JumpPreview extends Component {
                 <SQLQuery
                     kyrixCanvas={this.props.kyrixCanvas}
                     sqlQuery={this.props.sqlQuery}
+                    preview={true}
                 />
                 <PreviewFilters
                     kyrixPredicates={this.props.kyrixPredicates}
                     getSqlPredicates={this.props.getSqlPredicates}
                     kyrixViewId={this.props.kyrixViewId}
+                    s
                 />
             </div>
         );
