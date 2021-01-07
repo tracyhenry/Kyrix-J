@@ -1,0 +1,66 @@
+[
+    {
+        "source": "fclt_building",
+        "target": "fclt_rooms",
+        "matches": [
+            {
+                "sourceCol": "fclt_building_key",
+                "targetCol": "fclt_building_key"
+            },
+            {
+                "sourceCol": "latitude_wgs",
+                "targetCol": "latitude_wgs"
+            },
+            {
+                "sourceCol": "longitude_wgs",
+                "targetCol": "longitude_wgs"
+            },
+            {
+                "sourceCol": "warehouse_load_date",
+                "targetCol": "warehouse_load_date"
+            }
+        ]
+    },
+    {
+        "source": "fclt_rooms",
+        "target": "course_catalog_subject_offered",
+        "matches": [
+            {
+                "sourceCol": "fclt_building_key",
+                "targetCol": "fclt_building_key"
+            },
+            {
+                "sourceCol": "warehouse_load_date",
+                "targetCol": "warehouse_load_date"
+            }
+        ]
+    },
+    {
+        "source": "fclt_rooms",
+        "target": "mit_student_directory",
+        "matches": [
+            {
+                "sourceCol": "building_room",
+                "targetCol": "office_location"
+            },
+            {
+                "sourceCol": "warehouse_load_date",
+                "targetCol": "warehouse_load_date"
+            }
+        ]
+    },
+    {
+        "source": "course_catalog_subject_offered",
+        "target": "mit_student_directory",
+        "matches": [
+            {
+                "sourceCol": "dept_code",
+                "targetCol": "department"
+            },
+            {
+                "sourceCol": "warehouse_load_date",
+                "targetCol": "warehouse_load_date"
+            }
+        ]
+    }
+]
