@@ -4,7 +4,7 @@
     "description": "Auto complete service for Kyrix-J",
     "main": "index.js",
     "scripts": {
-        "start": "node --experimental-json-modules index.js",
+        "start": "node index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
@@ -12,6 +12,5 @@
     "dependencies": {
         "express": "^4.17.1",
         "pg": "^8.5.1"
-    },
-    "type": "module"
+    }
 }

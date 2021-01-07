@@ -1,6 +1,6 @@
-import express from "express";
-import psql from "pg";
-import data from "../src/metadata/mitdwh.json";
+const express = require("express");
+const psql = require("pg");
+const data = require("../src/metadata/mitdwh.json");
 
 const app = express();
 const port = 3001;
