@@ -27,8 +27,8 @@ class RawDataTable extends Component {
 
     render() {
         const curTable = this.props.curTable;
-        const primaryKey =
-            curTable.length > 0 ? this.props.tableColumns[curTable][0] : "";
+        const primaryKeys =
+            curTable.length > 0 ? this.props.primaryKeys[curTable] : [];
 
         const rawColumns = Object.keys(
             this.props.kyrixRenderData.length > 0
@@ -55,9 +55,9 @@ class RawDataTable extends Component {
         });
 
         // columns
-        let antdColumns = [toAntdColumn(primaryKey)];
+        let antdColumns = primaryKeys.map(d => toAntdColumn(d));
         antdColumns = antdColumns.concat(
-            rawColumns.filter(d => d !== primaryKey).map(toAntdColumn)
+            rawColumns.filter(d => !primaryKeys.includes(d)).map(toAntdColumn)
         );
 
         // data

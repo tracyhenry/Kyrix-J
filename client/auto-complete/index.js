@@ -42,7 +42,7 @@ app.get("/search", (req, res) => {
         }
 
         // primary key values - talk to postgres
-        let primaryKey = data.tableColumns[t][0]
+        let primaryKey = data.primaryKeys[t][0]
             .toLowerCase()
             .split(" ")
             .join("_");

@@ -436,7 +436,6 @@ class KyrixJ extends Component {
                     searchResults={this.state.searchResults}
                     handleSearch={this.handleSearchBarSearch}
                     handleSearchBarInputChange={this.handleSearchBarInputChange}
-                    tableColumns={metadata.tableColumns}
                     handleHistoryVisibleChange={this.handleHistoryVisibleChange}
                     handleBookmarksVisibleChange={
                         this.handleBookmarksVisibleChange
@@ -514,7 +513,7 @@ class KyrixJ extends Component {
                     clickJumpDefaults={metadata.clickJumpDefaults}
                 />
                 <RawDataTable
-                    tableColumns={metadata.tableColumns}
+                    primaryKeys={metadata.primaryKeys}
                     curTable={
                         this.state.tableHistory.length > 0
                             ? this.state.tableHistory[

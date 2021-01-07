@@ -224,7 +224,6 @@
             "warehouse_load_date",
             "num_of_rooms"
         ],
-
         "fclt_rooms": [
             "building_room",
             "fclt_room_key",
@@ -253,7 +252,6 @@
             "warehouse_load_date",
             "area"
         ],
-
         "course_catalog_subject_offered": [
             "subject_title",
             "academic_year",
@@ -325,7 +323,6 @@
             "meet_place",
             "total_units"
         ],
-
         "mit_student_directory": [
             "full_name",
             "first_name",
@@ -341,7 +338,12 @@
             "warehouse_load_date"
         ]
     },
-
+    "primaryKeys": {
+        "fclt_building": ["building_name", "fclt_building_key"],
+        "fclt_rooms": ["building_room"],
+        "course_catalog_subject_offered": ["subject_title"],
+        "mit_student_directory": ["full_name"]
+    },
     "clickJumpDefaults": {
         "fclt_building": [
             {
