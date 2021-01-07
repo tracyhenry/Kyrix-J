@@ -7,8 +7,6 @@ const StaticAggregation = require("../../src/template-api/StaticAggregation")
 
 // construct a project
 var p = new Project("mitdwh", "../../../config.txt");
-var vw = 1000,
-    vh = 1000;
 
 /******************************** canvases ********************************/
 // SSV of buildings
@@ -71,10 +69,11 @@ var ssv = {
         xAxisTitle: "Number of Rooms",
         yAxisTitle: "Assignable Area (sq ft)",
         numLevels: 4,
-        topLevelWidth: vw,
-        topLevelHeight: vh
+        topLevelWidth: 1000,
+        topLevelHeight: 1000
     }
 };
+console.log(ssv);
 
 var ret = p.addSSV(new SSV(ssv));
 var building_pyramid = ret.pyramid;
