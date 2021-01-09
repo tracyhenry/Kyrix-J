@@ -7,15 +7,85 @@ const graph = misc.graph;
 const helper = require("./helper");
 const psql = require("pg");
 
+// global variables
+let allColumns, keyColumns, canvases;
+
+async function generateMetadata() {
+    // generate metadata
+    let metadata = {};
+
+    // view Id
+    metadata.kyrixViewId =
+        canvases[0].visDataMappings.type === "scatterplot"
+            ? `ssv0`
+            : canvases[0].id;
+
+    // SQL query, canvasIdToTable, visualDataMappings
+    metadata.sqlQuery = {};
+    metadata.canvasIdToTable = {};
+    metadata.visualDataMappings = {};
+    canvases.forEach(c => {
+        metadata.sqlQuery[c.id] = c.query;
+        metadata.canvasIdToTable[c.id] = c.table;
+        metadata.visualDataMappings[c.id] = c.visDataMappings;
+    });
+
+    // graph edges
+    metadata.graphEdges = graph;
+
+    // table metadata
+    metadata.tableMetadata = {};
+    let tm = metadata.tableMetadata;
+    let tables = Object.keys(pk);
+    for (let t of tables) {
+        tm[t] = {};
+        // get number of rows
+        let sql = `SELECT COUNT(*) FROM ${t}`;
+        let res = await client.query(sql);
+        tm[t].numRecords = res.rows[0].count;
+
+        // get number of canvases
+        tm[t].numCanvas = canvases.filter(
+            c =>
+                c.table === t &&
+                (!c.id.startsWith("ssv") || c.id.includes("level0"))
+        ).length;
+    }
+
+    // tableColumns
+    metadata.tableColumns = allColumns;
+
+    // primary keys
+    metadata.primaryKeys = pk;
+
+    // click jump defaults
+    metadata.clickJumpDefaults = {};
+    let cjd = metadata.clickJumpDefaults;
+    tables.forEach(t => {
+        cjd[t] = [];
+    });
+    canvases.forEach(c => {
+        if (c.id.startsWith("ssv") && !c.id.includes("level0")) return;
+        cjd[c.table].push({
+            canvasId: c.id,
+            predDict: c.predDict,
+            newVpX: 0,
+            newVpY: 0
+        });
+    });
+
+    // write to output file
+    helper.writeJSON(metadata, `apps/${appName}/output/${appName}.json`);
+}
+
 async function main() {
     // connect to postgres
     await client.connect();
 
     // get column list for each table using pg
     let tables = Object.keys(pk);
-    let allColumns = {};
-    for (let i = 0; i < tables.length; i++) {
-        let t = tables[i];
+    allColumns = {};
+    for (let t of tables) {
         let res = await client.query(`SELECT * FROM ${t} LIMIT 1;`);
         allColumns[t] = res.fields
             .filter(d => d !== "search_tsvector")
@@ -23,9 +93,8 @@ async function main() {
     }
 
     // for each table, get a list of key columns (columns matched to other tables)
-    let keyColumns = {};
-    for (let i = 0; i < tables.length; i++) {
-        let t = tables[i];
+    keyColumns = {};
+    for (let t of tables) {
         keyColumns[t] = [];
         graph.forEach(d => {
             d.matches.forEach(p => {
@@ -38,8 +107,7 @@ async function main() {
     }
 
     // construct word clouds, put in the vis array
-    for (let i = 0; i < tables.length; i++) {
-        let t = tables[i];
+    for (let t of tables) {
         let sampleFields = keyColumns[t].filter(d => !pk[t].includes(d));
         sampleFields = sampleFields.concat(
             allColumns[t]
@@ -77,11 +145,10 @@ async function main() {
     // each element in canvases is an object with fields like
     // vis data mapping, canvasId, query, table, predDict, spec
     // that are useful in generating the metadata file
-    let canvases = [];
+    canvases = [];
     let ssvCounter = 0,
         saCounter = 0;
-    for (let i = 0; i < vis.length; i++) {
-        let spec = vis[i];
+    for (let spec of vis) {
         let cc = [];
 
         // decide if it's ssv or sa
@@ -253,7 +320,10 @@ async function main() {
         canvases = canvases.concat(cc);
     }
 
-    // helper.writeJSON(canvases, "tt.json");
+    // generate metadata
+    await generateMetadata();
+
+    // helper.writeJSON(canvases, "canvases.json");
 }
 
 // pg client

@@ -1,0 +1,398 @@
+{
+    "kyrixViewId": "ssv0",
+    "sqlQuery": {
+        "ssv0_level0": "SELECT building_name, fclt_building_key, building_type, building_height, date_built, num_of_rooms, assignable_area \nFROM Fclt_building;",
+        "ssv0_level1": "SELECT building_name, fclt_building_key, building_type, building_height, date_built, num_of_rooms, assignable_area \nFROM Fclt_building;",
+        "ssv0_level2": "SELECT building_name, fclt_building_key, building_type, building_height, date_built, num_of_rooms, assignable_area \nFROM Fclt_building;",
+        "ssv0_level3": "SELECT building_name, fclt_building_key, building_type, building_height, date_built, num_of_rooms, assignable_area \nFROM Fclt_building;",
+        "staticAggregation0": "SELECT fclt_building_key, organization_name, SUM(area) \nFROM fclt_rooms \nGROUP BY fclt_building_key, organization_name;",
+        "staticAggregation1": "SELECT building_room, SUM(area) \nFROM fclt_rooms \nGROUP BY building_room;",
+        "staticAggregation2": "SELECT student_year, COUNT(*) \nFROM mit_student_directory \nGROUP BY student_year;",
+        "staticAggregation3": "SELECT major_use_desc, use_desc, SUM(area) \nFROM fclt_rooms \nGROUP BY major_use_desc, use_desc;",
+        "staticAggregation4": "SELECT department_name, SUM(total_units) \nFROM course_catalog_subject_offered \nGROUP BY department_name;",
+        "staticAggregation5": "SELECT building_name \nFROM fclt_building",
+        "staticAggregation6": "SELECT building_room \nFROM fclt_rooms",
+        "staticAggregation7": "SELECT subject_title \nFROM course_catalog_subject_offered",
+        "staticAggregation8": "SELECT full_name \nFROM mit_student_directory"
+    },
+    "canvasIdToTable": {
+        "ssv0_level0": "fclt_building",
+        "ssv0_level1": "fclt_building",
+        "ssv0_level2": "fclt_building",
+        "ssv0_level3": "fclt_building",
+        "staticAggregation0": "fclt_rooms",
+        "staticAggregation1": "fclt_rooms",
+        "staticAggregation2": "mit_student_directory",
+        "staticAggregation3": "fclt_rooms",
+        "staticAggregation4": "course_catalog_subject_offered",
+        "staticAggregation5": "fclt_building",
+        "staticAggregation6": "fclt_rooms",
+        "staticAggregation7": "course_catalog_subject_offered",
+        "staticAggregation8": "mit_student_directory"
+    },
+    "visualDataMappings": {
+        "ssv0_level0": {
+            "type": "scatterplot",
+            "x": "num_of_rooms",
+            "y": "assignable_area",
+            "dot_size": "building_height",
+            "dot_color": "building_type"
+        },
+        "ssv0_level1": {
+            "type": "scatterplot",
+            "x": "num_of_rooms",
+            "y": "assignable_area",
+            "dot_size": "building_height",
+            "dot_color": "building_type"
+        },
+        "ssv0_level2": {
+            "type": "scatterplot",
+            "x": "num_of_rooms",
+            "y": "assignable_area",
+            "dot_size": "building_height",
+            "dot_color": "building_type"
+        },
+        "ssv0_level3": {
+            "type": "scatterplot",
+            "x": "num_of_rooms",
+            "y": "assignable_area",
+            "dot_size": "building_height",
+            "dot_color": "building_type"
+        },
+        "staticAggregation0": {
+            "type": "treemap",
+            "rect_size": "SUM(area)",
+            "rect_color": "SUM(area)"
+        },
+        "staticAggregation1": {
+            "type": "circlepack",
+            "circle_radius": "SUM(area)",
+            "circle_color": "SUM(area)"
+        },
+        "staticAggregation2": {
+            "type": "piechart",
+            "pie_color": "student_year",
+            "pie_angle": "COUNT(*)"
+        },
+        "staticAggregation3": {
+            "type": "barchart",
+            "x": "major_use_desc",
+            "y": "SUM(area)",
+            "bar_color": "use_desc"
+        },
+        "staticAggregation4": {
+            "type": "barchart",
+            "x": "department_name",
+            "y": "SUM(total_units)"
+        },
+        "staticAggregation5": {
+            "type": "wordcloud",
+            "word_column": "building_name",
+            "word_size": "random"
+        },
+        "staticAggregation6": {
+            "type": "wordcloud",
+            "word_column": "building_room",
+            "word_size": "random"
+        },
+        "staticAggregation7": {
+            "type": "wordcloud",
+            "word_column": "subject_title",
+            "word_size": "random"
+        },
+        "staticAggregation8": {
+            "type": "wordcloud",
+            "word_column": "full_name",
+            "word_size": "random"
+        }
+    },
+    "graphEdges": [
+        {
+            "source": "fclt_building",
+            "target": "fclt_rooms",
+            "matches": [
+                {
+                    "sourceCol": "fclt_building_key",
+                    "targetCol": "fclt_building_key"
+                },
+                {"sourceCol": "latitude_wgs", "targetCol": "latitude_wgs"},
+                {"sourceCol": "longitude_wgs", "targetCol": "longitude_wgs"},
+                {
+                    "sourceCol": "warehouse_load_date",
+                    "targetCol": "warehouse_load_date"
+                }
+            ]
+        },
+        {
+            "source": "fclt_rooms",
+            "target": "course_catalog_subject_offered",
+            "matches": [
+                {"sourceCol": "building_room", "targetCol": "meet_place"},
+                {
+                    "sourceCol": "warehouse_load_date",
+                    "targetCol": "warehouse_load_date"
+                }
+            ]
+        },
+        {
+            "source": "fclt_rooms",
+            "target": "mit_student_directory",
+            "matches": [
+                {"sourceCol": "building_room", "targetCol": "office_location"},
+                {
+                    "sourceCol": "warehouse_load_date",
+                    "targetCol": "warehouse_load_date"
+                }
+            ]
+        },
+        {
+            "source": "course_catalog_subject_offered",
+            "target": "mit_student_directory",
+            "matches": [
+                {"sourceCol": "dept_code", "targetCol": "department"},
+                {
+                    "sourceCol": "warehouse_load_date",
+                    "targetCol": "warehouse_load_date"
+                }
+            ]
+        }
+    ],
+    "tableMetadata": {
+        "fclt_building": {"numRecords": "228", "numCanvas": 2},
+        "fclt_rooms": {"numRecords": "40546", "numCanvas": 4},
+        "course_catalog_subject_offered": {
+            "numRecords": "255976",
+            "numCanvas": 2
+        },
+        "mit_student_directory": {"numRecords": "11447", "numCanvas": 2}
+    },
+    "tableColumns": {
+        "fclt_building": [
+            "fclt_building_key",
+            "building_number",
+            "parent_building_number",
+            "parent_building_name",
+            "parent_building_name_long",
+            "building_name_long",
+            "ext_gross_area",
+            "assignable_area",
+            "non_assignable_area",
+            "site",
+            "campus_sector",
+            "access_level_code",
+            "access_level_name",
+            "building_type",
+            "ownership_type",
+            "building_use",
+            "occupancy_class",
+            "building_height",
+            "cost_center_code",
+            "cost_collector_key",
+            "latitude_wgs",
+            "longitude_wgs",
+            "easting_x_spcs",
+            "northing_y_spcs",
+            "building_sort",
+            "building_named_for",
+            "building_name",
+            "date_built",
+            "date_acquired",
+            "date_occupied",
+            "warehouse_load_date",
+            "num_of_rooms",
+            "search_tsvector"
+        ],
+        "fclt_rooms": [
+            "fclt_room_key",
+            "building_room",
+            "fclt_building_key",
+            "floor2",
+            "fclt_floor_key",
+            "room",
+            "space_id",
+            "fclt_major_use_key",
+            "major_use_desc",
+            "fclt_use_key",
+            "use_desc",
+            "fclt_minor_use_key",
+            "minor_use_desc",
+            "fclt_organization_key",
+            "organization_name",
+            "fclt_minor_organization_key",
+            "minor_organization",
+            "room_full_name",
+            "dept_code",
+            "access_level",
+            "latitude_wgs",
+            "longitude_wgs",
+            "northing_spcs",
+            "easting_spcs",
+            "warehouse_load_date",
+            "area",
+            "search_tsvector"
+        ],
+        "course_catalog_subject_offered": [
+            "academic_year",
+            "term_code",
+            "subject_id",
+            "subject_code",
+            "subject_number",
+            "source_subject_id",
+            "print_subject_id",
+            "is_printed_in_bulletin",
+            "department_code",
+            "department_name",
+            "effective_term_code",
+            "subject_short_title",
+            "subject_title",
+            "is_variable_units",
+            "lecture_units",
+            "lab_units",
+            "preparation_units",
+            "design_units",
+            "grade_type",
+            "grade_type_desc",
+            "grade_rule",
+            "grade_rule_desc",
+            "hgn_code",
+            "hgn_desc",
+            "hgn_except",
+            "gir_attribute",
+            "gir_attribute_desc",
+            "comm_req_attribute",
+            "comm_req_attribute_desc",
+            "tuition_attribute",
+            "tuition_attribute_desc",
+            "write_req_attribute",
+            "write_req_attribute_desc",
+            "supervisor_attribute",
+            "supervisor_attribute_desc",
+            "prerequisites",
+            "subject_description",
+            "joint_subjects",
+            "school_wide_electives",
+            "meets_with_subjects",
+            "equivalent_subjects",
+            "is_offered_this_year",
+            "is_offered_fall_term",
+            "is_offered_iap",
+            "is_offered_spring_term",
+            "is_offered_summer_term",
+            "fall_instructors",
+            "spring_instructors",
+            "status_change",
+            "last_activity_date",
+            "warehouse_load_date",
+            "master_subject_id",
+            "hass_attribute",
+            "hass_attribute_desc",
+            "term_duration",
+            "global_regions",
+            "global_countries",
+            "on_line_page_number",
+            "section_id",
+            "is_master_section",
+            "is_lecture_section",
+            "is_lab_section",
+            "is_recitation_section",
+            "is_design_section",
+            "responsible_faculty_name",
+            "responsible_faculty_mit_id",
+            "meet_time",
+            "meet_place",
+            "total_units",
+            "search_tsvector"
+        ],
+        "mit_student_directory": [
+            "first_name",
+            "middle_name",
+            "last_name",
+            "full_name",
+            "office_location",
+            "office_phone",
+            "email_address",
+            "department",
+            "department_name",
+            "student_year",
+            "full_name_uppercase",
+            "warehouse_load_date",
+            "search_tsvector"
+        ]
+    },
+    "primaryKeys": {
+        "fclt_building": ["building_name", "fclt_building_key"],
+        "fclt_rooms": ["building_room"],
+        "course_catalog_subject_offered": ["subject_title"],
+        "mit_student_directory": ["full_name"]
+    },
+    "clickJumpDefaults": {
+        "fclt_building": [
+            {
+                "canvasId": "ssv0_level0",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation5",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            }
+        ],
+        "fclt_rooms": [
+            {
+                "canvasId": "staticAggregation0",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation1",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation3",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation6",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            }
+        ],
+        "course_catalog_subject_offered": [
+            {
+                "canvasId": "staticAggregation4",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation7",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            }
+        ],
+        "mit_student_directory": [
+            {
+                "canvasId": "staticAggregation2",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
+                "canvasId": "staticAggregation8",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            }
+        ]
+    }
+}
