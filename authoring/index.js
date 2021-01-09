@@ -8,7 +8,10 @@ const helper = require("./helper");
 const psql = require("pg");
 
 // global variables
-let allColumns, keyColumns, canvases;
+let allColumns,
+    keyColumns,
+    canvases,
+    tables = Object.keys(pk);
 
 async function generateMetadata() {
     // generate metadata
@@ -78,12 +81,7 @@ async function generateMetadata() {
     helper.writeJSON(metadata, `apps/${appName}/output/${appName}.json`);
 }
 
-async function main() {
-    // connect to postgres
-    await client.connect();
-
-    // get column list for each table using pg
-    let tables = Object.keys(pk);
+async function getAllColumns() {
     allColumns = {};
     for (let t of tables) {
         let res = await client.query(`SELECT * FROM ${t} LIMIT 1;`);
@@ -91,8 +89,9 @@ async function main() {
             .filter(d => d !== "search_tsvector")
             .map(d => d.name);
     }
+}
 
-    // for each table, get a list of key columns (columns matched to other tables)
+function getKeyColumns() {
     keyColumns = {};
     for (let t of tables) {
         keyColumns[t] = [];
@@ -105,43 +104,9 @@ async function main() {
             });
         });
     }
+}
 
-    // construct word clouds, put in the vis array
-    for (let t of tables) {
-        let sampleFields = keyColumns[t].filter(d => !pk[t].includes(d));
-        sampleFields = sampleFields.concat(
-            allColumns[t]
-                .filter(d => !pk[t].includes(d) && !sampleFields.includes(d))
-                .slice(0, Math.max(0, 10 - sampleFields.length))
-        );
-        let spec = {
-            db: misc.db,
-            query: {
-                table: t,
-                dimensions: pk[t],
-                measure: "SUM(random() * 100)",
-                sampleFields: sampleFields
-            },
-            type: "wordCloud",
-            tooltip: {
-                columns: pk[t],
-                aliases: pk[t]
-            },
-            padding: 15,
-            legend: {
-                title: `Primary keys of table ${t.toUpperCase()} (random text size)`
-            },
-            textFields: [pk[t][0]],
-            cloud: {
-                maxTextSize: 65,
-                fontFamily: "Arial"
-            }
-        };
-
-        // add to vis
-        vis.push(spec);
-    }
-
+function constructCanvases() {
     // each element in canvases is an object with fields like
     // vis data mapping, canvasId, query, table, predDict, spec
     // that are useful in generating the metadata file
@@ -319,6 +284,60 @@ async function main() {
         // add to canvases array
         canvases = canvases.concat(cc);
     }
+}
+
+function addDefaultWordClouds() {
+    for (let t of tables) {
+        let sampleFields = keyColumns[t].filter(d => !pk[t].includes(d));
+        sampleFields = sampleFields.concat(
+            allColumns[t]
+                .filter(d => !pk[t].includes(d) && !sampleFields.includes(d))
+                .slice(0, Math.max(0, 10 - sampleFields.length))
+        );
+        let spec = {
+            db: misc.db,
+            query: {
+                table: t,
+                dimensions: pk[t],
+                measure: "SUM(random() * 100)",
+                sampleFields: sampleFields
+            },
+            type: "wordCloud",
+            tooltip: {
+                columns: pk[t],
+                aliases: pk[t]
+            },
+            padding: 15,
+            legend: {
+                title: `Primary keys of table ${t.toUpperCase()} (random text size)`
+            },
+            textFields: [pk[t][0]],
+            cloud: {
+                maxTextSize: 65,
+                fontFamily: "Arial"
+            }
+        };
+
+        // add to vis
+        vis.push(spec);
+    }
+}
+
+async function main() {
+    // connect to postgres
+    await client.connect();
+
+    // get column list for each table using pg
+    await getAllColumns();
+
+    // for each table, get a list of key columns (columns matched to other tables)
+    getKeyColumns();
+
+    // construct word clouds, add in the vis array
+    addDefaultWordClouds();
+
+    // construct the canvases array
+    constructCanvases();
 
     // generate metadata
     await generateMetadata();
