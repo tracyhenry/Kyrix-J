@@ -75,43 +75,113 @@ async function main() {
     }
 
     // each element in canvases is an object with fields like
-    // type, canvasId, query, table, predDict, spec
+    // vis data mapping, canvasId, query, table, predDict, spec
     // that are useful in generating the metadata file
     let canvases = [];
     let ssvCounter = 0,
         saCounter = 0;
     for (let i = 0; i < vis.length; i++) {
         let spec = vis[i];
-        let c = {};
+        let cc = [];
 
         // decide if it's ssv or sa
         if ("layout" in spec) {
-            // type
-            c.type = "scatterplot";
+            let ssvId = ssvCounter++;
 
-            // canvas Id
-            c.id = "ssv" + ssvCounter++;
+            // num levels
+            let numLevels = 10;
+            if ("config" in spec && "numLevels" in spec.config)
+                numLevels = spec.config.numLevels;
 
-            // query
-            c.query = helper.formatSQL(spec.data.query);
+            // visual data mappings
+            let vdm = {
+                type: "scatterplot",
+                x: spec.layout.x.field,
+                y: spec.layout.y.field
+            };
+            if (spec.marks.cluster.config.dotSizeColumn)
+                vdm.dot_size = spec.marks.cluster.config.dotSizeColumn;
+            if (spec.marks.cluster.config.dotColorColumn)
+                vdm.dot_color = spec.marks.cluster.config.dotColorColumn;
 
-            // table
-            let s = c.query.substring(c.query.indexOf("FROM") + 4);
-            let p = 0;
-            for (; ; p++) if (s[p] !== " ") break;
-            c.table = "";
-            for (; p < s.length; p++)
-                if (s[p] === " " || s[p] === ";") break;
-                else c.table += s[p];
+            // one canvas per level
+            for (let j = 0; j < numLevels; j++) {
+                let c = {};
+
+                // vis data mapping
+                c.visDataMappings = vdm;
+
+                // canvas Id
+                c.id = `ssv${ssvId}_level${j}`;
+
+                // query
+                c.query = helper.formatSQL(spec.data.query);
+
+                // table
+                let s = c.query.substring(c.query.indexOf("FROM") + 4);
+                let p = 0;
+                for (; ; p++) if (s[p] !== " ") break;
+                c.table = "";
+                for (; p < s.length; p++)
+                    if (s[p] === " " || s[p] === ";") break;
+                    else c.table += s[p];
+                c.table = c.table.toLowerCase();
+
+                cc.push(c);
+            }
         } else {
-            // type
-            c.type = spec.type;
+            let c = {};
+
+            // vis data mapping
+            switch (spec.type) {
+                case "treemap":
+                    c.visDataMappings = {
+                        type: "treemap",
+                        rect_size: spec.query.measure,
+                        rect_color: spec.query.measure
+                    };
+                    break;
+                case "circlePack":
+                    c.visDataMappings = {
+                        type: "circlepack",
+                        circle_radius: spec.query.measure,
+                        circle_color: spec.query.measure
+                    };
+                    break;
+                case "pie":
+                    c.visDataMappings = {
+                        type: "piechart",
+                        pie_color: spec.query.dimensions.join(", "),
+                        pie_angle: spec.query.measure
+                    };
+                    break;
+                case "bar":
+                    c.visDataMappings = {
+                        type: "barchart",
+                        x: spec.query.dimensions.join(", "),
+                        y: spec.query.measure
+                    };
+                    if (spec.query.stackDimensions)
+                        c.visDataMappings.bar_color = spec.query.stackDimensions.join(
+                            ", "
+                        );
+                    break;
+                case "wordCloud":
+                    c.visDataMappings = {
+                        type: "wordcloud",
+                        word_column: spec.textFields[0],
+                        word_size: spec.query.measure.includes("random")
+                            ? "random"
+                            : spec.query.measure
+                    };
+                    break;
+            }
 
             // canvas Id
             c.id = "staticAggregation" + saCounter++;
 
             // table
-            c.table = spec.query.table;
+            c.table = spec.query.table.toLowerCase();
 
             // query
             if (spec.query.measure.includes("random"))
@@ -159,20 +229,31 @@ async function main() {
                     : 2;
                 return va - vb;
             });
+
+            cc.push(c);
         }
 
         // default filters
         if ("predDict" in spec) {
-            c.predDict = spec.predDict;
+            cc.forEach(c => {
+                c.predDict = spec.predDict;
+            });
             delete spec.predDict;
-        } else c.predDict = {};
+        } else
+            cc.forEach(c => {
+                c.predDict = {};
+            });
 
         // spec
-        c.spec = spec;
+        cc.forEach(c => {
+            c.spec = spec;
+        });
 
         // add to canvases array
-        canvases.push(c);
+        canvases = canvases.concat(cc);
     }
+
+    // helper.writeJSON(canvases, "tt.json");
 }
 
 // pg client

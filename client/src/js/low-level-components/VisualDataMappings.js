@@ -17,12 +17,16 @@ class VisualDataMappings extends Component {
                     </Descriptions.Item>
                     <Descriptions.Item label="X Axis">{m.x}</Descriptions.Item>
                     <Descriptions.Item label="Y Axis">{m.y}</Descriptions.Item>
-                    <Descriptions.Item label="Point Size">
-                        {m.dot_size}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Point Color">
-                        {m.dot_color}
-                    </Descriptions.Item>
+                    {m.dot_size && (
+                        <Descriptions.Item label="Point Size">
+                            {m.dot_size}
+                        </Descriptions.Item>
+                    )}
+                    {m.dot_color && (
+                        <Descriptions.Item label="Point Color">
+                            {m.dot_color}
+                        </Descriptions.Item>
+                    )}
                 </>
             );
         else if (visType === "treemap")
@@ -47,11 +51,11 @@ class VisualDataMappings extends Component {
                     </Descriptions.Item>
                     <Descriptions.Item label="X Axis">{m.x}</Descriptions.Item>
                     <Descriptions.Item label="Y Axis">{m.y}</Descriptions.Item>
-                    {"bar_color" in m ? (
+                    {m.bar_color && (
                         <Descriptions.Item label="Bar Color">
                             {m.bar_color}
                         </Descriptions.Item>
-                    ) : null}
+                    )}
                 </>
             );
         else if (visType === "circlepack")
@@ -76,6 +80,9 @@ class VisualDataMappings extends Component {
                     </Descriptions.Item>
                     <Descriptions.Item label="Pie Color">
                         {m.pie_color}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Pie Angle">
+                        {m.pie_angle}
                     </Descriptions.Item>
                 </>
             );

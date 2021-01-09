@@ -77,7 +77,8 @@
         },
         "staticAggregation2": {
             "type": "piechart",
-            "pie_color": "student_year"
+            "pie_color": "student_year",
+            "pie_angle": "COUNT(*)"
         },
         "staticAggregation4": {
             "type": "barchart",
