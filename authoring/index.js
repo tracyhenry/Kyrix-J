@@ -4,14 +4,8 @@ const misc = require(`./apps/${appName}/input/misc.json`);
 const pk = misc.pk;
 const graph = misc.graph;
 
+const helper = require("./helper");
 const psql = require("pg");
-const client = new psql.Client({
-    host: "localhost",
-    user: "kyrix",
-    password: "kyrix_password",
-    database: misc.db,
-    port: "5433"
-});
 
 async function main() {
     // connect to postgres
@@ -46,13 +40,10 @@ async function main() {
     // construct word clouds, put in the vis array
     for (let i = 0; i < tables.length; i++) {
         let t = tables[i];
-        let sampleFields = pk[t];
-        keyColumns[t].forEach(d => {
-            if (!sampleFields.includes(d)) sampleFields.push(d);
-        });
+        let sampleFields = keyColumns[t].filter(d => !pk[t].includes(d));
         sampleFields = sampleFields.concat(
             allColumns[t]
-                .filter(d => !sampleFields.includes(d))
+                .filter(d => !pk[t].includes(d) && !sampleFields.includes(d))
                 .slice(0, Math.max(0, 10 - sampleFields.length))
         );
         let spec = {
@@ -84,12 +75,116 @@ async function main() {
     }
 
     // each element in canvases is an object with fields like
-    // id, query, type, table, predDict, spec
+    // type, canvasId, query, table, predDict, spec
     // that are useful in generating the metadata file
     let canvases = [];
+    let ssvCounter = 0,
+        saCounter = 0;
+    for (let i = 0; i < vis.length; i++) {
+        let spec = vis[i];
+        let c = {};
+
+        // decide if it's ssv or sa
+        if ("layout" in spec) {
+            // type
+            c.type = "scatterplot";
+
+            // canvas Id
+            c.id = "ssv" + ssvCounter++;
+
+            // query
+            c.query = helper.formatSQL(spec.data.query);
+
+            // table
+            let s = c.query.substring(c.query.indexOf("FROM") + 4);
+            let p = 0;
+            for (; ; p++) if (s[p] !== " ") break;
+            c.table = "";
+            for (; p < s.length; p++)
+                if (s[p] === " " || s[p] === ";") break;
+                else c.table += s[p];
+        } else {
+            // type
+            c.type = spec.type;
+
+            // canvas Id
+            c.id = "staticAggregation" + saCounter++;
+
+            // table
+            c.table = spec.query.table;
+
+            // query
+            if (spec.query.measure.includes("random"))
+                c.query = "SELECT " + pk[c.table][0] + " FROM " + c.table;
+            else {
+                c.query = "SELECT ";
+                let dimensions = spec.query.dimensions;
+                if (spec.query.stackDimensions)
+                    dimensions = dimensions.concat(spec.query.stackDimensions);
+                c.query +=
+                    dimensions.join(", ") +
+                    ", " +
+                    spec.query.measure +
+                    " FROM " +
+                    spec.query.table +
+                    " GROUP BY " +
+                    dimensions.join(", ") +
+                    ";";
+            }
+            c.query = helper.formatSQL(c.query);
+
+            // populate sampleFields with key columns if any of them don't exist
+            let sf = spec.query.sampleFields;
+            keyColumns[c.table]
+                .concat(pk[c.table])
+                .filter(
+                    d =>
+                        !spec.query.dimensions.includes(d) &&
+                        (spec.query.stackDimensions == null ||
+                            !spec.query.stackDimensions.includes(d))
+                )
+                .forEach(d => {
+                    if (!sf.includes(d)) sf.push(d);
+                });
+            sf.sort((a, b) => {
+                let va = pk[c.table].includes(a)
+                    ? 0
+                    : keyColumns[c.table].includes(a)
+                    ? 1
+                    : 2;
+                let vb = pk[c.table].includes(b)
+                    ? 0
+                    : keyColumns[c.table].includes(b)
+                    ? 1
+                    : 2;
+                return va - vb;
+            });
+        }
+
+        // default filters
+        if ("predDict" in spec) {
+            c.predDict = spec.predDict;
+            delete spec.predDict;
+        } else c.predDict = {};
+
+        // spec
+        c.spec = spec;
+
+        // add to canvases array
+        canvases.push(c);
+    }
 }
 
-// run
+// pg client
+const client = new psql.Client({
+    host: "localhost",
+    user: "kyrix",
+    password: "kyrix_password",
+    database: misc.db,
+    port: "5433"
+});
+
+// main
 main().then(() => {
     client.end();
 });
