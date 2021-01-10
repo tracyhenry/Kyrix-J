@@ -202,8 +202,7 @@
             "date_acquired",
             "date_occupied",
             "warehouse_load_date",
-            "num_of_rooms",
-            "search_tsvector"
+            "num_of_rooms"
         ],
         "fclt_rooms": [
             "fclt_room_key",
@@ -231,8 +230,7 @@
             "northing_spcs",
             "easting_spcs",
             "warehouse_load_date",
-            "area",
-            "search_tsvector"
+            "area"
         ],
         "course_catalog_subject_offered": [
             "academic_year",
@@ -303,8 +301,7 @@
             "responsible_faculty_mit_id",
             "meet_time",
             "meet_place",
-            "total_units",
-            "search_tsvector"
+            "total_units"
         ],
         "mit_student_directory": [
             "first_name",
@@ -318,8 +315,7 @@
             "department_name",
             "student_year",
             "full_name_uppercase",
-            "warehouse_load_date",
-            "search_tsvector"
+            "warehouse_load_date"
         ]
     },
     "primaryKeys": {
