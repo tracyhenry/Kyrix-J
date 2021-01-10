@@ -1,5 +1,5 @@
 {
-    "kyrixViewId": "ssv0",
+    "kyrixViewId": "KyrixJ",
     "sqlQuery": {
         "ssv0_level0": "SELECT building_name, fclt_building_key, building_type, building_height, date_built, num_of_rooms, assignable_area \nFROM Fclt_building;",
         "ssv0_level1": "SELECT building_name, fclt_building_key, building_type, building_height, date_built, num_of_rooms, assignable_area \nFROM Fclt_building;",

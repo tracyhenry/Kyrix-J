@@ -5,6 +5,7 @@ const pk = misc.pk;
 const graph = misc.graph;
 
 const helper = require("./helper");
+const genKyrixJS = require("./kyrixJS").genSpec;
 const psql = require("pg");
 
 // global variables
@@ -18,10 +19,7 @@ async function generateMetadata() {
     let metadata = {};
 
     // view Id
-    metadata.kyrixViewId =
-        canvases[0].visDataMappings.type === "scatterplot"
-            ? `ssv0`
-            : canvases[0].id;
+    metadata.kyrixViewId = "KyrixJ";
 
     // SQL query, canvasIdToTable, visualDataMappings
     metadata.sqlQuery = {};
@@ -341,6 +339,9 @@ async function main() {
 
     // generate metadata
     await generateMetadata();
+
+    // generate kyrix spec
+    genKyrixJS(canvases, appName);
 
     // helper.writeJSON(canvases, "canvases.json");
 }
