@@ -63,8 +63,12 @@
         },
         "type": "treemap",
         "tooltip": {
-            "columns": ["organization_name", "kyrixAggValue"],
-            "aliases": ["Organization", "Area"]
+            "columns": [
+                "fclt_building_key",
+                "organization_name",
+                "kyrixAggValue"
+            ],
+            "aliases": ["Building Key", "Organization", "Area"]
         },
         "legend": {"title": "Total Area by Organization"},
         "textFields": ["organization_name"]

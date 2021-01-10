@@ -544,7 +544,8 @@ class SchemaGraph extends Component {
     };
 
     registerJumpHandlers = () => {
-        if (window.kyrix.on("jumpstart.switch", "ssv0") != null) return;
+        if (window.kyrix.on("jumpstart.switch", this.props.kyrixViewId) != null)
+            return;
 
         var graphMainSvg = d3.select(this.svgRef.current);
 
@@ -635,9 +636,21 @@ class SchemaGraph extends Component {
             d3.select("body").style("pointer-events", "auto");
         };
 
-        window.kyrix.on("jumpstart.switch", "ssv0", jumpStartSwitch.bind(this));
-        window.kyrix.on("jumpstart.zoom", "ssv0", jumpStartZoom.bind(this));
-        window.kyrix.on("jumpend.zoom", "ssv0", jumpEndZoom.bind(this));
+        window.kyrix.on(
+            "jumpstart.switch",
+            this.props.kyrixViewId,
+            jumpStartSwitch.bind(this)
+        );
+        window.kyrix.on(
+            "jumpstart.zoom",
+            this.props.kyrixViewId,
+            jumpStartZoom.bind(this)
+        );
+        window.kyrix.on(
+            "jumpend.zoom",
+            this.props.kyrixViewId,
+            jumpEndZoom.bind(this)
+        );
     };
 
     highlightLinkOnJumpMouseover = () => {

@@ -5,6 +5,7 @@ const headerStuff = function() {
     // libraries
     const Project = require("../../src/index").Project;
     const Jump = require("../../src/Jump").Jump;
+    const View = require("../../src/View").View;
     const SSV = require("../../src/template-api/SSV").SSV;
     const StaticAggregation = require("../../src/template-api/StaticAggregation")
         .StaticAggregation;
@@ -17,17 +18,18 @@ const headerStuff = function() {
     p.addView(view);
 
     /******************************** canvases ********************************/
+    let spec;
 };
 
 const addSSVCanvas = function() {
     // ================================================================
-    let spec = REPLACE_ME_JSON;
+    spec = REPLACE_ME_JSON;
     let REPLACE_ME_PYRAMID = p.addSSV(new SSV(spec), {view: view}).pyramid;
 };
 
 const addStaticAggregationCanvas = function() {
     // ================================================================
-    let spec = REPLACE_ME_JSON;
+    spec = REPLACE_ME_JSON;
     let REPLACE_ME_CANVAS = p.addStaticAggregation(
         new StaticAggregation(spec),
         {view: view}
@@ -35,7 +37,7 @@ const addStaticAggregationCanvas = function() {
 };
 
 const footerStuff = function() {
-    p.setInitialStates(REPLACE_ME_CANVAS, 0, 0);
+    p.setInitialStates(view, REPLACE_ME_CANVAS, 0, 0);
 
     // save to db
     p.saveProject();

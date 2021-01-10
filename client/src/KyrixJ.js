@@ -460,6 +460,7 @@ class KyrixJ extends Component {
                     graphEdges={metadata.graphEdges}
                     tableMetadata={metadata.tableMetadata}
                     tableColumns={metadata.tableColumns}
+                    kyrixViewId={metadata.kyrixViewId}
                 />
                 <InfoPanel
                     kyrixCanvas={this.state.kyrixCanvas}

@@ -62,8 +62,8 @@
             "target": "mit_student_directory",
             "matches": [
                 {
-                    "sourceCol": "dept_code",
-                    "targetCol": "department"
+                    "sourceCol": "department_name",
+                    "targetCol": "department_name"
                 },
                 {
                     "sourceCol": "warehouse_load_date",

@@ -19,7 +19,7 @@ async function generateMetadata() {
     let metadata = {};
 
     // view Id
-    metadata.kyrixViewId = "KyrixJ";
+    metadata.kyrixViewId = appName;
 
     // SQL query, canvasIdToTable, visualDataMappings
     metadata.sqlQuery = {};
@@ -84,7 +84,7 @@ async function getAllColumns() {
     for (let t of tables) {
         let res = await client.query(`SELECT * FROM ${t} LIMIT 1;`);
         allColumns[t] = res.fields
-            .filter(d => d !== "search_tsvector")
+            .filter(d => d.name !== "search_tsvector")
             .map(d => d.name);
     }
 }
