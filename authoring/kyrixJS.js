@@ -1,7 +1,7 @@
 const getBodyStringOfFunction = require("./helper").getBodyStringOfFunction;
 const writeJS = require("./helper").writeJS;
 
-const headerStuff = function() {
+const headerStuff = () => {
     // libraries
     const Project = require("../../src/index").Project;
     const Jump = require("../../src/Jump").Jump;
@@ -21,19 +21,62 @@ const headerStuff = function() {
     let spec;
 };
 
-const addSSVCanvas = function() {
+const addSSVCanvas = () => {
     // ================================================================
     spec = REPLACE_ME_JSON;
     let REPLACE_ME_PYRAMID = p.addSSV(new SSV(spec), {view: view}).pyramid;
 };
 
-const addStaticAggregationCanvas = function() {
+const addStaticAggregationCanvas = () => {
     // ================================================================
     spec = REPLACE_ME_JSON;
     let REPLACE_ME_CANVAS = p.addStaticAggregation(
         new StaticAggregation(spec),
         {view: view}
     ).canvas;
+};
+
+const jumpCommonVariables = () => {
+    /******************************** jumps ********************************/
+    let ssvJumpSelector = function(row, args) {
+        return args.layerId == 0;
+    };
+
+    let saJumpSelector = function(row) {
+        return row != null && typeof row == "object" && "kyrixAggValue" in row;
+    };
+
+    let newViewport = function() {
+        return {constant: [0, 0]};
+    };
+};
+
+const addJump = () => {
+    // ========================== REPLACE_ME_FROM_CANVAS --> REPLACE_ME_TO_CANVAS ==========================
+    var newPredicate = function(row) {
+        var pred = REPLACE_ME_PRED_JSON;
+        return REPLACE_ME_PRED_LAYERS;
+    };
+
+    var jumpName = function() {
+        return "Table REPLACE_ME_JUMPNAME_TABLE [REPLACE_ME_JUMPNAME_VISTYPE]";
+    };
+
+    p.addJump(
+        new Jump(
+            REPLACE_ME_FROM_CANVAS,
+            REPLACE_ME_TO_CANVAS,
+            "REPLACE_ME_JUMP_TYPE",
+            {
+                selector: REPLACE_ME_SELECTOR,
+                viewport: newViewport,
+                predicates: newPredicate,
+                name: jumpName,
+                noPrefix: true,
+                slideSuperman: true
+            }
+        )
+    );
 };
 
 const footerStuff = function() {
@@ -67,6 +110,9 @@ function genSpec(canvases, appName) {
             c.canvasObj = canvasObj;
         }
     }
+
+    // add jumps
+    s += getBodyStringOfFunction(jumpCommonVariables);
 
     // footer
     s += getBodyStringOfFunction(footerStuff).replace(
