@@ -134,31 +134,34 @@ function constructCanvases() {
             if (spec.marks.cluster.config.dotColorColumn)
                 vdm.dot_color = spec.marks.cluster.config.dotColorColumn;
 
+            // query
+            let query = helper.formatSQL(spec.data.query);
+
+            // table
+            let s = query.substring(query.indexOf("FROM") + 4);
+            let p = 0;
+            for (; ; p++) if (s[p] !== " ") break;
+            let table = "";
+            for (; p < s.length; p++)
+                if (s[p] === " " || s[p] === ";") break;
+                else table += s[p];
+            table = table.toLowerCase();
+
+            // filterable columns
+            let fCols = query
+                .substring(query.indexOf("SELECT") + 6, query.indexOf("FROM"))
+                .replace(/\s/g, "")
+                .split(",");
+
             // one canvas per level
-            for (let j = 0; j < numLevels; j++) {
-                let c = {};
-
-                // vis data mapping
-                c.visDataMappings = vdm;
-
-                // canvas Id
-                c.id = `ssv${ssvId}_level${j}`;
-
-                // query
-                c.query = helper.formatSQL(spec.data.query);
-
-                // table
-                let s = c.query.substring(c.query.indexOf("FROM") + 4);
-                let p = 0;
-                for (; ; p++) if (s[p] !== " ") break;
-                c.table = "";
-                for (; p < s.length; p++)
-                    if (s[p] === " " || s[p] === ";") break;
-                    else c.table += s[p];
-                c.table = c.table.toLowerCase();
-
-                cc.push(c);
-            }
+            for (let j = 0; j < numLevels; j++)
+                cc.push({
+                    query: query,
+                    table: table,
+                    visDataMappings: vdm,
+                    id: `ssv${ssvId}_level${j}`,
+                    filterableColumns: fCols
+                });
         } else {
             let c = {};
 
@@ -259,6 +262,12 @@ function constructCanvases() {
                     : 2;
                 return va - vb;
             });
+
+            // filterable columns
+            let fCols = spec.query.dimensions.concat(sf);
+            if (spec.query.stackDimensions)
+                fCols = fCols.concat(spec.query.stackDimensions);
+            c.filterableColumns = fCols;
 
             cc.push(c);
         }
