@@ -357,6 +357,25 @@ function addDefaultWordClouds() {
     }
 }
 
+async function generateGIN() {
+    let tables = Object.keys(pk);
+    for (let t of tables) {
+        try {
+            await client.query(
+                `ALTER TABLE ${t} ADD COLUMN search_tsvector tsvector`
+            );
+            await client.query(
+                `UPDATE ${t} SET search_tsvector = to_tsvector('simple', ${
+                    pk[t][0]
+                })`
+            );
+            await client.query(
+                `CREATE INDEX on ${t} USING GIN(search_tsvector)`
+            );
+        } catch (e) {}
+    }
+}
+
 async function main() {
     // connect to postgres
     await client.connect();
@@ -379,7 +398,8 @@ async function main() {
     // generate kyrix spec
     genKyrixJS(canvases, appName);
 
-    // helper.writeJSON(canvases, "canvases.json");
+    // generate inverted index for
+    await generateGIN();
 }
 
 // pg client
