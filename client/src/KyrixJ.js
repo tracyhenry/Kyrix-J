@@ -408,26 +408,6 @@ class KyrixJ extends Component {
         });
     };
 
-    getSqlPredicates = predArray => {
-        let predicates = [];
-        let traversePredDict = pd => {
-            if ("==" in pd) {
-                predicates.push({
-                    col: pd["=="][0].toString().replace(/&/g, "%26"),
-                    val: pd["=="][1].toString().replace(/&/g, "%26")
-                });
-                return;
-            }
-            if ("AND" in pd) {
-                traversePredDict(pd["AND"][0]);
-                traversePredDict(pd["AND"][1]);
-            }
-        };
-
-        if (predArray.length > 0) traversePredDict(predArray[0]);
-        return predicates;
-    };
-
     render() {
         return (
             <>
@@ -469,7 +449,6 @@ class KyrixJ extends Component {
                         metadata.visualDataMappings[this.state.kyrixCanvas]
                     }
                     kyrixPredicates={this.state.kyrixPredicates}
-                    getSqlPredicates={this.getSqlPredicates}
                 />
                 <History
                     tableHistory={this.state.tableHistory}
@@ -535,7 +514,6 @@ class KyrixJ extends Component {
                     x={this.state.kyrixJumpPreviewX}
                     y={this.state.kyrixJumpPreviewY}
                     kyrixViewId={metadata.kyrixViewId}
-                    getSqlPredicates={this.getSqlPredicates}
                 />
             </>
         );

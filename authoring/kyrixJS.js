@@ -58,7 +58,7 @@ const addJump = () => {
         if (
             REPLACE_ME_SEMANTIC_ZOOM &&
             args.predicates.layer0 &&
-            Object.keys(args.predicates.layer0) > 0
+            Object.keys(args.predicates.layer0).length > 0
         )
             pred = {AND: [args.predicates.layer0, pred]};
         return REPLACE_ME_PRED_LAYERS;
@@ -152,10 +152,16 @@ function genSpec(canvases, appName) {
 
             // for each filter column of i
             // identify a match on the other side
-            let fromFilterCols =
-                canvases[i].visDataMappings.type === "scatterplot"
-                    ? pk[canvases[i].table]
-                    : canvases[i].spec.query.dimensions;
+            let fromFilterCols;
+            if (canvases[i].visDataMappings.type === "scatterplot")
+                fromFilterCols = pk[canvases[i].table];
+            else if (
+                canvases[i].visDataMappings.type === "barchart" &&
+                canvases[i].spec.query.stackDimensions &&
+                canvases[i].spec.query.stackDimensions.length > 0
+            )
+                fromFilterCols = canvases[i].spec.query.stackDimensions;
+            else fromFilterCols = canvases[i].spec.query.dimensions;
             let filters = {};
             let ti = canvases[i].table,
                 tj = canvases[j].table;

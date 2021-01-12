@@ -15,10 +15,7 @@ class InfoPanel extends Component {
                     sqlQuery={this.props.sqlQuery}
                     preview={false}
                 />
-                <Filters
-                    kyrixPredicates={this.props.kyrixPredicates}
-                    getSqlPredicates={this.props.getSqlPredicates}
-                />
+                <Filters kyrixPredicates={this.props.kyrixPredicates} />
                 <VisualDataMappings m={this.props.visualDataMappings} />
             </div>
         );

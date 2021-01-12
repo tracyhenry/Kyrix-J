@@ -291,6 +291,33 @@ function constructCanvases() {
         // add to canvases array
         canvases = canvases.concat(cc);
     }
+
+    // populate sampleFields of sa specs with dimensions
+    // from other vis of the same table
+    for (let c of canvases) {
+        if (c.visDataMappings.type === "scatterplot") continue;
+        for (let cc of canvases) {
+            let spec = c.spec;
+            if (
+                cc.visDataMappings.type !== "scatterplot" &&
+                cc.table === c.table
+            ) {
+                let dims = cc.spec.query.dimensions;
+                if (cc.spec.query.stackDimensions)
+                    dims = dims.concat(cc.spec.query.stackDimensions);
+                dims.forEach(d => {
+                    if (
+                        !spec.query.sampleFields.includes(d) &&
+                        !spec.query.dimensions.includes(d) &&
+                        (!spec.query.stackDimensions ||
+                            !spec.query.stackDimensions.includes(d)) &&
+                        !spec.query.measure.includes(d)
+                    )
+                        spec.query.sampleFields.push(d);
+                });
+            }
+        }
+    }
 }
 
 function addDefaultWordClouds() {

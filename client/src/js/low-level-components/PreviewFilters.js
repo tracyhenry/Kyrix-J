@@ -1,17 +1,20 @@
 import React, {Component} from "react";
 import {Card, List, Tag} from "antd";
 import {FilterOutlined} from "@ant-design/icons";
+import {getSqlPredicates, dedupFilters} from "../../helper";
 
 class PreviewFilters extends Component {
     state = {};
 
     render() {
-        let newPredicates = this.props.getSqlPredicates(
-            this.props.kyrixPredicates
+        let newPredicates = dedupFilters(
+            getSqlPredicates(this.props.kyrixPredicates)
         );
-        let oldPredicates = this.props.getSqlPredicates(
-            window.kyrix.getGlobalVarDictionary(this.props.kyrixViewId)
-                .predicates
+        let oldPredicates = dedupFilters(
+            getSqlPredicates(
+                window.kyrix.getGlobalVarDictionary(this.props.kyrixViewId)
+                    .predicates
+            )
         );
 
         // construct list data

@@ -43,7 +43,6 @@ class JumpPreview extends Component {
                 />
                 <PreviewFilters
                     kyrixPredicates={this.props.kyrixPredicates}
-                    getSqlPredicates={this.props.getSqlPredicates}
                     kyrixViewId={this.props.kyrixViewId}
                     s
                 />
