@@ -1,0 +1,28 @@
+.query-info {
+    grid-area: 6 / 6 / 10 / 9;
+}
+
+.query-info .ant-card-body pre {
+    margin-bottom: 0px;
+    line-height: 1.5;
+    font-size: 13px;
+    border: white;
+}
+
+.filters .filter-item {
+    font-size: 14px;
+    padding: 2px;
+    white-space: nowrap;
+}
+
+.filters .ant-empty-normal {
+    margin: 0px 0px;
+}
+
+.filters .ant-list-empty-text {
+    padding: 0px;
+}
+
+.filters .anticon-filter {
+    padding-right: 10px;
+}

@@ -4,6 +4,9 @@ import {Descriptions, Card} from "antd";
 class VisualDataMappings extends Component {
     state = {};
 
+    shouldComponentUpdate = nextProps =>
+        JSON.stringify(this.props) !== JSON.stringify(nextProps);
+
     render() {
         let m = this.props.m;
         if (m == null) return null;
@@ -12,7 +15,7 @@ class VisualDataMappings extends Component {
         if (visType === "scatterplot")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type">
+                    <Descriptions.Item label="Vis Type">
                         Scatterplot
                     </Descriptions.Item>
                     <Descriptions.Item label="X Axis">{m.x}</Descriptions.Item>
@@ -32,7 +35,7 @@ class VisualDataMappings extends Component {
         else if (visType === "treemap")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type">
+                    <Descriptions.Item label="Vis Type">
                         Tree Map
                     </Descriptions.Item>
                     <Descriptions.Item label="Rectangle Size">
@@ -46,7 +49,7 @@ class VisualDataMappings extends Component {
         else if (visType === "barchart")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type">
+                    <Descriptions.Item label="Vis Type">
                         Bar Chart
                     </Descriptions.Item>
                     <Descriptions.Item label="X Axis">{m.x}</Descriptions.Item>
@@ -61,7 +64,7 @@ class VisualDataMappings extends Component {
         else if (visType === "circlepack")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type">
+                    <Descriptions.Item label="Vis Type">
                         Circle Pack
                     </Descriptions.Item>
                     <Descriptions.Item label="Circle Size">
@@ -75,7 +78,7 @@ class VisualDataMappings extends Component {
         else if (visType === "piechart")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type">
+                    <Descriptions.Item label="Vis Type">
                         Pie Chart
                     </Descriptions.Item>
                     <Descriptions.Item label="Pie Color">
@@ -89,7 +92,7 @@ class VisualDataMappings extends Component {
         else if (visType === "wordcloud")
             content = (
                 <>
-                    <Descriptions.Item label="Visualization Type">
+                    <Descriptions.Item label="Vis Type">
                         Word Cloud
                     </Descriptions.Item>
                     <Descriptions.Item label="Word Column">
@@ -103,7 +106,7 @@ class VisualDataMappings extends Component {
 
         return (
             <Card
-                className="vis-data-mapping"
+                className="vis-data-mapping card-title-center"
                 title={"Visual-Data Mappings"}
                 bordered={false}
             >

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import SchemaGraph from "./js/SchemaGraph";
-import InfoPanel from "./js/InfoPanel";
+import QueryInfo from "./js/QueryInfo";
+import VisualDataMappings from "./js/VisualDataMappings";
 import History from "./js/History";
 import RawDataTable from "./js/RawDataTable";
 import Bookmarks from "./js/Bookmarks";
@@ -422,8 +423,8 @@ class KyrixJ extends Component {
                     }
                 />
                 <SchemaGraph
-                    width="1200"
-                    height="1200"
+                    width="1500"
+                    height="1500"
                     kyrixLoaded={this.state.kyrixLoaded}
                     curTable={
                         this.state.tableHistory.length > 0
@@ -442,13 +443,14 @@ class KyrixJ extends Component {
                     tableColumns={metadata.tableColumns}
                     kyrixViewId={metadata.kyrixViewId}
                 />
-                <InfoPanel
+                <QueryInfo
                     kyrixCanvas={this.state.kyrixCanvas}
                     sqlQuery={metadata.sqlQuery}
-                    visualDataMappings={
-                        metadata.visualDataMappings[this.state.kyrixCanvas]
-                    }
+                    preview={false}
                     kyrixPredicates={this.state.kyrixPredicates}
+                />
+                <VisualDataMappings
+                    m={metadata.visualDataMappings[this.state.kyrixCanvas]}
                 />
                 <History
                     tableHistory={this.state.tableHistory}
@@ -492,18 +494,18 @@ class KyrixJ extends Component {
                     kyrixViewId={metadata.kyrixViewId}
                     clickJumpDefaults={metadata.clickJumpDefaults}
                 />
-                <RawDataTable
-                    primaryKeys={metadata.primaryKeys}
-                    curTable={
-                        this.state.tableHistory.length > 0
-                            ? this.state.tableHistory[
-                                  this.state.tableHistory.length - 1
-                              ]
-                            : ""
-                    }
-                    kyrixRenderData={this.state.kyrixRenderData}
-                    maxHeight={this.state.rawDataTableMaxHeight}
-                />
+                {/*<RawDataTable*/}
+                {/*primaryKeys={metadata.primaryKeys}*/}
+                {/*curTable={*/}
+                {/*this.state.tableHistory.length > 0*/}
+                {/*? this.state.tableHistory[*/}
+                {/*this.state.tableHistory.length - 1*/}
+                {/*]*/}
+                {/*: ""*/}
+                {/*}*/}
+                {/*kyrixRenderData={this.state.kyrixRenderData}*/}
+                {/*maxHeight={this.state.rawDataTableMaxHeight}*/}
+                {/*/>*/}
                 <JumpPreview
                     kyrixLoaded={this.state.kyrixLoaded}
                     sqlQuery={metadata.sqlQuery}

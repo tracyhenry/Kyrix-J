@@ -1,0 +1,33 @@
+.vis-data-mapping {
+    grid-area: 6 / 9 / 10 / 11;
+}
+
+.vis-data-mapping .ant-card-body {
+    display: flex;
+    justify-content: center;
+    padding: 26px 10px;
+}
+
+.vis-data-mapping .ant-descriptions-small {
+    overflow: auto;
+}
+
+.vis-data-mapping .ant-descriptions-small th,
+.vis-data-mapping .ant-descriptions-small td {
+    font-size: 13px;
+    padding: 8px !important;
+}
+
+.vis-data-mapping .ant-descriptions-view {
+    width: fit-content;
+    overflow: visible;
+}
+
+.vis-data-mapping td,
+.vis-data-mapping th {
+    white-space: nowrap;
+}
+
+.vis-data-mapping td {
+    font-weight: bold;
+}

@@ -6,7 +6,7 @@ body {
 .grid-container {
     display: grid;
     height: 100%;
-    grid-template: auto repeat(7, 1fr) / repeat(10, 1fr);
+    grid-template: auto repeat(8, 1fr) / repeat(10, 1fr);
 }
 
 .grid-container > div {
@@ -39,7 +39,7 @@ body {
 
 /* makes scrollbar always visible */
 div::-webkit-scrollbar {
-    /*-webkit-appearance: none;*/
+    -webkit-appearance: none;
     height: 7px;
     width: 7px;
 }
@@ -64,4 +64,8 @@ body .ant-card-head-wrapper {
 
 body .ant-card-head-title {
     padding: 5px 0px;
+}
+
+body .card-title-center .ant-card-head {
+    text-align: center;
 }

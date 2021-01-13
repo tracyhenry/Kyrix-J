@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import SQLQuery from "./low-level-components/SQLQuery";
+import SQLQuery from "./QueryInfo";
 import PreviewFilters from "./low-level-components/PreviewFilters";
 import * as d3 from "d3";
 
@@ -44,7 +44,6 @@ class JumpPreview extends Component {
                 <PreviewFilters
                     kyrixPredicates={this.props.kyrixPredicates}
                     kyrixViewId={this.props.kyrixViewId}
-                    s
                 />
             </div>
         );

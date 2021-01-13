@@ -16,9 +16,9 @@ class SchemaGraph extends Component {
         this.svgRef = React.createRef();
 
         // initialize D3 force directed layout
-        this.supermanW = (this.props.width / 1000) * 85;
-        this.supermanH = (this.props.width / 1000) * 75;
-        this.circleRadius = (this.props.width / 1000) * 75;
+        this.supermanW = (this.props.width / 1000) * 70;
+        this.supermanH = (this.props.width / 1000) * 60;
+        this.circleRadius = (this.props.width / 1000) * 60;
         let tickFunction = () => {
             this.nodes.attr("cx", d => d.x).attr("cy", d => d.y);
             this.links
@@ -59,15 +59,15 @@ class SchemaGraph extends Component {
                 d3
                     .forceLink()
                     .id(d => d.table_name)
-                    .distance((this.props.width / 1000) * 230)
+                    .distance((this.props.width / 1000) * 200)
             )
             .force(
                 "charge",
                 d3
                     .forceManyBody()
                     .strength(-8000)
-                    .distanceMax((this.props.width / 1000) * 460)
-                    .distanceMin((this.props.width / 1000) * 230)
+                    .distanceMax((this.props.width / 1000) * 400)
+                    .distanceMin((this.props.width / 1000) * 200)
             )
             .on("tick", tickFunction.bind(this))
             .on("end", endFunction.bind(this))
@@ -499,11 +499,16 @@ class SchemaGraph extends Component {
                     d.source.table_name +
                     ".edge-popover-" +
                     d.target.table_name;
+                let popoverWidth = d3
+                    .select(className)
+                    .node()
+                    .getBoundingClientRect().width;
                 let popoverHeight = d3
                     .select(className)
                     .node()
                     .getBoundingClientRect().height;
-                let clientCx = clientRect.x + clientRect.width / 2;
+                let clientCx =
+                    clientRect.x + clientRect.width / 2 - popoverWidth;
                 let clientCy =
                     clientRect.y + clientRect.height / 2 - popoverHeight / 2;
                 d3.select(className)

@@ -1,5 +1,5 @@
 .erdiagram {
-    grid-area: 2 / 1 / 9 / 3;
+    grid-area: 2 / 6 / 6 / 11;
     /*grid-area: 2 / 2 / 4 / 7;*/
     position: absolute;
     overflow: hidden;
@@ -10,10 +10,10 @@
 }
 
 .erdiagram > .graphbutton {
-    margin: 5px 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 100;
 }
 
 .circleg > circle {
