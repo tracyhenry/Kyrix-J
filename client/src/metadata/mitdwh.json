@@ -10,10 +10,10 @@
         "staticAggregation2": "SELECT student_year, COUNT(*) \nFROM mit_student_directory \nGROUP BY student_year;",
         "staticAggregation3": "SELECT major_use_desc, use_desc, SUM(area) \nFROM fclt_rooms \nGROUP BY major_use_desc, use_desc;",
         "staticAggregation4": "SELECT department_name, SUM(total_units) \nFROM course_catalog_subject_offered \nGROUP BY department_name;",
-        "staticAggregation5": "SELECT building_name \nFROM fclt_building",
-        "staticAggregation6": "SELECT building_room \nFROM fclt_rooms",
-        "staticAggregation7": "SELECT subject_title \nFROM course_catalog_subject_offered",
-        "staticAggregation8": "SELECT full_name \nFROM mit_student_directory"
+        "staticAggregation5": "SELECT building_name \nFROM fclt_building;",
+        "staticAggregation6": "SELECT building_room \nFROM fclt_rooms;",
+        "staticAggregation7": "SELECT subject_title \nFROM course_catalog_subject_offered;",
+        "staticAggregation8": "SELECT full_name \nFROM mit_student_directory;"
     },
     "canvasIdToTable": {
         "ssv0_level0": "fclt_building",

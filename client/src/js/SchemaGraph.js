@@ -598,9 +598,7 @@ class SchemaGraph extends Component {
             if (jump.type !== "semantic_zoom") return;
             let curRect = graphMainSvg
                 .selectAll("circle")
-                .filter(d =>
-                    d.table_name === this.props.curTable ? true : false
-                )
+                .filter(d => d.table_name === this.props.curTable)
                 .node()
                 .getBoundingClientRect();
 
@@ -669,7 +667,42 @@ class SchemaGraph extends Component {
             )
             .style("stroke", "#111")
             .style("stroke-width", 23);
-        if (curLink.empty()) return;
+        if (curLink.empty()) {
+            if (
+                this.props.kyrixJumpHoverEdge.source ===
+                this.props.kyrixJumpHoverEdge.target
+            ) {
+                // semantic zoom preview, arrow flicking
+                let curRect = d3
+                    .select(this.svgRef.current)
+                    .selectAll("circle")
+                    .filter(d => d.table_name === this.props.curTable)
+                    .node()
+                    .getBoundingClientRect();
+
+                let selector = ".arrow-down";
+                let arrowIcon = d3
+                    .selectAll(selector)
+                    .style("visibility", "visible")
+                    .style("left", curRect.x + curRect.width + "px")
+                    .style("top", curRect.y + "px")
+                    .style("opacity", 0);
+                var duration = 300;
+                function repeat() {
+                    arrowIcon
+                        .transition()
+                        .duration(duration)
+                        .style("opacity", 1)
+                        .transition()
+                        .style("opacity", 0)
+                        .on("end", function() {
+                            repeat();
+                        });
+                }
+                repeat();
+            }
+            return;
+        }
 
         // add labels to the two nodes
         let sourceNode = this.nodes.filter(
@@ -923,6 +956,9 @@ class SchemaGraph extends Component {
             .interrupt()
             .remove();
         d3.selectAll(".jump-preview-text").remove();
+        d3.selectAll(".arrow-down")
+            .interrupt()
+            .style("visibility", "hidden");
     };
 
     render() {

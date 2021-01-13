@@ -218,7 +218,7 @@ function constructCanvases() {
 
             // query
             if (spec.query.measure.includes("random"))
-                c.query = "SELECT " + pk[c.table][0] + " FROM " + c.table;
+                c.query = "SELECT " + pk[c.table][0] + " FROM " + c.table + ";";
             else {
                 c.query = "SELECT ";
                 let dimensions = spec.query.dimensions;
