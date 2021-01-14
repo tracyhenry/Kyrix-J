@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {Card, Table} from "antd";
+import {Table, Modal} from "antd";
 
 class RawDataTable extends Component {
     shouldComponentUpdate = nextProps => {
-        if (nextProps.maxHeight !== this.props.maxHeight) return true;
+        if (nextProps.visible !== this.props.visible) return true;
         if (
             nextProps.kyrixRenderData.length !==
             this.props.kyrixRenderData.length
@@ -88,17 +88,30 @@ class RawDataTable extends Component {
             }
 
         return (
-            <div className="rawdata">
-                <Card title="Sample Raw Data">
+            <Modal
+                footer={null}
+                className="rawdata-modal"
+                title={
+                    <div>
+                        Sample Raw Data for Table <i>{this.props.curTable}</i>
+                    </div>
+                }
+                visible={this.props.visible}
+                onCancel={this.props.handleVisibleChange}
+                width={800}
+                bodyStyle={{maxHeight: "450px"}}
+                centered
+            >
+                <div className="rawdata">
                     <Table
                         size="small"
                         columns={antdColumns}
                         dataSource={antdData}
                         pagination={{defaultPageSize: 25}}
-                        scroll={{y: this.props.maxHeight}}
+                        scroll={{y: 330}}
                     />
-                </Card>
-            </div>
+                </div>
+            </Modal>
         );
     }
 }

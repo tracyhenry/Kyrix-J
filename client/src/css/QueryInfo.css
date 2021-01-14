@@ -9,6 +9,12 @@
     border: white;
 }
 
+.query-info .ant-card-extra {
+    padding: 0px;
+    position: absolute;
+    right: 5px;
+}
+
 .filters .filter-item {
     font-size: 14px;
     padding: 2px;

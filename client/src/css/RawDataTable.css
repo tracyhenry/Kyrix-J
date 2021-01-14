@@ -1,18 +1,12 @@
 .rawdata {
     width: auto;
-    grid-area: 7 / 6 / 9 / 11;
-}
-
-.rawdata .ant-card {
-    width: 100%;
-    height: 100%;
-}
-
-.rawdata .ant-card-body {
-    height: calc(100% - 60px);
 }
 
 .rawdata .ant-table.ant-table-small .ant-table-thead > tr > th {
     white-space: nowrap;
     font-weight: bold;
+}
+
+.rawdata-modal .ant-modal-body {
+    padding-top: 10px;
 }

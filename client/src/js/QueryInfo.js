@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {githubGist} from "react-syntax-highlighter/dist/esm/styles/hljs";
-import {Card, List} from "antd";
+import {Card, List, Button} from "antd";
 import {FilterOutlined} from "@ant-design/icons";
 import {getSqlPredicates, dedupFilters} from "../helper";
 
@@ -18,6 +18,15 @@ class QueryInfo extends Component {
                     className={this.props.preview ? "" : "card-title-center"}
                     title={this.props.preview ? "New Query" : "Query"}
                     bordered={false}
+                    extra={
+                        <Button
+                            type="link"
+                            size="small"
+                            onClick={this.props.handleRawDataTableVisibleChange}
+                        >
+                            raw data
+                        </Button>
+                    }
                 >
                     <SyntaxHighlighter language="sql" style={githubGist}>
                         {this.props.kyrixCanvas.length > 0

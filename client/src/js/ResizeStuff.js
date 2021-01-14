@@ -36,21 +36,4 @@ const resizeSvgs = () => {
     }
 };
 
-const resizeRawDataTable = that => {
-    that.setState({
-        rawDataTableMaxHeight: getRawDataTableMaxHeight()
-    });
-};
-
-const getRawDataTableMaxHeight = () => {
-    if (d3.select(".rawdata .ant-card-body").empty()) return 200;
-    return Math.max(
-        d3
-            .select(".rawdata .ant-card-body")
-            .node()
-            .getBoundingClientRect().height - 100,
-        50
-    );
-};
-
-export {resizeSvgs, getRawDataTableMaxHeight, resizeRawDataTable};
+export {resizeSvgs};

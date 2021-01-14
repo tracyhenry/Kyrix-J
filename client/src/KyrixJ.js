@@ -6,11 +6,7 @@ import History from "./js/History";
 import RawDataTable from "./js/RawDataTable";
 import Bookmarks from "./js/Bookmarks";
 import JumpPreview from "./js/JumpPreview";
-import {
-    resizeSvgs,
-    getRawDataTableMaxHeight,
-    resizeRawDataTable
-} from "./js/ResizeStuff";
+import {resizeSvgs} from "./js/ResizeStuff";
 import KyrixVis from "./js/KyrixVis";
 import Header from "./js/Header";
 import html2canvas from "html2canvas";
@@ -53,8 +49,8 @@ class KyrixJ extends Component {
             // current render data
             kyrixRenderData: [],
 
-            // max height of raw data table
-            rawDataTableMaxHeight: 240,
+            // raw data table visible
+            rawDataTableVisible: false,
 
             // whether kyrix is loaded
             kyrixLoaded: false,
@@ -89,9 +85,6 @@ class KyrixJ extends Component {
 
     componentDidMount = () => {
         window.addEventListener("resize", resizeSvgs);
-        window.addEventListener("resize", () => {
-            resizeRawDataTable(this);
-        });
     };
 
     handleSchemaGraphNodeClick = d => {
@@ -217,8 +210,7 @@ class KyrixJ extends Component {
             kyrixCanvas: kyrixCanvas,
             kyrixPredicates: kyrixPredicates,
             interactionType: "kyrixLoaded",
-            kyrixLoaded: true,
-            rawDataTableMaxHeight: getRawDataTableMaxHeight()
+            kyrixLoaded: true
         });
         this.handleSearchBarInputChange("");
     };
@@ -409,6 +401,12 @@ class KyrixJ extends Component {
         });
     };
 
+    handleRawDataTableVisibleChange = () => {
+        this.setState({
+            rawDataTableVisible: !this.state.rawDataTableVisible
+        });
+    };
+
     render() {
         return (
             <>
@@ -448,6 +446,9 @@ class KyrixJ extends Component {
                     sqlQuery={metadata.sqlQuery}
                     preview={false}
                     kyrixPredicates={this.state.kyrixPredicates}
+                    handleRawDataTableVisibleChange={
+                        this.handleRawDataTableVisibleChange
+                    }
                 />
                 <VisualDataMappings
                     m={metadata.visualDataMappings[this.state.kyrixCanvas]}
@@ -494,18 +495,19 @@ class KyrixJ extends Component {
                     kyrixViewId={metadata.kyrixViewId}
                     clickJumpDefaults={metadata.clickJumpDefaults}
                 />
-                {/*<RawDataTable*/}
-                {/*primaryKeys={metadata.primaryKeys}*/}
-                {/*curTable={*/}
-                {/*this.state.tableHistory.length > 0*/}
-                {/*? this.state.tableHistory[*/}
-                {/*this.state.tableHistory.length - 1*/}
-                {/*]*/}
-                {/*: ""*/}
-                {/*}*/}
-                {/*kyrixRenderData={this.state.kyrixRenderData}*/}
-                {/*maxHeight={this.state.rawDataTableMaxHeight}*/}
-                {/*/>*/}
+                <RawDataTable
+                    primaryKeys={metadata.primaryKeys}
+                    curTable={
+                        this.state.tableHistory.length > 0
+                            ? this.state.tableHistory[
+                                  this.state.tableHistory.length - 1
+                              ]
+                            : ""
+                    }
+                    kyrixRenderData={this.state.kyrixRenderData}
+                    visible={this.state.rawDataTableVisible}
+                    handleVisibleChange={this.handleRawDataTableVisibleChange}
+                />
                 <JumpPreview
                     kyrixLoaded={this.state.kyrixLoaded}
                     sqlQuery={metadata.sqlQuery}
