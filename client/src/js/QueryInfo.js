@@ -19,13 +19,17 @@ class QueryInfo extends Component {
                     title={this.props.preview ? "New Query" : "Query"}
                     bordered={false}
                     extra={
-                        <Button
-                            type="link"
-                            size="small"
-                            onClick={this.props.handleRawDataTableVisibleChange}
-                        >
-                            raw data
-                        </Button>
+                        !this.props.preview && (
+                            <Button
+                                type="link"
+                                size="small"
+                                onClick={
+                                    this.props.handleRawDataTableVisibleChange
+                                }
+                            >
+                                raw data
+                            </Button>
+                        )
                     }
                 >
                     <SyntaxHighlighter language="sql" style={githubGist}>

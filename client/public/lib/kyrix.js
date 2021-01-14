@@ -934,6 +934,7 @@
                     );
 
                 // add jump options
+                let curJumps = [];
                 for (var k = 0; k < jumps.length; k++) {
                     // check if this jump is applied in this layer
                     if (
@@ -949,33 +950,58 @@
                         !jumps[k].selector.parseFunction()(d, optionalArgs)
                     )
                         continue;
+                    curJumps.push({id: k});
+                }
+
+                // [hard-coding for Kyrix-J] get the table and
+                for (let j of curJumps) {
+                    let nameFunc = jumps[j.id].name;
+                    let tablePos = nameFunc.indexOf("Table");
+                    let leftSbPos = nameFunc.indexOf("[");
+                    let rightSbPos = nameFunc.indexOf("]");
+                    j.tableName = nameFunc
+                        .substring(tablePos + 5, leftSbPos)
+                        .replace(/\s/g, "");
+                    j.visType = nameFunc.substring(leftSbPos + 1, rightSbPos);
+                }
+                curJumps.sort((a, b) => {
+                    if (
+                        a.tableName < b.tableName ||
+                        (a.tableName === b.tableName && a.visType < b.visType)
+                    )
+                        return -1;
+                    if (a.tableName === b.tableName && a.visType === b.visType)
+                        return 0;
+                    return 1;
+                });
+
+                // loop through the jumps
+                let poDiv = d3.select(viewClass + ".popovercontent");
+                for (let i = 0; i < curJumps.length; i++) {
+                    let j = curJumps[i];
+                    // add table name header
+                    if (
+                        i == 0 ||
+                        curJumps[i].tableName !== curJumps[i - 1].tableName
+                    )
+                        poDiv
+                            .append("div")
+                            .style("text-align", "left")
+                            .style("padding", "5px 8px")
+                            .style("font-size", "16px")
+                            .style("background-color", "#edf2fb")
+                            // .style("border-top", i ? "2px solid #ccc" : null)
+                            .html(`<i>${curJumps[i].tableName}</i>`);
 
                     // create table cell and append it to .popovercontent
-                    var optionText = "<b>ZOOM IN </b>";
-                    if (jumps[k].type == param.load)
-                        optionText =
-                            "<b>LOAD " +
-                            jumps[k].destViewId +
-                            " VIEW with </b>";
-                    else if (jumps[k].type == param.highlight)
-                        optionText =
-                            "<b>HIGHLIGHT in " +
-                            jumps[k].destViewId +
-                            " VIEW </b>";
-                    if (jumps[k].noPrefix == true) {
-                        optionText = "";
-                    }
-                    optionText +=
-                        jumps[k].name.parseFunction() == null
-                            ? jumps[k].name
-                            : jumps[k].name.parseFunction()(d, optionalArgs);
-                    var jumpOption = d3
-                        .select(viewClass + ".popovercontent")
+                    var optionText = j.visType;
+                    var jumpOption = poDiv
                         .append("a")
                         .classed("list-group-item", true)
+                        .style("padding", "3px")
                         .attr("href", "#")
                         .datum(d)
-                        .attr("data-jump-id", k)
+                        .attr("data-jump-id", j.id)
                         .html(optionText);
 
                     // hover events
