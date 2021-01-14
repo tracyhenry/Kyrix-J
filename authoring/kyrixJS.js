@@ -150,6 +150,13 @@ function genSpec(canvases, appName) {
             )
                 continue;
 
+            // if j is an ssv canvas, it should be the first level
+            if (
+                canvases[j].id.startsWith("ssv") &&
+                !canvases[j].id.includes("level0")
+            )
+                continue;
+
             // for each filter column of i
             // identify a match on the other side
             let fromFilterCols;
