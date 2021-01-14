@@ -4,6 +4,8 @@ import {Table, Modal} from "antd";
 class RawDataTable extends Component {
     shouldComponentUpdate = nextProps => {
         if (nextProps.visible !== this.props.visible) return true;
+        if (nextProps.width !== this.props.width) return true;
+        if (nextProps.height !== this.props.height) return true;
         if (
             nextProps.kyrixRenderData.length !==
             this.props.kyrixRenderData.length
@@ -98,8 +100,8 @@ class RawDataTable extends Component {
                 }
                 visible={this.props.visible}
                 onCancel={this.props.handleVisibleChange}
-                width={800}
-                bodyStyle={{maxHeight: "450px"}}
+                width={this.props.width}
+                bodyStyle={{maxHeight: this.props.height + "px"}}
                 centered
             >
                 <div className="rawdata">
@@ -108,7 +110,7 @@ class RawDataTable extends Component {
                         columns={antdColumns}
                         dataSource={antdData}
                         pagination={{defaultPageSize: 25}}
-                        scroll={{y: 330}}
+                        scroll={{y: this.props.height - 120}}
                     />
                 </div>
             </Modal>

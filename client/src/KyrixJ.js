@@ -6,7 +6,11 @@ import History from "./js/History";
 import RawDataTable from "./js/RawDataTable";
 import Bookmarks from "./js/Bookmarks";
 import JumpPreview from "./js/JumpPreview";
-import {resizeSvgs} from "./js/ResizeStuff";
+import {
+    resizeSvgs,
+    getRawDataTableSize,
+    resizeRawDataTable
+} from "./js/ResizeStuff";
 import KyrixVis from "./js/KyrixVis";
 import Header from "./js/Header";
 import html2canvas from "html2canvas";
@@ -49,7 +53,9 @@ class KyrixJ extends Component {
             // current render data
             kyrixRenderData: [],
 
-            // raw data table visible
+            // raw data table states
+            rawDataTableWidth: 1000,
+            rawDataTableHeight: 800,
             rawDataTableVisible: false,
 
             // whether kyrix is loaded
@@ -85,6 +91,9 @@ class KyrixJ extends Component {
 
     componentDidMount = () => {
         window.addEventListener("resize", resizeSvgs);
+        window.addEventListener("resize", () => {
+            resizeRawDataTable(this);
+        });
     };
 
     handleSchemaGraphNodeClick = d => {
@@ -205,12 +214,15 @@ class KyrixJ extends Component {
         let kyrixPredicates = window.kyrix.getGlobalVarDictionary(
             metadata.kyrixViewId
         ).predicates;
+        let rawDataTableSize = getRawDataTableSize();
         this.setState({
             tableHistory: [metadata.canvasIdToTable[kyrixCanvas]],
             kyrixCanvas: kyrixCanvas,
             kyrixPredicates: kyrixPredicates,
             interactionType: "kyrixLoaded",
-            kyrixLoaded: true
+            kyrixLoaded: true,
+            rawDataTableWidth: rawDataTableSize.width,
+            rawDataTableHeight: rawDataTableSize.height
         });
         this.handleSearchBarInputChange("");
     };
@@ -506,6 +518,8 @@ class KyrixJ extends Component {
                     }
                     kyrixRenderData={this.state.kyrixRenderData}
                     visible={this.state.rawDataTableVisible}
+                    width={this.state.rawDataTableWidth}
+                    height={this.state.rawDataTableHeight}
                     handleVisibleChange={this.handleRawDataTableVisibleChange}
                 />
                 <JumpPreview

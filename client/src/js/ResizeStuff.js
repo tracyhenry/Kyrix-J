@@ -36,4 +36,24 @@ const resizeSvgs = () => {
     }
 };
 
-export {resizeSvgs};
+const resizeRawDataTable = that => {
+    let size = getRawDataTableSize();
+    that.setState({
+        rawDataTableWidth: size.width,
+        rawDataTableHeight: size.height
+    });
+};
+
+const getRawDataTableSize = () => {
+    let windowWidth =
+        window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth;
+    let windowHeight =
+        window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight;
+    return {width: windowWidth * 0.6, height: windowHeight * 0.6};
+};
+
+export {resizeSvgs, getRawDataTableSize, resizeRawDataTable};
