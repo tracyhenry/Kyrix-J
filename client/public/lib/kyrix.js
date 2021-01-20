@@ -910,6 +910,7 @@
                         "view_" + viewId + " jumppopover popover fade right in",
                         true
                     )
+                    .style("max-width", "320px")
                     .attr("role", "tooltip")
                     .append("div")
                     .classed("view_" + viewId + " popoverarrow arrow", true);
@@ -962,15 +963,18 @@
                     j.tableName = nameFunc
                         .substring(tablePos + 5, leftSbPos)
                         .replace(/\s/g, "");
-                    j.visType = nameFunc.substring(leftSbPos + 1, rightSbPos);
+                    j.visTitle = nameFunc.substring(leftSbPos + 1, rightSbPos);
                 }
                 curJumps.sort((a, b) => {
                     if (
                         a.tableName < b.tableName ||
-                        (a.tableName === b.tableName && a.visType < b.visType)
+                        (a.tableName === b.tableName && a.visTitle < b.visTitle)
                     )
                         return -1;
-                    if (a.tableName === b.tableName && a.visType === b.visType)
+                    if (
+                        a.tableName === b.tableName &&
+                        a.visTitle === b.visTitle
+                    )
                         return 0;
                     return 1;
                 });
@@ -994,11 +998,19 @@
                             .html(`<i>${curJumps[i].tableName}</i>`);
 
                     // create table cell and append it to .popovercontent
-                    var optionText = j.visType;
+                    var optionText = j.visTitle;
                     var jumpOption = poDiv
                         .append("a")
                         .classed("list-group-item", true)
-                        .style("padding", "3px")
+                        .style("padding", "5px 8px")
+                        .style(
+                            "border-bottom",
+                            i == curJumps.length - 1 ||
+                                curJumps[i].tableName !==
+                                    curJumps[i + 1].tableName
+                                ? ""
+                                : "2px dotted grey"
+                        )
                         .attr("href", "#")
                         .datum(d)
                         .attr("data-jump-id", j.id)

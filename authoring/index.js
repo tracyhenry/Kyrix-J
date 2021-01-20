@@ -153,6 +153,10 @@ function constructCanvases() {
                 .replace(/\s/g, "")
                 .split(",");
 
+            // title
+            let visTitle = spec.visTitle;
+            delete spec.visTitle;
+
             // one canvas per level
             for (let j = 0; j < numLevels; j++)
                 cc.push({
@@ -160,7 +164,8 @@ function constructCanvases() {
                     table: table,
                     visDataMappings: vdm,
                     id: `ssv${ssvId}_level${j}`,
-                    filterableColumns: fCols
+                    filterableColumns: fCols,
+                    title: visTitle
                 });
         } else {
             let c = {};
@@ -268,6 +273,14 @@ function constructCanvases() {
             if (spec.query.stackDimensions)
                 fCols = fCols.concat(spec.query.stackDimensions);
             c.filterableColumns = fCols;
+
+            // title
+            c.title = spec.legend.title;
+            if (c.title.includes("random text size"))
+                c.title = c.title.substring(
+                    0,
+                    c.title.indexOf("random text size") - 2
+                );
 
             cc.push(c);
         }

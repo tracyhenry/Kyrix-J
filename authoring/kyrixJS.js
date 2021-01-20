@@ -65,7 +65,7 @@ const addJump = () => {
     };
 
     var jumpName = function() {
-        return "Table REPLACE_ME_JUMPNAME_TABLE [REPLACE_ME_JUMPNAME_VISTYPE]";
+        return "Table REPLACE_ME_JUMPNAME_TABLE [REPLACE_ME_JUMPNAME_VISTITLE]";
     };
 
     p.addJump(
@@ -250,10 +250,7 @@ function genSpec(canvases, appName) {
                     toVisType === "scatterplot" ? predLayer0 : predLayers0And1
                 )
                 .replace(/REPLACE_ME_JUMPNAME_TABLE/g, tj)
-                .replace(
-                    /REPLACE_ME_JUMPNAME_VISTYPE/g,
-                    visTypeMapping[toVisType]
-                )
+                .replace(/REPLACE_ME_JUMPNAME_VISTITLE/g, canvases[j].title)
                 .replace(
                     /REPLACE_ME_JUMP_TYPE/g,
                     ti === tj ? "semantic_zoom" : "slide"
