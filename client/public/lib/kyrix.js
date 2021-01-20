@@ -2044,9 +2044,9 @@
         gvd.initialViewportY = curViewport[1] * oldZoomFactorY;
 
         // TODO (#157): we cleared predicates before literal zoom, but this isn't ideal
-        var numLayer = getCanvasById(curJump.destId).layers.length;
-        gvd.predicates = [];
-        for (var i = 0; i < numLayer; i++) gvd.predicates.push({});
+        // var numLayer = getCanvasById(curJump.destId).layers.length;
+        // gvd.predicates = [];
+        // for (var i = 0; i < numLayer; i++) gvd.predicates.push({});
 
         // pre animation
         preJump(viewId, curJump);
