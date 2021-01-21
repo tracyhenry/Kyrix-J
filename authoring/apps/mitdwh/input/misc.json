@@ -1,10 +1,10 @@
 {
     "db": "mit",
     "pk": {
-        "fclt_building": ["building_name", "fclt_building_key"],
-        "fclt_rooms": ["building_room"],
-        "course_catalog_subject_offered": ["subject_title"],
-        "mit_student_directory": ["full_name"]
+        "fclt_building": [["building_name"], ["fclt_building_key"]],
+        "fclt_rooms": [["building_room"]],
+        "course_catalog_subject_offered": [["subject_title"]],
+        "mit_student_directory": [["full_name"]]
     },
     "graph": [
         {

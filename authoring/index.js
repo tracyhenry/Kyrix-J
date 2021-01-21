@@ -37,7 +37,6 @@ async function generateMetadata() {
     // table metadata
     metadata.tableMetadata = {};
     let tm = metadata.tableMetadata;
-    let tables = Object.keys(pk);
     for (let t of tables) {
         tm[t] = {};
         // get number of rows
@@ -57,7 +56,8 @@ async function generateMetadata() {
     metadata.tableColumns = allColumns;
 
     // primary keys
-    metadata.primaryKeys = pk;
+    metadata.primaryKeys = {};
+    for (let t of tables) metadata.primaryKeys[t] = getAllPks(t);
 
     // click jump defaults
     metadata.clickJumpDefaults = {};
@@ -223,7 +223,12 @@ function constructCanvases() {
 
             // query
             if (spec.query.measure.includes("random"))
-                c.query = "SELECT " + pk[c.table][0] + " FROM " + c.table + ";";
+                c.query =
+                    "SELECT " +
+                    pk[c.table][0].join(", ") +
+                    " FROM " +
+                    c.table +
+                    ";";
             else {
                 c.query = "SELECT ";
                 let dimensions = spec.query.dimensions;
@@ -243,8 +248,9 @@ function constructCanvases() {
 
             // populate sampleFields with key columns if any of them don't exist
             let sf = spec.query.sampleFields;
+            let allPks = getAllPks(c.table);
             keyColumns[c.table]
-                .concat(pk[c.table])
+                .concat(allPks)
                 .filter(
                     d =>
                         !spec.query.dimensions.includes(d) &&
@@ -255,12 +261,12 @@ function constructCanvases() {
                     if (!sf.includes(d)) sf.push(d);
                 });
             sf.sort((a, b) => {
-                let va = pk[c.table].includes(a)
+                let va = allPks.includes(a)
                     ? 0
                     : keyColumns[c.table].includes(a)
                     ? 1
                     : 2;
-                let vb = pk[c.table].includes(b)
+                let vb = allPks.includes(b)
                     ? 0
                     : keyColumns[c.table].includes(b)
                     ? 1
@@ -335,30 +341,30 @@ function constructCanvases() {
 
 function addDefaultWordClouds() {
     for (let t of tables) {
-        let sampleFields = keyColumns[t].filter(d => !pk[t].includes(d));
+        let sampleFields = keyColumns[t].filter(d => !pk[t][0].includes(d));
         sampleFields = sampleFields.concat(
             allColumns[t]
-                .filter(d => !pk[t].includes(d) && !sampleFields.includes(d))
+                .filter(d => !pk[t][0].includes(d) && !sampleFields.includes(d))
                 .slice(0, Math.max(0, 10 - sampleFields.length))
         );
         let spec = {
             db: misc.db,
             query: {
                 table: t,
-                dimensions: pk[t],
+                dimensions: pk[t][0],
                 measure: "SUM(random() * 100)",
                 sampleFields: sampleFields
             },
             type: "wordCloud",
             tooltip: {
-                columns: pk[t],
-                aliases: pk[t]
+                columns: pk[t][0],
+                aliases: pk[t][0]
             },
             padding: 15,
             legend: {
                 title: `Primary keys of table ${t.toUpperCase()} (random text size)`
             },
-            textFields: [pk[t][0]],
+            textFields: pk[t][0],
             cloud: {
                 maxTextSize: 65,
                 fontFamily: "Arial"
@@ -371,22 +377,28 @@ function addDefaultWordClouds() {
 }
 
 async function generateGIN() {
-    let tables = Object.keys(pk);
     for (let t of tables) {
         try {
             await client.query(
                 `ALTER TABLE ${t} ADD COLUMN search_tsvector tsvector`
             );
             await client.query(
-                `UPDATE ${t} SET search_tsvector = to_tsvector('simple', ${
-                    pk[t][0]
-                })`
+                `UPDATE ${t} SET search_tsvector = to_tsvector('simple', ${pk[
+                    t
+                ][0].join(" || ', ' || ")})`
             );
             await client.query(
                 `CREATE INDEX on ${t} USING GIN(search_tsvector)`
             );
         } catch (e) {}
     }
+}
+
+function getAllPks(t) {
+    let ret = [];
+    for (let comb of pk[t])
+        for (let d of comb) if (!ret.includes(d)) ret.push(d);
+    return ret;
 }
 
 async function main() {

@@ -157,72 +157,72 @@ function genSpec(canvases, appName) {
             )
                 continue;
 
-            // for each filter column of i
-            // identify a match on the other side
-            let fromFilterCols;
+            // get an array of array of filter keys from table i
+            // the reason that this is an array is because
+            // one table can have multiple primary key combinations
+            // for Static Aggregations, though, only one combination
+            // is possible
+            let fromFilterArray;
             if (canvases[i].visDataMappings.type === "scatterplot")
-                fromFilterCols = pk[canvases[i].table];
+                fromFilterArray = pk[canvases[i].table];
             else if (
                 canvases[i].visDataMappings.type === "barchart" &&
                 canvases[i].spec.query.stackDimensions &&
                 canvases[i].spec.query.stackDimensions.length > 0
             )
-                fromFilterCols = canvases[i].spec.query.stackDimensions;
-            else fromFilterCols = canvases[i].spec.query.dimensions;
-            let filters = {};
+                fromFilterArray = [canvases[i].spec.query.stackDimensions];
+            else fromFilterArray = [canvases[i].spec.query.dimensions];
+
+            let filters;
+            let jump = false;
             let ti = canvases[i].table,
                 tj = canvases[j].table;
-            for (let col of fromFilterCols) {
-                filters[col] = null;
-                if (ti === tj) filters[col] = col;
-                else {
-                    // find one column in the other table that matches col
-                    for (let edge of graph) {
-                        if (
-                            (edge.source === ti && edge.target == tj) ||
-                            (edge.target === ti && edge.source == tj)
-                        )
-                            for (let match of edge.matches) {
-                                if (
-                                    edge.source === ti &&
-                                    match.sourceCol === col &&
-                                    canvases[j].filterableColumns.includes(
-                                        match.targetCol
-                                    )
-                                ) {
-                                    filters[col] = match.targetCol;
-                                    break;
+            for (let fromFilters of fromFilterArray) {
+                // for each filter column of i
+                // identify a match on the other side
+                filters = {};
+                for (let col of fromFilters) {
+                    filters[col] = null;
+                    if (ti === tj) filters[col] = col;
+                    else {
+                        // find one column in the other table that matches col
+                        for (let edge of graph) {
+                            if (
+                                (edge.source === ti && edge.target == tj) ||
+                                (edge.target === ti && edge.source == tj)
+                            )
+                                for (let match of edge.matches) {
+                                    if (
+                                        edge.source === ti &&
+                                        match.sourceCol === col &&
+                                        canvases[j].filterableColumns.includes(
+                                            match.targetCol
+                                        )
+                                    ) {
+                                        filters[col] = match.targetCol;
+                                        break;
+                                    }
+                                    if (
+                                        edge.target === ti &&
+                                        match.targetCol === col &&
+                                        canvases[j].filterableColumns.includes(
+                                            match.sourceCol
+                                        )
+                                    ) {
+                                        filters[col] = match.sourceCol;
+                                        break;
+                                    }
                                 }
-                                if (
-                                    edge.target === ti &&
-                                    match.targetCol === col &&
-                                    canvases[j].filterableColumns.includes(
-                                        match.sourceCol
-                                    )
-                                ) {
-                                    filters[col] = match.sourceCol;
-                                    break;
-                                }
-                            }
-                        if (filters[col] !== null) break;
+                            if (filters[col] !== null) break;
+                        }
                     }
                 }
-            }
 
-            // if any of the filter columns of i doesn't have a match
-            // most likely there should not be a jump
-            // the only exception is when all filter columns of i are primary keys
-            // and there is at least one match
-            let jump = false;
-            if (fromFilterCols.filter(d => filters[d] === null).length === 0)
-                jump = true;
-            else if (
-                fromFilterCols.filter(d => !pk[ti].includes(d)).length === 0 &&
-                fromFilterCols.filter(d => filters[d] !== null).length
-            ) {
-                jump = true;
-                for (let col in filters)
-                    if (filters[col] === null) delete filters[col];
+                // if any of the filter columns of i doesn't have a match
+                // then there isn't a jump for this fromFilter
+                if (fromFilters.filter(d => filters[d] === null).length === 0)
+                    jump = true;
+                if (jump) break;
             }
             if (!jump) continue;
 
