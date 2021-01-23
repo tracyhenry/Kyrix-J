@@ -56,8 +56,7 @@ async function generateMetadata() {
     metadata.tableColumns = allColumns;
 
     // primary keys
-    metadata.primaryKeys = {};
-    for (let t of tables) metadata.primaryKeys[t] = getAllPks(t);
+    metadata.primaryKeys = pk;
 
     // click jump defaults
     metadata.clickJumpDefaults = {};

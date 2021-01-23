@@ -43,10 +43,15 @@ app.get("/search", (req, res) => {
         }
 
         // primary key values - talk to postgres
-        let primaryKey = data.primaryKeys[t][0]
-            .toLowerCase()
-            .split(" ")
-            .join("_");
+        let pks = data.primaryKeys[t][0];
+        pks.forEach(d => {
+            d = d
+                .toLowerCase()
+                .split(" ")
+                .join("_");
+        });
+
+        let primaryKey = pks.join(" || ', ' || ");
         let query =
             `SELECT distinct(${primaryKey}) as value FROM ${t.toLowerCase()}` +
             ` WHERE to_tsquery('simple', '${s}:*') @@ search_tsvector LIMIT 5;`;

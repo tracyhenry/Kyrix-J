@@ -29,8 +29,14 @@ class RawDataTable extends Component {
 
     render() {
         const curTable = this.props.curTable;
-        const primaryKeys =
+
+        // get a list of primary key columns, deduped
+        const primaryKeysCombs =
             curTable.length > 0 ? this.props.primaryKeys[curTable] : [];
+        let primaryKeys = [];
+        for (let comb of primaryKeysCombs)
+            for (let d of comb)
+                if (!primaryKeys.includes(d)) primaryKeys.push(d);
 
         const rawColumns = Object.keys(
             this.props.kyrixRenderData.length > 0
