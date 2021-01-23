@@ -15,7 +15,7 @@ import KyrixVis from "./js/KyrixVis";
 import Header from "./js/Header";
 import html2canvas from "html2canvas";
 import {message} from "antd";
-import metadata from "./metadata/mitdwh";
+import metadata from "./metadata/mondial";
 
 class KyrixJ extends Component {
     constructor(props) {

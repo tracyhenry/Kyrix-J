@@ -111,7 +111,7 @@ class Header extends Component {
                     />
                     Bookmarks
                 </div>
-                <p className="header-title">Superman @ MIT Data Warehouse</p>
+                <p className="header-title">Superman @ The MONDIAL Database</p>
                 <AutoComplete
                     className="header-input"
                     notFoundContent={

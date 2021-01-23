@@ -1,4 +1,4 @@
-const appName = "mitdwh";
+const appName = "mondial";
 const vis = require(`./apps/${appName}/input/vis.json`);
 const misc = require(`./apps/${appName}/input/misc.json`);
 const pk = misc.pk;
@@ -341,24 +341,25 @@ function constructCanvases() {
 
 function addDefaultWordClouds() {
     for (let t of tables) {
-        let sampleFields = keyColumns[t].filter(d => !pk[t][0].includes(d));
+        let allPks = getAllPks(t);
+        let sampleFields = keyColumns[t].filter(d => !allPks.includes(d));
         sampleFields = sampleFields.concat(
             allColumns[t]
-                .filter(d => !pk[t][0].includes(d) && !sampleFields.includes(d))
+                .filter(d => !allPks.includes(d) && !sampleFields.includes(d))
                 .slice(0, Math.max(0, 10 - sampleFields.length))
         );
         let spec = {
             db: misc.db,
             query: {
                 table: t,
-                dimensions: pk[t][0],
+                dimensions: allPks,
                 measure: "SUM(random() * 100)",
                 sampleFields: sampleFields
             },
             type: "wordCloud",
             tooltip: {
-                columns: pk[t][0],
-                aliases: pk[t][0]
+                columns: allPks,
+                aliases: allPks
             },
             padding: 15,
             legend: {

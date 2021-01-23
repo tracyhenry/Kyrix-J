@@ -160,18 +160,30 @@ function genSpec(canvases, appName) {
             // get an array of array of filter keys from table i
             // the reason that this is an array is because
             // one table can have multiple primary key combinations
-            // for Static Aggregations, though, only one combination
-            // is possible
             let fromFilterArray;
             if (canvases[i].visDataMappings.type === "scatterplot")
                 fromFilterArray = pk[canvases[i].table];
-            else if (
-                canvases[i].visDataMappings.type === "barchart" &&
-                canvases[i].spec.query.stackDimensions &&
-                canvases[i].spec.query.stackDimensions.length > 0
-            )
-                fromFilterArray = [canvases[i].spec.query.stackDimensions];
-            else fromFilterArray = [canvases[i].spec.query.dimensions];
+            else {
+                let dimensions;
+                if (
+                    canvases[i].visDataMappings.type === "barchart" &&
+                    canvases[i].spec.query.stackDimensions &&
+                    canvases[i].spec.query.stackDimensions.length > 0
+                )
+                    dimensions = canvases[i].spec.query.stackDimensions;
+                else dimensions = canvases[i].spec.query.dimensions;
+
+                fromFilterArray = [dimensions];
+                for (let comb of pk[canvases[i].table]) {
+                    let contains = true;
+                    for (let col of comb)
+                        if (!dimensions.includes(col)) {
+                            contains = false;
+                            break;
+                        }
+                    if (contains) fromFilterArray.push(comb);
+                }
+            }
 
             let filters;
             let jump = false;
