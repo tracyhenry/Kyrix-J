@@ -370,20 +370,12 @@ class KyrixJ extends Component {
         let sourceTable = metadata.canvasIdToTable[jump.sourceId];
         let targetTable = metadata.canvasIdToTable[jump.destId];
 
-        let windowWidth =
-            window.innerWidth ||
-            document.documentElement.clientWidth ||
-            document.body.clientWidth;
-
         // jump preview location
         let jumpOptionClientBox = node.getBoundingClientRect();
         let placement,
             x,
             y = jumpOptionClientBox.y + jumpOptionClientBox.height / 2;
-        if (
-            jumpOptionClientBox.x + jumpOptionClientBox.width / 2 >
-            windowWidth / 2
-        ) {
+        if (jumpOptionClientBox.x > 405) {
             placement = "left";
             x = jumpOptionClientBox.x - 400;
         } else {

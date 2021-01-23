@@ -907,7 +907,7 @@
                 d3.select("body")
                     .append("div")
                     .classed(
-                        "view_" + viewId + " jumppopover popover fade right in",
+                        "view_" + viewId + " jumppopover popover fade in",
                         true
                     )
                     .style("max-width", "320px")
@@ -1094,13 +1094,22 @@
                 }
 
                 // position jump popover according to event x/y and its width/height
-                var popoverHeight = d3
+                var bcr = d3
                     .select(viewClass + ".jumppopover")
                     .node()
-                    .getBoundingClientRect().height;
-                d3.select(viewClass + ".jumppopover")
-                    .style("left", d3.event.pageX + "px")
-                    .style("top", d3.event.pageY - popoverHeight / 2 + "px");
+                    .getBoundingClientRect();
+                if (d3.event.pageX > bcr.width)
+                    d3.select(viewClass + ".jumppopover")
+                        .classed("left", true)
+                        .classed("right", false)
+                        .style("left", d3.event.pageX - bcr.width + "px")
+                        .style("top", d3.event.pageY - bcr.height / 2 + "px");
+                else
+                    d3.select(viewClass + ".jumppopover")
+                        .classed("left", false)
+                        .classed("right", true)
+                        .style("left", d3.event.pageX + "px")
+                        .style("top", d3.event.pageY - bcr.height / 2 + "px");
             });
         });
     }
