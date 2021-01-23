@@ -63,11 +63,20 @@ a.popoverclose {
 div.popovercontent {
     margin: 0px;
     padding: 0px;
+    max-height: 400px;
+    overflow: auto;
 }
 
 div.popovercontent > .list-group-item {
     padding: 6px;
     border: none;
+}
+
+div.popovercontent > div {
+    text-align: left;
+    padding: 5px 8px;
+    font-size: 16px;
+    background-color: #edf2fb;
 }
 
 div.jumppopover > div {

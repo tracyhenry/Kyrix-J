@@ -990,11 +990,6 @@
                     )
                         poDiv
                             .append("div")
-                            .style("text-align", "left")
-                            .style("padding", "5px 8px")
-                            .style("font-size", "16px")
-                            .style("background-color", "#edf2fb")
-                            // .style("border-top", i ? "2px solid #ccc" : null)
                             .html(`<i>${curJumps[i].tableName}</i>`);
 
                     // create table cell and append it to .popovercontent
