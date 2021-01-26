@@ -1,5 +1,5 @@
 {
-    "db": "mit",
+    "db": "mitdwh",
     "pk": {
         "fclt_building": [["building_name"], ["fclt_building_key"]],
         "fclt_rooms": [["building_room"]],

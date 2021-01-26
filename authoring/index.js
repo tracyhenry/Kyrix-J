@@ -1,4 +1,4 @@
-const appName = "mondial";
+const appName = process.env.KYRIXJ_PROJECT;
 const vis = require(`./apps/${appName}/input/vis.json`);
 const misc = require(`./apps/${appName}/input/misc.json`);
 const pk = misc.pk;
@@ -347,18 +347,19 @@ function addDefaultWordClouds() {
                 .filter(d => !allPks.includes(d) && !sampleFields.includes(d))
                 .slice(0, Math.max(0, 10 - sampleFields.length))
         );
+        let dimensions = allPks.concat(sampleFields);
         let spec = {
             db: misc.db,
             query: {
                 table: t,
-                dimensions: allPks,
+                dimensions: dimensions,
                 measure: "SUM(random() * 100)",
-                sampleFields: sampleFields
+                sampleFields: []
             },
             type: "wordCloud",
             tooltip: {
-                columns: allPks,
-                aliases: allPks
+                columns: dimensions,
+                aliases: dimensions
             },
             padding: 15,
             legend: {

@@ -2,7 +2,7 @@
     {
         "visTitle": "Buildings at MIT (area vs #rooms)",
         "data": {
-            "db": "mit",
+            "db": "mitdwh",
             "query": "select building_name, fclt_building_key, building_type, building_height, date_built, num_of_rooms, assignable_area from Fclt_building;"
         },
         "layout": {
@@ -55,7 +55,7 @@
     },
 
     {
-        "db": "mit",
+        "db": "mitdwh",
         "query": {
             "table": "fclt_rooms",
             "dimensions": ["fclt_building_key", "organization_name"],
@@ -76,7 +76,7 @@
     },
 
     {
-        "db": "mit",
+        "db": "mitdwh",
         "query": {
             "table": "fclt_rooms",
             "dimensions": ["building_room"],
@@ -97,7 +97,7 @@
     },
 
     {
-        "db": "mit",
+        "db": "mitdwh",
         "query": {
             "table": "mit_student_directory",
             "dimensions": ["student_year"],
@@ -125,7 +125,7 @@
     },
 
     {
-        "db": "mit",
+        "db": "mitdwh",
         "query": {
             "table": "fclt_rooms",
             "dimensions": ["major_use_desc"],
@@ -148,7 +148,7 @@
     },
 
     {
-        "db": "mit",
+        "db": "mitdwh",
         "query": {
             "table": "course_catalog_subject_offered",
             "dimensions": ["department_name"],

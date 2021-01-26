@@ -1,6 +1,6 @@
 const express = require("express");
 const psql = require("pg");
-const data = require("../src/metadata/mondial.json");
+const data = require(`../src/metadata/${process.env.KYRIXJ_PROJECT}.json`);
 
 const app = express();
 const port = 3001;
@@ -8,7 +8,7 @@ const client = new psql.Client({
     host: "localhost",
     user: "kyrix",
     password: "kyrix_password",
-    database: "mondial",
+    database: process.env.KYRIXJ_PROJECT,
     port: "5433"
 });
 client.connect();
