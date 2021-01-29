@@ -170,10 +170,11 @@ class SchemaGraph extends Component {
         let oldTX = oldTransform.x;
         let oldTY = oldTransform.y;
 
-        let newTX =
-            this.props.width / 2 - d3.mean(this.nodes.data().map(d => d.x));
-        let newTY =
-            this.props.height / 2 - d3.mean(this.nodes.data().map(d => d.y));
+        let curNode = this.nodes
+            .data()
+            .filter(d => d.table_name === this.props.curTable)[0];
+        let newTX = this.props.width / 2 - curNode.x;
+        let newTY = this.props.height / 2 - curNode.y;
         let newTransform = d3.zoomIdentity.translate(newTX, newTY);
 
         d3.select("body").style("pointer-events", "none");
