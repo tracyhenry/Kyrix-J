@@ -369,7 +369,8 @@ function addDefaultWordClouds() {
             cloud: {
                 maxTextSize: 65,
                 fontFamily: "Arial"
-            }
+            },
+            transition: false
         };
 
         // add to vis
