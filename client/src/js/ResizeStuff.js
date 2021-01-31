@@ -39,6 +39,7 @@ const resizeSvgs = () => {
 const resizeRawDataTable = that => {
     let size = getRawDataTableSize();
     that.setState({
+        interactionType: "rawDataTableResize",
         rawDataTableWidth: size.width,
         rawDataTableHeight: size.height
     });

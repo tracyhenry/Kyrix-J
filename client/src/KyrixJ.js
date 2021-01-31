@@ -31,10 +31,10 @@ class KyrixJ extends Component {
             bookmarks: [],
 
             // type of interaction that generates the new table
-            // can be one of ["graphClick", "kyrixLoaded", "searchBarInputChange",
-            // "kyrixVisJump", "searchBarSearch", "kyrixRandomJump",
-            // "historyItemClick", "seeAnotherVisButtonClick",
-            // "kyrixJumpMouseover", "kyrixJumpMouseleave"]
+            // can be one of ["graphClick", "graphTrim", "kyrixLoaded",
+            // "searchBarInputChange", "kyrixVisJump", "searchBarSearch",
+            // "kyrixRandomJump", "historyItemClick", "seeAnotherVisButtonClick",
+            // "kyrixJumpMouseover", "kyrixJumpMouseleave", "rawDataTableResize]
             // used by SchemaGraph / KyrixVis (or other components in the future)
             // to do different things
             interactionType: "",
@@ -101,6 +101,12 @@ class KyrixJ extends Component {
         this.setState({
             tableHistory: this.state.tableHistory.concat([tableName]),
             interactionType: "graphClick"
+        });
+    };
+
+    handleSchemaGraphTrim = d => {
+        this.setState({
+            interactionType: "graphTrim"
         });
     };
 
@@ -437,6 +443,7 @@ class KyrixJ extends Component {
                     }
                     interactionType={this.state.interactionType}
                     handleNodeClick={this.handleSchemaGraphNodeClick}
+                    handleTrim={this.handleSchemaGraphTrim}
                     kyrixJumpHoverEdge={this.state.kyrixJumpHoverEdge}
                     // app metadata
                     canvasIdToTable={metadata.canvasIdToTable}

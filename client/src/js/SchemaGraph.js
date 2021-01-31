@@ -91,7 +91,8 @@ class SchemaGraph extends Component {
             this.props.interactionType === "searchBarSearch" ||
             this.props.interactionType === "kyrixRandomJump" ||
             this.props.interactionType === "historyItemClick" ||
-            this.props.interactionType === "kyrixLoaded"
+            this.props.interactionType === "kyrixLoaded" ||
+            this.props.interactionType === "graphTrim"
         )
             this.renderNewTable();
         else if (this.props.interactionType === "kyrixJumpMouseover")
@@ -104,6 +105,7 @@ class SchemaGraph extends Component {
 
     shouldComponentUpdate = nextProps =>
         nextProps.curTable !== this.props.curTable ||
+        nextProps.interactionType === "graphTrim" ||
         nextProps.interactionType === "kyrixJumpMouseover" ||
         nextProps.interactionType === "kyrixJumpMouseleave";
 
@@ -341,7 +343,7 @@ class SchemaGraph extends Component {
         let newNbs = oneHopNbs.nodeData.filter(
             d => !oldTableNames.includes(d.table_name)
         );
-        let oldNbCount = oneHopNbs.length - newNbs.length;
+        let oldNbCount = oneHopNbs.nodeData.length - newNbs.length;
         let newNbNodeCount = Math.min(
             newNbs.length,
             Math.max(this.maxNbCount - oldNbCount, 0)
@@ -1060,7 +1062,7 @@ class SchemaGraph extends Component {
                         <Button onClick={this.reCenterGraph} size="small">
                             Re-center
                         </Button>
-                        <Button onClick={this.renderNewTable} size="small">
+                        <Button onClick={this.props.handleTrim} size="small">
                             Trim
                         </Button>
                         <Button onClick={this.showNewStuff} size="small">
