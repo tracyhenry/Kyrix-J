@@ -3250,11 +3250,6 @@
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
-            "source": "politics",
-            "target": "politics",
-            "matches": [{"sourceCol": "dependent", "targetCol": "country"}]
-        },
-        {
             "source": "language",
             "target": "politics",
             "matches": [
@@ -3533,11 +3528,6 @@
             "source": "ethnicgroup",
             "target": "locatedon",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "borders",
-            "target": "borders",
-            "matches": [{"sourceCol": "country2", "targetCol": "country1"}]
         },
         {
             "source": "borders",
@@ -3880,19 +3870,9 @@
             ]
         },
         {
-            "source": "province",
-            "target": "province",
-            "matches": [{"sourceCol": "name", "targetCol": "capprov"}]
-        },
-        {
             "source": "continent",
             "target": "encompasses",
             "matches": [{"sourceCol": "name", "targetCol": "continent"}]
-        },
-        {
-            "source": "river",
-            "target": "river",
-            "matches": [{"sourceCol": "name", "targetCol": "river"}]
         },
         {
             "source": "river",
@@ -4189,11 +4169,6 @@
             "source": "located",
             "target": "sea",
             "matches": [{"sourceCol": "sea", "targetCol": "name"}]
-        },
-        {
-            "source": "mergeswith",
-            "target": "mergeswith",
-            "matches": [{"sourceCol": "sea2", "targetCol": "sea1"}]
         },
         {
             "source": "islandin",

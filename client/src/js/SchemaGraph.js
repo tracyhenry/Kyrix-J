@@ -77,12 +77,13 @@ class SchemaGraph extends Component {
         this.IconFont = createFromIconfontCN({
             scriptUrl: "//at.alicdn.com/t/font_2257494_inodlmuktwo.js"
         });
-    }
 
-    componentDidMount = () => {
-        if (!this.props.kyrixLoaded) return;
-        this.renderNewTable();
-    };
+        // maximum initial neighbor tables shown
+        this.maxNbCount = 5;
+
+        // popovers
+        this.popovers = [];
+    }
 
     componentDidUpdate = () => {
         if (!this.props.kyrixLoaded) return;
@@ -195,62 +196,6 @@ class SchemaGraph extends Component {
             .end();
     };
 
-    trimToOneHopNeighbors = () => {
-        let neighbors = this.getOneHopNeighbors().nodeData.map(
-            d => d.table_name
-        );
-        neighbors.push(this.props.curTable);
-
-        // transition out non 1 hop neighbors
-        d3.select("body").style("pointer-events", "none");
-        let circleToBeDeleted = d3
-            .selectAll(".circleg > circle")
-            .filter(d => neighbors.indexOf(d.table_name) === -1);
-        let circleDeletionEnd = null;
-        if (!circleToBeDeleted.empty())
-            circleDeletionEnd = circleToBeDeleted
-                .transition()
-                .duration(100)
-                .style("opacity", 0)
-                .remove()
-                .end();
-        let linesToBeDeleted = d3
-            .selectAll(".lineg > line")
-            .filter(
-                d =>
-                    d.source.table_name !== this.props.curTable &&
-                    d.target.table_name !== this.props.curTable
-            );
-        let lineDeletionEnd = null;
-        if (!linesToBeDeleted.empty())
-            lineDeletionEnd = linesToBeDeleted
-                .transition()
-                .duration(100)
-                .style("opacity", 0)
-                .remove()
-                .end();
-        Promise.all([circleDeletionEnd, lineDeletionEnd]).then(() => {
-            let graphMainSvg = d3.select(this.svgRef.current);
-            this.nodes = graphMainSvg
-                .select(".circleg")
-                .selectAll("circle")
-                .classed("graphnew", true);
-            this.links = graphMainSvg
-                .select(".lineg")
-                .selectAll("line")
-                .classed("graphnew", true);
-            this.nodes
-                .filter(d => d.table_name !== this.props.curTable)
-                .each(d => (d.fx = d.fy = null));
-
-            // update and restart simulation
-            this.simulation.nodes(this.nodes.data());
-            this.simulation.force("link").links(this.links.data());
-            d3.select("body").style("pointer-events", "none");
-            this.simulation.alpha(1).restart();
-        });
-    };
-
     showNewStuff = () => {
         if (!this.newStuff || this.newStuff.size() === 0) return;
         d3.select("body").style("pointer-events", "none");
@@ -287,6 +232,8 @@ class SchemaGraph extends Component {
             });
             links.push({source: this.props.curTable, target: neighbor});
         }
+        // for now, sort tables by table name length
+        nodes.sort((a, b) => a.table_name.length - b.table_name.length);
         const ret = {
             nodeData: nodes,
             linkData: links
@@ -294,43 +241,177 @@ class SchemaGraph extends Component {
         return ret;
     };
 
-    renderNewNeighbors = () => {
-        let nodeData = [...this.nodes.data()];
-        let linkData = [...this.links.data()];
-        let neighbors = this.getOneHopNeighbors();
-        for (let i = 0; i < neighbors.nodeData.length; i++) {
-            let neighborTableName = neighbors.nodeData[i].table_name;
-            // node
-            let exist =
-                nodeData.filter(d => d.table_name === neighborTableName)
-                    .length > 0;
-            if (!exist) nodeData.push(neighbors.nodeData[i]);
-            // link
-            exist =
-                linkData.filter(
-                    d =>
-                        (d.source.table_name === this.props.curTable &&
-                            d.target.table_name === neighborTableName) ||
-                        (d.target.table_name === this.props.curTable &&
-                            d.source.table_name === neighborTableName)
-                ).length > 0;
-            if (!exist)
-                linkData.push({
+    getGraphDataNew = () => {
+        let nbs = this.getOneHopNeighbors();
+        let nodeData = nbs.nodeData;
+        let linkData = nbs.linkData;
+
+        if (nodeData.length > this.maxNbCount) {
+            // merge meta tables into a meta node
+            let metaTables = nodeData.slice(this.maxNbCount);
+            nodeData = nodeData.slice(0, this.maxNbCount).concat({
+                table_name: "meta_" + this.props.curTable,
+                meta_tables: metaTables
+            });
+
+            // delete edges to tables in the meta node
+            let metaTableNames = metaTables.map(d => d.table_name);
+            linkData = linkData
+                .filter(d => !metaTableNames.includes(d.target))
+                .concat({
                     source: this.props.curTable,
-                    target: neighborTableName
+                    target: "meta_" + this.props.curTable
                 });
         }
+        nodeData = nodeData.concat({
+            table_name: this.props.curTable,
+            numCanvas: this.props.tableMetadata[this.props.curTable].numCanvas,
+            numRecords: this.props.tableMetadata[this.props.curTable]
+                .numRecords,
+            fx: this.props.width / 2,
+            fy: this.props.height / 2
+        });
+
+        return {nodeData, linkData};
+    };
+
+    getGraphDataIncremental = () => {
+        let nodeData = [...this.nodes.data()];
+        let linkData = [...this.links.data()];
+        let oldTableNames = nodeData.map(d => d.table_name);
+
+        // if there is a meta node already for props.curTable
+        // this means it has been expanded, so we should just
+        // return the existing graph data
+        if (oldTableNames.includes("meta_" + this.props.curTable))
+            return {nodeData, linkData};
+
+        // check if props.curTable was actually represented by a meta node
+        if (!oldTableNames.includes(this.props.curTable)) {
+            // find that meta node
+            let metaNode = this.nodes
+                .data()
+                .filter(
+                    d =>
+                        "meta_tables" in d &&
+                        d.meta_tables
+                            .map(p => p.table_name)
+                            .includes(this.props.curTable)
+                );
+
+            // remove this meta node from nodeData
+            nodeData = nodeData.filter(
+                d => d.table_name !== metaNode.table_name
+            );
+            linkData = linkData.filter(
+                d =>
+                    d.source.table_name !== metaNode.table_name &&
+                    d.target.table_name !== metaNode.table_name
+            );
+
+            // add new node for props.curTable
+            nodeData.push({
+                table_name: this.props.curTable,
+                numCanvas: this.props.tableMetadata[this.props.curTable]
+                    .numCanvas,
+                numRecords: this.props.tableMetadata[this.props.curTable],
+                fx: metaNode.fx,
+                fy: metaNode.fy
+            });
+            linkData.push({
+                source: this.props.curTable,
+                target: metaNode.table_name.substring(5)
+            });
+
+            // add a new meta node for last table, minus props.curTable
+            nodeData.push({
+                table_name: metaNode.table_name,
+                meta_tables: metaNode.meta_tables.filter(
+                    d => d.table_name !== this.props.curTable
+                )
+            });
+            linkData.push({
+                source: metaNode.table_name,
+                target: metaNode.table_name.substring(5)
+            });
+        }
+
+        // add new neighbors and metanode
+        let oneHopNbs = this.getOneHopNeighbors();
+        let newNbs = oneHopNbs.nodeData.filter(
+            d => !oldTableNames.includes(d.table_name)
+        );
+        let oldNbCount = oneHopNbs.length - newNbs.length;
+        let newNbNodeCount = Math.min(
+            newNbs.length,
+            Math.max(this.maxNbCount - oldNbCount, 0)
+        );
+
+        // add new nodes to node data
+        nodeData = nodeData.concat(newNbs.slice(0, newNbNodeCount));
+        let metaTables = newNbs.slice(newNbNodeCount);
+        if (metaTables.length > 0)
+            nodeData.push({
+                table_name: "meta_" + this.props.curTable,
+                meta_tables: metaTables
+            });
+
+        // add new edges to node data
+        let metaTableNames = metaTables.map(d => d.table_name);
+        linkData = linkData.concat(
+            oneHopNbs.linkData.filter(d => {
+                return (
+                    !metaTableNames.includes(d.target) &&
+                    linkData.filter(p => {
+                        if (typeof p.source === "string")
+                            return (
+                                (p.source === d.source &&
+                                    p.target === d.target) ||
+                                (p.target === d.source && p.source === d.target)
+                            );
+                        else
+                            return (
+                                (p.source.table_name === d.source &&
+                                    p.target.table_name === d.target) ||
+                                (p.target.table_name === d.source &&
+                                    p.source.table_name === d.target)
+                            );
+                    }).length === 0
+                );
+            })
+        );
+        if (metaTables.length > 0)
+            linkData.push({
+                source: this.props.curTable,
+                target: "meta_" + this.props.curTable
+            });
+
+        return {nodeData, linkData};
+    };
+
+    renderNewNeighbors = () => {
+        let {nodeData, linkData} = this.getGraphDataIncremental();
 
         // update selections
         let graphMainSvg = d3.select(this.svgRef.current);
-        this.nodes = this.nodes.data(nodeData).join(enter => {
-            enter
-                .append("circle")
-                .attr("r", this.circleRadius)
-                .style("cursor", "pointer")
-                .classed("graphnew", true)
-                .on("click", this.props.handleNodeClick);
-        });
+        this.nodes = this.nodes.data(nodeData).join(
+            enter =>
+                enter
+                    .append("circle")
+                    .attr("r", this.circleRadius)
+                    .style("cursor", "pointer")
+                    .classed("graphnew", true)
+                    .classed("metanode", d => d.table_name.includes("meta_"))
+                    .on("click", this.props.handleNodeClick),
+            update => update,
+            exit =>
+                exit
+                    .transition()
+                    .duration(100)
+                    .style("opacity", 0)
+                    .remove()
+        );
+
         this.nodes = graphMainSvg.select(".circleg").selectAll("circle");
 
         this.links = this.links.data(linkData).join(enter => {
@@ -349,18 +430,10 @@ class SchemaGraph extends Component {
         // dom element that D3 is in control of
         var graphMainSvg = d3.select(this.svgRef.current);
 
-        // update nodeData and linkData
-        let neighbors = this.getOneHopNeighbors();
-        let nodeData = neighbors.nodeData.concat({
-            table_name: this.props.curTable,
-            numCanvas: this.props.tableMetadata[this.props.curTable].numCanvas,
-            numRecords: this.props.tableMetadata[this.props.curTable]
-                .numRecords,
-            fx: this.props.width / 2,
-            fy: this.props.height / 2
-        });
-        let linkData = neighbors.linkData;
+        // construct nodeData and link data
+        let {nodeData, linkData} = this.getGraphDataNew();
 
+        // render graph
         graphMainSvg.selectAll("*").remove();
         var lineg = graphMainSvg.append("g").classed("lineg", true);
         var circleg = graphMainSvg.append("g").classed("circleg", true);
@@ -370,6 +443,7 @@ class SchemaGraph extends Component {
             .join("circle")
             .attr("r", this.circleRadius)
             .classed("graphnew", true)
+            .classed("metanode", d => d.table_name.includes("meta_"))
             .on("click", this.props.handleNodeClick);
         this.links = lineg
             .selectAll("line")
@@ -420,9 +494,11 @@ class SchemaGraph extends Component {
     };
 
     registerPopoverMouseEvents = () => {
+        return;
+        // check if a mouseleave event should be ignored
         const checkMouseLeave = () => {
             // mouseleave fires for children too,
-            // so we should return when it's the case
+            // so we should ignore when so
             if (!d3.select(d3.event.target).classed("ant-popover")) return true;
 
             // do not mess with mouseleave when main target is hidden
@@ -431,7 +507,7 @@ class SchemaGraph extends Component {
 
             // if related target is null
             // like you moved outside your browser window
-            // we just make the target in visible
+            // we just make the target invisible
             if (d3.event.relatedTarget == null) {
                 d3.select(d3.event.target).style("visibility", "hidden");
                 return true;
@@ -443,6 +519,7 @@ class SchemaGraph extends Component {
                 "hidden"
             )
                 return true;
+            return false;
         };
 
         this.nodes
@@ -555,13 +632,14 @@ class SchemaGraph extends Component {
 
         var graphMainSvg = d3.select(this.svgRef.current);
 
-        const jumpStartSwitch = jump => {
+        const jumpStartSlide = jump => {
             if (jump.type !== "slide") return;
             var nodes = graphMainSvg.selectAll("circle");
             // get source and dest coordinates
             var startTable = this.props.canvasIdToTable[
                 jump.backspace ? jump.destId : jump.sourceId
             ];
+            // TODO: check if startTable is represented by the meta node
             var startNode = nodes.filter(d => d.table_name === startTable);
             var startCx = +startNode.attr("cx");
             var startCy = +startNode.attr("cy");
@@ -569,6 +647,7 @@ class SchemaGraph extends Component {
             var endTable = this.props.canvasIdToTable[
                 jump.backspace ? jump.sourceId : jump.destId
             ];
+            // TODO: check if endTable is represented by the meta node
             var endNode = nodes.filter(d => d.table_name === endTable);
             var endCx = +endNode.attr("cx");
             var endCy = +endNode.attr("cy");
@@ -643,7 +722,7 @@ class SchemaGraph extends Component {
         window.kyrix.on(
             "jumpstart.switch",
             this.props.kyrixViewId,
-            jumpStartSwitch.bind(this)
+            jumpStartSlide.bind(this)
         );
         window.kyrix.on(
             "jumpstart.zoom",
@@ -981,10 +1060,7 @@ class SchemaGraph extends Component {
                         <Button onClick={this.reCenterGraph} size="small">
                             Re-center
                         </Button>
-                        <Button
-                            onClick={this.trimToOneHopNeighbors}
-                            size="small"
-                        >
+                        <Button onClick={this.renderNewTable} size="small">
                             Trim
                         </Button>
                         <Button onClick={this.showNewStuff} size="small">
@@ -992,7 +1068,7 @@ class SchemaGraph extends Component {
                         </Button>
                     </Space>
                 </div>
-                <>{this.getPopovers()}</>
+                {this.popovers}
                 <this.IconFont
                     type="icon-triple-arrow-up"
                     className="graph-arrow arrow-up"
