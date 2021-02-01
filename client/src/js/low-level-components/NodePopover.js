@@ -128,6 +128,7 @@ class NodePopover extends Component {
                     visibility: "hidden"
                 }}
             >
+                <div className="node-popover-transparent-div"></div>
                 <div className="ant-popover-title">
                     <h4>{titleText}</h4>
                 </div>

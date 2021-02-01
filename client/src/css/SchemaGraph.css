@@ -50,6 +50,13 @@
     background-color: white;
 }
 
+.node-popover-transparent-div {
+    position: absolute;
+    height: 20px;
+    width: 100%;
+    top: -20px;
+}
+
 .node-popover-collapse-div {
     max-height: 350px;
     overflow: auto;
@@ -139,6 +146,7 @@ span.graph-arrow {
 
 .node-popover .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     transition: none;
+    cursor: auto;
 }
 
 .node-popover .ant-collapse > .ant-collapse-item > .ant-collapse-header * {
