@@ -1,8 +1,16 @@
 import React, {Component} from "react";
-import {Table, List, Divider, Collapse, Button} from "antd";
+import {Table, List, Divider, Collapse} from "antd";
+import {createFromIconfontCN} from "@ant-design/icons";
 const {Panel} = Collapse;
 
 class NodePopover extends Component {
+    constructor(props) {
+        super(props);
+        this.IconFont = createFromIconfontCN({
+            scriptUrl: "//at.alicdn.com/t/font_2257494_699s6fd7rgk.js"
+        });
+    }
+
     getContentOfNormalTable = d => {
         const columns = [
             {
@@ -70,17 +78,16 @@ class NodePopover extends Component {
                 header={d.table_name}
                 key={d.table_name}
                 extra={
-                    <Button
-                        type="link"
+                    <this.IconFont
+                        type="icon-go"
                         onClick={() => {
                             this.props.handleTableClick(
                                 d,
                                 this.props.d.table_name
                             );
                         }}
-                    >
-                        go
-                    </Button>
+                        style={{fontSize: "20px"}}
+                    />
                 }
             >
                 {this.getContentOfNormalTable(d)}
