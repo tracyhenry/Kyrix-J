@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Table, Popover, List, Divider} from "antd";
+import {Table, List, Divider, Collapse} from "antd";
+const {Panel} = Collapse;
 
 class NodePopover extends Component {
-    render() {
+    getContentOfNormalTable = d => {
         const columns = [
             {
                 title: "",
@@ -25,16 +26,16 @@ class NodePopover extends Component {
             {
                 key: 0,
                 field: "# Vis",
-                value: this.props.d.numCanvas
+                value: d.numCanvas
             },
             {
                 key: 1,
                 field: "# Records",
-                value: this.props.d.numRecords
+                value: d.numRecords
             }
         ];
-        const attributes = this.props.tableColumns[this.props.d.table_name];
-        const content = (
+        const attributes = this.props.tableColumns[d.table_name];
+        return (
             <>
                 <Table
                     size="small"
@@ -60,23 +61,53 @@ class NodePopover extends Component {
                 </div>
             </>
         );
+    };
+
+    getContentOfMetaTable = () => {
+        let metaTables = this.props.d.meta_tables;
+        let panels = metaTables.map(d => (
+            <Panel header={d.table_name} key={d.table_name}>
+                {this.getContentOfNormalTable(d)}
+            </Panel>
+        ));
+
+        let content = (
+            <Collapse bordered={false} defaultActiveKey={[]}>
+                {panels}
+            </Collapse>
+        );
+        return content;
+    };
+
+    render() {
+        let tableName = this.props.d.table_name;
+        let content = tableName.includes("meta_")
+            ? this.getContentOfMetaTable()
+            : this.getContentOfNormalTable(this.props.d);
+        let titleText = tableName.includes("meta_") ? (
+            <>
+                More neighbors of Table <i>{tableName.substring(5)}</i>
+            </>
+        ) : (
+            <>
+                Table <i>{tableName}</i>
+            </>
+        );
 
         return (
-            <Popover
-                placement="bottom"
-                title={
-                    <h4>
-                        Table <i>{this.props.d.table_name}</i>
-                    </h4>
+            <div
+                className={
+                    "node-popover-" + tableName + " node-popover graph-popover"
                 }
-                content={content}
-                trigger="click"
-                visible
-                overlayClassName={
-                    "node-popover-" + this.props.d.table_name + " node-popover"
-                }
-                overlayStyle={{visibility: "hidden"}}
-            />
+                style={{
+                    visibility: "hidden"
+                }}
+            >
+                <div className="ant-popover-title">
+                    <h4>{titleText}</h4>
+                </div>
+                {content}
+            </div>
         );
     }
 }

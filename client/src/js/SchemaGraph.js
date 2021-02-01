@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import ReactDOM from "react-dom";
 import * as d3 from "d3";
 import {resizeSvgs} from "./ResizeStuff";
 import NodePopover from "./low-level-components/NodePopover";
@@ -83,23 +84,27 @@ class SchemaGraph extends Component {
 
         // popovers
         this.popovers = [];
+
+        // new table interactions
+        this.newTableInteractions = [
+            "searchBarSearch",
+            "kyrixRandomJump",
+            "historyItemClick",
+            "kyrixLoaded",
+            "graphTrim"
+        ];
     }
 
     componentDidUpdate = () => {
         if (!this.props.kyrixLoaded) return;
-        if (
-            this.props.interactionType === "searchBarSearch" ||
-            this.props.interactionType === "kyrixRandomJump" ||
-            this.props.interactionType === "historyItemClick" ||
-            this.props.interactionType === "kyrixLoaded" ||
-            this.props.interactionType === "graphTrim"
-        )
+        if (this.newTableInteractions.includes(this.props.interactionType))
             this.renderNewTable();
         else if (this.props.interactionType === "kyrixJumpMouseover")
             this.highlightLinkOnJumpMouseover();
         else if (this.props.interactionType === "kyrixJumpMouseleave")
             this.cancelLinkHighlightOnJumpMouseleave();
         else this.renderNewNeighbors();
+
         this.registerPopoverMouseEvents();
     };
 
@@ -109,49 +114,19 @@ class SchemaGraph extends Component {
         nextProps.interactionType === "kyrixJumpMouseover" ||
         nextProps.interactionType === "kyrixJumpMouseleave";
 
-    getPopovers = () => {
+    getPopovers = newTable => {
         if (this.props.curTable === "") return [];
 
-        // get new node data using this.nodes
-        let nodeData = this.nodes ? this.nodes.data() : [];
-        let neighbors = this.getOneHopNeighbors();
-        neighbors.nodeData = neighbors.nodeData.concat({
-            table_name: this.props.curTable,
-            numCanvas: this.props.tableMetadata[this.props.curTable].numCanvas,
-            numRecords: this.props.tableMetadata[this.props.curTable].numRecords
-        });
-        nodeData = nodeData.concat(
-            neighbors.nodeData.filter(
-                d => !nodeData.map(d => d.table_name).includes(d.table_name)
-            )
-        );
-
-        // get new link data
-        neighbors = this.getOneHopNeighbors();
-        let edges = this.props.graphEdges.filter(d => {
-            if (
-                this.links &&
-                this.links
-                    .data()
-                    .filter(
-                        p =>
-                            (p.source.table_name === d.source &&
-                                p.target.table_name === d.target) ||
-                            (p.source.table_name === d.target &&
-                                p.target.table_name === d.source)
-                    ).length > 0
-            )
-                return true;
-            if (
-                neighbors.linkData.filter(
-                    p =>
-                        (p.source === d.source && p.target === d.target) ||
-                        (p.source === d.target && p.target === d.source)
-                ).length > 0
-            )
-                return true;
-            return false;
-        });
+        let nodeData, linkData;
+        if (newTable) {
+            let gd = this.getGraphDataNew();
+            nodeData = gd.nodeData;
+            linkData = gd.linkData;
+        } else {
+            let gd = this.getGraphDataIncremental();
+            nodeData = gd.nodeData;
+            linkData = gd.linkData;
+        }
 
         const nodePopovers = nodeData.map(d => (
             <NodePopover
@@ -160,12 +135,13 @@ class SchemaGraph extends Component {
                 d={d}
             />
         ));
+        //
+        // const edgePopovers = edges.map(d => (
+        //     <EdgePopover key={d.source + "_" + d.target} edge={d} />
+        // ));
 
-        const edgePopovers = edges.map(d => (
-            <EdgePopover key={d.source + "_" + d.target} edge={d} />
-        ));
-
-        return nodePopovers.concat(edgePopovers);
+        // return nodePopovers.concat(edgePopovers);
+        return nodePopovers;
     };
 
     reCenterGraph = () => {
@@ -477,9 +453,7 @@ class SchemaGraph extends Component {
             .zoom()
             .scaleExtent([1, 1])
             .on("zoom", () => {
-                d3.selectAll(
-                    ".ant-popover.node-popover, .ant-popover.edge-popover"
-                ).style("visibility", "hidden");
+                d3.selectAll(".graph-popover").style("visibility", "hidden");
                 circleg.attr("transform", d3.event.transform);
                 lineg.attr("transform", d3.event.transform);
                 supermang.attr("transform", d3.event.transform);
@@ -496,12 +470,24 @@ class SchemaGraph extends Component {
     };
 
     registerPopoverMouseEvents = () => {
-        return;
+        // get popovers
+        if (this.newTableInteractions.includes(this.props.interactionType))
+            this.popovers = this.getPopovers(true);
+        else if (!this.props.interactionType.includes("kyrixJumpMouse"))
+            this.popovers = this.getPopovers(false);
+
+        // render
+        ReactDOM.render(
+            <>{this.popovers}</>,
+            document.getElementById("popovers")
+        );
+
         // check if a mouseleave event should be ignored
         const checkMouseLeave = () => {
             // mouseleave fires for children too,
             // so we should ignore when so
-            if (!d3.select(d3.event.target).classed("ant-popover")) return true;
+            if (!d3.select(d3.event.target).classed("graph-popover"))
+                return true;
 
             // do not mess with mouseleave when main target is hidden
             if (d3.select(d3.event.target).style("visibility") === "hidden")
@@ -545,7 +531,7 @@ class SchemaGraph extends Component {
                 if (d == null || typeof d !== "object") return;
                 if (
                     d3.event.relatedTarget == null ||
-                    d3.event.relatedTarget.closest(".ant-popover") == null
+                    d3.event.relatedTarget.closest(".graph-popover") == null
                 )
                     d3.select(".node-popover-" + d.table_name).style(
                         "visibility",
@@ -553,7 +539,7 @@ class SchemaGraph extends Component {
                     );
             });
 
-        d3.selectAll(".ant-popover.node-popover").on("mouseleave", () => {
+        d3.selectAll(".graph-popover.node-popover").on("mouseleave", () => {
             // return early for non-essential firings of mouseleave
             if (checkMouseLeave()) return;
 
@@ -570,6 +556,7 @@ class SchemaGraph extends Component {
                 d3.select(d3.event.target).style("visibility", "hidden");
         });
 
+        return;
         this.links
             .on("mouseover", d => {
                 if (d == null || typeof d !== "object") return;
@@ -600,7 +587,7 @@ class SchemaGraph extends Component {
                 if (d == null || typeof d !== "object") return;
                 if (
                     d3.event.relatedTarget == null ||
-                    d3.event.relatedTarget.closest(".ant-popover") == null
+                    d3.event.relatedTarget.closest(".graph-popover") == null
                 )
                     d3.select(
                         ".edge-popover-" +
@@ -610,7 +597,7 @@ class SchemaGraph extends Component {
                     ).style("visibility", "hidden");
             });
 
-        d3.selectAll(".ant-popover.edge-popover").on("mouseleave", () => {
+        d3.selectAll(".graph-popover.edge-popover").on("mouseleave", () => {
             // return early for non-essential firings of mouseleave
             if (checkMouseLeave()) return;
 
@@ -1070,7 +1057,6 @@ class SchemaGraph extends Component {
                         </Button>
                     </Space>
                 </div>
-                {this.popovers}
                 <this.IconFont
                     type="icon-triple-arrow-up"
                     className="graph-arrow arrow-up"

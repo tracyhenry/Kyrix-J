@@ -41,70 +41,81 @@
     stroke-width: 23;
 }
 
-.ant-popover.node-popover p {
+.node-popover {
+    position: absolute;
+    width: auto;
+    max-height: 600px;
+    overflow: auto;
+    margin: 3px;
+    box-sizing: border-box;
+    box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.32);
+    background-color: white;
+}
+
+.node-popover p {
     margin: 0px;
 }
 
-.ant-popover h4 {
+.graph-popover h4 {
     margin: 5px;
 }
 
-.ant-popover h5 {
+.graph-popover h5 {
     margin: 5px;
 }
 
-.ant-popover.node-popover table {
+.node-popover table {
     margin-top: 5px;
 }
 
-.ant-popover.node-popover .attribute-container {
+.node-popover .attribute-container {
     max-height: 150px;
     overflow: scroll;
 }
 
-.ant-popover.node-popover .attribute-container p {
+.node-popover .attribute-container p {
     padding: 1px 3px;
     text-align: center;
 }
 
-.ant-popover.node-popover .ant-popover-inner-content {
+.node-popover .ant-popover-inner-content {
     padding: 0px !important;
 }
 
-.ant-popover.node-popover .ant-table-tbody > tr {
+.node-popover .ant-table-tbody > tr {
     padding: 10px 5px !important;
 }
 
-.ant-popover.node-popover .ant-table-tbody > tr > td {
+.node-popover .ant-table-tbody > tr > td {
     border-bottom: none !important;
     padding: 0px 5px !important;
 }
 
-.ant-popover.edge-popover .matching-column-pairs {
+.edge-popover .matching-column-pairs {
     display: flex;
     justify-content: center;
     line-height: 1.25;
 }
 
-.ant-popover.edge-popover .matching-column-pairs > .source-col {
+.edge-popover .matching-column-pairs > .source-col {
     display: flex;
     align-items: center;
     padding-right: 5px;
 }
 
-.ant-popover.edge-popover .matching-column-pairs > .equivalence-sign {
+.edge-popover .matching-column-pairs > .equivalence-sign {
     display: flex;
     align-items: center;
     font-size: 30px;
 }
 
-.ant-popover.edge-popover .matching-column-pairs > .target-col {
+.edge-popover .matching-column-pairs > .target-col {
     display: flex;
     align-items: center;
     padding-left: 5px;
 }
 
-.ant-popover.edge-popover .ant-popover-inner-content {
+.edge-popover .ant-popover-inner-content {
     padding: 5px 10px;
     max-height: 150px;
     overflow: scroll;
