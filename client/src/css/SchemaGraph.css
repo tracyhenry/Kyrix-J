@@ -44,7 +44,7 @@
 .node-popover {
     position: absolute;
     width: auto;
-    max-height: 600px;
+    max-height: 400px;
     overflow: auto;
     margin: 3px;
     box-sizing: border-box;
@@ -128,4 +128,8 @@ span.graph-arrow {
 
 .jump-preview-text {
     font-style: italic;
+}
+
+.node-popover .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    transition: none;
 }

@@ -72,10 +72,11 @@ class NodePopover extends Component {
         ));
 
         let content = (
-            <Collapse bordered={false} defaultActiveKey={[]}>
+            <Collapse accordion defaultActiveKey={[]}>
                 {panels}
             </Collapse>
         );
+
         return content;
     };
 
