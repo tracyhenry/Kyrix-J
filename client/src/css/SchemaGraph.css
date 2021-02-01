@@ -44,12 +44,15 @@
 .node-popover {
     position: absolute;
     width: auto;
-    max-height: 400px;
-    overflow: auto;
     margin: 3px;
     box-sizing: border-box;
     box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.32);
     background-color: white;
+}
+
+.node-popover-collapse-div {
+    max-height: 350px;
+    overflow: auto;
 }
 
 .node-popover p {
