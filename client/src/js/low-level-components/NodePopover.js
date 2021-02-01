@@ -86,7 +86,7 @@ class NodePopover extends Component {
                                 this.props.d.table_name
                             );
                         }}
-                        style={{fontSize: "20px"}}
+                        className="node-popover-collapse-icon"
                     />
                 }
             >

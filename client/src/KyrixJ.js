@@ -449,6 +449,7 @@ class KyrixJ extends Component {
                     interactionType={this.state.interactionType}
                     handleNodeClick={this.handleSchemaGraphNodeClick}
                     handleTrim={this.handleSchemaGraphTrim}
+                    setInteractionType={this.setInteractionTypeToKyrixVisJump}
                     kyrixJumpHoverEdge={this.state.kyrixJumpHoverEdge}
                     clickedMetaTable={this.state.graphClickedMetaTable}
                     // app metadata

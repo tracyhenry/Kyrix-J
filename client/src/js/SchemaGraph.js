@@ -96,6 +96,12 @@ class SchemaGraph extends Component {
     }
 
     componentDidUpdate = () => {
+        // for trim, we need to set the interaction type
+        // back to something else.
+        // otherwise any new setState in KyrixJ.js that
+        // doesn't set interaction type will trigger trim
+        if (this.props.interactionType === "graphTrim")
+            this.props.setInteractionType();
         if (!this.props.kyrixLoaded) return;
         if (this.newTableInteractions.includes(this.props.interactionType))
             this.renderNewTable();
