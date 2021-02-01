@@ -114,24 +114,23 @@ class SchemaGraph extends Component {
         nextProps.interactionType === "kyrixJumpMouseover" ||
         nextProps.interactionType === "kyrixJumpMouseleave";
 
-    getPopovers = newTable => {
+    getPopovers = () => {
         if (this.props.curTable === "") return [];
 
-        let nodeData, linkData;
-        if (newTable) {
-            let gd = this.getGraphDataNew();
-            nodeData = gd.nodeData;
-            linkData = gd.linkData;
-        } else {
-            let gd = this.getGraphDataIncremental();
-            nodeData = gd.nodeData;
-            linkData = gd.linkData;
-        }
+        let nodeData = this.nodes.data(),
+            linkData = this.links.data();
 
         const nodePopovers = nodeData.map(d => (
             <NodePopover
                 key={d.table_name}
                 tableColumns={this.props.tableColumns}
+                handleTableClick={(d, metaTable) => {
+                    d3.selectAll(".graph-popover").style(
+                        "visibility",
+                        "hidden"
+                    );
+                    this.props.handleNodeClick(d, metaTable);
+                }}
                 d={d}
             />
         ));
@@ -254,8 +253,8 @@ class SchemaGraph extends Component {
     };
 
     getGraphDataIncremental = () => {
-        let nodeData = [...this.nodes.data()];
-        let linkData = [...this.links.data()];
+        let nodeData = JSON.parse(JSON.stringify(this.nodes.data()));
+        let linkData = JSON.parse(JSON.stringify(this.links.data()));
         let oldTableNames = nodeData.map(d => d.table_name);
 
         // if there is a meta node already for props.curTable
@@ -269,13 +268,7 @@ class SchemaGraph extends Component {
             // find that meta node
             let metaNode = this.nodes
                 .data()
-                .filter(
-                    d =>
-                        "meta_tables" in d &&
-                        d.meta_tables
-                            .map(p => p.table_name)
-                            .includes(this.props.curTable)
-                );
+                .filter(d => d.table_name === this.props.clickedMetaTable)[0];
 
             // remove this meta node from nodeData
             nodeData = nodeData.filter(
@@ -292,7 +285,8 @@ class SchemaGraph extends Component {
                 table_name: this.props.curTable,
                 numCanvas: this.props.tableMetadata[this.props.curTable]
                     .numCanvas,
-                numRecords: this.props.tableMetadata[this.props.curTable],
+                numRecords: this.props.tableMetadata[this.props.curTable]
+                    .numRecords,
                 fx: metaNode.fx,
                 fy: metaNode.fy
             });
@@ -364,6 +358,18 @@ class SchemaGraph extends Component {
                 target: "meta_" + this.props.curTable
             });
 
+        // remove non-meta nodes from all meta table lists
+        let nonMetaTableNames = nodeData
+            .filter(d => !d.table_name.includes("meta_"))
+            .map(d => d.table_name);
+        nodeData
+            .filter(d => d.table_name.includes("meta_"))
+            .forEach(d => {
+                d.meta_tables = d.meta_tables.filter(
+                    p => !nonMetaTableNames.includes(p.table_name)
+                );
+            });
+
         return {nodeData, linkData};
     };
 
@@ -372,23 +378,16 @@ class SchemaGraph extends Component {
 
         // update selections
         let graphMainSvg = d3.select(this.svgRef.current);
-        this.nodes = this.nodes.data(nodeData).join(
-            enter =>
+        this.nodes = this.nodes
+            .data(nodeData, d => JSON.stringify(d))
+            .join(enter => {
                 enter
                     .append("circle")
                     .attr("r", this.circleRadius)
-                    .style("cursor", "pointer")
                     .classed("graphnew", true)
                     .classed("metanode", d => d.table_name.includes("meta_"))
-                    .on("click", this.props.handleNodeClick),
-            update => update,
-            exit =>
-                exit
-                    .transition()
-                    .duration(100)
-                    .style("opacity", 0)
-                    .remove()
-        );
+                    .on("click", this.props.handleNodeClick);
+            });
 
         this.nodes = graphMainSvg.select(".circleg").selectAll("circle");
 
@@ -417,7 +416,7 @@ class SchemaGraph extends Component {
         var circleg = graphMainSvg.append("g").classed("circleg", true);
         this.nodes = circleg
             .selectAll("circle")
-            .data(nodeData)
+            .data(nodeData, d => JSON.stringify(d))
             .join("circle")
             .attr("r", this.circleRadius)
             .classed("graphnew", true)
@@ -471,10 +470,7 @@ class SchemaGraph extends Component {
 
     renderPopovers = () => {
         // get popovers
-        if (this.newTableInteractions.includes(this.props.interactionType))
-            this.popovers = this.getPopovers(true);
-        else if (!this.props.interactionType.includes("kyrixJumpMouse"))
-            this.popovers = this.getPopovers(false);
+        this.popovers = this.getPopovers();
 
         // register popover mouse events
         let registerPopoverMouseEvents = () => {

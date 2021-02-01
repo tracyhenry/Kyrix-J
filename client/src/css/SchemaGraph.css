@@ -28,7 +28,7 @@
     fill: #ccc;
     stroke: #eee;
     stroke-width: 18;
-    cursor: pointer;
+    cursor: auto;
 }
 
 .lineg > line {
@@ -131,5 +131,9 @@ span.graph-arrow {
 }
 
 .node-popover .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    transition: none;
+}
+
+.node-popover .ant-collapse > .ant-collapse-item > .ant-collapse-header * {
     transition: none;
 }

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Table, List, Divider, Collapse} from "antd";
+import {Table, List, Divider, Collapse, Button} from "antd";
 const {Panel} = Collapse;
 
 class NodePopover extends Component {
@@ -66,7 +66,23 @@ class NodePopover extends Component {
     getContentOfMetaTable = () => {
         let metaTables = this.props.d.meta_tables;
         let panels = metaTables.map(d => (
-            <Panel header={d.table_name} key={d.table_name}>
+            <Panel
+                header={d.table_name}
+                key={d.table_name}
+                extra={
+                    <Button
+                        type="link"
+                        onClick={() => {
+                            this.props.handleTableClick(
+                                d,
+                                this.props.d.table_name
+                            );
+                        }}
+                    >
+                        go
+                    </Button>
+                }
+            >
                 {this.getContentOfNormalTable(d)}
             </Panel>
         ));
@@ -76,7 +92,6 @@ class NodePopover extends Component {
                 {panels}
             </Collapse>
         );
-
         return content;
     };
 

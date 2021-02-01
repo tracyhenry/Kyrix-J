@@ -85,7 +85,10 @@ class KyrixJ extends Component {
             kyrixJumpPreviewCanvas: "",
             kyrixJumpPreviewPredicates: [],
             kyrixJumpPreviewX: 0,
-            kyrixJumpPreviewY: 0
+            kyrixJumpPreviewY: 0,
+
+            // schema graph
+            graphClickedMetaTable: ""
         };
     }
 
@@ -96,10 +99,12 @@ class KyrixJ extends Component {
         });
     };
 
-    handleSchemaGraphNodeClick = d => {
+    handleSchemaGraphNodeClick = (d, metaTable) => {
         let tableName = d.table_name;
+        if (tableName.includes("meta_")) return;
         this.setState({
             tableHistory: this.state.tableHistory.concat([tableName]),
+            graphClickedMetaTable: metaTable,
             interactionType: "graphClick"
         });
     };
@@ -445,6 +450,7 @@ class KyrixJ extends Component {
                     handleNodeClick={this.handleSchemaGraphNodeClick}
                     handleTrim={this.handleSchemaGraphTrim}
                     kyrixJumpHoverEdge={this.state.kyrixJumpHoverEdge}
+                    clickedMetaTable={this.state.graphClickedMetaTable}
                     // app metadata
                     canvasIdToTable={metadata.canvasIdToTable}
                     graphEdges={metadata.graphEdges}
