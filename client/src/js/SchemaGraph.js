@@ -105,7 +105,7 @@ class SchemaGraph extends Component {
             this.cancelLinkHighlightOnJumpMouseleave();
         else this.renderNewNeighbors();
 
-        this.registerPopoverMouseEvents();
+        this.renderPopovers();
     };
 
     shouldComponentUpdate = nextProps =>
@@ -469,150 +469,156 @@ class SchemaGraph extends Component {
         resizeSvgs();
     };
 
-    registerPopoverMouseEvents = () => {
+    renderPopovers = () => {
         // get popovers
         if (this.newTableInteractions.includes(this.props.interactionType))
             this.popovers = this.getPopovers(true);
         else if (!this.props.interactionType.includes("kyrixJumpMouse"))
             this.popovers = this.getPopovers(false);
 
+        // register popover mouse events
+        let registerPopoverMouseEvents = () => {
+            // check if a mouseleave event should be ignored
+            const checkMouseLeave = () => {
+                // mouseleave fires for children too,
+                // so we should ignore when so
+                if (!d3.select(d3.event.target).classed("graph-popover"))
+                    return true;
+
+                // do not mess with mouseleave when main target is hidden
+                if (d3.select(d3.event.target).style("visibility") === "hidden")
+                    return true;
+
+                // if related target is null
+                // like you moved outside your browser window
+                // we just make the target invisible
+                if (d3.event.relatedTarget == null) {
+                    d3.select(d3.event.target).style("visibility", "hidden");
+                    return true;
+                }
+
+                // do not mess with mouseleave when the related target is hidden
+                if (
+                    d3.select(d3.event.relatedTarget).style("visibility") ===
+                    "hidden"
+                )
+                    return true;
+                return false;
+            };
+
+            this.nodes
+                .on("mouseover", d => {
+                    if (d == null || typeof d !== "object") return;
+                    let clientRect = d3.event.currentTarget.getBoundingClientRect();
+                    let className = ".node-popover-" + d.table_name;
+                    let popoverWidth = d3
+                        .select(className)
+                        .node()
+                        .getBoundingClientRect().width;
+                    let clientCx =
+                        clientRect.x + clientRect.width / 2 - popoverWidth / 2;
+                    let clientCy = clientRect.y + clientRect.height;
+                    d3.select(className)
+                        .style("left", clientCx + "px")
+                        .style("top", clientCy + "px")
+                        .style("visibility", "visible");
+                })
+                .on("mouseleave", d => {
+                    if (d == null || typeof d !== "object") return;
+                    if (
+                        d3.event.relatedTarget == null ||
+                        d3.event.relatedTarget.closest(".graph-popover") == null
+                    )
+                        d3.select(".node-popover-" + d.table_name).style(
+                            "visibility",
+                            "hidden"
+                        );
+                });
+
+            d3.selectAll(".node-popover").on("mouseleave", () => {
+                // return early for non-essential firings of mouseleave
+                if (checkMouseLeave()) return;
+
+                // check if event.relatedTarget is a circle
+                // and that circle is the popover's trigger
+                let targetRect = d3.event.target.getBoundingClientRect();
+                let relatedRect = d3.event.relatedTarget.getBoundingClientRect();
+                if (
+                    d3.event.relatedTarget.tagName !== "circle" ||
+                    relatedRect.x + relatedRect.width / 2 !==
+                        targetRect.x + targetRect.width / 2 ||
+                    relatedRect.y + relatedRect.height !== targetRect.y
+                )
+                    d3.select(d3.event.target).style("visibility", "hidden");
+            });
+
+            return;
+            this.links
+                .on("mouseover", d => {
+                    if (d == null || typeof d !== "object") return;
+                    let clientRect = d3.event.currentTarget.getBoundingClientRect();
+                    let className =
+                        ".edge-popover-" +
+                        d.source.table_name +
+                        ".edge-popover-" +
+                        d.target.table_name;
+                    let popoverWidth = d3
+                        .select(className)
+                        .node()
+                        .getBoundingClientRect().width;
+                    let popoverHeight = d3
+                        .select(className)
+                        .node()
+                        .getBoundingClientRect().height;
+                    let clientCx =
+                        clientRect.x + clientRect.width / 2 - popoverWidth;
+                    let clientCy =
+                        clientRect.y +
+                        clientRect.height / 2 -
+                        popoverHeight / 2;
+                    d3.select(className)
+                        .style("left", clientCx + "px")
+                        .style("top", clientCy + "px")
+                        .style("visibility", "visible");
+                })
+                .on("mouseleave", d => {
+                    if (d == null || typeof d !== "object") return;
+                    if (
+                        d3.event.relatedTarget == null ||
+                        d3.event.relatedTarget.closest(".graph-popover") == null
+                    )
+                        d3.select(
+                            ".edge-popover-" +
+                                d.source.table_name +
+                                ".edge-popover-" +
+                                d.target.table_name
+                        ).style("visibility", "hidden");
+                });
+
+            d3.selectAll(".graph-popover.edge-popover").on("mouseleave", () => {
+                // return early for non-essential firings of mouseleave
+                if (checkMouseLeave()) return;
+
+                // check if event.relatedTarget is a line
+                // and that circle is the popover's trigger
+                let targetRect = d3.event.target.getBoundingClientRect();
+                let relatedRect = d3.event.relatedTarget.getBoundingClientRect();
+                if (
+                    d3.event.relatedTarget.tagName !== "line" ||
+                    relatedRect.x + relatedRect.width / 2 !== targetRect.x ||
+                    relatedRect.y + relatedRect.height / 2 !==
+                        targetRect.y + targetRect.height / 2
+                )
+                    d3.select(d3.event.target).style("visibility", "hidden");
+            });
+        };
+
         // render
         ReactDOM.render(
             <>{this.popovers}</>,
-            document.getElementById("popovers")
+            document.getElementById("popovers"),
+            registerPopoverMouseEvents
         );
-
-        // check if a mouseleave event should be ignored
-        const checkMouseLeave = () => {
-            // mouseleave fires for children too,
-            // so we should ignore when so
-            if (!d3.select(d3.event.target).classed("graph-popover"))
-                return true;
-
-            // do not mess with mouseleave when main target is hidden
-            if (d3.select(d3.event.target).style("visibility") === "hidden")
-                return true;
-
-            // if related target is null
-            // like you moved outside your browser window
-            // we just make the target invisible
-            if (d3.event.relatedTarget == null) {
-                d3.select(d3.event.target).style("visibility", "hidden");
-                return true;
-            }
-
-            // do not mess with mouseleave when the related target is hidden
-            if (
-                d3.select(d3.event.relatedTarget).style("visibility") ===
-                "hidden"
-            )
-                return true;
-            return false;
-        };
-
-        this.nodes
-            .on("mouseover", d => {
-                if (d == null || typeof d !== "object") return;
-                let clientRect = d3.event.currentTarget.getBoundingClientRect();
-                let className = ".node-popover-" + d.table_name;
-                let popoverWidth = d3
-                    .select(className)
-                    .node()
-                    .getBoundingClientRect().width;
-                let clientCx =
-                    clientRect.x + clientRect.width / 2 - popoverWidth / 2;
-                let clientCy = clientRect.y + clientRect.height;
-                d3.select(className)
-                    .style("left", clientCx + "px")
-                    .style("top", clientCy + "px")
-                    .style("visibility", "visible");
-            })
-            .on("mouseleave", d => {
-                if (d == null || typeof d !== "object") return;
-                if (
-                    d3.event.relatedTarget == null ||
-                    d3.event.relatedTarget.closest(".graph-popover") == null
-                )
-                    d3.select(".node-popover-" + d.table_name).style(
-                        "visibility",
-                        "hidden"
-                    );
-            });
-
-        d3.selectAll(".graph-popover.node-popover").on("mouseleave", () => {
-            // return early for non-essential firings of mouseleave
-            if (checkMouseLeave()) return;
-
-            // check if event.relatedTarget is a circle
-            // and that circle is the popover's trigger
-            let targetRect = d3.event.target.getBoundingClientRect();
-            let relatedRect = d3.event.relatedTarget.getBoundingClientRect();
-            if (
-                d3.event.relatedTarget.tagName !== "circle" ||
-                relatedRect.x + relatedRect.width / 2 !==
-                    targetRect.x + targetRect.width / 2 ||
-                relatedRect.y + relatedRect.height !== targetRect.y
-            )
-                d3.select(d3.event.target).style("visibility", "hidden");
-        });
-
-        return;
-        this.links
-            .on("mouseover", d => {
-                if (d == null || typeof d !== "object") return;
-                let clientRect = d3.event.currentTarget.getBoundingClientRect();
-                let className =
-                    ".edge-popover-" +
-                    d.source.table_name +
-                    ".edge-popover-" +
-                    d.target.table_name;
-                let popoverWidth = d3
-                    .select(className)
-                    .node()
-                    .getBoundingClientRect().width;
-                let popoverHeight = d3
-                    .select(className)
-                    .node()
-                    .getBoundingClientRect().height;
-                let clientCx =
-                    clientRect.x + clientRect.width / 2 - popoverWidth;
-                let clientCy =
-                    clientRect.y + clientRect.height / 2 - popoverHeight / 2;
-                d3.select(className)
-                    .style("left", clientCx + "px")
-                    .style("top", clientCy + "px")
-                    .style("visibility", "visible");
-            })
-            .on("mouseleave", d => {
-                if (d == null || typeof d !== "object") return;
-                if (
-                    d3.event.relatedTarget == null ||
-                    d3.event.relatedTarget.closest(".graph-popover") == null
-                )
-                    d3.select(
-                        ".edge-popover-" +
-                            d.source.table_name +
-                            ".edge-popover-" +
-                            d.target.table_name
-                    ).style("visibility", "hidden");
-            });
-
-        d3.selectAll(".graph-popover.edge-popover").on("mouseleave", () => {
-            // return early for non-essential firings of mouseleave
-            if (checkMouseLeave()) return;
-
-            // check if event.relatedTarget is a line
-            // and that circle is the popover's trigger
-            let targetRect = d3.event.target.getBoundingClientRect();
-            let relatedRect = d3.event.relatedTarget.getBoundingClientRect();
-            if (
-                d3.event.relatedTarget.tagName !== "line" ||
-                relatedRect.x + relatedRect.width / 2 !== targetRect.x ||
-                relatedRect.y + relatedRect.height / 2 !==
-                    targetRect.y + targetRect.height / 2
-            )
-                d3.select(d3.event.target).style("visibility", "hidden");
-        });
     };
 
     registerJumpHandlers = () => {
