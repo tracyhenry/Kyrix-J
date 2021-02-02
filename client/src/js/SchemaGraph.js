@@ -827,7 +827,7 @@ class SchemaGraph extends Component {
             targetNodeRect.y + targetNodeRect.height / 2
         );
 
-        let lineg = d3.select(".lineg");
+        let g = d3.select(".circleg");
         let textProperties = [
             {
                 xDelta: 0,
@@ -856,7 +856,7 @@ class SchemaGraph extends Component {
         for (let i = 0; i < 4; i++)
             for (let j = 0; j < 4; j++) {
                 // append two fake svg texts in order to get the screen coordinates
-                let sourceLabel = lineg
+                let sourceLabel = g
                     .append("text")
                     .classed("jump-preview-text", true)
                     .style("opacity", 0)
@@ -870,7 +870,7 @@ class SchemaGraph extends Component {
                     .attr("text-anchor", textProperties[i].anchor)
                     .attr("font-size", this.supermanW * 0.6)
                     .attr("dy", ".35em");
-                let targetLabel = lineg
+                let targetLabel = g
                     .append("text")
                     .classed("jump-preview-text", true)
                     .style("opacity", 0)
@@ -996,12 +996,11 @@ class SchemaGraph extends Component {
                 }
 
                 // remove text
-                lineg.selectAll(".jump-preview-text").remove();
+                g.selectAll(".jump-preview-text").remove();
             }
 
         // append text
-        lineg
-            .append("text")
+        g.append("text")
             .classed("jump-preview-text", true)
             .attr("x", sourceNodeDatum.fx + textProperties[sourceLoc].xDelta)
             .attr("y", sourceNodeDatum.fy + textProperties[sourceLoc].yDelta)
@@ -1013,8 +1012,7 @@ class SchemaGraph extends Component {
             .attr("text-anchor", textProperties[sourceLoc].anchor)
             .attr("font-size", this.supermanW * 0.6)
             .attr("dy", ".35em");
-        lineg
-            .append("text")
+        g.append("text")
             .classed("jump-preview-text", true)
             .attr("x", targetNodeDatum.fx + textProperties[targetLoc].xDelta)
             .attr("y", targetNodeDatum.fy + textProperties[targetLoc].yDelta)
