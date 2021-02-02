@@ -77,7 +77,7 @@ class KyrixJ extends Component {
             bookmarksButtonDisabled: false,
 
             // the edge corresponding to the hovered jump option
-            kyrixJumpHoverEdge: null,
+            kyrixJumpHoverTarget: null,
 
             // jump preview states
             kyrixJumpPreviewVisible: false,
@@ -150,7 +150,9 @@ class KyrixJ extends Component {
         );
         if (jump.type === "slide") {
             this.setState({
-                tableHistory: nextTableHistory
+                tableHistory: nextTableHistory,
+                graphClickedMetaTable:
+                    "meta_" + this.state.tableHistory.slice(-1)[0]
             });
         } else if (jump.type === "randomJumpBack") {
             this.setState({
@@ -378,9 +380,6 @@ class KyrixJ extends Component {
     };
 
     handleKyrixJumpMouseover = (jump, node, predicates) => {
-        let sourceTable = metadata.canvasIdToTable[jump.sourceId];
-        let targetTable = metadata.canvasIdToTable[jump.destId];
-
         // jump preview location
         let jumpOptionClientBox = node.getBoundingClientRect();
         let placement,
@@ -396,7 +395,7 @@ class KyrixJ extends Component {
 
         this.setState({
             interactionType: "kyrixJumpMouseover",
-            kyrixJumpHoverEdge: {source: sourceTable, target: targetTable},
+            kyrixJumpHoverTarget: metadata.canvasIdToTable[jump.destId],
             kyrixJumpPreviewVisible: true,
             kyrixJumpPreviewCanvas: jump.destId,
             kyrixJumpPreviewPredicates: predicates,
@@ -407,11 +406,9 @@ class KyrixJ extends Component {
     };
 
     handleKyrixJumpMouseleave = jump => {
-        let sourceTable = metadata.canvasIdToTable[jump.sourceId];
-        let targetTable = metadata.canvasIdToTable[jump.destId];
         this.setState({
             interactionType: "kyrixJumpMouseleave",
-            kyrixJumpHoverEdge: {source: sourceTable, target: targetTable},
+            kyrixJumpHoverTarget: metadata.canvasIdToTable[jump.destId],
             kyrixJumpPreviewVisible: false
         });
     };
@@ -450,7 +447,7 @@ class KyrixJ extends Component {
                     handleNodeClick={this.handleSchemaGraphNodeClick}
                     handleTrim={this.handleSchemaGraphTrim}
                     setInteractionType={this.setInteractionTypeToKyrixVisJump}
-                    kyrixJumpHoverEdge={this.state.kyrixJumpHoverEdge}
+                    kyrixJumpHoverTarget={this.state.kyrixJumpHoverTarget}
                     clickedMetaTable={this.state.graphClickedMetaTable}
                     // app metadata
                     canvasIdToTable={metadata.canvasIdToTable}

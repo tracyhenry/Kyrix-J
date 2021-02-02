@@ -636,7 +636,6 @@ class SchemaGraph extends Component {
             var startTable = this.props.canvasIdToTable[
                 jump.backspace ? jump.destId : jump.sourceId
             ];
-            // TODO: check if startTable is represented by the meta node
             var startNode = nodes.filter(d => d.table_name === startTable);
             var startCx = +startNode.attr("cx");
             var startCy = +startNode.attr("cy");
@@ -644,8 +643,12 @@ class SchemaGraph extends Component {
             var endTable = this.props.canvasIdToTable[
                 jump.backspace ? jump.sourceId : jump.destId
             ];
-            // TODO: check if endTable is represented by the meta node
-            var endNode = nodes.filter(d => d.table_name === endTable);
+            var endNode = nodes.filter(
+                d =>
+                    d.table_name === endTable ||
+                    (d.table_name === "meta_" + this.props.curTable &&
+                        d.meta_tables.map(d => d.table_name).includes(endTable))
+            );
             var endCx = +endNode.attr("cx");
             var endCy = +endNode.attr("cy");
 
@@ -733,27 +736,28 @@ class SchemaGraph extends Component {
         );
     };
 
+    jumpMouseOverLinkFilter = d =>
+        (d.source.table_name === this.props.curTable &&
+            (d.target.table_name === this.props.kyrixJumpHoverTarget ||
+                (d.target.table_name.includes("meta_") &&
+                    d.target.meta_tables
+                        .map(d => d.table_name)
+                        .includes(this.props.kyrixJumpHoverTarget)))) ||
+        ((d.source.table_name === this.props.kyrixJumpHoverTarget ||
+            (d.source.table_name.includes("meta_") &&
+                d.source.meta_tables
+                    .map(d => d.table_name)
+                    .includes(this.props.kyrixJumpHoverTarget))) &&
+            d.target.table_name === this.props.curTable);
+
     highlightLinkOnJumpMouseover = () => {
         // highlight the edge
         let curLink = this.links
-            .filter(
-                d =>
-                    (d.source.table_name ===
-                        this.props.kyrixJumpHoverEdge.source &&
-                        d.target.table_name ===
-                            this.props.kyrixJumpHoverEdge.target) ||
-                    (d.source.table_name ===
-                        this.props.kyrixJumpHoverEdge.target &&
-                        d.target.table_name ===
-                            this.props.kyrixJumpHoverEdge.source)
-            )
+            .filter(this.jumpMouseOverLinkFilter)
             .style("stroke", "#111")
             .style("stroke-width", 23);
         if (curLink.empty()) {
-            if (
-                this.props.kyrixJumpHoverEdge.source ===
-                this.props.kyrixJumpHoverEdge.target
-            ) {
+            if (this.props.curTable === this.props.kyrixJumpHoverTarget) {
                 // semantic zoom preview, arrow flicking
                 let curRect = d3
                     .select(this.svgRef.current)
@@ -788,7 +792,7 @@ class SchemaGraph extends Component {
 
         // add labels to the two nodes
         let sourceNode = this.nodes.filter(
-            d => d.table_name === this.props.kyrixJumpHoverEdge.source
+            d => d.table_name === this.props.curTable
         );
         let sourceNodeDatum = sourceNode.datum();
         let sourceNodeRect = sourceNode.node().getBoundingClientRect();
@@ -798,7 +802,12 @@ class SchemaGraph extends Component {
         );
 
         let targetNode = this.nodes.filter(
-            d => d.table_name === this.props.kyrixJumpHoverEdge.target
+            d =>
+                d.table_name === this.props.kyrixJumpHoverTarget ||
+                (d.table_name.includes("meta_") &&
+                    d.meta_tables
+                        .map(d => d.table_name)
+                        .includes(this.props.kyrixJumpHoverTarget))
         );
         let targetNodeDatum = targetNode.datum();
         let targetNodeRect = targetNode.node().getBoundingClientRect();
@@ -842,7 +851,11 @@ class SchemaGraph extends Component {
                     .style("opacity", 0)
                     .attr("x", sourceNodeDatum.fx + textProperties[i].xDelta)
                     .attr("y", sourceNodeDatum.fy + textProperties[i].yDelta)
-                    .text(sourceNodeDatum.table_name)
+                    .text(
+                        sourceNodeDatum.table_name.includes("meta_")
+                            ? this.props.kyrixJumpHoverTarget
+                            : sourceNodeDatum.table_name
+                    )
                     .attr("text-anchor", textProperties[i].anchor)
                     .attr("font-size", this.supermanW * 0.6)
                     .attr("dy", ".35em");
@@ -852,7 +865,11 @@ class SchemaGraph extends Component {
                     .style("opacity", 0)
                     .attr("x", targetNodeDatum.fx + textProperties[j].xDelta)
                     .attr("y", targetNodeDatum.fy + textProperties[j].yDelta)
-                    .text(targetNodeDatum.table_name)
+                    .text(
+                        targetNodeDatum.table_name.includes("meta_")
+                            ? this.props.kyrixJumpHoverTarget
+                            : targetNodeDatum.table_name
+                    )
                     .attr("text-anchor", textProperties[j].anchor)
                     .attr("font-size", this.supermanW * 0.6)
                     .attr("dy", ".35em");
@@ -977,7 +994,11 @@ class SchemaGraph extends Component {
             .classed("jump-preview-text", true)
             .attr("x", sourceNodeDatum.fx + textProperties[sourceLoc].xDelta)
             .attr("y", sourceNodeDatum.fy + textProperties[sourceLoc].yDelta)
-            .text(sourceNodeDatum.table_name)
+            .text(
+                sourceNodeDatum.table_name.includes("meta_")
+                    ? this.props.kyrixJumpHoverTarget
+                    : sourceNodeDatum.table_name
+            )
             .attr("text-anchor", textProperties[sourceLoc].anchor)
             .attr("font-size", this.supermanW * 0.6)
             .attr("dy", ".35em");
@@ -986,7 +1007,11 @@ class SchemaGraph extends Component {
             .classed("jump-preview-text", true)
             .attr("x", targetNodeDatum.fx + textProperties[targetLoc].xDelta)
             .attr("y", targetNodeDatum.fy + textProperties[targetLoc].yDelta)
-            .text(targetNodeDatum.table_name)
+            .text(
+                targetNodeDatum.table_name.includes("meta_")
+                    ? this.props.kyrixJumpHoverTarget
+                    : targetNodeDatum.table_name
+            )
             .attr("text-anchor", textProperties[targetLoc].anchor)
             .attr("font-size", this.supermanW * 0.6)
             .attr("dy", ".35em");
@@ -1021,17 +1046,7 @@ class SchemaGraph extends Component {
 
     cancelLinkHighlightOnJumpMouseleave = () => {
         this.links
-            .filter(
-                d =>
-                    (d.source.table_name ===
-                        this.props.kyrixJumpHoverEdge.source &&
-                        d.target.table_name ===
-                            this.props.kyrixJumpHoverEdge.target) ||
-                    (d.source.table_name ===
-                        this.props.kyrixJumpHoverEdge.target &&
-                        d.target.table_name ===
-                            this.props.kyrixJumpHoverEdge.source)
-            )
+            .filter(this.jumpMouseOverLinkFilter)
             .style("stroke", "#eee")
             .style("stroke-width", 18);
         d3.select("#supermanlogo_light")
