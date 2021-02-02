@@ -41,6 +41,14 @@
     stroke-width: 23;
 }
 
+.graph-popover h4 {
+    margin: 5px;
+}
+
+.graph-popover h5 {
+    margin: 5px;
+}
+
 .node-popover {
     position: absolute;
     width: auto;
@@ -70,14 +78,6 @@
     margin: 0px;
 }
 
-.graph-popover h4 {
-    margin: 5px;
-}
-
-.graph-popover h5 {
-    margin: 5px;
-}
-
 .node-popover table {
     margin-top: 5px;
 }
@@ -105,10 +105,36 @@
     padding: 0px 5px !important;
 }
 
+.node-popover .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    transition: none;
+    cursor: auto;
+}
+
+.node-popover .ant-collapse > .ant-collapse-item > .ant-collapse-header * {
+    transition: none;
+}
+
+.edge-popover {
+    position: absolute;
+    width: auto;
+    margin: 3px;
+    box-sizing: border-box;
+    box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.32);
+    background-color: white;
+}
+
+.edge-popover-transparent-div {
+    position: absolute;
+    height: 100%;
+    width: 10px;
+    right: -10px;
+}
+
 .edge-popover .matching-column-pairs {
     display: flex;
     justify-content: center;
     line-height: 1.25;
+    margin: 5px 10px;
 }
 
 .edge-popover .matching-column-pairs > .source-col {
@@ -142,13 +168,4 @@ span.graph-arrow {
 
 .jump-preview-text {
     font-style: italic;
-}
-
-.node-popover .ant-collapse > .ant-collapse-item > .ant-collapse-header {
-    transition: none;
-    cursor: auto;
-}
-
-.node-popover .ant-collapse > .ant-collapse-item > .ant-collapse-header * {
-    transition: none;
 }

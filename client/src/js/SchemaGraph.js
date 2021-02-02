@@ -140,13 +140,21 @@ class SchemaGraph extends Component {
                 d={d}
             />
         ));
-        //
-        // const edgePopovers = edges.map(d => (
-        //     <EdgePopover key={d.source + "_" + d.target} edge={d} />
-        // ));
 
-        // return nodePopovers.concat(edgePopovers);
-        return nodePopovers;
+        const edgePopovers = this.props.graphEdges
+            .filter(
+                d =>
+                    linkData.filter(
+                        p =>
+                            (p.source.table_name === d.source &&
+                                p.target.table_name === d.target) ||
+                            (p.source.table_name === d.target &&
+                                p.target.table_name === d.source)
+                    ).length > 0
+            )
+            .map(d => <EdgePopover key={d.source + "_" + d.target} edge={d} />);
+
+        return nodePopovers.concat(edgePopovers);
     };
 
     reCenterGraph = () => {
@@ -554,10 +562,15 @@ class SchemaGraph extends Component {
                     d3.select(d3.event.target).style("visibility", "hidden");
             });
 
-            return;
             this.links
                 .on("mouseover", d => {
                     if (d == null || typeof d !== "object") return;
+                    // no edge popover for meta nodes for now
+                    if (
+                        d.source.table_name.includes("meta_") ||
+                        d.target.table_name.includes("meta_")
+                    )
+                        return;
                     let clientRect = d3.event.currentTarget.getBoundingClientRect();
                     let className =
                         ".edge-popover-" +

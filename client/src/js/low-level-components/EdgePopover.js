@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Popover, List} from "antd";
+import {List} from "antd";
 
 class EdgePopover extends Component {
     render() {
@@ -24,21 +24,24 @@ class EdgePopover extends Component {
             />
         );
         return (
-            <Popover
-                placement="left"
-                title={<h4>Matching Columns</h4>}
-                content={content}
-                trigger="click"
-                visible
-                overlayClassName={
+            <div
+                className={
                     "edge-popover-" +
                     this.props.edge.source +
                     " edge-popover-" +
                     this.props.edge.target +
-                    " edge-popover"
+                    " edge-popover graph-popover"
                 }
-                overlayStyle={{visibility: "hidden"}}
-            />
+                style={{
+                    visibility: "hidden"
+                }}
+            >
+                <div className="edge-popover-transparent-div"></div>
+                <div className="ant-popover-title">
+                    <h4>Matching Columns</h4>
+                </div>
+                {content}
+            </div>
         );
     }
 }
