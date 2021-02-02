@@ -193,6 +193,7 @@ function genSpec(canvases, appName) {
                 // for each filter column of i
                 // identify a match on the other side
                 filters = {};
+                let matchCols = [];
                 for (let col of fromFilters) {
                     filters[col] = null;
                     if (ti === tj) filters[col] = col;
@@ -209,7 +210,8 @@ function genSpec(canvases, appName) {
                                         match.sourceCol === col &&
                                         canvases[j].filterableColumns.includes(
                                             match.targetCol
-                                        )
+                                        ) &&
+                                        !matchCols.includes(match.targetCol)
                                     ) {
                                         filters[col] = match.targetCol;
                                         break;
@@ -219,7 +221,8 @@ function genSpec(canvases, appName) {
                                         match.targetCol === col &&
                                         canvases[j].filterableColumns.includes(
                                             match.sourceCol
-                                        )
+                                        ) &&
+                                        !matchCols.includes(match.sourceCol)
                                     ) {
                                         filters[col] = match.sourceCol;
                                         break;
@@ -227,6 +230,8 @@ function genSpec(canvases, appName) {
                                 }
                             if (filters[col] !== null) break;
                         }
+                        if (filters[col] == null) break;
+                        matchCols.push(filters[col]);
                     }
                 }
 
