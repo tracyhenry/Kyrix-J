@@ -60,15 +60,13 @@ class SchemaGraph extends Component {
                 d3
                     .forceLink()
                     .id(d => d.table_name)
-                    .distance((this.props.width / 1000) * 200)
+                    .distance((this.props.width / 1000) * 150)
             )
             .force(
                 "charge",
-                d3
-                    .forceManyBody()
-                    .strength(-8000)
-                    .distanceMax((this.props.width / 1000) * 400)
-                    .distanceMin((this.props.width / 1000) * 200)
+                d3.forceManyBody().strength(-10000)
+                // .distanceMax((this.props.width / 1000) * 400)
+                // .distanceMin((this.props.width / 1000) * 200)
             )
             .on("tick", tickFunction.bind(this))
             .on("end", endFunction.bind(this))
