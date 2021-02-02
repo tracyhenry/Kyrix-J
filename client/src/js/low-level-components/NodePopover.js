@@ -111,7 +111,8 @@ class NodePopover extends Component {
             : this.getContentOfNormalTable(this.props.d);
         let titleText = tableName.includes("meta_") ? (
             <>
-                More neighbors of Table <i>{tableName.substring(5)}</i>
+                More neighbors of <br />
+                Table <i>{tableName.substring(5)}</i>
             </>
         ) : (
             <>
