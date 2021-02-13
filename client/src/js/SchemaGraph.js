@@ -815,7 +815,7 @@ class SchemaGraph extends Component {
         let targetNode = this.nodes.filter(
             d =>
                 d.table_name === this.props.kyrixJumpHoverTarget ||
-                (d.table_name.includes("meta_") &&
+                (d.table_name === "meta_" + this.props.curTable &&
                     d.meta_tables
                         .map(d => d.table_name)
                         .includes(this.props.kyrixJumpHoverTarget))
