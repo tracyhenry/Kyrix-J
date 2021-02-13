@@ -1,1 +1,49 @@
-[]
+[
+    {
+        "db": "mondial",
+        "query": {
+            "table": "country",
+            "dimensions": ["name", "code"],
+            "measure": "SUM(population)",
+            "sampleFields": ["capital", "area"]
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Country", "Population"]
+        },
+        "legend": {"title": "Countries with the Largest Population"},
+        "textFields": ["name"]
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "province",
+            "dimensions": ["name", "country"],
+            "measure": "SUM(population)",
+            "sampleFields": []
+        },
+        "type": "treemap",
+        "tooltip": {
+            "columns": ["country", "name", "kyrixAggValue"],
+            "aliases": ["Country", "Province", "Population"]
+        },
+        "legend": {"title": "Provinces and their Population"},
+        "textFields": ["name", "country"]
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "city",
+            "dimensions": ["name", "country", "province"],
+            "measure": "SUM(elevation)",
+            "sampleFields": []
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["name", "province", "country", "kyrixAggValue"],
+            "aliases": ["City", "Province", "Country", "Elevation"]
+        },
+        "legend": {"title": "Cities and their Elevations"}
+    }
+]
