@@ -473,7 +473,7 @@
             rows.append("td")
                 .html(p =>
                     !isNaN(d[p])
-                        ? (+d[p]).toFixed(2).replace(/\.?0*$/, "")
+                        ? d3.format(",~")(+d[p]) //(+d[p]).toFixed(2).replace(/\.?0*$/, "")
                         : d[p]
                 )
                 .style("font-weight", "900")
@@ -998,14 +998,6 @@
                         .append("a")
                         .classed("list-group-item", true)
                         .style("padding", "5px 8px")
-                        .style(
-                            "border-bottom",
-                            i == curJumps.length - 1 ||
-                                curJumps[i].tableName !==
-                                    curJumps[i + 1].tableName
-                                ? ""
-                                : "2px dotted grey"
-                        )
                         .attr("href", "#")
                         .datum(d)
                         .attr("data-jump-id", j.id)
