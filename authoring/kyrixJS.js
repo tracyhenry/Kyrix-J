@@ -237,9 +237,30 @@ function genSpec(canvases, appName) {
 
                 // if any of the filter columns of i doesn't have a match
                 // then there isn't a jump for this fromFilter
-                if (fromFilters.filter(d => filters[d] === null).length === 0)
-                    jump = true;
-                if (jump) break;
+                if (fromFilters.filter(d => filters[d] === null).length)
+                    continue;
+
+                // check if values of filters actually is a pk of table tj
+                // pk->pk or fk->pk jumps are not very useful
+                let tjMatchingCols = [];
+                for (let col in filters) tjMatchingCols.push(filters[col]);
+                let isPk = false;
+                for (let k of pk[tj]) {
+                    let isSubset = true;
+                    for (let col of k)
+                        if (!tjMatchingCols.includes(col)) {
+                            isSubset = false;
+                            break;
+                        }
+                    if (isSubset) {
+                        isPk = true;
+                        break;
+                    }
+                }
+                if (isPk) continue;
+
+                jump = true;
+                break;
             }
             if (!jump) continue;
 
