@@ -4,6 +4,14 @@
         "staticAggregation0": "SELECT name, code, SUM(population) \nFROM country \nGROUP BY name, code;",
         "staticAggregation1": "SELECT name, country, SUM(population) \nFROM province \nGROUP BY name, country;",
         "staticAggregation2": "SELECT name, country, province, SUM(elevation) \nFROM city \nGROUP BY name, country, province;",
+        "ssv0_level0": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
+        "ssv0_level1": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
+        "ssv0_level2": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
+        "ssv0_level3": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
+        "ssv0_level4": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
+        "ssv0_level5": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
+        "ssv0_level6": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
+        "ssv0_level7": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
         "staticAggregation3": "SELECT name \nFROM country;",
         "staticAggregation4": "SELECT name, province, country \nFROM city;",
         "staticAggregation5": "SELECT name, country \nFROM province;",
@@ -55,6 +63,14 @@
         "staticAggregation0": "country",
         "staticAggregation1": "province",
         "staticAggregation2": "city",
+        "ssv0_level0": "airport",
+        "ssv0_level1": "airport",
+        "ssv0_level2": "airport",
+        "ssv0_level3": "airport",
+        "ssv0_level4": "airport",
+        "ssv0_level5": "airport",
+        "ssv0_level6": "airport",
+        "ssv0_level7": "airport",
         "staticAggregation3": "country",
         "staticAggregation4": "city",
         "staticAggregation5": "province",
@@ -117,6 +133,54 @@
             "type": "barchart",
             "x": "name, country, province",
             "y": "SUM(elevation)"
+        },
+        "ssv0_level0": {
+            "type": "scatterplot",
+            "x": "longitude",
+            "y": "latitude",
+            "dot_size": "elevation"
+        },
+        "ssv0_level1": {
+            "type": "scatterplot",
+            "x": "longitude",
+            "y": "latitude",
+            "dot_size": "elevation"
+        },
+        "ssv0_level2": {
+            "type": "scatterplot",
+            "x": "longitude",
+            "y": "latitude",
+            "dot_size": "elevation"
+        },
+        "ssv0_level3": {
+            "type": "scatterplot",
+            "x": "longitude",
+            "y": "latitude",
+            "dot_size": "elevation"
+        },
+        "ssv0_level4": {
+            "type": "scatterplot",
+            "x": "longitude",
+            "y": "latitude",
+            "dot_size": "elevation"
+        },
+        "ssv0_level5": {
+            "type": "scatterplot",
+            "x": "longitude",
+            "y": "latitude",
+            "dot_size": "elevation"
+        },
+        "ssv0_level6": {
+            "type": "scatterplot",
+            "x": "longitude",
+            "y": "latitude",
+            "dot_size": "elevation"
+        },
+        "ssv0_level7": {
+            "type": "scatterplot",
+            "x": "longitude",
+            "y": "latitude",
+            "dot_size": "elevation"
         },
         "staticAggregation3": {
             "type": "wordcloud",
@@ -4402,7 +4466,7 @@
         "geo_estuary": {"numRecords": "538", "numCanvas": 1},
         "located": {"numRecords": "1599", "numCanvas": 1},
         "locatedon": {"numRecords": "510", "numCanvas": 1},
-        "airport": {"numRecords": "1320", "numCanvas": 1}
+        "airport": {"numRecords": "1320", "numCanvas": 2}
     },
     "tableColumns": {
         "country": [
@@ -4531,7 +4595,9 @@
             "latitude",
             "longitude",
             "elevation",
-            "gmtoffset"
+            "gmtoffset",
+            "kyrix_geo_x",
+            "kyrix_geo_y"
         ]
     },
     "primaryKeys": {
@@ -4962,6 +5028,12 @@
             }
         ],
         "airport": [
+            {
+                "canvasId": "ssv0_level0",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
             {
                 "canvasId": "staticAggregation48",
                 "predDict": {},

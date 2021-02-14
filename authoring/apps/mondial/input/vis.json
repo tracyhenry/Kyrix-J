@@ -44,6 +44,64 @@
             "columns": ["name", "province", "country", "kyrixAggValue"],
             "aliases": ["City", "Province", "Country", "Elevation"]
         },
-        "legend": {"title": "Cities and their Elevations"}
+        "legend": {"title": "Cities and their Elevations"},
+        "axis": {
+            "yTitle": "Elevation (meter)"
+        }
+    },
+    {
+        "visTitle": "Airports on a Map",
+        "data": {
+            "db": "mondial",
+            "query": "select iatacode, name, country, province, city, latitude, longitude, elevation from airport;"
+        },
+        "layout": {
+            "x": {"field": "longitude"},
+            "y": {"field": "latitude"},
+            "z": {"field": "elevation", "order": "desc"},
+            "geo": {
+                "center": [0, 0],
+                "level": 2
+            }
+        },
+        "marks": {
+            "cluster": {
+                "mode": "dot",
+                "config": {
+                    "clusterCount": false,
+                    "dotSizeColumn": "elevation",
+                    "dotSizeDomain": [-1000, 4500],
+                    "dotSizeLegendTitle": "Elevation (meter)",
+                    "dotColor": "black"
+                }
+            },
+            "hover": {
+                "tooltip": {
+                    "columns": [
+                        "iatacode",
+                        "name",
+                        "country",
+                        "province",
+                        "city",
+                        "latitude",
+                        "longitude",
+                        "elevation"
+                    ],
+                    "aliases": [
+                        "Code",
+                        "Name",
+                        "Country",
+                        "Province",
+                        "City",
+                        "Latitude",
+                        "Longitude",
+                        "Elevation (meter)"
+                    ]
+                }
+            }
+        },
+        "config": {
+            "numLevels": 8
+        }
     }
 ]
