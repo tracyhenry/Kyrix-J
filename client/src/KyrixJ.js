@@ -178,10 +178,6 @@ class KyrixJ extends Component {
 
     loadData = () => {
         const curData = window.kyrix.getRenderData(metadata.kyrixViewId);
-        const visType =
-            metadata.visualDataMappings[
-                window.kyrix.getCurrentCanvasId(metadata.kyrixViewId)
-            ].type;
         let nextKyrixRenderData = curData[1];
         this.setState({
             kyrixRenderData: nextKyrixRenderData

@@ -78,16 +78,16 @@
         "db": "mondial",
         "query": {
             "table": "city",
-            "dimensions": ["country"],
+            "dimensions": ["country_name"],
             "measure": "AVG(population)",
-            "sampleFields": ["name", "province"]
+            "sampleFields": ["name", "country", "province"]
         },
         "type": "bar",
         "tooltip": {
-            "columns": ["country", "kyrixAggValue"],
+            "columns": ["country_name", "kyrixAggValue"],
             "aliases": ["Country", "Average City Population"]
         },
-        "legend": {"title": "Average City Population of Countries"},
+        "legend": {"title": "Countries and their Average City Population"},
         "axis": {
             "xTitle": "Country",
             "yTitle": "Average City Population"

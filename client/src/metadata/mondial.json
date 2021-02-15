@@ -5,7 +5,7 @@
         "staticAggregation1": "SELECT name, country, SUM(population) \nFROM province \nGROUP BY name, country;",
         "staticAggregation2": "SELECT name, country, province, SUM(elevation) \nFROM city \nGROUP BY name, country, province;",
         "staticAggregation3": "SELECT name, country, province, SUM(population) \nFROM city \nGROUP BY name, country, province;",
-        "staticAggregation4": "SELECT country, AVG(population) \nFROM city \nGROUP BY country;",
+        "staticAggregation4": "SELECT country_name, AVG(population) \nFROM city \nGROUP BY country_name;",
         "ssv0_level0": "SELECT name, province, country, latitude, longitude, population \nFROM city;",
         "ssv0_level1": "SELECT name, province, country, latitude, longitude, population \nFROM city;",
         "ssv0_level2": "SELECT name, province, country, latitude, longitude, population \nFROM city;",
@@ -163,7 +163,7 @@
         },
         "staticAggregation4": {
             "type": "barchart",
-            "x": "country",
+            "x": "country_name",
             "y": "AVG(population)"
         },
         "ssv0_level0": {
@@ -4571,7 +4571,8 @@
             "longitude",
             "elevation",
             "kyrix_geo_x",
-            "kyrix_geo_y"
+            "kyrix_geo_y",
+            "country_name"
         ],
         "province": [
             "name",
