@@ -344,7 +344,12 @@ function addDefaultWordClouds() {
         let sampleFields = keyColumns[t].filter(d => !allPks.includes(d));
         sampleFields = sampleFields.concat(
             allColumns[t]
-                .filter(d => !allPks.includes(d) && !sampleFields.includes(d))
+                .filter(
+                    d =>
+                        !allPks.includes(d) &&
+                        !sampleFields.includes(d) &&
+                        !["kyrix_geo_x", "kyrix_geo_y"].includes(d)
+                )
                 .slice(0, Math.max(0, 10 - sampleFields.length))
         );
         let dimensions = allPks.concat(sampleFields);
