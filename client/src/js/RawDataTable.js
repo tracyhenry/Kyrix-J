@@ -51,7 +51,9 @@ class RawDataTable extends Component {
                 d !== "cx" &&
                 d !== "cy" &&
                 d !== "clusterAgg" &&
-                d !== "?column?"
+                d !== "?column?" &&
+                d !== "kyrix_geo_x" &&
+                d !== "kyrix_geo_y"
         );
 
         let toAntdColumn = d => ({
