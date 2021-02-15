@@ -14,7 +14,7 @@ let getSqlPredicates = predArray => {
         }
     };
 
-    if (predArray.length > 0) traversePredDict(predArray[0]);
+    if (predArray.length > 1) traversePredDict(predArray[1]);
     return predicates;
 };
 

@@ -126,7 +126,7 @@ function genSpec(canvases, appName) {
     }
 
     // add jumps
-    let predLayer0 = "{layer0: pred}";
+    let predLayer1 = "{layer1: pred}";
     let predLayers0And1 = "{layer0: pred, layer1: pred}";
     const visTypeMapping = {
         scatterplot: "Scatterplot",
@@ -285,7 +285,7 @@ function genSpec(canvases, appName) {
                 .replace(/REPLACE_ME_SEMANTIC_ZOOM/g, ti === tj ? true : false)
                 .replace(
                     /REPLACE_ME_PRED_LAYERS/g,
-                    toVisType === "scatterplot" ? predLayer0 : predLayers0And1
+                    toVisType === "scatterplot" ? predLayer1 : predLayers0And1
                 )
                 .replace(/REPLACE_ME_JUMPNAME_TABLE/g, tj)
                 .replace(/REPLACE_ME_JUMPNAME_VISTITLE/g, canvases[j].title)
