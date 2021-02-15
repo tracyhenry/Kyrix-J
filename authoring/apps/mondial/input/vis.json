@@ -46,7 +46,102 @@
         },
         "legend": {"title": "Cities and their Elevations"},
         "axis": {
+            "xTitle": "City",
             "yTitle": "Elevation (meter)"
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "city",
+            "dimensions": ["name", "country", "province"],
+            "measure": "SUM(population)",
+            "sampleFields": []
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["name", "province", "country", "kyrixAggValue"],
+            "aliases": ["City", "Province", "Country", "Population"]
+        },
+        "textFields": ["name"],
+        "legend": {"title": "Cities and their Populations"},
+        "predDict": {
+            "layer0": {
+                "==": ["country", "USA"]
+            },
+            "layer1": {
+                "==": ["country", "USA"]
+            }
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "city",
+            "dimensions": ["country"],
+            "measure": "AVG(population)",
+            "sampleFields": ["name", "province"]
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["country", "kyrixAggValue"],
+            "aliases": ["Country", "Average City Population"]
+        },
+        "legend": {"title": "Average City Population of Countries"},
+        "axis": {
+            "xTitle": "Country",
+            "yTitle": "Average City Population"
+        }
+    },
+    {
+        "visTitle": "Cities on a Map",
+        "data": {
+            "db": "mondial",
+            "query": "select name, province, country, latitude, longitude, population from city;"
+        },
+        "layout": {
+            "x": {"field": "longitude"},
+            "y": {"field": "latitude"},
+            "z": {"field": "population", "order": "desc"},
+            "geo": {
+                "center": [0, 0],
+                "level": 2
+            }
+        },
+        "marks": {
+            "cluster": {
+                "mode": "dot",
+                "config": {
+                    "clusterCount": false,
+                    "dotSizeColumn": "population",
+                    "dotSizeDomain": [0, 22315474],
+                    "dotSizeLegendTitle": "Population",
+                    "dotColor": "black"
+                }
+            },
+            "hover": {
+                "tooltip": {
+                    "columns": [
+                        "name",
+                        "country",
+                        "province",
+                        "latitude",
+                        "longitude",
+                        "population"
+                    ],
+                    "aliases": [
+                        "City",
+                        "Country",
+                        "Province",
+                        "Latitude",
+                        "Longitude",
+                        "Population"
+                    ]
+                }
+            }
+        },
+        "config": {
+            "numLevels": 8
         }
     },
     {
@@ -102,6 +197,32 @@
         },
         "config": {
             "numLevels": 8
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "borders",
+            "dimensions": ["country1_name", "country2_name"],
+            "measure": "SUM(length)",
+            "sampleFields": ["country1", "country2"]
+        },
+        "type": "treemap",
+        "tooltip": {
+            "columns": ["country1_name", "country2_name", "kyrixAggValue"],
+            "aliases": ["Country 1", "Country 2", "Length of border"]
+        },
+        "legend": {
+            "title": "Bordering Countries and the Lengths of the Borders"
+        },
+        "textFields": ["country1_name", "country2_name"],
+        "predDict": {
+            "layer0": {
+                "==": ["country1", "USA"]
+            },
+            "layer1": {
+                "==": ["country1", "USA"]
+            }
         }
     }
 ]
