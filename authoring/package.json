@@ -4,7 +4,7 @@
     "description": "Authoring component of Kyrix-J",
     "main": "index.js",
     "scripts": {
-        "start": "(node index.js) && (cp apps/mondial/output/mondial.json ../client/src/metadata/mondial.json) && (cd apps/mondial/output/ && ./compile.sh mondial.js)",
+        "start": "(node index.js) && (cp apps/mondial/output/mondial.json ../client/src/metadata/mondial.json) && (cd apps/mondial/output/ && ./compile.sh mondial.js -f)",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
