@@ -35,6 +35,85 @@
         "db": "mondial",
         "query": {
             "table": "city",
+            "dimensions": ["country"],
+            "measure": "AVG(population)",
+            "sampleFields": ["name", "province"]
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["country", "kyrixAggValue"],
+            "aliases": ["Country", "Average City Population"]
+        },
+        "legend": {"title": "Countries and their Average City Population"},
+        "axis": {
+            "xTitle": "Country",
+            "yTitle": "Average City Population"
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "city",
+            "dimensions": ["country", "country_name", "province"],
+            "measure": "AVG(population)",
+            "sampleFields": ["name"]
+        },
+        "type": "wordCloud",
+        "tooltip": {
+            "columns": ["country_name", "province", "kyrixAggValue"],
+            "aliases": ["Country", "Province", "Average City Population"]
+        },
+        "textFields": ["province"],
+        "padding": 5,
+        "cloud": {
+            "maxTextSize": 100,
+            "rotation": [-60, -30, 0, 30, 60]
+        },
+        "legend": {
+            "title": "Provinces with the Largest Average City Population"
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "city",
+            "dimensions": ["country", "country_name"],
+            "measure": "AVG(elevation)",
+            "sampleFields": ["name", "province"]
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["country_name", "kyrixAggValue"],
+            "aliases": ["Country", "Average City Elevation"]
+        },
+        "textFields": ["country_name"],
+        "legend": {"title": "Countries with the Largest Average City Elevation"}
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "city",
+            "dimensions": ["country", "country_name", "province"],
+            "measure": "AVG(elevation)",
+            "sampleFields": ["name"]
+        },
+        "type": "wordCloud",
+        "tooltip": {
+            "columns": ["country_name", "province", "kyrixAggValue"],
+            "aliases": ["Country", "Province", "Average City Elevation"]
+        },
+        "textFields": ["province"],
+        "padding": 5,
+        "cloud": {
+            "maxTextSize": 100,
+            "rotation": [-60, -30, 0, 30, 60]
+        },
+        "legend": {"title": "Provinces with the Largest Average City Elevation"}
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "city",
             "dimensions": ["name", "country", "province"],
             "measure": "SUM(elevation)",
             "sampleFields": []
@@ -64,34 +143,7 @@
             "aliases": ["City", "Province", "Country", "Population"]
         },
         "textFields": ["name"],
-        "legend": {"title": "Cities and their Populations"},
-        "predDict": {
-            "layer0": {
-                "==": ["country", "USA"]
-            },
-            "layer1": {
-                "==": ["country", "USA"]
-            }
-        }
-    },
-    {
-        "db": "mondial",
-        "query": {
-            "table": "city",
-            "dimensions": ["country_name"],
-            "measure": "AVG(population)",
-            "sampleFields": ["name", "country", "province"]
-        },
-        "type": "bar",
-        "tooltip": {
-            "columns": ["country_name", "kyrixAggValue"],
-            "aliases": ["Country", "Average City Population"]
-        },
-        "legend": {"title": "Countries and their Average City Population"},
-        "axis": {
-            "xTitle": "Country",
-            "yTitle": "Average City Population"
-        }
+        "legend": {"title": "Cities with the Largest Populations"}
     },
     {
         "visTitle": "Cities on a Map",
