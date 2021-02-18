@@ -340,26 +340,27 @@ function constructCanvases() {
 
 function addDefaultWordClouds() {
     for (let t of tables) {
-        let allPks = getAllPks(t);
-        let sampleFields = keyColumns[t].filter(d => !allPks.includes(d));
+        // let allPks = getAllPks(t);
+        let dimensions = pk[t][0];
+        let sampleFields = keyColumns[t].filter(d => !dimensions.includes(d));
         sampleFields = sampleFields.concat(
             allColumns[t]
                 .filter(
                     d =>
-                        !allPks.includes(d) &&
+                        !dimensions.includes(d) &&
                         !sampleFields.includes(d) &&
                         !["kyrix_geo_x", "kyrix_geo_y"].includes(d)
                 )
                 .slice(0, Math.max(0, 10 - sampleFields.length))
         );
-        let dimensions = allPks.concat(sampleFields);
+
         let spec = {
             db: misc.db,
             query: {
                 table: t,
                 dimensions: dimensions,
                 measure: "SUM(random() * 100)",
-                sampleFields: []
+                sampleFields: sampleFields
             },
             type: "wordCloud",
             tooltip: {
@@ -370,7 +371,7 @@ function addDefaultWordClouds() {
             legend: {
                 title: `Primary keys of table ${t.toUpperCase()} (random text size)`
             },
-            textFields: pk[t][0],
+            textFields: dimensions,
             cloud: {
                 maxTextSize: 65,
                 fontFamily: "Arial"

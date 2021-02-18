@@ -160,36 +160,36 @@ function genSpec(canvases, appName) {
             // get an array of array of filter keys from table i
             // the reason that this is an array is because
             // one table can have multiple primary key combinations
-            let fromFilterArray;
+            let pki, pkj;
+            let ti = canvases[i].table,
+                tj = canvases[j].table;
             if (canvases[i].visDataMappings.type === "scatterplot")
-                fromFilterArray = pk[canvases[i].table];
+                pki = pk[ti];
             else {
-                let dimensions;
                 if (
                     canvases[i].visDataMappings.type === "barchart" &&
                     canvases[i].spec.query.stackDimensions &&
                     canvases[i].spec.query.stackDimensions.length > 0
                 )
-                    dimensions = canvases[i].spec.query.stackDimensions;
-                else dimensions = canvases[i].spec.query.dimensions;
+                    pki = [canvases[i].spec.query.stackDimensions];
+                else pki = [canvases[i].spec.query.dimensions];
+            }
 
-                fromFilterArray = [dimensions];
-                for (let comb of pk[canvases[i].table]) {
-                    let contains = true;
-                    for (let col of comb)
-                        if (!dimensions.includes(col)) {
-                            contains = false;
-                            break;
-                        }
-                    if (contains) fromFilterArray.push(comb);
-                }
+            if (canvases[j].visDataMappings.type === "scatterplot")
+                pkj = pk[tj];
+            else {
+                if (
+                    canvases[j].visDataMappings.type === "barchart" &&
+                    canvases[j].spec.query.stackDimensions &&
+                    canvases[j].spec.query.stackDimensions.length > 0
+                )
+                    pkj = [canvases[j].spec.query.stackDimensions];
+                else pkj = [canvases[j].spec.query.dimensions];
             }
 
             let filters;
             let jump = false;
-            let ti = canvases[i].table,
-                tj = canvases[j].table;
-            for (let fromFilters of fromFilterArray) {
+            for (let fromFilters of pki) {
                 // for each filter column of i
                 // identify a match on the other side
                 filters = {};
@@ -245,7 +245,7 @@ function genSpec(canvases, appName) {
                 let tjMatchingCols = [];
                 for (let col in filters) tjMatchingCols.push(filters[col]);
                 let isPk = false;
-                for (let k of pk[tj]) {
+                for (let k of pkj) {
                     let isSubset = true;
                     for (let col of k)
                         if (!tjMatchingCols.includes(col)) {
