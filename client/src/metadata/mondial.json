@@ -526,7 +526,6 @@
             "matches": [
                 {"sourceCol": "name", "targetCol": "country"},
                 {"sourceCol": "capital", "targetCol": "capital"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -536,7 +535,6 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "name", "targetCol": "capital"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -545,7 +543,6 @@
             "target": "provpops",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "capprov", "targetCol": "province"},
                 {"sourceCol": "name", "targetCol": "province"}
             ]
         },
@@ -554,7 +551,6 @@
             "target": "provinceothername",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "capprov", "targetCol": "province"},
                 {"sourceCol": "name", "targetCol": "province"}
             ]
         },
@@ -563,7 +559,6 @@
             "target": "provincelocalname",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "capprov", "targetCol": "province"},
                 {"sourceCol": "name", "targetCol": "province"}
             ]
         },
@@ -572,7 +567,6 @@
             "target": "province",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -581,7 +575,6 @@
             "target": "province",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -590,7 +583,6 @@
             "target": "province",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -599,7 +591,6 @@
             "target": "province",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -608,7 +599,6 @@
             "target": "province",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -617,7 +607,6 @@
             "target": "province",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -626,7 +615,6 @@
             "target": "province",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -635,7 +623,6 @@
             "target": "province",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -711,7 +698,6 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "city", "targetCol": "capital"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -721,7 +707,6 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "city", "targetCol": "capital"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -731,7 +716,6 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "city", "targetCol": "capital"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -741,7 +725,6 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "city", "targetCol": "capital"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -751,7 +734,6 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "city", "targetCol": "capital"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -761,7 +743,6 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "city", "targetCol": "capital"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
@@ -771,7 +752,6 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "city", "targetCol": "capital"},
-                {"sourceCol": "province", "targetCol": "capprov"},
                 {"sourceCol": "province", "targetCol": "name"}
             ]
         },
