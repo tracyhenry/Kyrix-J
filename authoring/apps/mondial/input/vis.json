@@ -3,7 +3,7 @@
         "db": "mondial",
         "query": {
             "table": "country",
-            "dimensions": ["name", "code"],
+            "dimensions": ["name"],
             "measure": "SUM(population)",
             "sampleFields": ["capital", "area"]
         },
@@ -25,8 +25,8 @@
         },
         "type": "treemap",
         "tooltip": {
-            "columns": ["country", "name", "kyrixAggValue"],
-            "aliases": ["Country", "Province", "Population"]
+            "columns": ["name", "country", "kyrixAggValue"],
+            "aliases": ["Province", "Country", "Population"]
         },
         "legend": {"title": "Provinces and their Population"},
         "textFields": ["name", "country"]
@@ -54,14 +54,14 @@
         "db": "mondial",
         "query": {
             "table": "city",
-            "dimensions": ["country", "country_name", "province"],
+            "dimensions": ["country", "province"],
             "measure": "AVG(population)",
             "sampleFields": ["name"]
         },
         "type": "wordCloud",
         "tooltip": {
-            "columns": ["country_name", "province", "kyrixAggValue"],
-            "aliases": ["Country", "Province", "Average City Population"]
+            "columns": ["province", "country", "kyrixAggValue"],
+            "aliases": ["Province", "Country", "Average City Population"]
         },
         "textFields": ["province"],
         "padding": 5,
@@ -77,30 +77,30 @@
         "db": "mondial",
         "query": {
             "table": "city",
-            "dimensions": ["country", "country_name"],
+            "dimensions": ["country"],
             "measure": "AVG(elevation)",
             "sampleFields": ["name", "province"]
         },
         "type": "circlePack",
         "tooltip": {
-            "columns": ["country_name", "kyrixAggValue"],
+            "columns": ["country", "kyrixAggValue"],
             "aliases": ["Country", "Average City Elevation"]
         },
-        "textFields": ["country_name"],
+        "textFields": ["country"],
         "legend": {"title": "Countries with the Largest Average City Elevation"}
     },
     {
         "db": "mondial",
         "query": {
             "table": "city",
-            "dimensions": ["country", "country_name", "province"],
+            "dimensions": ["country", "province"],
             "measure": "AVG(elevation)",
             "sampleFields": ["name"]
         },
         "type": "wordCloud",
         "tooltip": {
-            "columns": ["country_name", "province", "kyrixAggValue"],
-            "aliases": ["Country", "Province", "Average City Elevation"]
+            "columns": ["province", "country", "kyrixAggValue"],
+            "aliases": ["Province", "Country", "Average City Elevation"]
         },
         "textFields": ["province"],
         "padding": 5,
@@ -143,7 +143,7 @@
             "aliases": ["City", "Province", "Country", "Population"]
         },
         "textFields": ["name"],
-        "legend": {"title": "Cities with the Largest Populations"}
+        "legend": {"title": "Cities with the Largest Population"}
     },
     {
         "visTitle": "Cities on a Map",
@@ -255,19 +255,19 @@
         "db": "mondial",
         "query": {
             "table": "borders",
-            "dimensions": ["country1_name", "country2_name"],
+            "dimensions": ["country1", "country2"],
             "measure": "SUM(length)",
-            "sampleFields": ["country1", "country2"]
+            "sampleFields": []
         },
         "type": "treemap",
         "tooltip": {
-            "columns": ["country1_name", "country2_name", "kyrixAggValue"],
+            "columns": ["country1", "country2", "kyrixAggValue"],
             "aliases": ["Country 1", "Country 2", "Length of border"]
         },
         "legend": {
             "title": "Bordering Countries and the Lengths of the Borders"
         },
-        "textFields": ["country1_name", "country2_name"],
+        "textFields": ["country1", "country2"],
         "predDict": {
             "layer0": {
                 "==": ["country1", "USA"]
