@@ -39,7 +39,7 @@ const addStaticAggregationCanvas = () => {
 const jumpCommonVariables = () => {
     /******************************** jumps ********************************/
     let ssvJumpSelector = function(row, args) {
-        return args.layerId == 0;
+        return args.layerId == 1;
     };
 
     let saJumpSelector = function(row) {
