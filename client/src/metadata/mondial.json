@@ -4590,9 +4590,7 @@
             "population",
             "latitude",
             "longitude",
-            "elevation",
-            "kyrix_geo_x",
-            "kyrix_geo_y"
+            "elevation"
         ],
         "province": [
             "name",
@@ -4703,9 +4701,7 @@
             "latitude",
             "longitude",
             "elevation",
-            "gmtoffset",
-            "kyrix_geo_x",
-            "kyrix_geo_y"
+            "gmtoffset"
         ]
     },
     "primaryKeys": {

@@ -83,7 +83,11 @@ async function getAllColumns() {
     for (let t of tables) {
         let res = await client.query(`SELECT * FROM ${t} LIMIT 1;`);
         allColumns[t] = res.fields
-            .filter(d => d.name !== "search_tsvector")
+            .filter(
+                d =>
+                    d.name !== "search_tsvector" &&
+                    !d.name.includes("kyrix_geo")
+            )
             .map(d => d.name);
     }
 }
