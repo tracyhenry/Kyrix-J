@@ -2,6 +2,50 @@
     {
         "db": "mondial",
         "query": {
+            "table": "continent",
+            "dimensions": ["name"],
+            "measure": "SUM(area)",
+            "sampleFields": []
+        },
+        "type": "pie",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Continent", "Area (km^2)"]
+        },
+        "colorScheme": "schemePastel2",
+        "legend": {
+            "title": "Continents and their Area (km^2)"
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "encompasses",
+            "dimensions": ["country"],
+            "measure": "SUM(area)",
+            "sampleFields": []
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["country", "kyrixAggValue"],
+            "aliases": ["Country", "Area (km^2)"]
+        },
+        "legend": {"title": "Countries with the Largest Area (km^2)"},
+        "textFields": ["country"],
+        "predDict": {
+            "predDict": {
+                "layer0": {
+                    "==": ["continent", "North America"]
+                },
+                "layer1": {
+                    "==": ["continent", "North America"]
+                }
+            }
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
             "table": "country",
             "dimensions": ["name"],
             "measure": "SUM(population)",
@@ -30,6 +74,41 @@
         },
         "legend": {"title": "Provinces and their Population"},
         "textFields": ["name", "country"]
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "city",
+            "dimensions": ["name", "country", "province"],
+            "measure": "SUM(elevation)",
+            "sampleFields": []
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["name", "province", "country", "kyrixAggValue"],
+            "aliases": ["City", "Province", "Country", "Elevation"]
+        },
+        "legend": {"title": "Cities and their Elevations"},
+        "axis": {
+            "xTitle": "City",
+            "yTitle": "Elevation (meter)"
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "city",
+            "dimensions": ["name", "country", "province"],
+            "measure": "SUM(population)",
+            "sampleFields": []
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["name", "province", "country", "kyrixAggValue"],
+            "aliases": ["City", "Province", "Country", "Population"]
+        },
+        "textFields": ["name"],
+        "legend": {"title": "Cities with the Largest Population"}
     },
     {
         "db": "mondial",
@@ -109,41 +188,6 @@
             "rotation": [-60, -30, 0, 30, 60]
         },
         "legend": {"title": "Provinces with the Largest Average City Elevation"}
-    },
-    {
-        "db": "mondial",
-        "query": {
-            "table": "city",
-            "dimensions": ["name", "country", "province"],
-            "measure": "SUM(elevation)",
-            "sampleFields": []
-        },
-        "type": "bar",
-        "tooltip": {
-            "columns": ["name", "province", "country", "kyrixAggValue"],
-            "aliases": ["City", "Province", "Country", "Elevation"]
-        },
-        "legend": {"title": "Cities and their Elevations"},
-        "axis": {
-            "xTitle": "City",
-            "yTitle": "Elevation (meter)"
-        }
-    },
-    {
-        "db": "mondial",
-        "query": {
-            "table": "city",
-            "dimensions": ["name", "country", "province"],
-            "measure": "SUM(population)",
-            "sampleFields": []
-        },
-        "type": "circlePack",
-        "tooltip": {
-            "columns": ["name", "province", "country", "kyrixAggValue"],
-            "aliases": ["City", "Province", "Country", "Population"]
-        },
-        "textFields": ["name"],
-        "legend": {"title": "Cities with the Largest Population"}
     },
     {
         "visTitle": "Cities on a Map",
@@ -270,10 +314,139 @@
         "textFields": ["country1", "country2"],
         "predDict": {
             "layer0": {
-                "==": ["country1", "USA"]
+                "==": ["country1", "United States"]
             },
             "layer1": {
-                "==": ["country1", "USA"]
+                "==": ["country1", "United States"]
+            }
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "countrypops",
+            "dimensions": ["country", "year"],
+            "measure": "SUM(population)",
+            "sampleFields": []
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["country", "year", "kyrixAggValue"],
+            "aliases": ["Country", "Year", "Population"]
+        },
+        "legend": {
+            "title": "Country Population Over Time"
+        },
+        "axis": {
+            "xTitle": "Year",
+            "yTitle": "Population"
+        },
+        "predDict": {
+            "layer0": {
+                "==": ["country", "United States"]
+            },
+            "layer1": {
+                "==": ["country", "United States"]
+            }
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "provpops",
+            "dimensions": ["country", "province", "year"],
+            "measure": "SUM(population)",
+            "sampleFields": []
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["province", "country", "year", "kyrixAggValue"],
+            "aliases": ["Province", "Country", "Year", "Population"]
+        },
+        "legend": {
+            "title": "Province Population Over Time"
+        },
+        "axis": {
+            "xTitle": "Year",
+            "yTitle": "Population"
+        },
+        "predDict": {
+            "layer0": {
+                "AND": [
+                    {
+                        "==": ["province", "Massachusetts"]
+                    },
+                    {
+                        "==": ["country", "United States"]
+                    }
+                ]
+            },
+            "layer1": {
+                "AND": [
+                    {
+                        "==": ["province", "Massachusetts"]
+                    },
+                    {
+                        "==": ["country", "United States"]
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "citypops",
+            "dimensions": ["city", "province", "country", "year"],
+            "measure": "SUM(population)",
+            "sampleFields": []
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["city", "province", "country", "year", "kyrixAggValue"],
+            "aliases": ["city", "province", "Country", "Year", "Population"]
+        },
+        "legend": {
+            "title": "City Population Over Time"
+        },
+        "axis": {
+            "xTitle": "Year",
+            "yTitle": "Population"
+        },
+        "predDict": {
+            "layer0": {
+                "AND": [
+                    {
+                        "AND": [
+                            {
+                                "==": ["province", "Massachusetts"]
+                            },
+                            {
+                                "==": ["country", "United States"]
+                            }
+                        ]
+                    },
+                    {
+                        "==": ["city", "Boston"]
+                    }
+                ]
+            },
+            "layer1": {
+                "AND": [
+                    {
+                        "AND": [
+                            {
+                                "==": ["province", "Massachusetts"]
+                            },
+                            {
+                                "==": ["country", "United States"]
+                            }
+                        ]
+                    },
+                    {
+                        "==": ["city", "Boston"]
+                    }
+                ]
             }
         }
     }
