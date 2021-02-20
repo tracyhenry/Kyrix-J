@@ -11,13 +11,17 @@ class EdgePopover extends Component {
                 renderItem={item => (
                     <div className="matching-column-pairs">
                         <div className="source-col">
-                            <i>{this.props.edge.source}</i>.
-                            <b>{item.sourceCol}</b>
+                            <b>
+                                <i>{this.props.edge.source}</i>
+                            </b>
+                            .{item.sourceCol}
                         </div>
                         <div className="equivalence-sign">&#8660;</div>
                         <div className="target-col">
-                            <i>{this.props.edge.target}</i>.
-                            <b>{item.targetCol}</b>
+                            <b>
+                                <i>{this.props.edge.target}</i>
+                            </b>
+                            .{item.targetCol}
                         </div>
                     </div>
                 )}
