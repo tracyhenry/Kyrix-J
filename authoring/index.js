@@ -67,6 +67,7 @@ async function generateMetadata() {
     canvases.forEach(c => {
         if (c.id.startsWith("ssv") && !c.id.includes("level0")) return;
         cjd[c.table].push({
+            title: c.title,
             canvasId: c.id,
             predDict: c.predDict,
             newVpX: 0,

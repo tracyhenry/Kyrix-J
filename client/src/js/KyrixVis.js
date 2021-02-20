@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Space} from "antd";
+import {Button, Space, List, Popover} from "antd";
 
 class KyrixVis extends Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class KyrixVis extends Component {
         if (this.props.interactionType === "historyItemClick")
             this.jumpToHistory();
         if (this.props.interactionType === "seeAnotherVisButtonClick")
-            this.jumpToAnotherVis();
+            this.jumpToCjd();
     };
 
     jumpToClickedTable = () => {
@@ -58,33 +58,42 @@ class KyrixVis extends Component {
         );
     };
 
-    jumpToAnotherVis = () => {
-        let curCanvasId = window.kyrix.getCurrentCanvasId(
-            this.props.kyrixViewId
-        );
-        let curTable = this.props.curTable;
-        let defaults = this.props.clickJumpDefaults[curTable];
-
-        // jump to the next one
-        let idx = -1;
-        for (let i = 0; i < defaults.length; i++)
-            if (defaults[i].canvasId === curCanvasId) {
-                idx = i;
-                break;
-            }
-        idx = (idx + 1) % defaults.length;
+    jumpToCjd = () => {
+        let cjd = this.props.cjd;
         window.kyrix.randomJump(
             this.props.kyrixViewId,
-            defaults[idx].canvasId,
-            defaults[idx].predDict,
-            defaults[idx].newVpX,
-            defaults[idx].newVpY,
+            cjd.canvasId,
+            cjd.predDict,
+            cjd.newVpX,
+            cjd.newVpY,
             1,
             "dict"
         );
     };
 
     render() {
+        // seeanothervis button popover content
+        let cjds = this.props.clickJumpDefaults[this.props.curTable];
+        const content = (
+            <List
+                itemLayout="vertical"
+                dataSource={cjds}
+                renderItem={cjd => (
+                    <List.Item key={JSON.stringify(cjd)}>
+                        <Button
+                            type="text"
+                            onClick={() =>
+                                this.props.handleSeeAnotherVisButtonClick(cjd)
+                            }
+                        >
+                            {" "}
+                            {cjd.title}{" "}
+                        </Button>
+                    </List.Item>
+                )}
+            />
+        );
+
         return (
             <div className="kyrixdiv" ref={this.kyrixdivRef}>
                 <Space className="kyrixvis-button-div">
@@ -95,12 +104,13 @@ class KyrixVis extends Component {
                     >
                         Save to Bookmarks
                     </Button>
-                    <Button
-                        size="small"
-                        onClick={this.props.handleSeeAnotherVisButtonClick}
+                    <Popover
+                        content={content}
+                        placement="bottom"
+                        overlayClassName="seeanothervis-popover"
                     >
-                        See Another Vis
-                    </Button>
+                        <Button size="small">See Another Vis</Button>
+                    </Popover>
                 </Space>
 
                 <div className="explain">Kyrix View</div>

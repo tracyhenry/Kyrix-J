@@ -4770,12 +4770,14 @@
     "clickJumpDefaults": {
         "country": [
             {
+                "title": "Countries with the Largest Population",
                 "canvasId": "staticAggregation2",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table COUNTRY",
                 "canvasId": "staticAggregation14",
                 "predDict": {},
                 "newVpX": 0,
@@ -4784,48 +4786,56 @@
         ],
         "city": [
             {
+                "title": "Cities and their Elevations",
                 "canvasId": "staticAggregation4",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Cities with the Largest Population",
                 "canvasId": "staticAggregation5",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Countries and their Average City Population",
                 "canvasId": "staticAggregation6",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Provinces with the Largest Average City Population",
                 "canvasId": "staticAggregation7",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Countries with the Largest Average City Elevation",
                 "canvasId": "staticAggregation8",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Provinces with the Largest Average City Elevation",
                 "canvasId": "staticAggregation9",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Cities on a Map",
                 "canvasId": "ssv0_level0",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table CITY",
                 "canvasId": "staticAggregation15",
                 "predDict": {},
                 "newVpX": 0,
@@ -4834,12 +4844,14 @@
         ],
         "province": [
             {
+                "title": "Provinces and their Population",
                 "canvasId": "staticAggregation3",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table PROVINCE",
                 "canvasId": "staticAggregation16",
                 "predDict": {},
                 "newVpX": 0,
@@ -4848,6 +4860,7 @@
         ],
         "countrypops": [
             {
+                "title": "Country Population Over Time",
                 "canvasId": "staticAggregation11",
                 "predDict": {
                     "layer0": {"==": ["country", "United States"]},
@@ -4857,6 +4870,7 @@
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table COUNTRYPOPS",
                 "canvasId": "staticAggregation17",
                 "predDict": {},
                 "newVpX": 0,
@@ -4865,6 +4879,7 @@
         ],
         "provpops": [
             {
+                "title": "Province Population Over Time",
                 "canvasId": "staticAggregation12",
                 "predDict": {
                     "layer0": {
@@ -4884,6 +4899,7 @@
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table PROVPOPS",
                 "canvasId": "staticAggregation18",
                 "predDict": {},
                 "newVpX": 0,
@@ -4892,6 +4908,7 @@
         ],
         "citypops": [
             {
+                "title": "City Population Over Time",
                 "canvasId": "staticAggregation13",
                 "predDict": {
                     "layer0": {
@@ -4921,6 +4938,7 @@
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table CITYPOPS",
                 "canvasId": "staticAggregation19",
                 "predDict": {},
                 "newVpX": 0,
@@ -4929,6 +4947,7 @@
         ],
         "countryothername": [
             {
+                "title": "Primary keys of table COUNTRYOTHERNAME",
                 "canvasId": "staticAggregation20",
                 "predDict": {},
                 "newVpX": 0,
@@ -4937,6 +4956,7 @@
         ],
         "countrylocalname": [
             {
+                "title": "Primary keys of table COUNTRYLOCALNAME",
                 "canvasId": "staticAggregation21",
                 "predDict": {},
                 "newVpX": 0,
@@ -4945,6 +4965,7 @@
         ],
         "provinceothername": [
             {
+                "title": "Primary keys of table PROVINCEOTHERNAME",
                 "canvasId": "staticAggregation22",
                 "predDict": {},
                 "newVpX": 0,
@@ -4953,6 +4974,7 @@
         ],
         "provincelocalname": [
             {
+                "title": "Primary keys of table PROVINCELOCALNAME",
                 "canvasId": "staticAggregation23",
                 "predDict": {},
                 "newVpX": 0,
@@ -4961,6 +4983,7 @@
         ],
         "cityothername": [
             {
+                "title": "Primary keys of table CITYOTHERNAME",
                 "canvasId": "staticAggregation24",
                 "predDict": {},
                 "newVpX": 0,
@@ -4969,6 +4992,7 @@
         ],
         "citylocalname": [
             {
+                "title": "Primary keys of table CITYLOCALNAME",
                 "canvasId": "staticAggregation25",
                 "predDict": {},
                 "newVpX": 0,
@@ -4977,6 +5001,7 @@
         ],
         "economy": [
             {
+                "title": "Primary keys of table ECONOMY",
                 "canvasId": "staticAggregation26",
                 "predDict": {},
                 "newVpX": 0,
@@ -4985,6 +5010,7 @@
         ],
         "population": [
             {
+                "title": "Primary keys of table POPULATION",
                 "canvasId": "staticAggregation27",
                 "predDict": {},
                 "newVpX": 0,
@@ -4993,6 +5019,7 @@
         ],
         "politics": [
             {
+                "title": "Primary keys of table POLITICS",
                 "canvasId": "staticAggregation28",
                 "predDict": {},
                 "newVpX": 0,
@@ -5001,6 +5028,7 @@
         ],
         "language": [
             {
+                "title": "Primary keys of table LANGUAGE",
                 "canvasId": "staticAggregation29",
                 "predDict": {},
                 "newVpX": 0,
@@ -5009,6 +5037,7 @@
         ],
         "religion": [
             {
+                "title": "Primary keys of table RELIGION",
                 "canvasId": "staticAggregation30",
                 "predDict": {},
                 "newVpX": 0,
@@ -5017,6 +5046,7 @@
         ],
         "ethnicgroup": [
             {
+                "title": "Primary keys of table ETHNICGROUP",
                 "canvasId": "staticAggregation31",
                 "predDict": {},
                 "newVpX": 0,
@@ -5025,12 +5055,14 @@
         ],
         "continent": [
             {
+                "title": "Continents and their Area (km^2)",
                 "canvasId": "staticAggregation0",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table CONTINENT",
                 "canvasId": "staticAggregation32",
                 "predDict": {},
                 "newVpX": 0,
@@ -5039,6 +5071,7 @@
         ],
         "borders": [
             {
+                "title": "Bordering Countries and the Lengths of the Borders",
                 "canvasId": "staticAggregation10",
                 "predDict": {
                     "layer0": {"==": ["country1", "United States"]},
@@ -5048,6 +5081,7 @@
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table BORDERS",
                 "canvasId": "staticAggregation33",
                 "predDict": {},
                 "newVpX": 0,
@@ -5056,6 +5090,7 @@
         ],
         "encompasses": [
             {
+                "title": "Countries with the Largest Area (km^2)",
                 "canvasId": "staticAggregation1",
                 "predDict": {
                     "predDict": {
@@ -5067,6 +5102,7 @@
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table ENCOMPASSES",
                 "canvasId": "staticAggregation34",
                 "predDict": {},
                 "newVpX": 0,
@@ -5075,6 +5111,7 @@
         ],
         "organization": [
             {
+                "title": "Primary keys of table ORGANIZATION",
                 "canvasId": "staticAggregation35",
                 "predDict": {},
                 "newVpX": 0,
@@ -5083,6 +5120,7 @@
         ],
         "ismember": [
             {
+                "title": "Primary keys of table ISMEMBER",
                 "canvasId": "staticAggregation36",
                 "predDict": {},
                 "newVpX": 0,
@@ -5091,6 +5129,7 @@
         ],
         "mountain": [
             {
+                "title": "Primary keys of table MOUNTAIN",
                 "canvasId": "staticAggregation37",
                 "predDict": {},
                 "newVpX": 0,
@@ -5099,6 +5138,7 @@
         ],
         "desert": [
             {
+                "title": "Primary keys of table DESERT",
                 "canvasId": "staticAggregation38",
                 "predDict": {},
                 "newVpX": 0,
@@ -5107,6 +5147,7 @@
         ],
         "island": [
             {
+                "title": "Primary keys of table ISLAND",
                 "canvasId": "staticAggregation39",
                 "predDict": {},
                 "newVpX": 0,
@@ -5115,6 +5156,7 @@
         ],
         "lake": [
             {
+                "title": "Primary keys of table LAKE",
                 "canvasId": "staticAggregation40",
                 "predDict": {},
                 "newVpX": 0,
@@ -5123,6 +5165,7 @@
         ],
         "sea": [
             {
+                "title": "Primary keys of table SEA",
                 "canvasId": "staticAggregation41",
                 "predDict": {},
                 "newVpX": 0,
@@ -5131,6 +5174,7 @@
         ],
         "river": [
             {
+                "title": "Primary keys of table RIVER",
                 "canvasId": "staticAggregation42",
                 "predDict": {},
                 "newVpX": 0,
@@ -5139,6 +5183,7 @@
         ],
         "riverthrough": [
             {
+                "title": "Primary keys of table RIVERTHROUGH",
                 "canvasId": "staticAggregation43",
                 "predDict": {},
                 "newVpX": 0,
@@ -5147,6 +5192,7 @@
         ],
         "mergeswith": [
             {
+                "title": "Primary keys of table MERGESWITH",
                 "canvasId": "staticAggregation44",
                 "predDict": {},
                 "newVpX": 0,
@@ -5155,6 +5201,7 @@
         ],
         "islandin": [
             {
+                "title": "Primary keys of table ISLANDIN",
                 "canvasId": "staticAggregation45",
                 "predDict": {},
                 "newVpX": 0,
@@ -5163,6 +5210,7 @@
         ],
         "mountainonisland": [
             {
+                "title": "Primary keys of table MOUNTAINONISLAND",
                 "canvasId": "staticAggregation46",
                 "predDict": {},
                 "newVpX": 0,
@@ -5171,6 +5219,7 @@
         ],
         "riveronisland": [
             {
+                "title": "Primary keys of table RIVERONISLAND",
                 "canvasId": "staticAggregation47",
                 "predDict": {},
                 "newVpX": 0,
@@ -5179,6 +5228,7 @@
         ],
         "lakeonisland": [
             {
+                "title": "Primary keys of table LAKEONISLAND",
                 "canvasId": "staticAggregation48",
                 "predDict": {},
                 "newVpX": 0,
@@ -5187,6 +5237,7 @@
         ],
         "geo_mountain": [
             {
+                "title": "Primary keys of table GEO_MOUNTAIN",
                 "canvasId": "staticAggregation49",
                 "predDict": {},
                 "newVpX": 0,
@@ -5195,6 +5246,7 @@
         ],
         "geo_desert": [
             {
+                "title": "Primary keys of table GEO_DESERT",
                 "canvasId": "staticAggregation50",
                 "predDict": {},
                 "newVpX": 0,
@@ -5203,6 +5255,7 @@
         ],
         "geo_island": [
             {
+                "title": "Primary keys of table GEO_ISLAND",
                 "canvasId": "staticAggregation51",
                 "predDict": {},
                 "newVpX": 0,
@@ -5211,6 +5264,7 @@
         ],
         "geo_river": [
             {
+                "title": "Primary keys of table GEO_RIVER",
                 "canvasId": "staticAggregation52",
                 "predDict": {},
                 "newVpX": 0,
@@ -5219,6 +5273,7 @@
         ],
         "geo_sea": [
             {
+                "title": "Primary keys of table GEO_SEA",
                 "canvasId": "staticAggregation53",
                 "predDict": {},
                 "newVpX": 0,
@@ -5227,6 +5282,7 @@
         ],
         "geo_lake": [
             {
+                "title": "Primary keys of table GEO_LAKE",
                 "canvasId": "staticAggregation54",
                 "predDict": {},
                 "newVpX": 0,
@@ -5235,6 +5291,7 @@
         ],
         "geo_source": [
             {
+                "title": "Primary keys of table GEO_SOURCE",
                 "canvasId": "staticAggregation55",
                 "predDict": {},
                 "newVpX": 0,
@@ -5243,6 +5300,7 @@
         ],
         "geo_estuary": [
             {
+                "title": "Primary keys of table GEO_ESTUARY",
                 "canvasId": "staticAggregation56",
                 "predDict": {},
                 "newVpX": 0,
@@ -5251,6 +5309,7 @@
         ],
         "located": [
             {
+                "title": "Primary keys of table LOCATED",
                 "canvasId": "staticAggregation57",
                 "predDict": {},
                 "newVpX": 0,
@@ -5259,6 +5318,7 @@
         ],
         "locatedon": [
             {
+                "title": "Primary keys of table LOCATEDON",
                 "canvasId": "staticAggregation58",
                 "predDict": {},
                 "newVpX": 0,
@@ -5267,12 +5327,14 @@
         ],
         "airport": [
             {
+                "title": "Airports on a Map",
                 "canvasId": "ssv1_level0",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
+                "title": "Primary keys of table AIRPORT",
                 "canvasId": "staticAggregation59",
                 "predDict": {},
                 "newVpX": 0,

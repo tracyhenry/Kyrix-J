@@ -9,3 +9,11 @@
     right: 5px;
     z-index: 100;
 }
+
+.seeanothervis-popover .ant-popover-inner-content {
+    padding: 2px 5px;
+}
+
+.seeanothervis-popover .ant-list-item {
+    padding: 1px 0px;
+}

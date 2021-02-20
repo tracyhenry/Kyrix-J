@@ -50,6 +50,9 @@ class KyrixJ extends Component {
             kyrixVy: null,
             kyrixScale: null,
 
+            // click jump default (for see another vis button click)
+            cjd: null,
+
             // current render data
             kyrixRenderData: [],
 
@@ -359,19 +362,13 @@ class KyrixJ extends Component {
         );
     };
 
-    handleSeeAnotherVisButtonClick = () => {
+    handleSeeAnotherVisButtonClick = cjd => {
         let [curTable] = this.state.tableHistory.slice(-1);
-        if (metadata.clickJumpDefaults[curTable].length === 1) {
-            message.warning(
-                "There is only one visualization of this table.",
-                1.5
-            );
-            return;
-        } else
-            this.setState({
-                tableHistory: this.state.tableHistory.concat([curTable]),
-                interactionType: "seeAnotherVisButtonClick"
-            });
+        this.setState({
+            tableHistory: this.state.tableHistory.concat([curTable]),
+            interactionType: "seeAnotherVisButtonClick",
+            cjd: cjd
+        });
     };
 
     handleKyrixJumpMouseover = (jump, node, predicates) => {
@@ -501,7 +498,8 @@ class KyrixJ extends Component {
                     kyrixVX={this.state.kyrixVX}
                     kyrixVY={this.state.kyrixVY}
                     kyrixScale={this.state.kyrixScale}
-                    // app metadata (TODO: combine them into one field)
+                    cjd={this.state.cjd}
+                    // app metadata
                     kyrixViewId={metadata.kyrixViewId}
                     clickJumpDefaults={metadata.clickJumpDefaults}
                 />
