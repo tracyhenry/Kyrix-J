@@ -259,9 +259,34 @@ function genSpec(canvases, appName) {
                 }
                 if (isPk) continue;
 
+                // special check for jumps to population tables
+                if (tj === "countrypops") {
+                    if (matchCols.length !== 1 || matchCols[0] !== "country")
+                        continue;
+                }
+                if (tj === "provpops") {
+                    if (
+                        matchCols.length !== 2 ||
+                        !matchCols.includes("province") ||
+                        !matchCols.includes("country")
+                    )
+                        continue;
+                }
+                if (tj === "citypops") {
+                    if (
+                        matchCols.length !== 3 ||
+                        !matchCols.includes("city") ||
+                        !matchCols.includes("province") ||
+                        !matchCols.includes("country")
+                    )
+                        continue;
+                }
+
+                // all check passed, there is a jump, hooray!
                 jump = true;
                 break;
             }
+
             if (!jump) continue;
 
             // construct pred json
