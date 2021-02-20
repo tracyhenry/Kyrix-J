@@ -2,10 +2,6 @@
     grid-area: 6 / 6 / 10 / 9;
 }
 
-.ant-card-body pre > code {
-    white-space: pre-wrap !important;
-}
-
 .query-info .ant-card-body pre {
     margin-bottom: 0px;
     line-height: 1.5;

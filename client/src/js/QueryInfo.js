@@ -32,7 +32,11 @@ class QueryInfo extends Component {
                         )
                     }
                 >
-                    <SyntaxHighlighter language="sql" style={githubGist}>
+                    <SyntaxHighlighter
+                        language="sql"
+                        style={githubGist}
+                        wrapLongLines
+                    >
                         {this.props.kyrixCanvas.length > 0
                             ? this.props.sqlQuery[this.props.kyrixCanvas]
                             : ""}
