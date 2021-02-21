@@ -449,5 +449,41 @@
                 ]
             }
         }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "population",
+            "dimensions": ["country"],
+            "measure": "SUM(population_growth)",
+            "sampleFields": []
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["country", "kyrixAggValue"],
+            "aliases": ["Country", "Annual Population Growth Rate"]
+        },
+        "textFields": ["country"],
+        "legend": {
+            "title": "Countries and their Annual Population Growth Rate"
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "population",
+            "dimensions": ["country"],
+            "measure": "SUM(infant_mortality)",
+            "sampleFields": []
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["country", "kyrixAggValue"],
+            "aliases": ["Country", "Infant Mortality (per Thousand)"]
+        },
+        "textFields": ["country"],
+        "legend": {
+            "title": "Countries and their Infant Mortality (per thousand)"
+        }
     }
 ]
