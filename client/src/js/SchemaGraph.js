@@ -1089,6 +1089,12 @@ class SchemaGraph extends Component {
                         </Button>
                     </Space>
                 </div>
+                <div className="graph-curtable">
+                    Currently at Table{" "}
+                    <b>
+                        <i>{this.props.curTable}</i>
+                    </b>
+                </div>
                 <this.IconFont
                     type="icon-triple-arrow-up"
                     className="graph-arrow arrow-up"

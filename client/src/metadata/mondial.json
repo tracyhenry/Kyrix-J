@@ -4770,7 +4770,7 @@
     "clickJumpDefaults": {
         "country": [
             {
-                "title": "Countries with the Largest Population",
+                "title": "Countries and their Population",
                 "canvasId": "staticAggregation2",
                 "predDict": {},
                 "newVpX": 0,
@@ -4793,7 +4793,7 @@
                 "newVpY": 0
             },
             {
-                "title": "Cities with the Largest Population",
+                "title": "Cities and their Population",
                 "canvasId": "staticAggregation5",
                 "predDict": {},
                 "newVpX": 0,
@@ -4807,21 +4807,21 @@
                 "newVpY": 0
             },
             {
-                "title": "Provinces with the Largest Average City Population",
+                "title": "Provinces and their Average City Population",
                 "canvasId": "staticAggregation7",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
-                "title": "Countries with the Largest Average City Elevation",
+                "title": "Countries and their Average City Elevation",
                 "canvasId": "staticAggregation8",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
             },
             {
-                "title": "Provinces with the Largest Average City Elevation",
+                "title": "Provinces and their Average City Elevation",
                 "canvasId": "staticAggregation9",
                 "predDict": {},
                 "newVpX": 0,
@@ -5090,7 +5090,7 @@
         ],
         "encompasses": [
             {
-                "title": "Countries with the Largest Area (km^2)",
+                "title": "Countries and their Area (km^2)",
                 "canvasId": "staticAggregation1",
                 "predDict": {
                     "predDict": {

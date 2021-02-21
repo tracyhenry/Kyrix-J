@@ -30,7 +30,7 @@
             "columns": ["country", "kyrixAggValue"],
             "aliases": ["Country", "Area (km^2)"]
         },
-        "legend": {"title": "Countries with the Largest Area (km^2)"},
+        "legend": {"title": "Countries and their Area (km^2)"},
         "textFields": ["country"],
         "predDict": {
             "predDict": {
@@ -56,7 +56,7 @@
             "columns": ["name", "kyrixAggValue"],
             "aliases": ["Country", "Population"]
         },
-        "legend": {"title": "Countries with the Largest Population"},
+        "legend": {"title": "Countries and their Population"},
         "textFields": ["name"]
     },
     {
@@ -108,7 +108,7 @@
             "aliases": ["City", "Province", "Country", "Population"]
         },
         "textFields": ["name"],
-        "legend": {"title": "Cities with the Largest Population"}
+        "legend": {"title": "Cities and their Population"}
     },
     {
         "db": "mondial",
@@ -149,7 +149,7 @@
             "rotation": [-60, -30, 0, 30, 60]
         },
         "legend": {
-            "title": "Provinces with the Largest Average City Population"
+            "title": "Provinces and their Average City Population"
         }
     },
     {
@@ -166,7 +166,7 @@
             "aliases": ["Country", "Average City Elevation"]
         },
         "textFields": ["country"],
-        "legend": {"title": "Countries with the Largest Average City Elevation"}
+        "legend": {"title": "Countries and their Average City Elevation"}
     },
     {
         "db": "mondial",
@@ -187,7 +187,7 @@
             "maxTextSize": 100,
             "rotation": [-60, -30, 0, 30, 60]
         },
-        "legend": {"title": "Provinces with the Largest Average City Elevation"}
+        "legend": {"title": "Provinces and their Average City Elevation"}
     },
     {
         "visTitle": "Cities on a Map",
