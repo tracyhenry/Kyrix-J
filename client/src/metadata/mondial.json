@@ -1,12 +1,12 @@
 {
     "kyrixViewId": "mondial",
     "sqlQuery": {
-        "staticAggregation0": "SELECT name, SUM(area) \nFROM continent \nGROUP BY name;",
+        "staticAggregation0": "SELECT name, area \nFROM continent;",
         "staticAggregation1": "SELECT country, SUM(area) \nFROM encompasses \nGROUP BY country;",
-        "staticAggregation2": "SELECT name, SUM(population) \nFROM country \nGROUP BY name;",
-        "staticAggregation3": "SELECT name, country, SUM(population) \nFROM province \nGROUP BY name, country;",
-        "staticAggregation4": "SELECT name, country, province, SUM(elevation) \nFROM city \nGROUP BY name, country, province;",
-        "staticAggregation5": "SELECT name, country, province, SUM(population) \nFROM city \nGROUP BY name, country, province;",
+        "staticAggregation2": "SELECT name, population \nFROM country;",
+        "staticAggregation3": "SELECT name, country, population \nFROM province;",
+        "staticAggregation4": "SELECT name, country, province, elevation \nFROM city;",
+        "staticAggregation5": "SELECT name, country, province, population \nFROM city;",
         "staticAggregation6": "SELECT country, AVG(population) \nFROM city \nGROUP BY country;",
         "staticAggregation7": "SELECT country, province, AVG(population) \nFROM city \nGROUP BY country, province;",
         "staticAggregation8": "SELECT country, AVG(elevation) \nFROM city \nGROUP BY country;",
@@ -27,10 +27,10 @@
         "ssv1_level5": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
         "ssv1_level6": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
         "ssv1_level7": "SELECT iatacode, name, country, province, city, latitude, longitude, elevation \nFROM airport;",
-        "staticAggregation10": "SELECT country1, country2, SUM(length) \nFROM borders \nGROUP BY country1, country2;",
-        "staticAggregation11": "SELECT country, year, SUM(population) \nFROM countrypops \nGROUP BY country, year;",
-        "staticAggregation12": "SELECT country, province, year, SUM(population) \nFROM provpops \nGROUP BY country, province, year;",
-        "staticAggregation13": "SELECT city, province, country, year, SUM(population) \nFROM citypops \nGROUP BY city, province, country, year;",
+        "staticAggregation10": "SELECT country1, country2, length \nFROM borders;",
+        "staticAggregation11": "SELECT country, year, population \nFROM countrypops;",
+        "staticAggregation12": "SELECT country, province, year, population \nFROM provpops;",
+        "staticAggregation13": "SELECT city, province, country, year, population \nFROM citypops;",
         "staticAggregation14": "SELECT name \nFROM country;",
         "staticAggregation15": "SELECT name, province, country \nFROM city;",
         "staticAggregation16": "SELECT name, country \nFROM province;",
@@ -160,7 +160,7 @@
         "staticAggregation0": {
             "type": "piechart",
             "pie_color": "name",
-            "pie_angle": "SUM(area)"
+            "pie_angle": "area"
         },
         "staticAggregation1": {
             "type": "circlepack",
@@ -169,23 +169,23 @@
         },
         "staticAggregation2": {
             "type": "circlepack",
-            "circle_radius": "SUM(population)",
-            "circle_color": "SUM(population)"
+            "circle_radius": "population",
+            "circle_color": "population"
         },
         "staticAggregation3": {
             "type": "treemap",
-            "rect_size": "SUM(population)",
-            "rect_color": "SUM(population)"
+            "rect_size": "population",
+            "rect_color": "population"
         },
         "staticAggregation4": {
             "type": "barchart",
             "x": "name, country, province",
-            "y": "SUM(elevation)"
+            "y": "elevation"
         },
         "staticAggregation5": {
             "type": "circlepack",
-            "circle_radius": "SUM(population)",
-            "circle_color": "SUM(population)"
+            "circle_radius": "population",
+            "circle_color": "population"
         },
         "staticAggregation6": {
             "type": "barchart",
@@ -305,23 +305,23 @@
         },
         "staticAggregation10": {
             "type": "treemap",
-            "rect_size": "SUM(length)",
-            "rect_color": "SUM(length)"
+            "rect_size": "length",
+            "rect_color": "length"
         },
         "staticAggregation11": {
             "type": "barchart",
             "x": "country, year",
-            "y": "SUM(population)"
+            "y": "population"
         },
         "staticAggregation12": {
             "type": "barchart",
             "x": "country, province, year",
-            "y": "SUM(population)"
+            "y": "population"
         },
         "staticAggregation13": {
             "type": "barchart",
             "x": "city, province, country, year",
-            "y": "SUM(population)"
+            "y": "population"
         },
         "staticAggregation14": {
             "type": "wordcloud",

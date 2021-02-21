@@ -174,51 +174,6 @@ function constructCanvases() {
         } else {
             let c = {};
 
-            // vis data mapping
-            switch (spec.type) {
-                case "treemap":
-                    c.visDataMappings = {
-                        type: "treemap",
-                        rect_size: spec.query.measure,
-                        rect_color: spec.query.measure
-                    };
-                    break;
-                case "circlePack":
-                    c.visDataMappings = {
-                        type: "circlepack",
-                        circle_radius: spec.query.measure,
-                        circle_color: spec.query.measure
-                    };
-                    break;
-                case "pie":
-                    c.visDataMappings = {
-                        type: "piechart",
-                        pie_color: spec.query.dimensions.join(", "),
-                        pie_angle: spec.query.measure
-                    };
-                    break;
-                case "bar":
-                    c.visDataMappings = {
-                        type: "barchart",
-                        x: spec.query.dimensions.join(", "),
-                        y: spec.query.measure
-                    };
-                    if (spec.query.stackDimensions)
-                        c.visDataMappings.bar_color = spec.query.stackDimensions.join(
-                            ", "
-                        );
-                    break;
-                case "wordCloud":
-                    c.visDataMappings = {
-                        type: "wordcloud",
-                        word_column: spec.textFields[0],
-                        word_size: spec.query.measure.includes("random")
-                            ? "random"
-                            : spec.query.measure
-                    };
-                    break;
-            }
-
             // canvas Id
             c.id = "staticAggregation" + saCounter++;
 
@@ -226,7 +181,8 @@ function constructCanvases() {
             c.table = spec.query.table.toLowerCase();
 
             // query
-            if (spec.query.measure.includes("random"))
+            let measure = spec.query.measure;
+            if (measure.includes("random"))
                 c.query =
                     "SELECT " +
                     pk[c.table][0].join(", ") +
@@ -238,17 +194,92 @@ function constructCanvases() {
                 let dimensions = spec.query.dimensions;
                 if (spec.query.stackDimensions)
                     dimensions = dimensions.concat(spec.query.stackDimensions);
-                c.query +=
-                    dimensions.join(", ") +
-                    ", " +
-                    spec.query.measure +
-                    " FROM " +
-                    spec.query.table +
-                    " GROUP BY " +
-                    dimensions.join(", ") +
-                    ";";
+
+                let isDimPk = false;
+                let pks = pk[c.table];
+                for (let pKey of pks) {
+                    if (pKey.length !== dimensions.length) continue;
+                    isDimPk = true;
+                    for (let col of pKey)
+                        if (!dimensions.includes(col)) {
+                            isDimPk = false;
+                            break;
+                        }
+                    if (isDimPk) break;
+                }
+
+                if (!isDimPk)
+                    c.query +=
+                        dimensions.join(", ") +
+                        ", " +
+                        measure +
+                        " FROM " +
+                        c.table +
+                        " GROUP BY " +
+                        dimensions.join(", ") +
+                        ";";
+                else {
+                    let pos = measure.indexOf("(");
+                    let measureCol = measure.substring(
+                        pos + 1,
+                        measure.length - 1
+                    );
+                    c.query +=
+                        dimensions.join(", ") +
+                        ", " +
+                        measureCol +
+                        " FROM " +
+                        c.table +
+                        ";";
+                    measure = measureCol;
+                }
             }
             c.query = helper.formatSQL(c.query);
+
+            // vis data mapping
+            switch (spec.type) {
+                case "treemap":
+                    c.visDataMappings = {
+                        type: "treemap",
+                        rect_size: measure,
+                        rect_color: measure
+                    };
+                    break;
+                case "circlePack":
+                    c.visDataMappings = {
+                        type: "circlepack",
+                        circle_radius: measure,
+                        circle_color: measure
+                    };
+                    break;
+                case "pie":
+                    c.visDataMappings = {
+                        type: "piechart",
+                        pie_color: spec.query.dimensions.join(", "),
+                        pie_angle: measure
+                    };
+                    break;
+                case "bar":
+                    c.visDataMappings = {
+                        type: "barchart",
+                        x: spec.query.dimensions.join(", "),
+                        y: measure
+                    };
+                    if (spec.query.stackDimensions)
+                        c.visDataMappings.bar_color = spec.query.stackDimensions.join(
+                            ", "
+                        );
+                    break;
+                case "wordCloud":
+                    c.visDataMappings = {
+                        type: "wordcloud",
+                        word_column: spec.textFields[0],
+                        word_size: measure.includes("random")
+                            ? "random"
+                            : measure
+                    };
+                    break;
+            }
 
             // populate sampleFields with key columns if any of them don't exist
             let sf = spec.query.sampleFields;
