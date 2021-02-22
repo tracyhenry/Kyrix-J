@@ -485,5 +485,83 @@
         "legend": {
             "title": "Countries and their Infant Mortality (per thousand)"
         }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "language",
+            "dimensions": ["name"],
+            "measure": "SUM(percentage)",
+            "sampleFields": ["country"]
+        },
+        "type": "pie",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Language", "Percentage"]
+        },
+        "legend": {
+            "title": "Percentage of Languages Spoken in the Country"
+        },
+        "colorScheme": "schemePastel2",
+        "predDict": {
+            "layer0": {
+                "==": ["country", "United States"]
+            },
+            "layer1": {
+                "==": ["country", "United States"]
+            }
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "religion",
+            "dimensions": ["name"],
+            "measure": "SUM(percentage)",
+            "sampleFields": ["country"]
+        },
+        "type": "pie",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Religion", "Percentage"]
+        },
+        "legend": {
+            "title": "Percentage of Religions in the Country"
+        },
+        "colorScheme": "schemePastel2",
+        "predDict": {
+            "layer0": {
+                "==": ["country", "United States"]
+            },
+            "layer1": {
+                "==": ["country", "United States"]
+            }
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "ethnicgroup",
+            "dimensions": ["name"],
+            "measure": "SUM(percentage)",
+            "sampleFields": ["country"]
+        },
+        "type": "pie",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Ethnic Group", "Percentage"]
+        },
+        "legend": {
+            "title": "Percentage of Ethnic Groups in the Country"
+        },
+        "colorScheme": "schemePastel2",
+        "predDict": {
+            "layer0": {
+                "==": ["country", "United States"]
+            },
+            "layer1": {
+                "==": ["country", "United States"]
+            }
+        }
     }
 ]
