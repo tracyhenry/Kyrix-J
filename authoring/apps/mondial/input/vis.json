@@ -563,5 +563,56 @@
                 "==": ["country", "United States"]
             }
         }
+    },
+    {
+        "visTitle": "Lakes on a Map",
+        "data": {
+            "db": "mondial",
+            "query": "select name, province, country, latitude, longitude, area from lake;"
+        },
+        "layout": {
+            "x": {"field": "longitude"},
+            "y": {"field": "latitude"},
+            "z": {"field": "area", "order": "desc"},
+            "geo": {
+                "center": [0, 0],
+                "level": 2
+            }
+        },
+        "marks": {
+            "cluster": {
+                "mode": "dot",
+                "config": {
+                    "clusterCount": false,
+                    "dotSizeColumn": "area",
+                    "dotSizeDomain": [0, 386400],
+                    "dotSizeLegendTitle": "Area (km^2)",
+                    "dotColor": "black"
+                }
+            },
+            "hover": {
+                "tooltip": {
+                    "columns": [
+                        "name",
+                        "country",
+                        "province",
+                        "latitude",
+                        "longitude",
+                        "area"
+                    ],
+                    "aliases": [
+                        "Lake",
+                        "Country",
+                        "Province",
+                        "Latitude",
+                        "Longitude",
+                        "Area (km^2)"
+                    ]
+                }
+            }
+        },
+        "config": {
+            "numLevels": 8
+        }
     }
 ]

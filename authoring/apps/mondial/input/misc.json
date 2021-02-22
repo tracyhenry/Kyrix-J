@@ -110,19 +110,19 @@
             ]
         },
         {
-            "source": "river",
-            "target": "province",
+            "source": "province",
+            "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "name"}
+                {"sourceCol": "name", "targetCol": "province"}
             ]
         },
         {
-            "source": "sea",
-            "target": "province",
+            "source": "province",
+            "target": "sea",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "name"}
+                {"sourceCol": "name", "targetCol": "province"}
             ]
         },
         {
@@ -762,16 +762,16 @@
             ]
         },
         {
-            "source": "river",
-            "target": "provpops",
+            "source": "provpops",
+            "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
             ]
         },
         {
-            "source": "sea",
-            "target": "provpops",
+            "source": "provpops",
+            "target": "sea",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
@@ -956,16 +956,16 @@
             ]
         },
         {
-            "source": "river",
-            "target": "provinceothername",
+            "source": "provinceothername",
+            "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
             ]
         },
         {
-            "source": "sea",
-            "target": "provinceothername",
+            "source": "provinceothername",
+            "target": "sea",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
@@ -1142,16 +1142,16 @@
             ]
         },
         {
-            "source": "river",
-            "target": "provincelocalname",
+            "source": "provincelocalname",
+            "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
             ]
         },
         {
-            "source": "sea",
-            "target": "provincelocalname",
+            "source": "provincelocalname",
+            "target": "sea",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
@@ -1344,8 +1344,8 @@
             ]
         },
         {
-            "source": "mountain",
-            "target": "geo_source",
+            "source": "geo_source",
+            "target": "mountain",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
@@ -1393,8 +1393,8 @@
             ]
         },
         {
-            "source": "mountain",
-            "target": "language",
+            "source": "language",
+            "target": "mountain",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
@@ -1421,8 +1421,8 @@
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
-            "source": "mountain",
-            "target": "ismember",
+            "source": "ismember",
+            "target": "mountain",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
@@ -1466,16 +1466,16 @@
             ]
         },
         {
-            "source": "mountain",
-            "target": "located",
+            "source": "located",
+            "target": "mountain",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
             ]
         },
         {
-            "source": "mountain",
-            "target": "locatedon",
+            "source": "locatedon",
+            "target": "mountain",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
@@ -1545,8 +1545,8 @@
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
-            "source": "economy",
-            "target": "desert",
+            "source": "desert",
+            "target": "economy",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
@@ -1573,8 +1573,8 @@
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
-            "source": "ethnicgroup",
-            "target": "desert",
+            "source": "desert",
+            "target": "ethnicgroup",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
@@ -1586,8 +1586,8 @@
             ]
         },
         {
-            "source": "encompasses",
-            "target": "desert",
+            "source": "desert",
+            "target": "encompasses",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
@@ -1676,8 +1676,8 @@
             ]
         },
         {
-            "source": "island",
-            "target": "geo_source",
+            "source": "geo_source",
+            "target": "island",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
@@ -1763,7 +1763,7 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"},
-                {"sourceCol": "island", "targetCol": "island"}
+                {"sourceCol": "island", "targetCol": "name"}
             ]
         },
         {
@@ -1812,7 +1812,7 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"},
-                {"sourceCol": "island", "targetCol": "island"}
+                {"sourceCol": "name", "targetCol": "island"}
             ]
         },
         {
@@ -1820,7 +1820,8 @@
             "target": "sea",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
+                {"sourceCol": "province", "targetCol": "province"},
+                {"sourceCol": "sea", "targetCol": "name"}
             ]
         },
         {
@@ -1828,16 +1829,18 @@
             "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
+                {"sourceCol": "province", "targetCol": "province"},
+                {"sourceCol": "river", "targetCol": "name"},
+                {"sourceCol": "name", "targetCol": "lake"}
             ]
         },
         {
-            "source": "river",
-            "target": "geo_source",
+            "source": "geo_source",
+            "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"},
-                {"sourceCol": "river", "targetCol": "river"}
+                {"sourceCol": "river", "targetCol": "name"}
             ]
         },
         {
@@ -1846,7 +1849,7 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"},
-                {"sourceCol": "river", "targetCol": "river"}
+                {"sourceCol": "river", "targetCol": "name"}
             ]
         },
         {
@@ -1870,26 +1873,26 @@
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
-            "source": "river",
-            "target": "population",
+            "source": "population",
+            "target": "river",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
-            "source": "river",
-            "target": "politics",
+            "source": "politics",
+            "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "country", "targetCol": "dependent"}
+                {"sourceCol": "dependent", "targetCol": "country"}
             ]
         },
         {
-            "source": "river",
-            "target": "language",
+            "source": "language",
+            "target": "river",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
-            "source": "river",
-            "target": "religion",
+            "source": "religion",
+            "target": "river",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
@@ -1911,8 +1914,8 @@
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
-            "source": "river",
-            "target": "ismember",
+            "source": "ismember",
+            "target": "river",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
@@ -1948,172 +1951,27 @@
             ]
         },
         {
-            "source": "river",
-            "target": "organization",
+            "source": "organization",
+            "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
             ]
         },
         {
-            "source": "river",
-            "target": "located",
+            "source": "located",
+            "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"},
-                {"sourceCol": "river", "targetCol": "river"}
-            ]
-        },
-        {
-            "source": "river",
-            "target": "locatedon",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
-            ]
-        },
-        {
-            "source": "lake",
-            "target": "sea",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
-            ]
-        },
-        {
-            "source": "sea",
-            "target": "geo_source",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
-            ]
-        },
-        {
-            "source": "geo_estuary",
-            "target": "sea",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
-            ]
-        },
-        {
-            "source": "countrypops",
-            "target": "sea",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "countryothername",
-            "target": "sea",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "countrylocalname",
-            "target": "sea",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "economy",
-            "target": "sea",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "sea",
-            "target": "population",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "sea",
-            "target": "politics",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "country", "targetCol": "dependent"}
-            ]
-        },
-        {
-            "source": "sea",
-            "target": "language",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "sea",
-            "target": "religion",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "ethnicgroup",
-            "target": "sea",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "borders",
-            "target": "sea",
-            "matches": [
-                {"sourceCol": "country1", "targetCol": "country"},
-                {"sourceCol": "country2", "targetCol": "country"}
-            ]
-        },
-        {
-            "source": "encompasses",
-            "target": "sea",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "sea",
-            "target": "ismember",
-            "matches": [{"sourceCol": "country", "targetCol": "country"}]
-        },
-        {
-            "source": "airport",
-            "target": "sea",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
-            ]
-        },
-        {
-            "source": "citypops",
-            "target": "sea",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
-            ]
-        },
-        {
-            "source": "cityothername",
-            "target": "sea",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
-            ]
-        },
-        {
-            "source": "citylocalname",
-            "target": "sea",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
-            ]
-        },
-        {
-            "source": "sea",
-            "target": "organization",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"}
-            ]
-        },
-        {
-            "source": "sea",
-            "target": "located",
-            "matches": [
-                {"sourceCol": "country", "targetCol": "country"},
-                {"sourceCol": "province", "targetCol": "province"},
+                {"sourceCol": "river", "targetCol": "name"},
+                {"sourceCol": "lake", "targetCol": "lake"},
                 {"sourceCol": "sea", "targetCol": "sea"}
             ]
         },
         {
-            "source": "sea",
-            "target": "locatedon",
+            "source": "locatedon",
+            "target": "river",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
@@ -2121,7 +1979,15 @@
         },
         {
             "source": "lake",
-            "target": "geo_source",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"}
+            ]
+        },
+        {
+            "source": "geo_source",
+            "target": "sea",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
@@ -2129,10 +1995,151 @@
         },
         {
             "source": "geo_estuary",
-            "target": "lake",
+            "target": "sea",
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"}
+            ]
+        },
+        {
+            "source": "countrypops",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "countryothername",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "countrylocalname",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "economy",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "population",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "politics",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "dependent", "targetCol": "country"}
+            ]
+        },
+        {
+            "source": "language",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "religion",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "ethnicgroup",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "borders",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country1", "targetCol": "country"},
+                {"sourceCol": "country2", "targetCol": "country"}
+            ]
+        },
+        {
+            "source": "encompasses",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "ismember",
+            "target": "sea",
+            "matches": [{"sourceCol": "country", "targetCol": "country"}]
+        },
+        {
+            "source": "airport",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"}
+            ]
+        },
+        {
+            "source": "citypops",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"}
+            ]
+        },
+        {
+            "source": "cityothername",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"}
+            ]
+        },
+        {
+            "source": "citylocalname",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"}
+            ]
+        },
+        {
+            "source": "organization",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"}
+            ]
+        },
+        {
+            "source": "located",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"},
+                {"sourceCol": "sea", "targetCol": "name"}
+            ]
+        },
+        {
+            "source": "locatedon",
+            "target": "sea",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"}
+            ]
+        },
+        {
+            "source": "geo_source",
+            "target": "lake",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"},
+                {"sourceCol": "river", "targetCol": "river"}
+            ]
+        },
+        {
+            "source": "geo_estuary",
+            "target": "lake",
+            "matches": [
+                {"sourceCol": "country", "targetCol": "country"},
+                {"sourceCol": "province", "targetCol": "province"},
+                {"sourceCol": "river", "targetCol": "river"}
             ]
         },
         {
@@ -2197,8 +2204,8 @@
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
-            "source": "lake",
-            "target": "ismember",
+            "source": "ismember",
+            "target": "lake",
             "matches": [{"sourceCol": "country", "targetCol": "country"}]
         },
         {
@@ -2247,7 +2254,8 @@
             "matches": [
                 {"sourceCol": "country", "targetCol": "country"},
                 {"sourceCol": "province", "targetCol": "province"},
-                {"sourceCol": "lake", "targetCol": "lake"}
+                {"sourceCol": "river", "targetCol": "river"},
+                {"sourceCol": "name", "targetCol": "lake"}
             ]
         },
         {
@@ -3572,25 +3580,14 @@
             "source": "river",
             "target": "riverthrough",
             "matches": [
-                {"sourceCol": "river", "targetCol": "river"},
                 {"sourceCol": "name", "targetCol": "river"},
                 {"sourceCol": "lake", "targetCol": "lake"}
-            ]
-        },
-        {
-            "source": "lake",
-            "target": "river",
-            "matches": [
-                {"sourceCol": "river", "targetCol": "river"},
-                {"sourceCol": "river", "targetCol": "name"},
-                {"sourceCol": "name", "targetCol": "lake"}
             ]
         },
         {
             "source": "islandin",
             "target": "river",
             "matches": [
-                {"sourceCol": "river", "targetCol": "river"},
                 {"sourceCol": "river", "targetCol": "name"},
                 {"sourceCol": "lake", "targetCol": "lake"},
                 {"sourceCol": "sea", "targetCol": "sea"}
@@ -3599,36 +3596,7 @@
         {
             "source": "river",
             "target": "riveronisland",
-            "matches": [
-                {"sourceCol": "river", "targetCol": "river"},
-                {"sourceCol": "name", "targetCol": "river"}
-            ]
-        },
-        {
-            "source": "geo_source",
-            "target": "river",
-            "matches": [
-                {"sourceCol": "river", "targetCol": "river"},
-                {"sourceCol": "river", "targetCol": "name"}
-            ]
-        },
-        {
-            "source": "geo_estuary",
-            "target": "river",
-            "matches": [
-                {"sourceCol": "river", "targetCol": "river"},
-                {"sourceCol": "river", "targetCol": "name"}
-            ]
-        },
-        {
-            "source": "located",
-            "target": "river",
-            "matches": [
-                {"sourceCol": "river", "targetCol": "river"},
-                {"sourceCol": "river", "targetCol": "name"},
-                {"sourceCol": "lake", "targetCol": "lake"},
-                {"sourceCol": "sea", "targetCol": "sea"}
-            ]
+            "matches": [{"sourceCol": "name", "targetCol": "river"}]
         },
         {
             "source": "lake",
@@ -3648,11 +3616,6 @@
         },
         {
             "source": "riveronisland",
-            "target": "riverthrough",
-            "matches": [{"sourceCol": "river", "targetCol": "river"}]
-        },
-        {
-            "source": "river",
             "target": "riverthrough",
             "matches": [{"sourceCol": "river", "targetCol": "river"}]
         },
@@ -3688,40 +3651,12 @@
             "matches": [{"sourceCol": "river", "targetCol": "river"}]
         },
         {
-            "source": "river",
-            "target": "lake",
-            "matches": [{"sourceCol": "river", "targetCol": "river"}]
-        },
-        {
-            "source": "geo_source",
-            "target": "lake",
-            "matches": [{"sourceCol": "river", "targetCol": "river"}]
-        },
-        {
-            "source": "geo_estuary",
-            "target": "lake",
-            "matches": [{"sourceCol": "river", "targetCol": "river"}]
-        },
-        {
-            "source": "lake",
-            "target": "located",
-            "matches": [
-                {"sourceCol": "river", "targetCol": "river"},
-                {"sourceCol": "name", "targetCol": "lake"}
-            ]
-        },
-        {
             "source": "islandin",
             "target": "riveronisland",
             "matches": [
                 {"sourceCol": "river", "targetCol": "river"},
                 {"sourceCol": "island", "targetCol": "island"}
             ]
-        },
-        {
-            "source": "river",
-            "target": "islandin",
-            "matches": [{"sourceCol": "river", "targetCol": "river"}]
         },
         {
             "source": "geo_source",
@@ -3743,11 +3678,6 @@
             ]
         },
         {
-            "source": "river",
-            "target": "riveronisland",
-            "matches": [{"sourceCol": "river", "targetCol": "river"}]
-        },
-        {
             "source": "geo_source",
             "target": "riveronisland",
             "matches": [{"sourceCol": "river", "targetCol": "river"}]
@@ -3769,21 +3699,11 @@
         },
         {
             "source": "lake",
-            "target": "river",
-            "matches": [{"sourceCol": "lake", "targetCol": "lake"}]
-        },
-        {
-            "source": "lake",
             "target": "lakeonisland",
             "matches": [{"sourceCol": "name", "targetCol": "lake"}]
         },
         {
             "source": "lakeonisland",
-            "target": "riverthrough",
-            "matches": [{"sourceCol": "lake", "targetCol": "lake"}]
-        },
-        {
-            "source": "lake",
             "target": "riverthrough",
             "matches": [{"sourceCol": "lake", "targetCol": "lake"}]
         },
@@ -3796,24 +3716,9 @@
             ]
         },
         {
-            "source": "lake",
-            "target": "islandin",
-            "matches": [{"sourceCol": "lake", "targetCol": "lake"}]
-        },
-        {
-            "source": "lake",
-            "target": "lakeonisland",
-            "matches": [{"sourceCol": "lake", "targetCol": "lake"}]
-        },
-        {
             "source": "lakeonisland",
             "target": "located",
             "matches": [{"sourceCol": "lake", "targetCol": "lake"}]
-        },
-        {
-            "source": "river",
-            "target": "sea",
-            "matches": [{"sourceCol": "sea", "targetCol": "name"}]
         },
         {
             "source": "mergeswith",
@@ -3822,11 +3727,6 @@
                 {"sourceCol": "sea1", "targetCol": "sea"},
                 {"sourceCol": "sea2", "targetCol": "sea"}
             ]
-        },
-        {
-            "source": "sea",
-            "target": "river",
-            "matches": [{"sourceCol": "sea", "targetCol": "sea"}]
         },
         {
             "source": "mergeswith",
@@ -3842,11 +3742,6 @@
             "matches": [{"sourceCol": "sea", "targetCol": "name"}]
         },
         {
-            "source": "located",
-            "target": "sea",
-            "matches": [{"sourceCol": "sea", "targetCol": "name"}]
-        },
-        {
             "source": "islandin",
             "target": "mergeswith",
             "matches": [
@@ -3855,25 +3750,12 @@
             ]
         },
         {
-            "source": "sea",
-            "target": "mergeswith",
-            "matches": [
-                {"sourceCol": "sea", "targetCol": "sea1"},
-                {"sourceCol": "sea", "targetCol": "sea2"}
-            ]
-        },
-        {
             "source": "located",
             "target": "mergeswith",
             "matches": [
                 {"sourceCol": "sea", "targetCol": "sea1"},
                 {"sourceCol": "sea", "targetCol": "sea2"}
             ]
-        },
-        {
-            "source": "sea",
-            "target": "islandin",
-            "matches": [{"sourceCol": "sea", "targetCol": "sea"}]
         },
         {
             "source": "island",
@@ -3883,11 +3765,6 @@
         {
             "source": "islandin",
             "target": "mountainonisland",
-            "matches": [{"sourceCol": "island", "targetCol": "island"}]
-        },
-        {
-            "source": "island",
-            "target": "islandin",
             "matches": [{"sourceCol": "island", "targetCol": "island"}]
         },
         {
@@ -3914,16 +3791,6 @@
             "source": "island",
             "target": "lakeonisland",
             "matches": [{"sourceCol": "name", "targetCol": "island"}]
-        },
-        {
-            "source": "island",
-            "target": "locatedon",
-            "matches": [{"sourceCol": "name", "targetCol": "island"}]
-        },
-        {
-            "source": "airport",
-            "target": "island",
-            "matches": [{"sourceCol": "island", "targetCol": "name"}]
         },
         {
             "source": "mountainonisland",
@@ -3936,11 +3803,6 @@
             "matches": [{"sourceCol": "island", "targetCol": "island"}]
         },
         {
-            "source": "island",
-            "target": "mountainonisland",
-            "matches": [{"sourceCol": "island", "targetCol": "island"}]
-        },
-        {
             "source": "locatedon",
             "target": "mountainonisland",
             "matches": [{"sourceCol": "island", "targetCol": "island"}]
@@ -3956,11 +3818,6 @@
             "matches": [{"sourceCol": "island", "targetCol": "island"}]
         },
         {
-            "source": "island",
-            "target": "riveronisland",
-            "matches": [{"sourceCol": "island", "targetCol": "island"}]
-        },
-        {
             "source": "locatedon",
             "target": "riveronisland",
             "matches": [{"sourceCol": "island", "targetCol": "island"}]
@@ -3968,11 +3825,6 @@
         {
             "source": "airport",
             "target": "riveronisland",
-            "matches": [{"sourceCol": "island", "targetCol": "island"}]
-        },
-        {
-            "source": "island",
-            "target": "lakeonisland",
             "matches": [{"sourceCol": "island", "targetCol": "island"}]
         },
         {
@@ -3989,11 +3841,6 @@
             "source": "mountain",
             "target": "mountainonisland",
             "matches": [{"sourceCol": "name", "targetCol": "mountain"}]
-        },
-        {
-            "source": "mountain",
-            "target": "mountainonisland",
-            "matches": [{"sourceCol": "mountain", "targetCol": "mountain"}]
         }
     ]
 }
