@@ -27,7 +27,7 @@
         "mountain": [["name", "country", "province"]],
         "desert": [["name", "country", "province"]],
         "island": [["name", "country", "province"]],
-        "lake": [["name", "country", "province"]],
+        "lake": [["name"]],
         "sea": [["name", "country", "province"]],
         "river": [["name", "country", "province"]],
         "riverthrough": [["river", "lake"]],

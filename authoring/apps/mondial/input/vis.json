@@ -614,5 +614,77 @@
         "config": {
             "numLevels": 8
         }
+    },
+    {
+        "visTitle": "Lakes (area v.s. depth)",
+        "data": {
+            "db": "mondial",
+            "query": "select name, province, country, area, depth, elevation, type from lake;"
+        },
+        "layout": {
+            "x": {"field": "depth", "extent": [0, 1700]},
+            "y": {"field": "area", "extent": [100000, 0]},
+            "z": {"field": "elevation", "order": "desc"}
+        },
+        "marks": {
+            "cluster": {
+                "mode": "dot",
+                "config": {
+                    "clusterCount": false,
+                    "dotSizeColumn": "elevation",
+                    "dotSizeDomain": [-500, 6000],
+                    "dotSizeLegendTitle": "Elevation (meter)",
+                    "dotColorColumn": "type",
+                    "dotColorDomain": ["saline", "dam", "caldera", "crater"],
+                    "dotColorLegendTitle": "Type of Lake"
+                }
+            },
+            "hover": {
+                "tooltip": {
+                    "columns": [
+                        "name",
+                        "country",
+                        "province",
+                        "area",
+                        "depth",
+                        "elevation",
+                        "type"
+                    ],
+                    "aliases": [
+                        "Lake",
+                        "Country",
+                        "Province",
+                        "Area (km^2)",
+                        "Depth (meter)",
+                        "Elevation (meter)",
+                        "Type of Lake"
+                    ]
+                }
+            }
+        },
+        "config": {
+            "numLevels": 8,
+            "axis": true,
+            "xAxisTitle": "Depth (meter)",
+            "yAxisTitle": "Area (km^2)"
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "lake",
+            "dimensions": ["type"],
+            "measure": "COUNT(distinct(name))",
+            "sampleFields": ["name"]
+        },
+        "type": "pie",
+        "tooltip": {
+            "columns": ["type", "kyrixAggValue"],
+            "aliases": ["Type of Lake", "Count"]
+        },
+        "legend": {
+            "title": "Types of Lakes"
+        },
+        "colorScheme": "schemePastel2"
     }
 ]

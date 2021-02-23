@@ -290,7 +290,8 @@ function constructCanvases() {
                     d =>
                         !spec.query.dimensions.includes(d) &&
                         (spec.query.stackDimensions == null ||
-                            !spec.query.stackDimensions.includes(d))
+                            !spec.query.stackDimensions.includes(d)) &&
+                        !spec.query.measure.includes(d)
                 )
                 .forEach(d => {
                     if (!sf.includes(d)) sf.push(d);

@@ -44,46 +44,55 @@
         "ssv2_level5": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
         "ssv2_level6": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
         "ssv2_level7": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
-        "staticAggregation19": "SELECT name \nFROM country;",
-        "staticAggregation20": "SELECT name, province, country \nFROM city;",
-        "staticAggregation21": "SELECT name, country \nFROM province;",
-        "staticAggregation22": "SELECT country, year \nFROM countrypops;",
-        "staticAggregation23": "SELECT province, country, year \nFROM provpops;",
-        "staticAggregation24": "SELECT city, province, country, year \nFROM citypops;",
-        "staticAggregation25": "SELECT country, othername \nFROM countryothername;",
-        "staticAggregation26": "SELECT country \nFROM countrylocalname;",
-        "staticAggregation27": "SELECT province, country, othername \nFROM provinceothername;",
-        "staticAggregation28": "SELECT province, country \nFROM provincelocalname;",
-        "staticAggregation29": "SELECT city, province, country, othername \nFROM cityothername;",
-        "staticAggregation30": "SELECT city, province, country \nFROM citylocalname;",
-        "staticAggregation31": "SELECT country \nFROM economy;",
-        "staticAggregation32": "SELECT country \nFROM population;",
-        "staticAggregation33": "SELECT country \nFROM politics;",
-        "staticAggregation34": "SELECT country, name \nFROM language;",
-        "staticAggregation35": "SELECT country, name \nFROM religion;",
-        "staticAggregation36": "SELECT country, name \nFROM ethnicgroup;",
-        "staticAggregation37": "SELECT name \nFROM continent;",
-        "staticAggregation38": "SELECT country1, country2 \nFROM borders;",
-        "staticAggregation39": "SELECT country, continent \nFROM encompasses;",
-        "staticAggregation40": "SELECT abbreviation \nFROM organization;",
-        "staticAggregation41": "SELECT country, organization \nFROM ismember;",
-        "staticAggregation42": "SELECT name, country, province \nFROM mountain;",
-        "staticAggregation43": "SELECT name, country, province \nFROM desert;",
-        "staticAggregation44": "SELECT name, country, province \nFROM island;",
-        "staticAggregation45": "SELECT name, country, province \nFROM lake;",
-        "staticAggregation46": "SELECT name, country, province \nFROM sea;",
-        "staticAggregation47": "SELECT name, country, province \nFROM river;",
-        "staticAggregation48": "SELECT river, lake \nFROM riverthrough;",
-        "staticAggregation49": "SELECT sea1, sea2 \nFROM mergeswith;",
-        "staticAggregation50": "SELECT island, sea, lake, river \nFROM islandin;",
-        "staticAggregation51": "SELECT mountain, island \nFROM mountainonisland;",
-        "staticAggregation52": "SELECT river, island \nFROM riveronisland;",
-        "staticAggregation53": "SELECT lake, island \nFROM lakeonisland;",
-        "staticAggregation54": "SELECT river, province, country \nFROM geo_source;",
-        "staticAggregation55": "SELECT river, province, country \nFROM geo_estuary;",
-        "staticAggregation56": "SELECT city, river, lake, sea \nFROM located;",
-        "staticAggregation57": "SELECT city, province, country, island \nFROM locatedon;",
-        "staticAggregation58": "SELECT iatacode \nFROM airport;"
+        "ssv3_level0": "SELECT name, province, country, area, depth, elevation, type \nFROM lake;",
+        "ssv3_level1": "SELECT name, province, country, area, depth, elevation, type \nFROM lake;",
+        "ssv3_level2": "SELECT name, province, country, area, depth, elevation, type \nFROM lake;",
+        "ssv3_level3": "SELECT name, province, country, area, depth, elevation, type \nFROM lake;",
+        "ssv3_level4": "SELECT name, province, country, area, depth, elevation, type \nFROM lake;",
+        "ssv3_level5": "SELECT name, province, country, area, depth, elevation, type \nFROM lake;",
+        "ssv3_level6": "SELECT name, province, country, area, depth, elevation, type \nFROM lake;",
+        "ssv3_level7": "SELECT name, province, country, area, depth, elevation, type \nFROM lake;",
+        "staticAggregation19": "SELECT type, COUNT(distinct(name)) \nFROM lake \nGROUP BY type;",
+        "staticAggregation20": "SELECT name \nFROM country;",
+        "staticAggregation21": "SELECT name, province, country \nFROM city;",
+        "staticAggregation22": "SELECT name, country \nFROM province;",
+        "staticAggregation23": "SELECT country, year \nFROM countrypops;",
+        "staticAggregation24": "SELECT province, country, year \nFROM provpops;",
+        "staticAggregation25": "SELECT city, province, country, year \nFROM citypops;",
+        "staticAggregation26": "SELECT country, othername \nFROM countryothername;",
+        "staticAggregation27": "SELECT country \nFROM countrylocalname;",
+        "staticAggregation28": "SELECT province, country, othername \nFROM provinceothername;",
+        "staticAggregation29": "SELECT province, country \nFROM provincelocalname;",
+        "staticAggregation30": "SELECT city, province, country, othername \nFROM cityothername;",
+        "staticAggregation31": "SELECT city, province, country \nFROM citylocalname;",
+        "staticAggregation32": "SELECT country \nFROM economy;",
+        "staticAggregation33": "SELECT country \nFROM population;",
+        "staticAggregation34": "SELECT country \nFROM politics;",
+        "staticAggregation35": "SELECT country, name \nFROM language;",
+        "staticAggregation36": "SELECT country, name \nFROM religion;",
+        "staticAggregation37": "SELECT country, name \nFROM ethnicgroup;",
+        "staticAggregation38": "SELECT name \nFROM continent;",
+        "staticAggregation39": "SELECT country1, country2 \nFROM borders;",
+        "staticAggregation40": "SELECT country, continent \nFROM encompasses;",
+        "staticAggregation41": "SELECT abbreviation \nFROM organization;",
+        "staticAggregation42": "SELECT country, organization \nFROM ismember;",
+        "staticAggregation43": "SELECT name, country, province \nFROM mountain;",
+        "staticAggregation44": "SELECT name, country, province \nFROM desert;",
+        "staticAggregation45": "SELECT name, country, province \nFROM island;",
+        "staticAggregation46": "SELECT name \nFROM lake;",
+        "staticAggregation47": "SELECT name, country, province \nFROM sea;",
+        "staticAggregation48": "SELECT name, country, province \nFROM river;",
+        "staticAggregation49": "SELECT river, lake \nFROM riverthrough;",
+        "staticAggregation50": "SELECT sea1, sea2 \nFROM mergeswith;",
+        "staticAggregation51": "SELECT island, sea, lake, river \nFROM islandin;",
+        "staticAggregation52": "SELECT mountain, island \nFROM mountainonisland;",
+        "staticAggregation53": "SELECT river, island \nFROM riveronisland;",
+        "staticAggregation54": "SELECT lake, island \nFROM lakeonisland;",
+        "staticAggregation55": "SELECT river, province, country \nFROM geo_source;",
+        "staticAggregation56": "SELECT river, province, country \nFROM geo_estuary;",
+        "staticAggregation57": "SELECT city, river, lake, sea \nFROM located;",
+        "staticAggregation58": "SELECT city, province, country, island \nFROM locatedon;",
+        "staticAggregation59": "SELECT iatacode \nFROM airport;"
     },
     "canvasIdToTable": {
         "staticAggregation0": "continent",
@@ -129,46 +138,55 @@
         "ssv2_level5": "lake",
         "ssv2_level6": "lake",
         "ssv2_level7": "lake",
-        "staticAggregation19": "country",
-        "staticAggregation20": "city",
-        "staticAggregation21": "province",
-        "staticAggregation22": "countrypops",
-        "staticAggregation23": "provpops",
-        "staticAggregation24": "citypops",
-        "staticAggregation25": "countryothername",
-        "staticAggregation26": "countrylocalname",
-        "staticAggregation27": "provinceothername",
-        "staticAggregation28": "provincelocalname",
-        "staticAggregation29": "cityothername",
-        "staticAggregation30": "citylocalname",
-        "staticAggregation31": "economy",
-        "staticAggregation32": "population",
-        "staticAggregation33": "politics",
-        "staticAggregation34": "language",
-        "staticAggregation35": "religion",
-        "staticAggregation36": "ethnicgroup",
-        "staticAggregation37": "continent",
-        "staticAggregation38": "borders",
-        "staticAggregation39": "encompasses",
-        "staticAggregation40": "organization",
-        "staticAggregation41": "ismember",
-        "staticAggregation42": "mountain",
-        "staticAggregation43": "desert",
-        "staticAggregation44": "island",
-        "staticAggregation45": "lake",
-        "staticAggregation46": "sea",
-        "staticAggregation47": "river",
-        "staticAggregation48": "riverthrough",
-        "staticAggregation49": "mergeswith",
-        "staticAggregation50": "islandin",
-        "staticAggregation51": "mountainonisland",
-        "staticAggregation52": "riveronisland",
-        "staticAggregation53": "lakeonisland",
-        "staticAggregation54": "geo_source",
-        "staticAggregation55": "geo_estuary",
-        "staticAggregation56": "located",
-        "staticAggregation57": "locatedon",
-        "staticAggregation58": "airport"
+        "ssv3_level0": "lake",
+        "ssv3_level1": "lake",
+        "ssv3_level2": "lake",
+        "ssv3_level3": "lake",
+        "ssv3_level4": "lake",
+        "ssv3_level5": "lake",
+        "ssv3_level6": "lake",
+        "ssv3_level7": "lake",
+        "staticAggregation19": "lake",
+        "staticAggregation20": "country",
+        "staticAggregation21": "city",
+        "staticAggregation22": "province",
+        "staticAggregation23": "countrypops",
+        "staticAggregation24": "provpops",
+        "staticAggregation25": "citypops",
+        "staticAggregation26": "countryothername",
+        "staticAggregation27": "countrylocalname",
+        "staticAggregation28": "provinceothername",
+        "staticAggregation29": "provincelocalname",
+        "staticAggregation30": "cityothername",
+        "staticAggregation31": "citylocalname",
+        "staticAggregation32": "economy",
+        "staticAggregation33": "population",
+        "staticAggregation34": "politics",
+        "staticAggregation35": "language",
+        "staticAggregation36": "religion",
+        "staticAggregation37": "ethnicgroup",
+        "staticAggregation38": "continent",
+        "staticAggregation39": "borders",
+        "staticAggregation40": "encompasses",
+        "staticAggregation41": "organization",
+        "staticAggregation42": "ismember",
+        "staticAggregation43": "mountain",
+        "staticAggregation44": "desert",
+        "staticAggregation45": "island",
+        "staticAggregation46": "lake",
+        "staticAggregation47": "sea",
+        "staticAggregation48": "river",
+        "staticAggregation49": "riverthrough",
+        "staticAggregation50": "mergeswith",
+        "staticAggregation51": "islandin",
+        "staticAggregation52": "mountainonisland",
+        "staticAggregation53": "riveronisland",
+        "staticAggregation54": "lakeonisland",
+        "staticAggregation55": "geo_source",
+        "staticAggregation56": "geo_estuary",
+        "staticAggregation57": "located",
+        "staticAggregation58": "locatedon",
+        "staticAggregation59": "airport"
     },
     "visualDataMappings": {
         "staticAggregation0": {
@@ -410,10 +428,66 @@
             "y": "latitude",
             "dot_size": "area"
         },
+        "ssv3_level0": {
+            "type": "scatterplot",
+            "x": "depth",
+            "y": "area",
+            "dot_size": "elevation",
+            "dot_color": "type"
+        },
+        "ssv3_level1": {
+            "type": "scatterplot",
+            "x": "depth",
+            "y": "area",
+            "dot_size": "elevation",
+            "dot_color": "type"
+        },
+        "ssv3_level2": {
+            "type": "scatterplot",
+            "x": "depth",
+            "y": "area",
+            "dot_size": "elevation",
+            "dot_color": "type"
+        },
+        "ssv3_level3": {
+            "type": "scatterplot",
+            "x": "depth",
+            "y": "area",
+            "dot_size": "elevation",
+            "dot_color": "type"
+        },
+        "ssv3_level4": {
+            "type": "scatterplot",
+            "x": "depth",
+            "y": "area",
+            "dot_size": "elevation",
+            "dot_color": "type"
+        },
+        "ssv3_level5": {
+            "type": "scatterplot",
+            "x": "depth",
+            "y": "area",
+            "dot_size": "elevation",
+            "dot_color": "type"
+        },
+        "ssv3_level6": {
+            "type": "scatterplot",
+            "x": "depth",
+            "y": "area",
+            "dot_size": "elevation",
+            "dot_color": "type"
+        },
+        "ssv3_level7": {
+            "type": "scatterplot",
+            "x": "depth",
+            "y": "area",
+            "dot_size": "elevation",
+            "dot_color": "type"
+        },
         "staticAggregation19": {
-            "type": "wordcloud",
-            "word_column": "name",
-            "word_size": "random"
+            "type": "piechart",
+            "pie_color": "type",
+            "pie_angle": "COUNT(distinct(name))"
         },
         "staticAggregation20": {
             "type": "wordcloud",
@@ -427,22 +501,22 @@
         },
         "staticAggregation22": {
             "type": "wordcloud",
-            "word_column": "country",
+            "word_column": "name",
             "word_size": "random"
         },
         "staticAggregation23": {
             "type": "wordcloud",
-            "word_column": "province",
+            "word_column": "country",
             "word_size": "random"
         },
         "staticAggregation24": {
             "type": "wordcloud",
-            "word_column": "city",
+            "word_column": "province",
             "word_size": "random"
         },
         "staticAggregation25": {
             "type": "wordcloud",
-            "word_column": "country",
+            "word_column": "city",
             "word_size": "random"
         },
         "staticAggregation26": {
@@ -452,7 +526,7 @@
         },
         "staticAggregation27": {
             "type": "wordcloud",
-            "word_column": "province",
+            "word_column": "country",
             "word_size": "random"
         },
         "staticAggregation28": {
@@ -462,7 +536,7 @@
         },
         "staticAggregation29": {
             "type": "wordcloud",
-            "word_column": "city",
+            "word_column": "province",
             "word_size": "random"
         },
         "staticAggregation30": {
@@ -472,7 +546,7 @@
         },
         "staticAggregation31": {
             "type": "wordcloud",
-            "word_column": "country",
+            "word_column": "city",
             "word_size": "random"
         },
         "staticAggregation32": {
@@ -502,32 +576,32 @@
         },
         "staticAggregation37": {
             "type": "wordcloud",
-            "word_column": "name",
+            "word_column": "country",
             "word_size": "random"
         },
         "staticAggregation38": {
             "type": "wordcloud",
-            "word_column": "country1",
+            "word_column": "name",
             "word_size": "random"
         },
         "staticAggregation39": {
             "type": "wordcloud",
-            "word_column": "country",
+            "word_column": "country1",
             "word_size": "random"
         },
         "staticAggregation40": {
             "type": "wordcloud",
-            "word_column": "abbreviation",
+            "word_column": "country",
             "word_size": "random"
         },
         "staticAggregation41": {
             "type": "wordcloud",
-            "word_column": "country",
+            "word_column": "abbreviation",
             "word_size": "random"
         },
         "staticAggregation42": {
             "type": "wordcloud",
-            "word_column": "name",
+            "word_column": "country",
             "word_size": "random"
         },
         "staticAggregation43": {
@@ -557,37 +631,37 @@
         },
         "staticAggregation48": {
             "type": "wordcloud",
-            "word_column": "river",
+            "word_column": "name",
             "word_size": "random"
         },
         "staticAggregation49": {
             "type": "wordcloud",
-            "word_column": "sea1",
+            "word_column": "river",
             "word_size": "random"
         },
         "staticAggregation50": {
             "type": "wordcloud",
-            "word_column": "island",
+            "word_column": "sea1",
             "word_size": "random"
         },
         "staticAggregation51": {
             "type": "wordcloud",
-            "word_column": "mountain",
+            "word_column": "island",
             "word_size": "random"
         },
         "staticAggregation52": {
             "type": "wordcloud",
-            "word_column": "river",
+            "word_column": "mountain",
             "word_size": "random"
         },
         "staticAggregation53": {
             "type": "wordcloud",
-            "word_column": "lake",
+            "word_column": "river",
             "word_size": "random"
         },
         "staticAggregation54": {
             "type": "wordcloud",
-            "word_column": "river",
+            "word_column": "lake",
             "word_size": "random"
         },
         "staticAggregation55": {
@@ -597,7 +671,7 @@
         },
         "staticAggregation56": {
             "type": "wordcloud",
-            "word_column": "city",
+            "word_column": "river",
             "word_size": "random"
         },
         "staticAggregation57": {
@@ -606,6 +680,11 @@
             "word_size": "random"
         },
         "staticAggregation58": {
+            "type": "wordcloud",
+            "word_column": "city",
+            "word_size": "random"
+        },
+        "staticAggregation59": {
             "type": "wordcloud",
             "word_column": "iatacode",
             "word_size": "random"
@@ -4439,7 +4518,7 @@
         "mountain": {"numRecords": "704", "numCanvas": 1},
         "desert": {"numRecords": "179", "numCanvas": 1},
         "island": {"numRecords": "486", "numCanvas": 1},
-        "lake": {"numRecords": "358", "numCanvas": 2},
+        "lake": {"numRecords": "358", "numCanvas": 4},
         "sea": {"numRecords": "932", "numCanvas": 1},
         "river": {"numRecords": "1531", "numCanvas": 1},
         "riverthrough": {"numRecords": "61", "numCanvas": 1},
@@ -4631,7 +4710,7 @@
         "mountain": [["name", "country", "province"]],
         "desert": [["name", "country", "province"]],
         "island": [["name", "country", "province"]],
-        "lake": [["name", "country", "province"]],
+        "lake": [["name"]],
         "sea": [["name", "country", "province"]],
         "river": [["name", "country", "province"]],
         "riverthrough": [["river", "lake"]],
@@ -4657,7 +4736,7 @@
             },
             {
                 "title": "Primary keys of table COUNTRY",
-                "canvasId": "staticAggregation19",
+                "canvasId": "staticAggregation20",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4715,7 +4794,7 @@
             },
             {
                 "title": "Primary keys of table CITY",
-                "canvasId": "staticAggregation20",
+                "canvasId": "staticAggregation21",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4731,7 +4810,7 @@
             },
             {
                 "title": "Primary keys of table PROVINCE",
-                "canvasId": "staticAggregation21",
+                "canvasId": "staticAggregation22",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4750,7 +4829,7 @@
             },
             {
                 "title": "Primary keys of table COUNTRYPOPS",
-                "canvasId": "staticAggregation22",
+                "canvasId": "staticAggregation23",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4779,7 +4858,7 @@
             },
             {
                 "title": "Primary keys of table PROVPOPS",
-                "canvasId": "staticAggregation23",
+                "canvasId": "staticAggregation24",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4818,7 +4897,7 @@
             },
             {
                 "title": "Primary keys of table CITYPOPS",
-                "canvasId": "staticAggregation24",
+                "canvasId": "staticAggregation25",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4827,7 +4906,7 @@
         "countryothername": [
             {
                 "title": "Primary keys of table COUNTRYOTHERNAME",
-                "canvasId": "staticAggregation25",
+                "canvasId": "staticAggregation26",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4836,7 +4915,7 @@
         "countrylocalname": [
             {
                 "title": "Primary keys of table COUNTRYLOCALNAME",
-                "canvasId": "staticAggregation26",
+                "canvasId": "staticAggregation27",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4845,7 +4924,7 @@
         "provinceothername": [
             {
                 "title": "Primary keys of table PROVINCEOTHERNAME",
-                "canvasId": "staticAggregation27",
+                "canvasId": "staticAggregation28",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4854,7 +4933,7 @@
         "provincelocalname": [
             {
                 "title": "Primary keys of table PROVINCELOCALNAME",
-                "canvasId": "staticAggregation28",
+                "canvasId": "staticAggregation29",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4863,7 +4942,7 @@
         "cityothername": [
             {
                 "title": "Primary keys of table CITYOTHERNAME",
-                "canvasId": "staticAggregation29",
+                "canvasId": "staticAggregation30",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4872,7 +4951,7 @@
         "citylocalname": [
             {
                 "title": "Primary keys of table CITYLOCALNAME",
-                "canvasId": "staticAggregation30",
+                "canvasId": "staticAggregation31",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4881,7 +4960,7 @@
         "economy": [
             {
                 "title": "Primary keys of table ECONOMY",
-                "canvasId": "staticAggregation31",
+                "canvasId": "staticAggregation32",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4904,7 +4983,7 @@
             },
             {
                 "title": "Primary keys of table POPULATION",
-                "canvasId": "staticAggregation32",
+                "canvasId": "staticAggregation33",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4913,7 +4992,7 @@
         "politics": [
             {
                 "title": "Primary keys of table POLITICS",
-                "canvasId": "staticAggregation33",
+                "canvasId": "staticAggregation34",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4932,7 +5011,7 @@
             },
             {
                 "title": "Primary keys of table LANGUAGE",
-                "canvasId": "staticAggregation34",
+                "canvasId": "staticAggregation35",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4951,7 +5030,7 @@
             },
             {
                 "title": "Primary keys of table RELIGION",
-                "canvasId": "staticAggregation35",
+                "canvasId": "staticAggregation36",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4970,7 +5049,7 @@
             },
             {
                 "title": "Primary keys of table ETHNICGROUP",
-                "canvasId": "staticAggregation36",
+                "canvasId": "staticAggregation37",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -4986,7 +5065,7 @@
             },
             {
                 "title": "Primary keys of table CONTINENT",
-                "canvasId": "staticAggregation37",
+                "canvasId": "staticAggregation38",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5005,7 +5084,7 @@
             },
             {
                 "title": "Primary keys of table BORDERS",
-                "canvasId": "staticAggregation38",
+                "canvasId": "staticAggregation39",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5026,7 +5105,7 @@
             },
             {
                 "title": "Primary keys of table ENCOMPASSES",
-                "canvasId": "staticAggregation39",
+                "canvasId": "staticAggregation40",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5035,7 +5114,7 @@
         "organization": [
             {
                 "title": "Primary keys of table ORGANIZATION",
-                "canvasId": "staticAggregation40",
+                "canvasId": "staticAggregation41",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5044,7 +5123,7 @@
         "ismember": [
             {
                 "title": "Primary keys of table ISMEMBER",
-                "canvasId": "staticAggregation41",
+                "canvasId": "staticAggregation42",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5053,7 +5132,7 @@
         "mountain": [
             {
                 "title": "Primary keys of table MOUNTAIN",
-                "canvasId": "staticAggregation42",
+                "canvasId": "staticAggregation43",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5062,7 +5141,7 @@
         "desert": [
             {
                 "title": "Primary keys of table DESERT",
-                "canvasId": "staticAggregation43",
+                "canvasId": "staticAggregation44",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5071,7 +5150,7 @@
         "island": [
             {
                 "title": "Primary keys of table ISLAND",
-                "canvasId": "staticAggregation44",
+                "canvasId": "staticAggregation45",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5086,8 +5165,22 @@
                 "newVpY": 0
             },
             {
+                "title": "Lakes (area v.s. depth)",
+                "canvasId": "ssv3_level0",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
+                "title": "Types of Lakes",
+                "canvasId": "staticAggregation19",
+                "predDict": {},
+                "newVpX": 0,
+                "newVpY": 0
+            },
+            {
                 "title": "Primary keys of table LAKE",
-                "canvasId": "staticAggregation45",
+                "canvasId": "staticAggregation46",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5096,7 +5189,7 @@
         "sea": [
             {
                 "title": "Primary keys of table SEA",
-                "canvasId": "staticAggregation46",
+                "canvasId": "staticAggregation47",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5105,7 +5198,7 @@
         "river": [
             {
                 "title": "Primary keys of table RIVER",
-                "canvasId": "staticAggregation47",
+                "canvasId": "staticAggregation48",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5114,7 +5207,7 @@
         "riverthrough": [
             {
                 "title": "Primary keys of table RIVERTHROUGH",
-                "canvasId": "staticAggregation48",
+                "canvasId": "staticAggregation49",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5123,7 +5216,7 @@
         "mergeswith": [
             {
                 "title": "Primary keys of table MERGESWITH",
-                "canvasId": "staticAggregation49",
+                "canvasId": "staticAggregation50",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5132,7 +5225,7 @@
         "islandin": [
             {
                 "title": "Primary keys of table ISLANDIN",
-                "canvasId": "staticAggregation50",
+                "canvasId": "staticAggregation51",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5141,7 +5234,7 @@
         "mountainonisland": [
             {
                 "title": "Primary keys of table MOUNTAINONISLAND",
-                "canvasId": "staticAggregation51",
+                "canvasId": "staticAggregation52",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5150,7 +5243,7 @@
         "riveronisland": [
             {
                 "title": "Primary keys of table RIVERONISLAND",
-                "canvasId": "staticAggregation52",
+                "canvasId": "staticAggregation53",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5159,7 +5252,7 @@
         "lakeonisland": [
             {
                 "title": "Primary keys of table LAKEONISLAND",
-                "canvasId": "staticAggregation53",
+                "canvasId": "staticAggregation54",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5168,7 +5261,7 @@
         "geo_source": [
             {
                 "title": "Primary keys of table GEO_SOURCE",
-                "canvasId": "staticAggregation54",
+                "canvasId": "staticAggregation55",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5177,7 +5270,7 @@
         "geo_estuary": [
             {
                 "title": "Primary keys of table GEO_ESTUARY",
-                "canvasId": "staticAggregation55",
+                "canvasId": "staticAggregation56",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5186,7 +5279,7 @@
         "located": [
             {
                 "title": "Primary keys of table LOCATED",
-                "canvasId": "staticAggregation56",
+                "canvasId": "staticAggregation57",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5195,7 +5288,7 @@
         "locatedon": [
             {
                 "title": "Primary keys of table LOCATEDON",
-                "canvasId": "staticAggregation57",
+                "canvasId": "staticAggregation58",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5211,7 +5304,7 @@
             },
             {
                 "title": "Primary keys of table AIRPORT",
-                "canvasId": "staticAggregation58",
+                "canvasId": "staticAggregation59",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
