@@ -268,12 +268,37 @@ class SchemaGraph extends Component {
         let nodeData = JSON.parse(JSON.stringify(this.nodes.data()));
         let linkData = JSON.parse(JSON.stringify(this.links.data()));
         let oldTableNames = nodeData.map(d => d.table_name);
+        let oneHopNbs = this.getOneHopNeighbors();
 
         // if there is a meta node already for props.curTable
         // this means it has been expanded, so we should just
-        // return the existing graph data
-        if (oldTableNames.includes("meta_" + this.props.curTable))
+        // return the existing graph data plus any missing edge to one hop nbs
+        if (oldTableNames.includes("meta_" + this.props.curTable)) {
+            linkData = linkData.concat(
+                oneHopNbs.linkData.filter(d => {
+                    return (
+                        oldTableNames.includes(d.target) &&
+                        linkData.filter(p => {
+                            if (typeof p.source === "string")
+                                return (
+                                    (p.source === d.source &&
+                                        p.target === d.target) ||
+                                    (p.target === d.source &&
+                                        p.source === d.target)
+                                );
+                            else
+                                return (
+                                    (p.source.table_name === d.source &&
+                                        p.target.table_name === d.target) ||
+                                    (p.target.table_name === d.source &&
+                                        p.source.table_name === d.target)
+                                );
+                        }).length === 0
+                    );
+                })
+            );
             return {nodeData, linkData};
+        }
 
         // check if props.curTable was actually represented by a meta node
         if (!oldTableNames.includes(this.props.curTable)) {
@@ -321,7 +346,6 @@ class SchemaGraph extends Component {
         }
 
         // add new neighbors and metanode
-        let oneHopNbs = this.getOneHopNeighbors();
         let newNbs = oneHopNbs.nodeData.filter(
             d => !oldTableNames.includes(d.table_name)
         );
