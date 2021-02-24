@@ -472,7 +472,7 @@
             // column values
             rows.append("td")
                 .html(p =>
-                    !isNaN(d[p])
+                    !isNaN(d[p]) && d[p].length > 0
                         ? d3.format(",~")(+d[p]) //(+d[p]).toFixed(2).replace(/\.?0*$/, "")
                         : d[p]
                 )
@@ -504,6 +504,7 @@
                 d3.select(".kyrixtooltip").remove();
             });
     }
+
     function removePopovers(viewId) {
         var selector = ".popover";
         if (viewId != null) selector += ".view_" + viewId;
