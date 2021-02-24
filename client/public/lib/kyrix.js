@@ -991,7 +991,7 @@
                     )
                         poDiv
                             .append("div")
-                            .html(`<i>${curJumps[i].tableName}</i>`);
+                            .html(`Table <i>${curJumps[i].tableName}</i>`);
 
                     // create table cell and append it to .popovercontent
                     var optionText = j.visTitle;
