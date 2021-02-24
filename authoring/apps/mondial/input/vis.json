@@ -2,6 +2,22 @@
     {
         "db": "mondial",
         "query": {
+            "table": "country",
+            "dimensions": ["name"],
+            "measure": "SUM(population)",
+            "sampleFields": ["capital", "area"]
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Country", "Population"]
+        },
+        "legend": {"title": "Countries and their Population"},
+        "textFields": ["name"]
+    },
+    {
+        "db": "mondial",
+        "query": {
             "table": "continent",
             "dimensions": ["name"],
             "measure": "SUM(area)",
@@ -46,22 +62,6 @@
     {
         "db": "mondial",
         "query": {
-            "table": "country",
-            "dimensions": ["name"],
-            "measure": "SUM(population)",
-            "sampleFields": ["capital", "area"]
-        },
-        "type": "circlePack",
-        "tooltip": {
-            "columns": ["name", "kyrixAggValue"],
-            "aliases": ["Country", "Population"]
-        },
-        "legend": {"title": "Countries and their Population"},
-        "textFields": ["name"]
-    },
-    {
-        "db": "mondial",
-        "query": {
             "table": "province",
             "dimensions": ["name", "country"],
             "measure": "SUM(population)",
@@ -86,7 +86,7 @@
         "type": "bar",
         "tooltip": {
             "columns": ["name", "province", "country", "kyrixAggValue"],
-            "aliases": ["City", "Province", "Country", "Elevation"]
+            "aliases": ["City", "Province", "Country", "Elevation (meter)"]
         },
         "legend": {"title": "Cities and their Elevations"},
         "axis": {
@@ -163,7 +163,7 @@
         "type": "circlePack",
         "tooltip": {
             "columns": ["country", "kyrixAggValue"],
-            "aliases": ["Country", "Average City Elevation"]
+            "aliases": ["Country", "Average City Elevation (meter)"]
         },
         "textFields": ["country"],
         "legend": {"title": "Countries and their Average City Elevation"}
@@ -179,7 +179,7 @@
         "type": "wordCloud",
         "tooltip": {
             "columns": ["province", "country", "kyrixAggValue"],
-            "aliases": ["Province", "Country", "Average City Elevation"]
+            "aliases": ["Province", "Country", "Average City Elevation (meter)"]
         },
         "textFields": ["province"],
         "padding": 5,
@@ -585,7 +585,7 @@
                 "config": {
                     "clusterCount": false,
                     "dotSizeColumn": "area",
-                    "dotSizeDomain": [0, 386400],
+                    "dotSizeDomain": [0, 100000],
                     "dotSizeLegendTitle": "Area (km^2)",
                     "dotColor": "black"
                 }

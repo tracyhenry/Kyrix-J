@@ -1,9 +1,9 @@
 {
     "kyrixViewId": "mondial",
     "sqlQuery": {
-        "staticAggregation0": "SELECT name, area \nFROM continent;",
-        "staticAggregation1": "SELECT country, SUM(area) \nFROM encompasses \nGROUP BY country;",
-        "staticAggregation2": "SELECT name, population \nFROM country;",
+        "staticAggregation0": "SELECT name, population \nFROM country;",
+        "staticAggregation1": "SELECT name, area \nFROM continent;",
+        "staticAggregation2": "SELECT country, SUM(area) \nFROM encompasses \nGROUP BY country;",
         "staticAggregation3": "SELECT name, country, population \nFROM province;",
         "staticAggregation4": "SELECT name, country, province, elevation \nFROM city;",
         "staticAggregation5": "SELECT name, country, province, population \nFROM city;",
@@ -95,9 +95,9 @@
         "staticAggregation59": "SELECT iatacode \nFROM airport;"
     },
     "canvasIdToTable": {
-        "staticAggregation0": "continent",
-        "staticAggregation1": "encompasses",
-        "staticAggregation2": "country",
+        "staticAggregation0": "country",
+        "staticAggregation1": "continent",
+        "staticAggregation2": "encompasses",
         "staticAggregation3": "province",
         "staticAggregation4": "city",
         "staticAggregation5": "city",
@@ -190,19 +190,19 @@
     },
     "visualDataMappings": {
         "staticAggregation0": {
+            "type": "circlepack",
+            "circle_radius": "population",
+            "circle_color": "population"
+        },
+        "staticAggregation1": {
             "type": "piechart",
             "pie_color": "name",
             "pie_angle": "area"
         },
-        "staticAggregation1": {
+        "staticAggregation2": {
             "type": "circlepack",
             "circle_radius": "SUM(area)",
             "circle_color": "SUM(area)"
-        },
-        "staticAggregation2": {
-            "type": "circlepack",
-            "circle_radius": "population",
-            "circle_color": "population"
         },
         "staticAggregation3": {
             "type": "treemap",
@@ -4729,7 +4729,7 @@
         "country": [
             {
                 "title": "Countries and their Population",
-                "canvasId": "staticAggregation2",
+                "canvasId": "staticAggregation0",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5058,7 +5058,7 @@
         "continent": [
             {
                 "title": "Continents and their Area (km^2)",
-                "canvasId": "staticAggregation0",
+                "canvasId": "staticAggregation1",
                 "predDict": {},
                 "newVpX": 0,
                 "newVpY": 0
@@ -5093,7 +5093,7 @@
         "encompasses": [
             {
                 "title": "Countries and their Area (km^2)",
-                "canvasId": "staticAggregation1",
+                "canvasId": "staticAggregation2",
                 "predDict": {
                     "predDict": {
                         "layer0": {"==": ["continent", "North America"]},
