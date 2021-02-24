@@ -52,6 +52,15 @@ class Header extends Component {
             });
         else {
             let tables = Object.keys(this.props.searchResults);
+            tables.sort((a, b) => {
+                let va = a.includes(this.props.searchBarValue)
+                    ? a.length
+                    : 1000;
+                let vb = b.includes(this.props.searchBarValue)
+                    ? b.length
+                    : 1000;
+                return va - vb;
+            });
             for (let i = 0; i < tables.length; i++) {
                 let t = tables[i];
                 if (this.props.searchResults[t].length === 0) continue;
@@ -120,9 +129,9 @@ class Header extends Component {
                             : "No matches found."
                     }
                     options={options}
-                    value={this.props.searchBarValue}
+                    // value={this.props.searchBarValue}
                     dropdownMatchSelectWidth={500}
-                    defaultActiveFirstOption={false}
+                    // defaultActiveFirstOption={false}
                     onSearch={this.props.handleSearchBarInputChange}
                 >
                     <Input.Search
