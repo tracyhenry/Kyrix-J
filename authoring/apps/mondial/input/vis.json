@@ -78,6 +78,22 @@
     {
         "db": "mondial",
         "query": {
+            "table": "province",
+            "dimensions": ["name", "country"],
+            "measure": "SUM(area)",
+            "sampleFields": []
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["name", "country", "kyrixAggValue"],
+            "aliases": ["Province", "Country", "Area (km^2)"]
+        },
+        "legend": {"title": "Provinces and their Area"},
+        "textFields": ["name", "country"]
+    },
+    {
+        "db": "mondial",
+        "query": {
             "table": "city",
             "dimensions": ["name", "country", "province"],
             "measure": "SUM(elevation)",
@@ -681,5 +697,163 @@
             "title": "Types of Lakes"
         },
         "colorScheme": "schemePastel2"
+    },
+    {
+        "visTitle": "Mountains on a Map",
+        "data": {
+            "db": "mondial",
+            "query": "select name, province, country, latitude, longitude, elevation from mountain;"
+        },
+        "layout": {
+            "x": {"field": "longitude"},
+            "y": {"field": "latitude"},
+            "z": {"field": "elevation", "order": "desc"},
+            "geo": {
+                "center": [0, 0],
+                "level": 2
+            }
+        },
+        "marks": {
+            "cluster": {
+                "mode": "dot",
+                "config": {
+                    "clusterCount": false,
+                    "dotSizeColumn": "elevation",
+                    "dotSizeDomain": [0, 8848],
+                    "dotSizeLegendTitle": "Elevation (meter)",
+                    "dotColor": "black"
+                }
+            },
+            "hover": {
+                "tooltip": {
+                    "columns": [
+                        "name",
+                        "country",
+                        "province",
+                        "latitude",
+                        "longitude",
+                        "elevation"
+                    ],
+                    "aliases": [
+                        "Lake",
+                        "Country",
+                        "Province",
+                        "Latitude",
+                        "Longitude",
+                        "Elevation (meter)"
+                    ]
+                }
+            }
+        },
+        "config": {
+            "numLevels": 8
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "mountain",
+            "dimensions": ["name"],
+            "measure": "AVG(elevation)",
+            "sampleFields": ["type", "country", "province"]
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Mountain", "Elevation (meter)"]
+        },
+        "textFields": ["name"],
+        "legend": {"title": "Mountains and their Elevation"}
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "mountain",
+            "dimensions": ["type"],
+            "measure": "COUNT(distinct(name))",
+            "sampleFields": ["name"]
+        },
+        "type": "pie",
+        "tooltip": {
+            "columns": ["type", "kyrixAggValue"],
+            "aliases": ["Type of Mountain", "Count"]
+        },
+        "legend": {
+            "title": "Types of Mountains"
+        },
+        "colorScheme": "schemePastel2"
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "sea",
+            "dimensions": ["name"],
+            "measure": "AVG(area)",
+            "sampleFields": ["country", "province"]
+        },
+        "type": "treemap",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Sea", "Area (km^2)"]
+        },
+        "textFields": ["name"],
+        "legend": {"title": "Seas and their Area"}
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "sea",
+            "dimensions": ["name"],
+            "measure": "AVG(depth)",
+            "sampleFields": ["country", "province"]
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Sea", "Depth (meter)"]
+        },
+        "legend": {"title": "Seas and their Depth"},
+        "axis": {
+            "xTitle": "Sea",
+            "yTitle": "Depth (meter)"
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "river",
+            "dimensions": ["name"],
+            "measure": "AVG(length)",
+            "sampleFields": ["country", "province"]
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["River", "Length (km)"]
+        },
+        "legend": {"title": "Rivers and their Length"},
+        "axis": {
+            "xTitle": "River",
+            "yTitle": "Length (km)"
+        }
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "river",
+            "dimensions": ["name"],
+            "measure": "AVG(area)",
+            "sampleFields": ["country", "province"]
+        },
+        "type": "bar",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["River", "Area (km^2)"]
+        },
+        "legend": {"title": "Rivers and their Area"},
+        "axis": {
+            "xTitle": "River",
+            "yTitle": "Area (km^2)"
+        }
     }
 ]
