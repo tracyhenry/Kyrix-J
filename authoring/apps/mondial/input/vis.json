@@ -626,11 +626,43 @@
         "type": "bar",
         "colorScheme": "schemeSet3",
         "tooltip": {
-            "columns": ["name", "type", "kyrixAggValue"],
-            "aliases": ["Lake", "Type of Lake", "Area (km^2)"]
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Lake", "Area (km^2)"]
         },
         "legend": {"title": "Lakes and their Area"},
         "axis": {"xTitle": "Lake", "yTitle": "Area (km^2)"}
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "lake",
+            "dimensions": ["name"],
+            "measure": "AVG(depth)",
+            "sampleFields": ["type", "country", "province"]
+        },
+        "type": "circlePack",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Lake", "Depth (meter)"]
+        },
+        "textFields": ["name"],
+        "legend": {"title": "Lakes and their Depth"}
+    },
+    {
+        "db": "mondial",
+        "query": {
+            "table": "lake",
+            "dimensions": ["name"],
+            "measure": "AVG(elevation)",
+            "sampleFields": ["type", "country", "province"]
+        },
+        "type": "treemap",
+        "tooltip": {
+            "columns": ["name", "kyrixAggValue"],
+            "aliases": ["Lake", "Elevation (meter)"]
+        },
+        "textFields": ["name"],
+        "legend": {"title": "Lakes and their Elevation"}
     },
     {
         "db": "mondial",
