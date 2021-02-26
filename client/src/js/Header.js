@@ -129,7 +129,7 @@ class Header extends Component {
                             : "No matches found."
                     }
                     options={options}
-                    // value={this.props.searchBarValue}
+                    value={this.props.searchBarValue}
                     dropdownMatchSelectWidth={500}
                     // defaultActiveFirstOption={false}
                     onSearch={this.props.handleSearchBarInputChange}

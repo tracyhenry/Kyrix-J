@@ -344,9 +344,9 @@ class KyrixJ extends Component {
         }).then(canvas => {
             message.success("Bookmark saved!", 1.5);
             this.setState({
-                bookmarks: this.state.bookmarks.concat([
+                bookmarks: [
                     Object.assign({}, {url: canvas.toDataURL()}, historyItem)
-                ]),
+                ].concat(this.state.bookmarks),
                 bookmarksButtonDisabled: false
             });
         });

@@ -8,7 +8,7 @@ class KyrixVis extends Component {
     }
 
     componentDidMount = () => {
-        var serverAddr = "http://127.0.0.1:8000";
+        var serverAddr = "http://24.23.250.175:8000";
         setTimeout(() => {
             window.kyrix
                 .initializeApp(serverAddr, this.kyrixdivRef.current)
