@@ -636,23 +636,6 @@
         "db": "mondial",
         "query": {
             "table": "lake",
-            "dimensions": ["name"],
-            "measure": "AVG(area)",
-            "sampleFields": ["type", "country", "province"]
-        },
-        "type": "bar",
-        "colorScheme": "schemeSet3",
-        "tooltip": {
-            "columns": ["name", "type", "kyrixAggValue"],
-            "aliases": ["Lake", "Type of Lake", "Area (km^2)"]
-        },
-        "legend": {"title": "Lakes and their Area"},
-        "axis": {"xTitle": "Lake", "yTitle": "Area (km^2)"}
-    },
-    {
-        "db": "mondial",
-        "query": {
-            "table": "lake",
             "dimensions": ["type"],
             "measure": "COUNT(distinct(name))",
             "sampleFields": ["name"]

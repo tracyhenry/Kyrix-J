@@ -4,12 +4,15 @@
     "description": "Authoring component of Kyrix-J",
     "main": "index.js",
     "scripts": {
-        "start": "(node index.js) && (cp apps/mondial/output/mondial.json ../client/src/metadata/mondial.json) && (cd apps/mondial/output/ && ./compile.sh mondial.js -f)",
+        "start": "(node index.js) && (cp apps/mondial/output/mondial.json ../client/src/metadata/mondial.json) && (cd apps/mondial/output/ && sudo ./compile.sh mondial.js -f)",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "pg": "^8.5.1"
+    },
+    "devDependencies": {
+        "prettier": "2.2.1"
     }
 }

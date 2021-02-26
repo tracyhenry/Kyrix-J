@@ -13,6 +13,13 @@ const client = new psql.Client({
 });
 client.connect();
 
+/*app.use(express.static('/home/wenbo/Kyrix-J/client/build/'));
+
+app.get('/', (req, res) => {
+    console.log(__dirname);
+    res.sendFile('/home/wenbo/Kyrix-J/client/build/index.html');
+});*/
+
 app.get("/search", (req, res) => {
     let s = req.query.q;
     let results = {};
