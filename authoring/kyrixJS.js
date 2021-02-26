@@ -183,8 +183,10 @@ function genSpec(canvases, appName) {
                     canvases[j].spec.query.stackDimensions &&
                     canvases[j].spec.query.stackDimensions.length > 0
                 )
-                    pkj = [canvases[j].spec.query.stackDimensions];
-                else pkj = [canvases[j].spec.query.dimensions];
+                    pkj = pk[tj].concat([
+                        canvases[j].spec.query.stackDimensions
+                    ]);
+                else pkj = pk[tj].concat([canvases[j].spec.query.dimensions]);
             }
 
             let filters;
