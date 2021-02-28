@@ -73,12 +73,13 @@ class NodePopover extends Component {
 
     getContentOfMetaTable = () => {
         let metaTables = this.props.d.meta_tables;
+        const GoButton = this.IconFont;
         let panels = metaTables.map(d => (
             <Panel
                 header={d.table_name}
                 key={d.table_name}
                 extra={
-                    <this.IconFont
+                    <GoButton
                         type="icon-go"
                         onClick={() => {
                             this.props.handleTableClick(

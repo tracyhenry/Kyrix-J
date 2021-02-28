@@ -3,7 +3,7 @@ const psql = require("pg");
 const data = require(`../src/metadata/${process.env.KYRIXJ_PROJECT}.json`);
 
 const app = express();
-const port = 3001;
+const port = 4000;
 const client = new psql.Client({
     host: "localhost",
     user: "kyrix",
@@ -13,12 +13,11 @@ const client = new psql.Client({
 });
 client.connect();
 
-/*app.use(express.static('/home/wenbo/Kyrix-J/client/build/'));
+app.use(express.static("../build"));
 
-app.get('/', (req, res) => {
-    console.log(__dirname);
-    res.sendFile('/home/wenbo/Kyrix-J/client/build/index.html');
-});*/
+app.get("/", (req, res) => {
+    res.sendFile("../build/index.html");
+});
 
 app.get("/search", (req, res) => {
     let s = req.query.q;
