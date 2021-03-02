@@ -36,7 +36,7 @@ app.get("/search", (req, res) => {
                 type: "table_name",
                 value: t
             });
-        if (s.length === 0 || s.indexOf(" ") >= 0) continue;
+        if (s.length === 0) continue;
 
         // column names
         for (let j = 0; j < data.tableColumns[t].length; j++) {
@@ -58,19 +58,27 @@ app.get("/search", (req, res) => {
         });
 
         let primaryKey = `concat_ws(', ', ${pks.join(", ")})`;
+        let words = s.split(/\s+/);
         let query =
             `SELECT distinct(${primaryKey}) as value FROM ${t.toLowerCase()}` +
-            ` WHERE to_tsquery('simple', '${s}:*') @@ search_tsvector LIMIT 5;`;
+            ` WHERE to_tsquery('simple', '${
+                words[0]
+            }:*') @@ search_tsvector LIMIT 5;`;
         let p = client.query(query);
         promises.push(
             p
                 .then(result => {
                     let len = result.rows.length;
-                    for (let j = 0; j < len; j++)
-                        results[t].push({
-                            type: "pk_value",
-                            value: result.rows[j].value
-                        });
+                    for (let j = 0; j < len; j++) {
+                        let value = result.rows[j].value;
+
+                        // check if value matches the input string
+                        if (value.toLowerCase().includes(s.toLowerCase()))
+                            results[t].push({
+                                type: "pk_value",
+                                value: value
+                            });
+                    }
                 })
                 .catch(e => console.log(e))
         );

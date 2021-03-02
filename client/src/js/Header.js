@@ -23,6 +23,7 @@ class Header extends Component {
     };
 
     getHighlightedText = text => {
+        let words = text.split(/\s+/);
         let st = text
             .toLowerCase()
             .indexOf(this.props.searchBarValue.toLowerCase());
@@ -123,11 +124,7 @@ class Header extends Component {
                 <p className="header-title">Superman @ The MONDIAL Database</p>
                 <AutoComplete
                     className="header-input"
-                    notFoundContent={
-                        this.props.searchBarValue.indexOf(" ") >= 0
-                            ? "Multiple words are not supported."
-                            : "No matches found."
-                    }
+                    notFoundContent={"No matches found."}
                     options={options}
                     value={this.props.searchBarValue}
                     dropdownMatchSelectWidth={500}
