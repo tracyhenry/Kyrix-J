@@ -57,7 +57,7 @@ app.get("/search", (req, res) => {
                 .join("_");
         });
 
-        let primaryKey = pks.join(" || ', ' || ");
+        let primaryKey = `concat_ws(', ', ${pks.join(", ")})`;
         let query =
             `SELECT distinct(${primaryKey}) as value FROM ${t.toLowerCase()}` +
             ` WHERE to_tsquery('simple', '${s}:*') @@ search_tsvector LIMIT 5;`;

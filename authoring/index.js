@@ -425,12 +425,15 @@ async function generateGIN() {
     for (let t of tables) {
         try {
             await client.query(
+                `ALTER TABLE ${t} DROP COLUMN IF EXISTS search_tsvector`
+            );
+            await client.query(
                 `ALTER TABLE ${t} ADD COLUMN search_tsvector tsvector`
             );
             await client.query(
-                `UPDATE ${t} SET search_tsvector = to_tsvector('simple', ${pk[
+                `UPDATE ${t} SET search_tsvector = to_tsvector('simple', concat_ws(', ', ${pk[
                     t
-                ][0].join(" || ', ' || ")})`
+                ][0].join(", ")}))`
             );
             await client.query(
                 `CREATE INDEX on ${t} USING GIN(search_tsvector)`
