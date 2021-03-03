@@ -550,202 +550,202 @@
         "staticAggregation30": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation31": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation32": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation33": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation34": {
             "type": "wordcloud",
             "word_column": "province",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation35": {
             "type": "wordcloud",
             "word_column": "city",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation36": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation37": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation38": {
             "type": "wordcloud",
             "word_column": "province",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation39": {
             "type": "wordcloud",
             "word_column": "province",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation40": {
             "type": "wordcloud",
             "word_column": "city",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation41": {
             "type": "wordcloud",
             "word_column": "city",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation42": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation43": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation44": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation45": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation46": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation47": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation48": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation49": {
             "type": "wordcloud",
             "word_column": "country1",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation50": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation51": {
             "type": "wordcloud",
             "word_column": "abbreviation",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation52": {
             "type": "wordcloud",
             "word_column": "country",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation53": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation54": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation55": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation56": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation57": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation58": {
             "type": "wordcloud",
             "word_column": "name",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation59": {
             "type": "wordcloud",
             "word_column": "river",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation60": {
             "type": "wordcloud",
             "word_column": "sea1",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation61": {
             "type": "wordcloud",
             "word_column": "island",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation62": {
             "type": "wordcloud",
             "word_column": "mountain",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation63": {
             "type": "wordcloud",
             "word_column": "river",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation64": {
             "type": "wordcloud",
             "word_column": "lake",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation65": {
             "type": "wordcloud",
             "word_column": "river",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation66": {
             "type": "wordcloud",
             "word_column": "river",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation67": {
             "type": "wordcloud",
             "word_column": "city",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation68": {
             "type": "wordcloud",
             "word_column": "city",
-            "word_size": "random"
+            "word_size": "constant"
         },
         "staticAggregation69": {
             "type": "wordcloud",
             "word_column": "iatacode",
-            "word_size": "random"
+            "word_size": "constant"
         }
     },
     "graphEdges": [

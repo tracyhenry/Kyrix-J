@@ -182,7 +182,7 @@ function constructCanvases() {
 
             // query
             let measure = spec.query.measure;
-            if (measure.includes("random"))
+            if (measure.includes("SUM(50)"))
                 c.query =
                     "SELECT " +
                     pk[c.table][0].join(", ") +
@@ -274,8 +274,8 @@ function constructCanvases() {
                     c.visDataMappings = {
                         type: "wordcloud",
                         word_column: spec.textFields[0],
-                        word_size: measure.includes("random")
-                            ? "random"
+                        word_size: measure.includes("SUM(50)")
+                            ? "constant"
                             : measure
                     };
                     break;
@@ -318,11 +318,6 @@ function constructCanvases() {
 
             // title
             c.title = spec.legend.title;
-            if (c.title.includes("random text size"))
-                c.title = c.title.substring(
-                    0,
-                    c.title.indexOf("random text size") - 2
-                );
 
             cc.push(c);
         }
@@ -396,7 +391,7 @@ function addDefaultWordClouds() {
             query: {
                 table: t,
                 dimensions: dimensions,
-                measure: "SUM(random() * 100)",
+                measure: "SUM(50)",
                 sampleFields: sampleFields
             },
             type: "wordCloud",
@@ -406,7 +401,7 @@ function addDefaultWordClouds() {
             },
             padding: 15,
             legend: {
-                title: `Primary keys of table ${t.toUpperCase()} (random text size)`
+                title: `Primary keys of table ${t.toUpperCase()}`
             },
             textFields: dimensions,
             cloud: {
