@@ -192,17 +192,12 @@
             "measure": "AVG(elevation)",
             "sampleFields": ["name"]
         },
-        "type": "wordCloud",
+        "type": "circlePack",
         "tooltip": {
             "columns": ["province", "country", "kyrixAggValue"],
             "aliases": ["Province", "Country", "Average City Elevation (meter)"]
         },
         "textFields": ["province"],
-        "padding": 5,
-        "cloud": {
-            "maxTextSize": 100,
-            "rotation": [-60, -30, 0, 30, 60]
-        },
         "legend": {"title": "Provinces and their Average City Elevation"}
     },
     {

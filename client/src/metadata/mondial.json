@@ -260,9 +260,9 @@
             "circle_color": "AVG(elevation)"
         },
         "staticAggregation10": {
-            "type": "wordcloud",
-            "word_column": "province",
-            "word_size": "AVG(elevation)"
+            "type": "circlepack",
+            "circle_radius": "AVG(elevation)",
+            "circle_color": "AVG(elevation)"
         },
         "ssv0_level0": {
             "type": "scatterplot",
