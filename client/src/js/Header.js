@@ -23,7 +23,6 @@ class Header extends Component {
     };
 
     getHighlightedText = text => {
-        let words = text.split(/\s+/);
         let st = text
             .toLowerCase()
             .indexOf(this.props.searchBarValue.toLowerCase());
@@ -69,7 +68,7 @@ class Header extends Component {
                     res => res.type !== "table_name"
                 );
                 options.push({
-                    value: t,
+                    value: t + "__kyrixj__",
                     label: (
                         <div
                             className="search-result"
