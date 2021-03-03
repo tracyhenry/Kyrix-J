@@ -579,12 +579,12 @@
         "visTitle": "Lakes on a Map",
         "data": {
             "db": "mondial",
-            "query": "select name, province, country, latitude, longitude, area from lake;"
+            "query": "select name, province, country, latitude, longitude, depth from lake;"
         },
         "layout": {
             "x": {"field": "longitude"},
             "y": {"field": "latitude"},
-            "z": {"field": "area", "order": "desc"},
+            "z": {"field": "depth", "order": "desc"},
             "geo": {
                 "center": [0, 0],
                 "level": 2
@@ -595,9 +595,9 @@
                 "mode": "dot",
                 "config": {
                     "clusterCount": false,
-                    "dotSizeColumn": "area",
-                    "dotSizeDomain": [0, 100000],
-                    "dotSizeLegendTitle": "Area (km^2)",
+                    "dotSizeColumn": "depth",
+                    "dotSizeDomain": [0, 1700],
+                    "dotSizeLegendTitle": "Depth (meter)",
                     "dotColor": "black"
                 }
             },
@@ -609,7 +609,7 @@
                         "province",
                         "latitude",
                         "longitude",
-                        "area"
+                        "depth"
                     ],
                     "aliases": [
                         "Lake",
@@ -617,7 +617,7 @@
                         "Province",
                         "Latitude",
                         "Longitude",
-                        "Area (km^2)"
+                        "Depth (meter)"
                     ]
                 }
             }

@@ -37,14 +37,14 @@
         "staticAggregation17": "SELECT name, SUM(percentage) \nFROM language \nGROUP BY name;",
         "staticAggregation18": "SELECT name, SUM(percentage) \nFROM religion \nGROUP BY name;",
         "staticAggregation19": "SELECT name, SUM(percentage) \nFROM ethnicgroup \nGROUP BY name;",
-        "ssv2_level0": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
-        "ssv2_level1": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
-        "ssv2_level2": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
-        "ssv2_level3": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
-        "ssv2_level4": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
-        "ssv2_level5": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
-        "ssv2_level6": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
-        "ssv2_level7": "SELECT name, province, country, latitude, longitude, area \nFROM lake;",
+        "ssv2_level0": "SELECT name, province, country, latitude, longitude, depth \nFROM lake;",
+        "ssv2_level1": "SELECT name, province, country, latitude, longitude, depth \nFROM lake;",
+        "ssv2_level2": "SELECT name, province, country, latitude, longitude, depth \nFROM lake;",
+        "ssv2_level3": "SELECT name, province, country, latitude, longitude, depth \nFROM lake;",
+        "ssv2_level4": "SELECT name, province, country, latitude, longitude, depth \nFROM lake;",
+        "ssv2_level5": "SELECT name, province, country, latitude, longitude, depth \nFROM lake;",
+        "ssv2_level6": "SELECT name, province, country, latitude, longitude, depth \nFROM lake;",
+        "ssv2_level7": "SELECT name, province, country, latitude, longitude, depth \nFROM lake;",
         "staticAggregation20": "SELECT name, area \nFROM lake;",
         "staticAggregation21": "SELECT name, depth \nFROM lake;",
         "staticAggregation22": "SELECT name, elevation \nFROM lake;",
@@ -409,49 +409,49 @@
             "type": "scatterplot",
             "x": "longitude",
             "y": "latitude",
-            "dot_size": "area"
+            "dot_size": "depth"
         },
         "ssv2_level1": {
             "type": "scatterplot",
             "x": "longitude",
             "y": "latitude",
-            "dot_size": "area"
+            "dot_size": "depth"
         },
         "ssv2_level2": {
             "type": "scatterplot",
             "x": "longitude",
             "y": "latitude",
-            "dot_size": "area"
+            "dot_size": "depth"
         },
         "ssv2_level3": {
             "type": "scatterplot",
             "x": "longitude",
             "y": "latitude",
-            "dot_size": "area"
+            "dot_size": "depth"
         },
         "ssv2_level4": {
             "type": "scatterplot",
             "x": "longitude",
             "y": "latitude",
-            "dot_size": "area"
+            "dot_size": "depth"
         },
         "ssv2_level5": {
             "type": "scatterplot",
             "x": "longitude",
             "y": "latitude",
-            "dot_size": "area"
+            "dot_size": "depth"
         },
         "ssv2_level6": {
             "type": "scatterplot",
             "x": "longitude",
             "y": "latitude",
-            "dot_size": "area"
+            "dot_size": "depth"
         },
         "ssv2_level7": {
             "type": "scatterplot",
             "x": "longitude",
             "y": "latitude",
-            "dot_size": "area"
+            "dot_size": "depth"
         },
         "staticAggregation20": {"type": "barchart", "x": "name", "y": "area"},
         "staticAggregation21": {
