@@ -17,9 +17,11 @@
         "react-dom": "^17.0.1",
         "react-scripts": "4.0.0",
         "react-syntax-highlighter": "^15.4.3",
-        "react-transition-group": "^4.4.1"
+        "react-transition-group": "^4.4.1",
+        "source-map-explorer": "^2.5.2"
     },
     "scripts": {
+        "analyze": "source-map-explorer 'build/static/js/*.js'",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
