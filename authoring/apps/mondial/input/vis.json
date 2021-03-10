@@ -41,13 +41,16 @@
             "measure": "SUM(area)",
             "sampleFields": []
         },
-        "type": "circlePack",
+        "type": "bar",
         "tooltip": {
             "columns": ["country", "kyrixAggValue"],
             "aliases": ["Country", "Area (km^2)"]
         },
         "legend": {"title": "Countries and their Area (km^2)"},
-        "textFields": ["country"],
+        "axis": {
+            "xTitle": "Country",
+            "yTitle": "Area (km^2)"
+        },
         "predDict": {
             "predDict": {
                 "layer0": {
@@ -118,12 +121,16 @@
             "measure": "SUM(population)",
             "sampleFields": []
         },
-        "type": "circlePack",
+        "type": "bar",
         "tooltip": {
             "columns": ["name", "province", "country", "kyrixAggValue"],
             "aliases": ["City", "Province", "Country", "Population"]
         },
         "textFields": ["name"],
+        "axis": {
+            "xTitle": "city",
+            "yTitle": "Population"
+        },
         "legend": {"title": "Cities and their Population"}
     },
     {
@@ -341,6 +348,7 @@
             "sampleFields": []
         },
         "type": "bar",
+        "textFields": ["year"],
         "tooltip": {
             "columns": ["country", "year", "kyrixAggValue"],
             "aliases": ["Country", "Year", "Population"]
@@ -370,6 +378,7 @@
             "sampleFields": []
         },
         "type": "bar",
+        "textFields": ["year"],
         "tooltip": {
             "columns": ["province", "country", "year", "kyrixAggValue"],
             "aliases": ["Province", "Country", "Year", "Population"]
@@ -413,6 +422,7 @@
             "sampleFields": []
         },
         "type": "bar",
+        "textFields": ["year"],
         "tooltip": {
             "columns": ["city", "province", "country", "year", "kyrixAggValue"],
             "aliases": ["city", "province", "Country", "Year", "Population"]

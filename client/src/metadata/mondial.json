@@ -220,9 +220,9 @@
             "pie_angle": "area"
         },
         "staticAggregation2": {
-            "type": "circlepack",
-            "circle_radius": "SUM(area)",
-            "circle_color": "SUM(area)"
+            "type": "barchart",
+            "x": "country",
+            "y": "SUM(area)"
         },
         "staticAggregation3": {
             "type": "treemap",
@@ -240,9 +240,9 @@
             "y": "elevation"
         },
         "staticAggregation6": {
-            "type": "circlepack",
-            "circle_radius": "population",
-            "circle_color": "population"
+            "type": "barchart",
+            "x": "name, country, province",
+            "y": "population"
         },
         "staticAggregation7": {
             "type": "barchart",
