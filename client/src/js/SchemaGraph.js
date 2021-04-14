@@ -17,8 +17,8 @@ class SchemaGraph extends Component {
         this.svgRef = React.createRef();
 
         // initialize D3 force directed layout
-        this.supermanW = (this.props.width / 1000) * 70;
-        this.supermanH = (this.props.width / 1000) * 60;
+        this.supermanW = (this.props.width / 1000) * 80;
+        this.supermanH = (this.props.width / 1000) * 70;
         this.circleRadius = (this.props.width / 1000) * 60;
         let tickFunction = () => {
             this.nodes.attr("cx", d => d.x).attr("cy", d => d.y);
@@ -480,7 +480,8 @@ class SchemaGraph extends Component {
             .style("pointer-events", "none")
             .attr(
                 "xlink:href",
-                "https://upload.wikimedia.org/wikipedia/commons/0/05/Superman_S_symbol.svg"
+                // "https://upload.wikimedia.org/wikipedia/commons/0/05/Superman_S_symbol.svg"
+                "https://live.staticflickr.com/65535/51114087774_0c47bbe451_o_d.png"
             );
 
         // d3 zoom to enable pan
@@ -1059,7 +1060,8 @@ class SchemaGraph extends Component {
             .style("opacity", 0.7)
             .attr(
                 "xlink:href",
-                "https://upload.wikimedia.org/wikipedia/commons/0/05/Superman_S_symbol.svg"
+                // "https://upload.wikimedia.org/wikipedia/commons/0/05/Superman_S_symbol.svg"
+                "https://live.staticflickr.com/65535/51114087774_0c47bbe451_o_d.png"
             );
 
         // start repeating transitions

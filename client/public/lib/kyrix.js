@@ -1561,7 +1561,9 @@
                 supermanSvg
                     .attr(
                         "xlink:href",
-                        "https://live.staticflickr.com/65535/49735899041_e6c9d13323_o.png"
+                        // "https://live.staticflickr.com/65535/49735899041_e6c9d13323_o.png"
+                        // "https://live.staticflickr.com/65535/51114021389_50fbd3fbcf_o_d.png"
+                        "https://live.staticflickr.com/65535/51115095325_f227176db9_o_d.png"
                     )
                     .attr(
                         "transform",
@@ -1577,7 +1579,9 @@
                 supermanSvg
                     .attr(
                         "xlink:href",
-                        "https://live.staticflickr.com/65535/49735448721_e0ea4f763f_o.png"
+                        // "https://live.staticflickr.com/65535/49735448721_e0ea4f763f_o.png"
+                        // "https://live.staticflickr.com/65535/51114043269_e7e35e9b40_o_d.png"
+                        "https://live.staticflickr.com/65535/51115095320_fb98a9ae26_o_d.png"
                     )
                     .attr(
                         "transform",
