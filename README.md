@@ -17,7 +17,7 @@
 
 * Now, go to the Kyrix-J repo. Replace the IP address in [this line](https://github.com/tracyhenry/Kyrix-J/blob/fb89ed82f4d37b6f85514f613d1bf4d0a78965f6/client/src/js/KyrixVis.js#L11) with your own ip address. This ip can also be `localhost` if client and server are both on your own machine. 
 
-* Set env variable KYRIXJ_PROJECT to `mondial`:
+* Set env variable `KYRIXJ_PROJECT` to `mondial`:
   ```
   export KYRIXJ_PROJECT=mondial
   ```
