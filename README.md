@@ -16,6 +16,7 @@ sudo ./run-kyrix.sh --build --dbport 5433
 ```
 export KYRIXJ_PROJECT=mondial
 ```
+Or to do it permanently you can add it as one line in `~/.bashrc`
 
 4. Under `authoring`, run `npm start`. This will generates a Kyrix app, loads it into the kyrix backend and also generates some metadata stuff for the frontend.
 
