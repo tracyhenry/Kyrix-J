@@ -36,4 +36,6 @@
 * Under `client/auto-complete`, run `npm start`. This is the Kyrix-J middleware (backend) used only for search queries under dev mode. In prod mode, this will also serve the React production build. 
 
 * Under `client/`, run `npm start` to start the frontend. 
+
+* Go to `<ip>:3000` to see the app. 
    
