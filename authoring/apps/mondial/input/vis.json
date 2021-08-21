@@ -38,7 +38,7 @@
         "query": {
             "table": "encompasses",
             "dimensions": ["country"],
-            "measure": "SUM(area)",
+            "measure": "MAX(area)",
             "sampleFields": []
         },
         "type": "bar",
@@ -128,7 +128,7 @@
         },
         "textFields": ["name"],
         "axis": {
-            "xTitle": "city",
+            "xTitle": "City",
             "yTitle": "Population"
         },
         "legend": {"title": "Cities and their Population"}
@@ -759,7 +759,7 @@
         "query": {
             "table": "mountain",
             "dimensions": ["name"],
-            "measure": "AVG(elevation)",
+            "measure": "MAX(elevation)",
             "sampleFields": ["type", "country", "province"]
         },
         "type": "circlePack",

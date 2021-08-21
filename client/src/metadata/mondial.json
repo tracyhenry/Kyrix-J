@@ -3,7 +3,7 @@
     "sqlQuery": {
         "staticAggregation0": "SELECT name, population \nFROM country;",
         "staticAggregation1": "SELECT name, area \nFROM continent;",
-        "staticAggregation2": "SELECT country, SUM(area) \nFROM encompasses \nGROUP BY country;",
+        "staticAggregation2": "SELECT country, MAX(area) \nFROM encompasses \nGROUP BY country;",
         "staticAggregation3": "SELECT name, country, population \nFROM province;",
         "staticAggregation4": "SELECT name, country, area \nFROM province;",
         "staticAggregation5": "SELECT name, country, province, elevation \nFROM city;",
@@ -57,7 +57,7 @@
         "ssv3_level5": "SELECT name, province, country, latitude, longitude, elevation \nFROM mountain;",
         "ssv3_level6": "SELECT name, province, country, latitude, longitude, elevation \nFROM mountain;",
         "ssv3_level7": "SELECT name, province, country, latitude, longitude, elevation \nFROM mountain;",
-        "staticAggregation24": "SELECT name, AVG(elevation) \nFROM mountain \nGROUP BY name;",
+        "staticAggregation24": "SELECT name, MAX(elevation) \nFROM mountain \nGROUP BY name;",
         "staticAggregation25": "SELECT type, COUNT(distinct(name)) \nFROM mountain \nGROUP BY type;",
         "staticAggregation26": "SELECT name, AVG(area) \nFROM sea \nGROUP BY name;",
         "staticAggregation27": "SELECT name, AVG(depth) \nFROM sea \nGROUP BY name;",
@@ -222,7 +222,7 @@
         "staticAggregation2": {
             "type": "barchart",
             "x": "country",
-            "y": "SUM(area)"
+            "y": "MAX(area)"
         },
         "staticAggregation3": {
             "type": "treemap",
@@ -519,8 +519,8 @@
         },
         "staticAggregation24": {
             "type": "circlepack",
-            "circle_radius": "AVG(elevation)",
-            "circle_color": "AVG(elevation)"
+            "circle_radius": "MAX(elevation)",
+            "circle_color": "MAX(elevation)"
         },
         "staticAggregation25": {
             "type": "piechart",
