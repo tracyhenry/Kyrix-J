@@ -7,7 +7,7 @@ sudo ./run-kyrix.sh --build --dbport 5433
   
 * Load `mondial.sql` into kyrix db (using `load-sql.sh` provided by Kyrix):
 ```
-./load-sql.sh <path to mondial.sql>
+sudo ./docker-scripts/load-sql.sh <path to mondial.sql>
 ```
 
 * Replace this ip address with your own ip address in [this line](https://github.com/tracyhenry/Kyrix-J/blob/fb89ed82f4d37b6f85514f613d1bf4d0a78965f6/client/src/js/KyrixVis.js#L11). This ip can also be `localhost` if client and server are both on your own machine. 
