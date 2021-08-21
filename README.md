@@ -18,7 +18,15 @@ sudo ./docker-scripts/load-sql.sh <path to mondial.sql>
   ```
    Or to do it permanently you can add it as one line in `~/.bashrc`
 
-* Under `authoring`, run `npm start`. This will generates a Kyrix app, loads it into the kyrix backend and also generates some metadata stuff for the frontend.
+* Install latest node and npm, and run `npm i` under three folders: `authoring/`, `client/` and `client/auto-complete`
+
+* Make a new directory for the auto-generated Kyrix app, and copy the Kyrix compile script into it:
+```
+mkdir authoring/apps/mondial/output/
+cp ../Kyrix/docker-scripts/compile.sh authoring/apps/mondial/output/compile.sh
+cd authoring/apps/mondial/output/ && chmod +x compile.sh
+```
+* Under `authoring`, run `npm start`. This will generate a Kyrix app, loads it into the kyrix backend and also generates some metadata stuff for the frontend.
 
 * Under `client/auto-complete`, run `npm start`. This is the Kyrix-J middleware (backend) used only for search queries under dev mode. In prod mode, this will also serve the React production build. 
 
